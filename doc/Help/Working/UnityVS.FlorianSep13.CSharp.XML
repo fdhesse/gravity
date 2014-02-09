@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>UnityVS.FlorianSep13.CSharp</name>
+    </assembly>
+    <members>
+        <member name="T:mainGUI">
+            <summary>
+            GUI class, makes the menus and buttons
+            </summary>
+        </member>
+        <member name="M:mainGUI.Start">
+            <summary>
+            Class initializations.
+            Names all buttons.
+            </summary>
+        </member>
+        <member name="M:mainGUI.OnGUI">
+            <summary>
+            Draws GUI Elements on screen.
+            Uses GUILayouts to organize content.
+            </summary>
+        </member>
+        <member name="T:ShowSkin">
+            Helper script to show what a skin actually looks like
+            To use, throw on a GameObject and edit your skin asset while the game is running.
+        </member>
+    </members>
+</doc>

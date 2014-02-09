@@ -1,0 +1,8 @@
+﻿using UnityEngine;
+using System.Collections;
+/// <summary>
+/// Enum that stores the types of orientations
+/// </summary>
+public enum PlatformOrientation{
+    Up,Down,Right,Left,Front,Back
+}
