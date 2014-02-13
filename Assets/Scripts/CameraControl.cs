@@ -30,38 +30,57 @@ public class CameraControl : MonoBehaviour
             rigidbody.freezeRotation = true;
     }
 
+	public Vector3 delta = Vector3.zero;
+	private Vector3 lastPos = Vector3.zero;
     void LateUpdate()
     {
-        
+		transform.LookAt(target);
 
-        if (target)
+		if (target && target.GetComponent<Pawn>().isCameraMode)
         {
-            transform.LookAt(target);
-            if (Input.GetMouseButton(0))
-            {
-                x += Input.GetAxis("Mouse X") * xPivotingSpeed * distance * 0.02f;
-                y -= Input.GetAxis("Mouse Y") * yPivotingSpeed * distance * 0.02f;
-            }
+            
 
-            y = ClampAngle(y, yMinLimit, yMaxLimit);
+			if ( Input.GetMouseButtonDown(0) )
+			{
+				lastPos = Input.mousePosition;
+			}
+			else if ( Input.GetMouseButton(0) )
+			{
+				delta = Input.mousePosition - lastPos;
+				
+				// Do Stuff here
+				
+				Debug.Log( "delta X : " + delta.x );
+				Debug.Log( "delta Y : " + delta.y );
+				
+				Debug.Log( "delta distance : " + delta.magnitude );
 
-            Quaternion rotation = Quaternion.Euler(y, x, 0);
+				delta.y = ClampAngle(delta.y, yMinLimit, yMaxLimit);
 
-            distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel") * 50, distanceMin, distanceMax);
-
-            //camera collisions
-            //RaycastHit hit;
-            //if (Physics.Linecast(target.position, transform.position, out hit))
-            //{
-            //    distance -= hit.distance;
-            //}
-            Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
-            Vector3 position = rotation * negDistance + target.position;
-
-            transform.rotation = rotation;
-            transform.position = position;
+				x += delta.x;
+				y -= delta.y;
+			}
 
         }
+
+		Quaternion rotation = Quaternion.Euler(y, x, 0);
+		distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel") * 50, distanceMin, distanceMax);
+
+		//camera collisions
+		//RaycastHit hit;
+		//if (Physics.Linecast(target.position, transform.position, out hit))
+		//{
+		//    distance -= hit.distance;
+		//}
+		Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
+		Vector3 position = rotation * negDistance + target.position;
+		
+		transform.rotation = rotation;
+		transform.position = position;
+		
+		// End do stuff
+		
+		lastPos = Input.mousePosition;
 
     }
 

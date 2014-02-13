@@ -34,9 +34,21 @@ public class Pawn : MonoBehaviour
         initHUD();
         initOrientationSpheres();
         initGravity();
-    }
+	}
+	
+	private IEnumerator SetCameraCursor() {
+		yield return null;
+		Texture2D tex = (Texture2D)Resources.Load("cameraCursor", typeof(Texture2D));
+		Cursor.SetCursor(tex,Vector2.zero,CursorMode.Auto);
+	}
 
-    /// <summary>
+	private IEnumerator SetNormalCursor() {
+		yield return null;
+		Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+	}
+
+	
+	/// <summary>
     /// Fetches the position of the spawn GameObject.
     /// Incase there is no spawn it will use the Pawn's initial position as spawnPoint
     /// </summary>
@@ -106,7 +118,7 @@ public class Pawn : MonoBehaviour
     /// </summary>
     void OnGUI()
     {
-        if (isGameOver) //is the game over? 
+		if (isGameOver) //is the game over? 
         {
             if (platform != null && platform.type.Equals(PlatformType.Exit))//Has the player reached an exit Platform?
             {
@@ -337,49 +349,70 @@ public class Pawn : MonoBehaviour
     /// Manages the interaction with the mouse.
     /// </summary>
     private float lastClick;
+	private float countdown;
+	public bool isCameraMode = false;
     private void manageMouse()
     {
         PlatformSelection.highlightTargetPlatform();
         Platform p = PlatformSelection.getPlatform();
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            lastClick = Time.time;
-        }
-        if (Input.GetMouseButtonUp(0) && ((lastClick + hud.ClickDelay)> Time.time))
-        {
-            if (p != null)
-            {
-                p.flashMe();
-                if (platform == null || p.orientation != platform.orientation) //for punishing gravity take the platform == null here
-                {
-                }
-                else
-                {
-                    path = AStarHelper.Calculate(platform, p);
-                    targetPlatform = p;
-                }
-            }
-        }
+		if(!isCameraMode){
+	        if (Input.GetMouseButton(0))
+	        {
+				if(Time.time - lastClick < .1)
+				{
+					countdown += Time.deltaTime;
+				}else{
+					countdown = 0;
+				}
+	            lastClick = Time.time;
 
-        if (Input.GetMouseButtonUp(0) && ((lastClick + hud.ClickDelay) > Time.time))
-        {
-            if (p != null)
-            {
+				if(countdown > .25)
+				{
+					isCameraMode = true;
+					StartCoroutine(SetCameraCursor());
+				}
+	        }
 
-                if (platform == null || p.orientation != platform.orientation) //for punishing gravity take the platform == null here
-                {
-                    transform.position -= getGravityVector(gravity) * 4;
-                    gravity = p.orientation;
-                    hud.gravityChangeCount++;
-                }
-            }
+			if (Input.GetMouseButtonUp(0) && !isCameraMode)
+	        {
+				countdown = 0;
+	            if (p != null)
+	            {
+	                p.flashMe();
+	                if (platform == null || p.orientation != platform.orientation) //for punishing gravity take the platform == null here
+	                {
+	                }
+	                else
+	                {
+	                    path = AStarHelper.Calculate(platform, p);
+	                    targetPlatform = p;
+	                }
+	            }
+
+	            if (p != null)
+	            {
+
+	                if (platform == null || p.orientation != platform.orientation) //for punishing gravity take the platform == null here
+	                {
+	                    transform.position -= getGravityVector(gravity) * 4;
+	                    gravity = p.orientation;
+	                    hud.gravityChangeCount++;
+	                }
+	            }
 
 
-        }
-    }
+	            }
+			}else{
+				if(Input.GetMouseButtonUp(0))
+				{
+					StartCoroutine(SetNormalCursor());
+					isCameraMode = false;
+				}
+			}
+		}
 
-    /// ----- CHECKERS ----- ///
+	/// ----- CHECKERS ----- ///
 
     /// <summary>
     /// Is the target platform above the Pawn?

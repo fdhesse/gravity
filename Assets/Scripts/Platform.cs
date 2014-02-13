@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.Collections;
 using System.Collections.Generic;
 
@@ -36,10 +38,12 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
     // Update is called once per frame
     void Update()
     {
+		#if UNITY_EDITOR
         if (Selection.Contains(gameObject))
         {
             defineOrientation();
         }
+		#endif
         if (connectionSet == null) //this isn't in the start method because we have to make sure this is made after all Platforms have been initialized with the proper orientations
         {
             connectionSet = new HashSet<Platform>();
