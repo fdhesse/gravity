@@ -36,7 +36,7 @@ public class CameraControl : MonoBehaviour
     {
 		transform.LookAt(target);
 
-		if (target && target.GetComponent<Pawn>().isCameraMode)
+		if (target && ( !target.GetComponent<Pawn>() || target.GetComponent<Pawn>().isCameraMode ))
         {
             
 
