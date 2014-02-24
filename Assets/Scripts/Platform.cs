@@ -92,12 +92,7 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
                 materials[0] = Assets.getUpBlockMat();
                 materials[1] = Assets.getUpBlockMat();
                 break;
-            case "(0.0, 0.0, 180.0)":
-                orientation = PlatformOrientation.Down;
-                materials[0] = Assets.getDownBlockMat();
-                materials[1] = Assets.getDownBlockMat();
-                break;
-            case "(0.0, 180.0, 180.0)":
+            case "(0.0, 0.0, -180.0)":
                 orientation = PlatformOrientation.Down;
                 materials[0] = Assets.getDownBlockMat();
                 materials[1] = Assets.getDownBlockMat();
@@ -112,27 +107,12 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
                 materials[0] = Assets.getRightBlockMat();
                 materials[1] = Assets.getRightBlockMat();
                 break;
-            case "(0.0, 180.0, 90.0)":
-                orientation = PlatformOrientation.Left;
-                materials[0] = Assets.getLeftBlockMat();
-                materials[1] = Assets.getLeftBlockMat();
-                break;
-            case "(359.3, 180.0, 270.0)":
-                orientation = PlatformOrientation.Right;
-                materials[0] = Assets.getRightBlockMat();
-                materials[1] = Assets.getRightBlockMat();
-                break;
             case "(90.0, 180.0, 0.0)":
                 orientation = PlatformOrientation.Front;
                 materials[0] = Assets.getFrontBlockMat();
                 materials[1] = Assets.getFrontBlockMat();
                 break;
             case "(90.0, 0.0, 0.0)":
-                orientation = PlatformOrientation.Back;
-                materials[0] = Assets.getBackBlockMat();
-                materials[1] = Assets.getBackBlockMat();
-                break;
-            case "(270.0, 180.0, 0.0)":
                 orientation = PlatformOrientation.Back;
                 materials[0] = Assets.getBackBlockMat();
                 materials[1] = Assets.getBackBlockMat();
