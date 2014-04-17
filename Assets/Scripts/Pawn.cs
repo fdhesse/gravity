@@ -27,7 +27,7 @@ public class Pawn : MonoBehaviour
 	private Vector3 desiredRotation;
 	private Vector3 desiredPosition;
 	private float G;
-	private float Height;
+	private float pawnHeight;
 	
 	public RigidbodyConstraints nextConstraint;
 	private RigidbodyConstraints transformConstraints;
@@ -69,7 +69,7 @@ public class Pawn : MonoBehaviour
 		
 		G = world.G;
 		
-		Height = GetComponent<BoxCollider>().size.y;
+		pawnHeight = GetComponent<BoxCollider>().size.y;
 		
 		initSpawn();
         initHUD();
@@ -564,10 +564,9 @@ public class Pawn : MonoBehaviour
 						// TODO desired Position
 						Vector3 _g = getGravityVector( GetWorldGravity() ) * -1;
 						
-						// g[i] ?? Mais non !!
 						for ( int i = 0; i < 3; i++ )
 						{
-							desiredPosition[i] = (_g[i] != 0) ? _g[i] * 4 : (i == 0) ? -_g[i + 1] : -_g[i -1];
+							desiredPosition[i] = (_g[i] != 0) ? _g[i] * pawnHeight : (i == 0) ? _g[i + 1] : _g[i -1];
 						}
 						
 						Debug.Log( desiredPosition );
@@ -638,8 +637,7 @@ public class Pawn : MonoBehaviour
 		timer += Time.deltaTime;
 		
 		// adjust position
-		transform.Translate(Vector3.Normalize(desiredPosition) * Time.deltaTime * speed, Space.Self);
-		
+//		transform.Translate(Vector3.Normalize(desiredPosition) * timer / turnDelay, Space.Self);
 		
 		Quaternion to = Quaternion.Euler (desiredRotation);
 
@@ -814,9 +812,10 @@ public class Pawn : MonoBehaviour
     /// </summary>
     private Vector3 getGroundPosition()
 	{
-		float n = Height/2f;
+		float n = (transform.localScale.y * pawnHeight) / 2.0f;
 
-		switch (GetWorldGravity()) {
+		switch (GetWorldGravity())
+		{
 		default:
 			return new Vector3 (transform.position.x, transform.position.y - n, transform.position.z);
 		case PlatformOrientation.Up:
