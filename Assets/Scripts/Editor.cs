@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.Collections;
 
+[ExecuteInEditMode]
 public class Editor : MonoBehaviour {
 
 	// Use this for initialization
@@ -13,6 +16,7 @@ public class Editor : MonoBehaviour {
 	void Update () {
 	
 	}
+	#if UNITY_EDITOR
 	
 	/*	[ContextMenu("Context-Menu")] 
 	public void Deb()
@@ -233,4 +237,5 @@ public class Editor : MonoBehaviour {
 		
 		right.renderer.sharedMaterials = materials;
 	}
+	#endif
 }

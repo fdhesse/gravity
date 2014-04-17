@@ -31,7 +31,13 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
     void Start()
     {
  //       defineOrientation();
-        applyPlatformMaterial();
+		applyPlatformMaterial();
+		
+#if UNITY_EDITOR
+		GetComponent<Renderer>().enabled = true;
+#elif UNITY_STANDALONE
+		GetComponent<Renderer>().enabled = false;
+#endif
     }
 
 
