@@ -8,10 +8,12 @@ using System.Collections.Generic;
 /// <para>Since it is a monobehaviour, its supposed to be attached to a gameobject.</para>
 /// <para>It has Pawn Movement, pathfinding, interactions and also some gamelogic.</para>
 /// </summary>
+[RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(AudioSource))]
-//[RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(BoxCollider))]
-[RequireComponent(typeof(MeshRenderer))]
+[RequireComponent(typeof(Rigidbody))]
+//[RequireComponent(typeof(CharacterController))]
+//[RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(Screen))]
 public class Pawn : MonoBehaviour
 {
@@ -22,7 +24,8 @@ public class Pawn : MonoBehaviour
 	public float turnDelay = 0.5f; // 1.0f		// délai avant la chute
 	public float speed = 30;					// Speed of the pawn
 	private bool isFalling;
-	private Vector3 desiredRotation = new Vector3 (0, 0, 0);
+	private Vector3 desiredRotation;
+	private Vector3 desiredPosition;
 	private float G;
 	private float Height;
 	
@@ -421,19 +424,20 @@ public class Pawn : MonoBehaviour
     /// <returns>returns true if the vector is small, i.e. smaller than 1 of magnitude, in this case, the Pawn has reached his destination</returns>
     private bool moveMe(Vector3 vec)
 	{
-//		GetComponent<BoxCollider> ().transform.position = transform.position;
-		
 		if (Vector3.Magnitude(vec) > 1)
 		{
-			GetComponent<BoxCollider>().transform.Translate(Vector3.Normalize(vec) * Time.deltaTime * speed, Space.World);
-			//	Debug.Log (transform.position.y);
-//			GetComponent<BoxCollider>().Move(Vector3.Normalize(vec) * Time.deltaTime * speed);
+			transform.Translate(Vector3.Normalize(vec) * Time.deltaTime * speed, Space.World);
+
+//			GetComponent<BoxCollider>().transform.Translate(Vector3.Normalize(vec) * Time.deltaTime * speed, Space.World);
+			
             return false;
         }
         else
 		{
-			GetComponent<BoxCollider>().transform.Translate(vec * Time.deltaTime * speed, Space.World);
-//			GetComponent<BoxCollider>().Move(vec * Time.deltaTime * speed);
+			transform.Translate(vec * Time.deltaTime * speed, Space.World);
+
+//			GetComponent<BoxCollider>().transform.Translate(vec * Time.deltaTime * speed, Space.World);
+
             return true;
         }
     }
@@ -556,7 +560,18 @@ public class Pawn : MonoBehaviour
 					{
 						hud.gravityChangeCount++;
 						platform = null;
-
+						
+						// TODO desired Position
+						Vector3 _g = getGravityVector( GetWorldGravity() ) * -1;
+						
+						// g[i] ?? Mais non !!
+						for ( int i = 0; i < 3; i++ )
+						{
+							desiredPosition[i] = (_g[i] != 0) ? _g[i] * 4 : (i == 0) ? -_g[i + 1] : -_g[i -1];
+						}
+						
+						Debug.Log( desiredPosition );
+						
 						SetWorldGravity( p.orientation );
 						StartCoroutine( DelayedPawnFall ());
 					}
@@ -621,6 +636,10 @@ public class Pawn : MonoBehaviour
 	private bool adjustPawnRotation( ref float timer )
 	{
 		timer += Time.deltaTime;
+		
+		// adjust position
+		transform.Translate(Vector3.Normalize(desiredPosition) * Time.deltaTime * speed, Space.Self);
+		
 		
 		Quaternion to = Quaternion.Euler (desiredRotation);
 
