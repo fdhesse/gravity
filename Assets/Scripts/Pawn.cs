@@ -24,6 +24,7 @@ public class Pawn : MonoBehaviour
 	private bool isFalling;
 	private Vector3 desiredRotation = new Vector3 (0, 0, 0);
 	private float G;
+	private float Height;
 	
 	public RigidbodyConstraints nextConstraint;
 	private RigidbodyConstraints transformConstraints;
@@ -64,6 +65,8 @@ public class Pawn : MonoBehaviour
 		world.Init();
 		
 		G = world.G;
+		
+		Height = GetComponent<BoxCollider>().size.y;
 		
 		initSpawn();
         initHUD();
@@ -109,7 +112,7 @@ public class Pawn : MonoBehaviour
 		spawnPosition = (spawn == null) ? transform.position : spawn.transform.position;
 		spawnRotation = (spawn == null) ? transform.rotation : spawn.transform.rotation;
 
-		respawn();
+		world.GameStart();
 		
 	}
 	
@@ -195,8 +198,6 @@ public class Pawn : MonoBehaviour
 		Physics.gravity = new Vector3(0, -G, 0);
 
 		StartCoroutine( DelayedReset ());
-
-		world.GameStart();
 	}
 	
 	private IEnumerator DelayedReset() {
@@ -229,25 +230,28 @@ public class Pawn : MonoBehaviour
 		{
 			isFalling = false;
 			
-			// TODO Erreur dans le level 3: plateformes alignées mais espacées
-			
-			Platform[] platforms = GameObject.FindObjectsOfType<Platform>();
-			List<Platform> platformsList = new List<Platform>();
-			
-			for (int i = 0; i != platforms.Length; i++)
+			if( platform != null )
 			{
-				if (platforms[i].orientation == platform.orientation)
-					platformsList.Add(platforms[i]);
-			}
-			
-			if ( platformsList.Count > 0 )
-			{
-				Platform nearest = Platform.Closest(platformsList, transform.position); //nearest platform: the directly accessible platform from the platform bellow the Pawn, thats closest to the target platform
-				SnapToPlatform( nearest );
-			}
-			else
-			{
-				Debug.LogError("No Platform found !");
+				// TODO Erreur dans le level 3: plateformes alignées mais espacées
+				
+				Platform[] platforms = GameObject.FindObjectsOfType<Platform>();
+				List<Platform> platformsList = new List<Platform>();
+				
+				for (int i = 0; i != platforms.Length; i++)
+				{
+					if (platforms[i].orientation == platform.orientation)
+						platformsList.Add(platforms[i]);
+				}
+				
+				if ( platformsList.Count > 0 )
+				{
+					Platform nearest = Platform.Closest(platformsList, transform.position); //nearest platform: the directly accessible platform from the platform bellow the Pawn, thats closest to the target platform
+					SnapToPlatform( nearest );
+				}
+				else
+				{
+					Debug.LogError("No Platform found !");
+				}
 			}
 		}
 
@@ -325,7 +329,7 @@ public class Pawn : MonoBehaviour
 			
 			if (world.IsGameOver()) //is the game over? 
 			{
-				respawn();
+				world.GameStart();
 			}
 		}
 		
@@ -791,7 +795,7 @@ public class Pawn : MonoBehaviour
     /// </summary>
     private Vector3 getGroundPosition()
 	{
-		float n = 4f;
+		float n = Height/2f;
 
 		switch (GetWorldGravity()) {
 		default:

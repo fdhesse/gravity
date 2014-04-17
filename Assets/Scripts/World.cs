@@ -10,9 +10,12 @@ public class World : MonoBehaviour {
 	private bool isGameOver = false;		//Game state
 	private Cube[] cubes;
 	
+	private Pawn PlayerPawn; // Player Pawn
+	
 	// Use this for initialization
 	void Start () {
 //		gameObject.AddComponent( "Editor" );
+		Debug.Log( PlayerPawn);
 	}
 	
 	// Update is called once per frame
@@ -23,10 +26,13 @@ public class World : MonoBehaviour {
 	public void Init()
 	{
 		cubes = FindObjectsOfType<Cube>();
+		PlayerPawn = (Pawn) GameObject.Find ("Pawn").GetComponent<Pawn>();
 	}
 	
 	public void Restart()
 	{
+		PlayerPawn.respawn();
+		
 		for (int i = 0; i != cubes.Length; i++)
 		{
 			Cube cube = (Cube) cubes[i];
@@ -47,5 +53,6 @@ public class World : MonoBehaviour {
 	public void GameStart()
 	{
 		isGameOver = false;
+		Restart();
 	}
 }
