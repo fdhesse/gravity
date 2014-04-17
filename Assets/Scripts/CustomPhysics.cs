@@ -5,19 +5,21 @@ public class CustomPhysics : MonoBehaviour
 {
 
     public GameObject player;
-    public float force = 10f;
-    private Pawn pawn;
+	public float force = 10f;
+//	[EDIT]: commented 1 line
+//    private Pawn pawn;
     void Start()
     {
-        pawn = player.GetComponent<Pawn>();
+//        pawn = player.GetComponent<Pawn>();
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        rigidbody.useGravity = false;
-            rigidbody.AddForce(pawn.getGravityVector(pawn.gravity) * force);
+		rigidbody.useGravity = true;
+//	[EDIT]: commented 1 line
+ //           rigidbody.AddForce(pawn.getGravityVector(pawn.gravity) * force);
 
     }
 }

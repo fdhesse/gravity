@@ -30,7 +30,7 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
     // Use this for initialization
     void Start()
     {
-        defineOrientation();
+ //       defineOrientation();
         applyPlatformMaterial();
     }
 
@@ -97,15 +97,15 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
                 materials[0] = Assets.getDownBlockMat();
                 materials[1] = Assets.getDownBlockMat();
                 break;
-            case "(90.0, 90.0, 0.0)":
-                orientation = PlatformOrientation.Right;
-                materials[0] = Assets.getLeftBlockMat();
-                materials[1] = Assets.getLeftBlockMat();
+			case "(90.0, 90.0, 0.0)":
+				orientation = PlatformOrientation.Left;
+				materials[0] = Assets.getLeftBlockMat();
+				materials[1] = Assets.getLeftBlockMat();
                 break;
-            case "(90.0, 270.0, 0.0)":
-                orientation = PlatformOrientation.Left;
-                materials[0] = Assets.getRightBlockMat();
-                materials[1] = Assets.getRightBlockMat();
+			case "(90.0, 270.0, 0.0)":
+				orientation = PlatformOrientation.Right;
+				materials[0] = Assets.getRightBlockMat();
+				materials[1] = Assets.getRightBlockMat();
                 break;
             case "(90.0, 180.0, 0.0)":
                 orientation = PlatformOrientation.Front;

@@ -7,7 +7,9 @@ using System.Collections;
 /// </summary>
 static class Assets
 {
-    public static AudioClip invalidSound;
+	public static AudioClip invalidSound;
+	public static AudioClip bounce;
+	public static AudioClip bounce2;
 
     //public static Material upBlockMat;
     //public static Material downBlockMat;
@@ -17,7 +19,9 @@ static class Assets
     //public static Material backBlockMat;
     static Assets()
     {
-        invalidSound = Resources.Load("Sounds/invalidSound") as AudioClip;
+		invalidSound = Resources.Load("Sounds/invalidSound") as AudioClip;
+		bounce = Resources.Load("Sounds/bounce") as AudioClip;
+		bounce2 = Resources.Load("Sounds/bounce2") as AudioClip;
 
         // -- ORIENTATION MATERIALS
         //upBlockMat = new Material(Resources.Load("Resources/Materials/orientations/up") as Material);

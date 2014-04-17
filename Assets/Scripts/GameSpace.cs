@@ -8,8 +8,10 @@ using System.Collections;
 public class GameSpace : MonoBehaviour {
 
     void OnTriggerExit(Collider c)
-    {
-        c.gameObject.GetComponent<Pawn>().outOfBounds();
-
+	{
+		if (c.gameObject.tag == "Player" )
+	        c.gameObject.GetComponent<Pawn>().outOfBounds();
+		else
+			Debug.Log( "Cube reached DeadZone" );
     }
 }

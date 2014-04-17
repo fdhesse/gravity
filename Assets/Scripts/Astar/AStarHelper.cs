@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 public static class AStarHelper
 {
-
-
     // Validator for path nodes
     // Needed to cope with nodes that might be GameObjects and therefore
     // not 'acutally' null when compared in generic methods

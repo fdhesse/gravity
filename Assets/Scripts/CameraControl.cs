@@ -11,9 +11,10 @@ public class CameraControl : MonoBehaviour
     public float distance = 50f; // distance to the target
     public float xPivotingSpeed = 120.0f; // x orbiting speed
     public float yPivotingSpeed = 120.0f; // y orbiting speed
-
-    private float yMinLimit = -360f;
-    private float yMaxLimit = 360f;
+	
+//	[EDIT]: commented 2 lines
+//    private float yMinLimit = -360f;
+//    private float yMaxLimit = 360f;
     private float distanceMin = 50f; //minimum distance, changeable via zoom
     private float distanceMax = 200f; //maximum distance, changeable via zoom
 
@@ -50,12 +51,10 @@ public class CameraControl : MonoBehaviour
 				
 				// Do Stuff here
 				
-				Debug.Log( "delta X : " + delta.x );
-				Debug.Log( "delta Y : " + delta.y );
+//				Debug.Log( "delta X : " + delta.x );
+//				Debug.Log( "delta Y : " + delta.y );
 				
-				Debug.Log( "delta distance : " + delta.magnitude );
-
-				delta.y = ClampAngle(delta.y, yMinLimit, yMaxLimit);
+//				Debug.Log( "delta distance : " + delta.magnitude );		delta.y = ClampAngle(delta.y, yMinLimit, yMaxLimit);
 
 				x += delta.x;
 				y -= delta.y;
