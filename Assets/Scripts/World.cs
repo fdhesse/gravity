@@ -15,7 +15,6 @@ public class World : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 //		gameObject.AddComponent( "Editor" );
-		Debug.Log( PlayerPawn);
 	}
 	
 	// Update is called once per frame

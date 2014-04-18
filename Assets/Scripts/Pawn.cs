@@ -8,10 +8,10 @@ using System.Collections.Generic;
 /// <para>Since it is a monobehaviour, its supposed to be attached to a gameobject.</para>
 /// <para>It has Pawn Movement, pathfinding, interactions and also some gamelogic.</para>
 /// </summary>
-[RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(AudioSource))]
-[RequireComponent(typeof(BoxCollider))]
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(BoxCollider))]
+//[RequireComponent(typeof(Animator))]
 //[RequireComponent(typeof(CharacterController))]
 //[RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(Screen))]
@@ -29,6 +29,9 @@ public class Pawn : MonoBehaviour
 	private bool isFalling;
 	private Vector3 desiredRotation;
 	private Vector3 desiredPosition;
+	
+	private BoxCollider boxCollider;
+	private Animator animator;
 	
 	public RigidbodyConstraints nextConstraint;
 	private RigidbodyConstraints transformConstraints;
@@ -68,7 +71,10 @@ public class Pawn : MonoBehaviour
 		world.Init();
 		G = world.G;
 		
-		height = GetComponent<BoxCollider>().size.y;
+		animator = transform.FindChild("Animations").GetComponent<Animator>();
+		boxCollider = GetComponent<BoxCollider>();
+		height = boxCollider.size.y * boxCollider.transform.localScale.y; // z because "Fennec" child is rotated;
+//		height = collider.size.y;
 		
 		initSpawn();
         initHUD();
@@ -147,13 +153,13 @@ public class Pawn : MonoBehaviour
 		
 		isFalling = true;
 		
-		GetComponent<BoxCollider> ().transform.position = transform.position = spawnPosition;
+		transform.position = spawnPosition;
 		transform.rotation = spawnRotation;
 
 		ResetDynamic();
 
 		rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
-		collider.enabled = true;
+		boxCollider.enabled = true;
 		Physics.gravity = new Vector3(0, -G, 0);
 
 		StartCoroutine( DelayedReset ());
@@ -520,7 +526,7 @@ public class Pawn : MonoBehaviour
 						hud.gravityChangeCount++;
 						platform = null;
 						
-						desiredPosition = new Vector3( 0, height * fallInterval, 0 );
+						desiredPosition = new Vector3( 0, height / 2 * fallInterval, 0 );
 						
 						SetWorldGravity( p.orientation );
 						StartCoroutine( DelayedPawnFall ());
@@ -545,7 +551,7 @@ public class Pawn : MonoBehaviour
 	
 	private IEnumerator DelayedPawnFall()
 	{
-		gameObject.collider.gameObject.layer = 12;
+//		collider.gameObject.layer = 12;
 		nextConstraint = rigidbody.constraints;
 
 		ResetDynamic();
@@ -585,9 +591,9 @@ public class Pawn : MonoBehaviour
 		rigidbody.constraints = nextConstraint;
 		rigidbody.useGravity = true;
 
-		yield return new WaitForSeconds (0.1f);
+//		yield return new WaitForSeconds (0.1f);
 
-		gameObject.layer = 0;
+//		gameObject.layer = 0;
 	}
 	
 	private bool adjustPawnPosition( ref float timer )
@@ -782,7 +788,22 @@ public class Pawn : MonoBehaviour
 		float n = (transform.localScale.y * height) / 2.0f;
 
 		switch (GetWorldGravity())
-		{
+		{/*
+		default:
+			return new Vector3 (collider.transform.position.x, collider.transform.position.y - n, collider.transform.position.z);
+		case PlatformOrientation.Up:
+			return new Vector3 (collider.transform.position.x, collider.transform.position.y - n, collider.transform.position.z);
+		case PlatformOrientation.Down:
+			return new Vector3 (collider.transform.position.x, collider.transform.position.y + n, collider.transform.position.z);
+		case PlatformOrientation.Left:
+			return new Vector3 (collider.transform.position.x - n, collider.transform.position.y, collider.transform.position.z);
+		case PlatformOrientation.Right:
+			return new Vector3 (collider.transform.position.x + n, collider.transform.position.y, collider.transform.position.z);
+		case PlatformOrientation.Front:
+			return new Vector3 (collider.transform.position.x, collider.transform.position.y, collider.transform.position.z + n);
+		case PlatformOrientation.Back:
+			return new Vector3 (collider.transform.position.x, collider.transform.position.y, collider.transform.position.z - n);
+			/*/
 		default:
 			return new Vector3 (transform.position.x, transform.position.y - n, transform.position.z);
 		case PlatformOrientation.Up:
@@ -797,6 +818,7 @@ public class Pawn : MonoBehaviour
 			return new Vector3 (transform.position.x, transform.position.y, transform.position.z + n);
 		case PlatformOrientation.Back:
 			return new Vector3 (transform.position.x, transform.position.y, transform.position.z - n);
+			//*/
 		}
     }
 

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a33bcdb98bf3f7841bc7eb1ae70d131f
+guid: 61dd3b3cb2942ac4a9cf19c5457a107e
 ModelImporter:
   serializedVersion: 16
   fileIDToRecycleName:
@@ -58,7 +58,9 @@ ModelImporter:
     400050: IK Chain021
     400052: IK Chain022
     4300000: Fenec
-    7400000: fenec-attente-txtr
+    7400000: Idle01
+    7400002: Walk
+    7400004: Idle02
     9500000: //RootNode
     13700000: Fenec
   materials:
@@ -77,10 +79,170 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: fenec-attente-txtr
-      takeName: fenec-attente-txtr
+      name: Idle01
+      takeName: Take 001
       firstFrame: 0
       lastFrame: 40
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Bone005
+        weight: 1
+      - path: Bone005/Bone001
+        weight: 1
+      - path: Bone005/Bone001/Bone002
+        weight: 1
+      - path: Bone005/Bone001/Bone002/Bone003
+        weight: 1
+      - path: Bone005/Bone001/Bone002/Bone003/Bone023
+        weight: 1
+      - path: Bone005/Bone001/Bone002/Bone003/Bone023/Bone024
+        weight: 1
+      - path: Bone005/Bone006
+        weight: 1
+      - path: Bone005/Bone007
+        weight: 1
+      - path: Bone005/Bone007/Bone008
+        weight: 1
+      - path: Bone005/Bone007/Bone008/Bone009
+        weight: 1
+      - path: Bone005/Bone007/Bone008/Bone009/Bone017
+        weight: 1
+      - path: Bone005/Bone007/Bone008/Bone009/Bone017/Bone018
+        weight: 1
+      - path: Bone005/Bone019
+        weight: 1
+      - path: Bone005/Bone019/Bone020
+        weight: 1
+      - path: Bone005/Bone019/Bone020/Bone021
+        weight: 1
+      - path: Bone005/Bone019/Bone020/Bone021/Bone022
+        weight: 1
+      - path: Fenec
+        weight: 1
+      - path: IK Chain001
+        weight: 1
+      - path: IK Chain003
+        weight: 1
+      - path: IK Chain016
+        weight: 1
+      - path: IK Chain017
+        weight: 1
+      - path: IK Chain018
+        weight: 1
+      - path: IK Chain019
+        weight: 1
+      - path: IK Chain020
+        weight: 1
+      - path: IK Chain021
+        weight: 1
+      - path: IK Chain022
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Walk
+      takeName: Take 001
+      firstFrame: 50
+      lastFrame: 80
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Bone005
+        weight: 1
+      - path: Bone005/Bone001
+        weight: 1
+      - path: Bone005/Bone001/Bone002
+        weight: 1
+      - path: Bone005/Bone001/Bone002/Bone003
+        weight: 1
+      - path: Bone005/Bone001/Bone002/Bone003/Bone023
+        weight: 1
+      - path: Bone005/Bone001/Bone002/Bone003/Bone023/Bone024
+        weight: 1
+      - path: Bone005/Bone006
+        weight: 1
+      - path: Bone005/Bone007
+        weight: 1
+      - path: Bone005/Bone007/Bone008
+        weight: 1
+      - path: Bone005/Bone007/Bone008/Bone009
+        weight: 1
+      - path: Bone005/Bone007/Bone008/Bone009/Bone017
+        weight: 1
+      - path: Bone005/Bone007/Bone008/Bone009/Bone017/Bone018
+        weight: 1
+      - path: Bone005/Bone019
+        weight: 1
+      - path: Bone005/Bone019/Bone020
+        weight: 1
+      - path: Bone005/Bone019/Bone020/Bone021
+        weight: 1
+      - path: Bone005/Bone019/Bone020/Bone021/Bone022
+        weight: 1
+      - path: Fenec
+        weight: 1
+      - path: IK Chain001
+        weight: 1
+      - path: IK Chain003
+        weight: 1
+      - path: IK Chain016
+        weight: 1
+      - path: IK Chain017
+        weight: 1
+      - path: IK Chain018
+        weight: 1
+      - path: IK Chain019
+        weight: 1
+      - path: IK Chain020
+        weight: 1
+      - path: IK Chain021
+        weight: 1
+      - path: IK Chain022
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Idle02
+      takeName: Take 001
+      firstFrame: 90
+      lastFrame: 130
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
