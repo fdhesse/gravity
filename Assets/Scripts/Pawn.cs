@@ -19,15 +19,16 @@ public class Pawn : MonoBehaviour
 {
 	// #WORLD#
 	public World world;
+	private float G;
 	
 	// #PAWN#
+	public float speed = 30.0f;					// Speed of the pawn
 	public float turnDelay = 0.5f; // 1.0f		// délai avant la chute
-	public float speed = 30;					// Speed of the pawn
+	public float fallInterval = 4.0f;
+	private float height;
 	private bool isFalling;
 	private Vector3 desiredRotation;
 	private Vector3 desiredPosition;
-	private float G;
-	private float pawnHeight;
 	
 	public RigidbodyConstraints nextConstraint;
 	private RigidbodyConstraints transformConstraints;
@@ -64,12 +65,10 @@ public class Pawn : MonoBehaviour
     void Start()
 	{
 		world = gameObject.AddComponent( "World" ) as World;
-		
 		world.Init();
-		
 		G = world.G;
 		
-		pawnHeight = GetComponent<BoxCollider>().size.y;
+		height = GetComponent<BoxCollider>().size.y;
 		
 		initSpawn();
         initHUD();
@@ -85,8 +84,6 @@ public class Pawn : MonoBehaviour
 	{
 		if (!(world.IsGameOver() || hud.isPaused)) // is the game active?, i.e. is the game not paused and not finished?
 		{
-			// if it is... do stuff
-		//	CheckConstraints();
 			manageMouse();
 			movePawn();
 			checkUnderneath();
@@ -119,7 +116,70 @@ public class Pawn : MonoBehaviour
 		
 	}
 	
-	// TODO Pawn.CubeContact(): réécriture nécessaire / rewritting needed
+	private void initHUD()
+	{
+		hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
+	}
+	
+	private void initOrientationSpheres()
+	{
+		GameObject o = new GameObject();
+		o.name = "Orientation Dots";
+		
+		for (int i = 0; i != orientationSpheres.Length; i++)
+		{
+			orientationSpheres[i] = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+			orientationSpheres[i].renderer.material = Assets.getSphereMat();
+			orientationSpheres[i].renderer.material.color = hud.dotColor;
+			orientationSpheres[i].transform.localScale = Vector3.one * hud.dotSize;
+			orientationSpheres[i].layer = 10;
+			orientationSpheres[i].collider.enabled = false;
+			orientationSpheres[i].name = "dot " + i;
+			orientationSpheres[i].transform.parent = o.transform;
+		}
+	}
+	
+	public void respawn()
+	{
+		path = null;
+		platform = null;
+		targetPlatform = null;
+		
+		isFalling = true;
+		
+		GetComponent<BoxCollider> ().transform.position = transform.position = spawnPosition;
+		transform.rotation = spawnRotation;
+
+		ResetDynamic();
+
+		rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+		collider.enabled = true;
+		Physics.gravity = new Vector3(0, -G, 0);
+
+		StartCoroutine( DelayedReset ());
+	}
+	
+	private IEnumerator DelayedReset() {
+
+		audio.enabled = false;
+
+		yield return new WaitForSeconds(0.1f);
+
+		rigidbody.constraints = RigidbodyConstraints.FreezeRotation & ~RigidbodyConstraints.FreezePositionY;
+		
+		audio.enabled = true;
+	}
+	
+	private void ResetDynamic()
+	{
+		rigidbody.velocity = Vector3.zero;
+		rigidbody.angularVelocity = Vector3.zero;
+		
+		SetWorldGravity (GetWorldGravity());
+	}
+	
+	// TODO -- Pawn.CubeContact() -> traverser le joueur / pass through player
+	// TODO -- Pawn.CubeContact() -> réécriture / rewritting
 	public void CubeContact(Vector3 pos)
 	{
 		Vector3 _g = Vector3.Normalize (Physics.gravity);
@@ -176,55 +236,16 @@ public class Pawn : MonoBehaviour
 			}
 		}
 	}
-
+	
 	private void Crush()
 	{
 		world.GameOver();
 		fading = true;
 	}
-	
-	public void respawn()
-	{
-		path = null;
-		platform = null;
-		targetPlatform = null;
-		
-		isFalling = true;
-		
-		GetComponent<BoxCollider> ().transform.position = transform.position = spawnPosition;
-		transform.rotation = spawnRotation;
-
-		ResetDynamic();
-
-		rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
-		collider.enabled = true;
-		Physics.gravity = new Vector3(0, -G, 0);
-
-		StartCoroutine( DelayedReset ());
-	}
-	
-	private IEnumerator DelayedReset() {
-
-		audio.enabled = false;
-
-		yield return new WaitForSeconds(0.1f);
-
-		rigidbody.constraints = RigidbodyConstraints.FreezeRotation & ~RigidbodyConstraints.FreezePositionY;
-		
-		audio.enabled = true;
-	}
 
 	private void SnapToPlatform( Platform p )
 	{
 		path = AStarHelper.Calculate(platform, p); //give me a path towards the nearest platform
-	}
-
-	public void ResetDynamic()
-	{
-		rigidbody.velocity = Vector3.zero;
-		rigidbody.angularVelocity = Vector3.zero;
-		
-		SetWorldGravity (GetWorldGravity());
 	}
 
 	public void OnCollisionEnter(Collision collision)
@@ -235,8 +256,6 @@ public class Pawn : MonoBehaviour
 			
 			if( platform != null )
 			{
-				// TODO Erreur dans le level 3: plateformes alignées mais espacées
-				
 				Platform[] platforms = GameObject.FindObjectsOfType<Platform>();
 				List<Platform> platformsList = new List<Platform>();
 				
@@ -264,28 +283,6 @@ public class Pawn : MonoBehaviour
 		ResetDynamic();
 	}
 
-    private void initHUD()
-    {
-        hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
-    }
-
-    private void initOrientationSpheres()
-    {
-        GameObject o = new GameObject();
-        o.name = "Orientation Dots";
-        for (int i = 0; i != orientationSpheres.Length; i++)
-        {
-            orientationSpheres[i] = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            orientationSpheres[i].renderer.material = Assets.getSphereMat();
-            orientationSpheres[i].renderer.material.color = hud.dotColor;
-            orientationSpheres[i].transform.localScale = Vector3.one * hud.dotSize;
-            orientationSpheres[i].layer = 10;
-            orientationSpheres[i].collider.enabled = false;
-            orientationSpheres[i].name = "dot " + i;
-            orientationSpheres[i].transform.parent = o.transform;
-        }
-    }
-
     /// <summary>
     ///  ONGUI
     ///  THIS IS CALLED ONCE PER FRAME
@@ -296,7 +293,7 @@ public class Pawn : MonoBehaviour
     {
 		if (world.IsGameOver()) //is the game over? 
         {
-            if (platform != null && platform.type.Equals(PlatformType.Exit))//Has the player reached an exit Platform?
+			if (platform != null && platform.type.Equals(PlatformType.Exit))//Has the player reached an exit Platform?
                 hud.isEndScreen = true; //activate the endscreen
 		}
 		
@@ -367,23 +364,15 @@ public class Pawn : MonoBehaviour
 		{
             //if there is, move the pawn towards the next point in that path
             Vector3 vec = path[0].transform.position - getGroundPosition();
-		//	Debug.Log( path[0].transform.position );
 
             if (moveMe(vec))
-			{
 				path.RemoveAt(0); //if we have reached this path point, delete it from the list so we can go to the next one next time
-				
-				if ( path.Count != 0 )
-				{
-		//			Debug.Log ("AAA");
-				}
-            }
 
         }
         else if (targetPlatform != null) //ok, there is no path, but is there a target platform ? (this happends when the chosen platform is not directly accessible)
 		{
 			
-	        if (targetPlatformIsAbove(targetPlatform) || targetPlatform.type.Equals(PlatformType.Invalid))//is targetPlatform is above the pawn or of type invalid?
+			if (targetPlatformIsAbove(targetPlatform) || targetPlatform.type.Equals(PlatformType.Invalid))//is targetPlatform is above the pawn or of type invalid?
 			{
 	            GetComponent<AudioSource>().PlayOneShot(Assets.invalidSound); //play a failed action sound
 	            targetPlatform = null; //forget target platform
@@ -404,9 +393,7 @@ public class Pawn : MonoBehaviour
 	                Vector3 vec = getGroundHeightVector(landing.transform.position) - getGroundPosition(); // calculate the vector from the Pawns position to the landing platform position at the same height
 
 	                if (moveMe(vec)) //move the pawn towards that vector
-					{
 						targetPlatform = null; //if we are already there, forget targetPlatform
-	                }
 	            }
 	            else
 				{
@@ -459,13 +446,9 @@ public class Pawn : MonoBehaviour
             p = hit.collider.gameObject.GetComponent<Platform>();
 
             if (p != null) // if it is a platform
-            {
                 platform = p;
-            }
             else
-            {
                 platform = null;
-            }
         }
         else
         {
@@ -483,13 +466,9 @@ public class Pawn : MonoBehaviour
                 if (p != null && p != platform)
                 {
                     if (hud.dotIsInside)
-                    {
                         getOrientationSphere(orientation).transform.position = p.transform.position;
-                    }
                     else
-                    {
                         getOrientationSphere(orientation).transform.position = p.transform.position - (getGravityVector(orientation) * hud.dotSize / 2);
-                    }
                 }
                 else
                 {
@@ -517,13 +496,9 @@ public class Pawn : MonoBehaviour
 	        if (Input.GetMouseButton(0))
 			{
 				if(Time.time - lastClick < .1)
-				{
 					countdown += Time.deltaTime;
-				}
 				else
-				{
 					countdown = 0;
-				}
 
 	            lastClick = Time.time;
 
@@ -536,40 +511,16 @@ public class Pawn : MonoBehaviour
 
 			if (Input.GetMouseButtonUp(0) && !isCameraMode && rigidbody.useGravity)
 			{
-
 				countdown = 0;
 
-/*	            if (p != null)
-	            {
-	                p.flashMe();
-
-	                if (platform == null || p.orientation != platform.orientation) //for punishing gravity take the platform == null here
-	                {
-	                }
-	                else
-	                {
-	                    path = AStarHelper.Calculate(platform, p);
-	                    targetPlatform = p;
-	                }
-	            }
-*/
 	            if (p != null)
 	            {
-
 	                if ( platform == null || p.orientation != platform.orientation ) //for punishing gravity take the platform == null here
 					{
 						hud.gravityChangeCount++;
 						platform = null;
 						
-						// TODO desired Position
-						Vector3 _g = getGravityVector( GetWorldGravity() ) * -1;
-						
-						for ( int i = 0; i < 3; i++ )
-						{
-							desiredPosition[i] = (_g[i] != 0) ? _g[i] * pawnHeight : (i == 0) ? _g[i + 1] : _g[i -1];
-						}
-						
-						Debug.Log( desiredPosition );
+						desiredPosition = new Vector3( 0, height * fallInterval, 0 );
 						
 						SetWorldGravity( p.orientation );
 						StartCoroutine( DelayedPawnFall ());
@@ -580,13 +531,11 @@ public class Pawn : MonoBehaviour
 						targetPlatform = p;
 					}
 	            }
-
-
 	        }
 		}
 		else
 		{
-			if(Input.GetMouseButtonUp(0))
+			if (Input.GetMouseButtonUp(0))
 			{
 				StartCoroutine(SetNormalCursor());
 				isCameraMode = false;
@@ -599,22 +548,35 @@ public class Pawn : MonoBehaviour
 		gameObject.collider.gameObject.layer = 12;
 		nextConstraint = rigidbody.constraints;
 
-		ResetDynamic ();
+		ResetDynamic();
 
-		bool loop = true;
 		float timer = 0.0f;
 
 		isFalling = true;
-
-		while(loop)
+		
+		while(true)
 		{
 			rigidbody.useGravity = false;
 			rigidbody.constraints = transformConstraints;
-
+			
+			if(adjustPawnPosition( ref timer ))
+			{
+				timer = 0.0f;
+				break;
+			}
+			
+			yield return 0;
+		}
+		
+		while(true)
+		{
+			rigidbody.useGravity = false;
+			rigidbody.constraints = transformConstraints;
+			
 			if(adjustPawnRotation( ref timer ))
 			{
 				timer = 0.0f;
-				loop = false;
+				break;
 			}
 
 			yield return 0;
@@ -628,6 +590,25 @@ public class Pawn : MonoBehaviour
 		gameObject.layer = 0;
 	}
 	
+	private bool adjustPawnPosition( ref float timer )
+	{
+		timer += Time.deltaTime;
+		
+		Vector3 _pos = transform.position;
+		Vector3 _to = desiredPosition * timer / turnDelay;
+		
+		transform.Translate( _to, Space.Self );
+		
+		// compute the difference between before & now
+		// in order to stop at the relative goal
+		desiredPosition = desiredPosition - _to;
+		
+		if ( _pos == transform.position )
+			return true;
+		else
+			return false;
+	}
+	
 	/// <summary>
 	/// Align the pawn with the orientation provided by SetWorldGravity()
 	/// Also determines the "animation" of this movement. (not yet)
@@ -637,25 +618,20 @@ public class Pawn : MonoBehaviour
 		timer += Time.deltaTime;
 		
 		// adjust position
-//		transform.Translate(Vector3.Normalize(desiredPosition) * timer / turnDelay, Space.Self);
-		
-		Quaternion to = Quaternion.Euler (desiredRotation);
+			
+		Quaternion _to = Quaternion.Euler (desiredRotation);
 
 		Quaternion _rot = transform.rotation;
-		transform.rotation = Quaternion.Slerp(transform.rotation, to, timer / turnDelay);
+		transform.rotation = Quaternion.Slerp(transform.rotation, _to, timer / turnDelay);
 		
-		if (_rot == transform.rotation || timer > turnDelay)
+		if ( _rot == transform.rotation )
 			return true;
 		else
 			return false;
-
-		// trick to avoid the pawn to get stuck in a platform
-//		transform.position = transform.position + Vector3.Normalize (Physics.gravity);
 	}
 
 	private void SetWorldGravity(PlatformOrientation orientation)
 	{
-
 		switch (orientation)
 		{
 		default:
@@ -734,8 +710,8 @@ public class Pawn : MonoBehaviour
 	{
 		if (platform != null) //is there even a platform beneath the Pawn
 		{
-		//	better but doesn't detect fall for now
-//			return Physics.Raycast(transform.position, Vector3.Normalize( Physics.gravity ), 4.0f + 0.8f);
+		//	TODO -- potentially better but not implemented
+//			return Physics.Raycast(transform.position, Vector3.Normalize( Physics.gravity ), height + 0.2f);
 			
 			float proximityThreshold = 0.2f; // the value bellow which can be said that the platform is touching the Pawn, it's like an error margin
 			
@@ -757,7 +733,6 @@ public class Pawn : MonoBehaviour
 	/// </summary>
 	private bool targetPlatformIsAbove(Platform target)
 	{
-
         switch (platform.orientation)
         {
             default:
@@ -774,14 +749,6 @@ public class Pawn : MonoBehaviour
                 return platform.transform.position.z < target.transform.position.z;
         }
 	}
-    /// <summary>
-    /// Is the Pawn out of bounds?
-    /// </summary>
-    public void outOfBounds()
-    {
-		world.GameOver();
-        fading = true;
-    }
 
     /// ----- GETTERS ----- ///
 
@@ -812,7 +779,7 @@ public class Pawn : MonoBehaviour
     /// </summary>
     private Vector3 getGroundPosition()
 	{
-		float n = (transform.localScale.y * pawnHeight) / 2.0f;
+		float n = (transform.localScale.y * height) / 2.0f;
 
 		switch (GetWorldGravity())
 		{
@@ -864,17 +831,11 @@ public class Pawn : MonoBehaviour
     private Vector3 getGroundHeightVector(Vector3 position)
 	{
 		if (platform.orientation.Equals(PlatformOrientation.Up) || platform.orientation.Equals(PlatformOrientation.Down))
-        {
             return new Vector3(position.x, getGroundPosition().y, position.z);
-        }
 		else if (platform.orientation.Equals(PlatformOrientation.Left) || platform.orientation.Equals(PlatformOrientation.Right))
-		{
             return new Vector3(getGroundPosition().x, position.y, position.z);
-        }
         else
-		{
             return new Vector3(position.x, position.y, getGroundPosition().z);
-        }
 	}
 
     /// <summary>
@@ -883,5 +844,13 @@ public class Pawn : MonoBehaviour
     private GameObject getOrientationSphere(PlatformOrientation orientation)
     {
         return orientationSpheres[(int)orientation];
-    }
+	}
+	/// <summary>
+	/// Is the Pawn out of bounds?
+	/// </summary>
+	public void outOfBounds()
+	{
+		world.GameOver();
+		fading = true;
+	}
 }

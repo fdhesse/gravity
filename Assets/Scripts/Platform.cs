@@ -16,8 +16,10 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
     public List<Platform> connections; //list of directly accessible platforms
     private HashSet<Platform> connectionSet; //auxilliary hashset used to ignore duplicates
 
-    public PlatformType type = PlatformType.Valid; //type of this platform, can be valid, invalid or exit. Can be changed in editor
-    public PlatformOrientation orientation;// orientation of this platform. Can be changed in editor but will be overriden by the scripts according to its rotation
+
+//	public PlatformType type = PlatformType.PlatformTypeEnum.Valid; //type of this platform, can be valid, invalid or exit. Can be changed in editor
+	public PlatformType type = PlatformType.Valid;
+	public PlatformOrientation orientation;// orientation of this platform. Can be changed in editor but will be overriden by the scripts according to its rotation
 
     private bool isHighlighted = false;//whether this platform is highlighted
     private bool isFlashing = false;//wheter this platform is flashing
@@ -25,7 +27,7 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
 
     public Transform[] cons; //public array used for debuging, this way you can see the platform list in the editor
     public bool scanToogle = false;// debug toggle used to force rescan of nearby platforms
-    private PlatformType oldType;// auxilliary variable
+	private PlatformType oldType;// auxilliary variable
 
     // Use this for initialization
     void Start()
@@ -172,16 +174,16 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
         Material[] materials = gameObject.renderer.sharedMaterials;
         switch (type)
         {
-            case PlatformType.Valid:
-                materials[2] = isHighlighted ? Assets.getHighlightedValidBlockMat() : Assets.getValidBlockMat();
+		case PlatformType.Valid:
+				materials[2] = isHighlighted ? Assets.getHighlightedValidBlockMat() : Assets.getValidBlockMat();
                 materials[2] = isFlashing ? Assets.getFlashingValidBlockMat() : materials[2];
                 break;
-            case PlatformType.Invalid:
-                materials[2] = isHighlighted ? Assets.getHighlightedInvalidBlockMat() : Assets.getInvalidBlockMat();
+		case PlatformType.Invalid:
+				materials[2] = isHighlighted ? Assets.getHighlightedInvalidBlockMat() : Assets.getInvalidBlockMat();
                 materials[2] = isFlashing ? Assets.getFlashingInvalidBlockMat() : materials[2];
                 break;
-            case PlatformType.Exit:
-                materials[2] = isHighlighted ? Assets.getHighlightedExitBlockMat() : Assets.getExitBlockMat();
+		case PlatformType.Exit:
+				materials[2] = isHighlighted ? Assets.getHighlightedExitBlockMat() : Assets.getExitBlockMat();
                 materials[2] = isFlashing ? Assets.getFlashingExitBlockMat() : materials[2];
                 break;
         }
@@ -289,7 +291,7 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
     }
     public bool Invalid
     {
-        get { return (this == null || this.type.Equals(PlatformType.Invalid)); }
+		get { return (this == null || this.type.Equals(PlatformType.Invalid)); }
     }
 
     public Vector3 getTargetPoint()

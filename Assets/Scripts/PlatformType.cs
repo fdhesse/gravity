@@ -7,5 +7,9 @@ using System.Collections;
 /// </summary>
 public enum PlatformType
 {
-    Valid, Invalid, Exit
+	Invalid, Valid, Exit, Spikes, None
+}
+
+public class PlatformTypes : MonoBehaviour
+{
 }

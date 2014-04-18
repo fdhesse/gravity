@@ -5,7 +5,7 @@ using UnityEditor;
 using System.Collections;
 
 [ExecuteInEditMode]
-public class Editor : MonoBehaviour {
+public class RAJA_Editor : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
@@ -23,6 +23,17 @@ public class Editor : MonoBehaviour {
 	{
 		Debug.Log("Do...");
 	}*/
+	
+	[MenuItem ("GameObject/Create Other/RAJA_GameplayCube")]
+	static void AddGameplayCube () {
+		
+		GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		
+		go.transform.localScale = new Vector3( 10, 10, 10 );
+		
+		go.AddComponent<MeshRenderer>();
+		go.AddComponent<GameplayCube>();
+	}
 	
 	[MenuItem ("GameObject/Create Other/RAJA_Cube")]
 	static void AddStandardCube () {
