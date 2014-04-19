@@ -16,10 +16,9 @@ public class Particules : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		Vector3 gravity = (upsideDown) ? Physics.gravity : -Physics.gravity;
+		Vector3 gravity = Physics.gravity;
 		if (upsideDown)
-			gravity.x = -gravity.x;
-		gravity.y = -gravity.y;
+			gravity.y = -gravity.y;
 		
 		for (int i = 0; i != animators.Length; i++)
 		{

@@ -9,6 +9,9 @@ public class Cube : MonoBehaviour {
 
 	public Vector3 spawnPosition; // position of the Cube GameObject initial position
 	
+	public bool isFalling;
+	private bool isDestroyed = false;
+	
 	// Use this for initialization
 	void Start () {
 
@@ -18,6 +21,13 @@ public class Cube : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+	
+		// if the cube is stilling falling, game can't continue
+		if ( Vector3.Magnitude(rigidbody.velocity) > 0f && !isDestroyed )
+			isFalling = true;
+		else
+			isFalling = false;
+			
 		if (PlayerPawn.rigidbody.useGravity) {
 			rigidbody.constraints = PlayerPawn.rigidbody.constraints;
 		}
@@ -36,6 +46,15 @@ public class Cube : MonoBehaviour {
 
 		rigidbody.velocity = Vector3.zero;
 		rigidbody.angularVelocity = Vector3.zero;
+		
+		isDestroyed = false;
+	}
+	
+	public void Destroy()
+	{
+		Debug.Log( "Cube reached DeadZone" );
+		
+		isDestroyed = true;
 	}
 	
 	public void OnCollisionEnter(Collision collision)

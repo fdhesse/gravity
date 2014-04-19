@@ -71,7 +71,7 @@ public class GameplayCube : MonoBehaviour {
 			}
 		}
 		
-		if ( type == PlatformType.None)
+		if ( type == PlatformType.None )
 		{
 			return;
 		}
@@ -172,11 +172,9 @@ public class GameplayCube : MonoBehaviour {
 		materials[1].shader = Shader.Find("Transparent/Diffuse");
 		materials[2].shader = Shader.Find("Transparent/Diffuse");
 		
-		face.transform.Translate(new Vector3(0, transform.localScale.x/2 + 0.01f, 0), Space.Self);
+		face.transform.Translate(new Vector3(0, transform.localScale.x/2 + 0.05f, 0), Space.Self);
 		
-		// TODO -- fallover: Invalid is discarded
-	//	if ( type != PlatformType.Invalid )
-			face.renderer.sharedMaterials = materials;
+		face.renderer.sharedMaterials = materials;
 	}
 	
 	public void Refresh()

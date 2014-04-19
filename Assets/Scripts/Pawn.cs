@@ -26,15 +26,20 @@ public class Pawn : MonoBehaviour
 	public float turnDelay = 0.5f; // 1.0f		// délai avant la chute
 	public float fallInterval = 4.0f;
 	private float height;
-	private bool isFalling;
+	private bool newTarget = true;
 	private Vector3 desiredRotation;
 	private Vector3 desiredPosition;
 	
 	private BoxCollider boxCollider;
-	private Animator animator;
 	
+	public bool isFalling;
 	public RigidbodyConstraints nextConstraint;
 	private RigidbodyConstraints transformConstraints;
+	
+	// #ANIMATIONS#
+	private Animator animator;
+	private int animState;
+	private float idleWait;
 	
 	// #SPAWN#
 	private Vector3 spawnPosition;// position of the spawn GameObject
@@ -90,10 +95,22 @@ public class Pawn : MonoBehaviour
 	{
 		if (!(world.IsGameOver() || hud.isPaused)) // is the game active?, i.e. is the game not paused and not finished?
 		{
+			UpdateAnimation();
 			manageMouse();
 			movePawn();
 			checkUnderneath();
 		}
+	}
+	
+	private void UpdateAnimation()
+	{
+		idleWait += Time.deltaTime;
+		
+		if ( idleWait > 6.0f )
+			idleWait = 0;
+				
+		animator.SetFloat("idle_wait", idleWait);
+		animator.SetInteger("anim_state", animState);
 	}
 	
 	private IEnumerator SetCameraCursor() {
@@ -157,7 +174,9 @@ public class Pawn : MonoBehaviour
 		transform.rotation = spawnRotation;
 
 		ResetDynamic();
-
+		
+		animState = 0;
+		
 		rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
 		boxCollider.enabled = true;
 		Physics.gravity = new Vector3(0, -G, 0);
@@ -355,7 +374,7 @@ public class Pawn : MonoBehaviour
             moveAlongPath(); //otherwise, move along the path to the player selected platform
         }
     }
-
+	
     /// <summary>
     /// Moves along the path.
     /// If there is a path that has been previously decided the Pawn should take, finish the path.
@@ -365,15 +384,27 @@ public class Pawn : MonoBehaviour
     private void moveAlongPath()
 	{
 		ResetDynamic ();
-
+		
 		if (path != null && path.Count > 0) //is there a path?
 		{
+			// play animation: walk
+			animState = 2;
+			
+			if (newTarget)
+				StartCoroutine( LookAt () );
+			
             //if there is, move the pawn towards the next point in that path
             Vector3 vec = path[0].transform.position - getGroundPosition();
 
             if (moveMe(vec))
+			{
+				newTarget = true;
 				path.RemoveAt(0); //if we have reached this path point, delete it from the list so we can go to the next one next time
-
+			}
+			
+			if (path.Count == 0)
+				animState = 0;
+			
         }
         else if (targetPlatform != null) //ok, there is no path, but is there a target platform ? (this happends when the chosen platform is not directly accessible)
 		{
@@ -433,7 +464,30 @@ public class Pawn : MonoBehaviour
 
             return true;
         }
-    }
+	}
+	
+	private IEnumerator LookAt()
+	{
+		newTarget = false;
+		float timer = 0.0f;
+		
+		Vector3 target = path[0].transform.position +  -Vector3.Normalize(Physics.gravity) * height / 2.0f;
+		
+		Quaternion _look = Quaternion.LookRotation( target - transform.position, -Vector3.Normalize(Physics.gravity) );
+		
+		while (true)
+		{
+			timer += Time.deltaTime;
+			
+			Quaternion _rot = transform.rotation;
+			transform.rotation = Quaternion.Slerp( transform.rotation, _look, timer / turnDelay );
+			
+			if ( _rot == transform.rotation || Vector3.Magnitude(target - transform.position) < 2 )
+				break;
+			
+			yield return 0;
+		}
+	}
 
     /// <summary>
     /// Updates the value of platform to the platform beneath the Pawn.
@@ -519,9 +573,9 @@ public class Pawn : MonoBehaviour
 			{
 				countdown = 0;
 
-	            if (p != null)
-	            {
-	                if ( platform == null || p.orientation != platform.orientation ) //for punishing gravity take the platform == null here
+				if (p != null && !isFalling && !world.FallingCubes())
+				{
+					if ( platform == null || p.orientation != platform.orientation ) //for punishing gravity take the platform == null here
 					{
 						hud.gravityChangeCount++;
 						platform = null;
@@ -622,8 +676,6 @@ public class Pawn : MonoBehaviour
 	private bool adjustPawnRotation( ref float timer )
 	{
 		timer += Time.deltaTime;
-		
-		// adjust position
 			
 		Quaternion _to = Quaternion.Euler (desiredRotation);
 

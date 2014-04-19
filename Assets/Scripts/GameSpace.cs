@@ -11,7 +11,7 @@ public class GameSpace : MonoBehaviour {
 	{
 		if (c.gameObject.tag == "Player" )
 	        c.gameObject.GetComponent<Pawn>().outOfBounds();
-		else
-			Debug.Log( "Cube reached DeadZone" );
+		else if (c.gameObject.tag == "FallingCube" )
+			c.gameObject.GetComponent<Cube>().Destroy();
     }
 }

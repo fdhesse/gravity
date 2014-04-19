@@ -54,4 +54,18 @@ public class World : MonoBehaviour {
 		isGameOver = false;
 		Restart();
 	}
+	
+	public bool FallingCubes()
+	{
+		for (int i = 0; i != cubes.Length; i++)
+		{
+			Cube cube = (Cube) cubes[i];
+
+			if ( cube.isFalling )
+				return true;
+				
+		}
+		
+		return false;
+	}
 }
