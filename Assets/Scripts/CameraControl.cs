@@ -8,15 +8,15 @@ public class CameraControl : MonoBehaviour
 {
     public Transform target;      // the transform of the target GameObject (has position, rotation and scale values)
 
-    public float distance = 50f; // distance to the target
+    public float distance = 5f; // distance to the target
     public float xPivotingSpeed = 120.0f; // x orbiting speed
     public float yPivotingSpeed = 120.0f; // y orbiting speed
 	
 //	[EDIT]: commented 2 lines
 //    private float yMinLimit = -360f;
 //    private float yMaxLimit = 360f;
-    private float distanceMin = 50f; //minimum distance, changeable via zoom
-    private float distanceMax = 200f; //maximum distance, changeable via zoom
+    private float distanceMin = 5f; //minimum distance, changeable via zoom
+    private float distanceMax = 1000f; //maximum distance, changeable via zoom
 
     float x = 0.0f;
     float y = 0.0f;

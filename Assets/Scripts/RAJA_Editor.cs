@@ -24,6 +24,20 @@ public class RAJA_Editor : MonoBehaviour {
 		Debug.Log("Do...");
 	}*/
 	
+	[MenuItem ("GameObject/Create Other/RAJA_GravityPlatform")]
+	static void AddGravityPlatform () {
+		
+		GameObject go = new GameObject("GravityPlatform");
+		go.AddComponent<GravityPlatform>();
+
+		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		cube.transform.localScale = new Vector3( 10, 10, 10 );
+		cube.transform.parent = go.transform;
+		
+//		cube.AddComponent<MeshRenderer>();
+		cube.AddComponent<GameplayCube>();
+	}
+	
 	[MenuItem ("GameObject/Create Other/RAJA_GameplayCube")]
 	static void AddGameplayCube () {
 		
@@ -31,7 +45,7 @@ public class RAJA_Editor : MonoBehaviour {
 		
 		go.transform.localScale = new Vector3( 10, 10, 10 );
 		
-		go.AddComponent<MeshRenderer>();
+//		go.AddComponent<MeshRenderer>();
 		go.AddComponent<GameplayCube>();
 	}
 	

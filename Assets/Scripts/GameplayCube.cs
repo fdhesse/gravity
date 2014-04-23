@@ -172,7 +172,7 @@ public class GameplayCube : MonoBehaviour {
 		materials[1].shader = Shader.Find("Transparent/Diffuse");
 		materials[2].shader = Shader.Find("Transparent/Diffuse");
 		
-		face.transform.Translate(new Vector3(0, transform.localScale.x/2 + 0.05f, 0), Space.Self);
+		face.transform.Translate(new Vector3(0, transform.localScale.x/2 + 0.2f, 0), Space.Self);
 		
 		face.renderer.sharedMaterials = materials;
 	}

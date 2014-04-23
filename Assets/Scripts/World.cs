@@ -9,6 +9,7 @@ public class World : MonoBehaviour {
 	public float G = 40.0f;	// 9.81f		// constante gravité
 	private bool isGameOver = false;		//Game state
 	private Cube[] cubes;
+	private GravityPlatform[] gravityPlatforms;
 	
 	private Pawn PlayerPawn; // Player Pawn
 	
@@ -25,6 +26,7 @@ public class World : MonoBehaviour {
 	public void Init()
 	{
 		cubes = FindObjectsOfType<Cube>();
+		gravityPlatforms = FindObjectsOfType<GravityPlatform>();
 		PlayerPawn = (Pawn) GameObject.Find ("Pawn").GetComponent<Pawn>();
 	}
 	
@@ -36,6 +38,12 @@ public class World : MonoBehaviour {
 		{
 			Cube cube = (Cube) cubes[i];
 			cube.Reset();
+		}
+
+		for (int i = 0; i != gravityPlatforms.Length; i++)
+		{
+			GravityPlatform gPlatform = (GravityPlatform) gravityPlatforms[i];
+			gPlatform.Reset();
 		}
 	}
 	
@@ -67,5 +75,14 @@ public class World : MonoBehaviour {
 		}
 		
 		return false;
+	}
+
+	public void ChangeGravity()
+	{
+		for (int i = 0; i != gravityPlatforms.Length; i++)
+		{
+			GravityPlatform gPlatform = (GravityPlatform) gravityPlatforms[i];
+			gPlatform.Unfreeze();
+		}
 	}
 }
