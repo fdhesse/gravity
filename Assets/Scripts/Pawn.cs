@@ -27,8 +27,11 @@ public class Pawn : MonoBehaviour
 	public float fallInterval = 4.0f;
 	private float height;
 	private bool newTarget = true;
+	private bool lookAtDestroyCoincidents;
 	private Vector3 desiredRotation;
 	private Vector3 desiredPosition;
+
+//	private query
 	
 	private BoxCollider boxCollider;
 	
@@ -387,15 +390,17 @@ public class Pawn : MonoBehaviour
 		
 		if (path != null && path.Count > 0) //is there a path?
 		{
+//			Debug.Log("Ok, ok, I go !");
 			// play animation: walk
 			animState = 2;
 			
 			if (newTarget)
-				StartCoroutine( LookAt () );
+				StartCoroutine( LookAt ( path[0].transform.position ) );
 			
             //if there is, move the pawn towards the next point in that path
             Vector3 vec = path[0].transform.position - getGroundPosition();
-
+			
+//			Debug.Log( "vector: " + vec );
             if (moveMe(vec))
 			{
 				newTarget = true;
@@ -465,18 +470,40 @@ public class Pawn : MonoBehaviour
             return true;
         }
 	}
-	
-	private IEnumerator LookAt()
+
+	private IEnumerator LookAt( Vector3 point )
 	{
 		newTarget = false;
 		float timer = 0.0f;
 		
-		Vector3 target = path[0].transform.position +  -Vector3.Normalize(Physics.gravity) * height / 2.0f;
-		
+//		Vector3 target = path[0].transform.position +  -Vector3.Normalize(Physics.gravity) * height / 2.0f;
+
+		// get the Y relative
+		// point is scaled to inverted square of G
+		Vector3 target = Vector3.Scale (Vector3.Scale ( - Vector3.Normalize (Physics.gravity), Vector3.Normalize (Physics.gravity)), point);
+//		Debug.Log ("Y relative: " + target);
+
+		// get the X, Z relatives
+		// remove the Y relative from target
+		target = point + target;
+//		Debug.Log ("X, Z relatives: " + target);
+
+		// get the final point
+		// remove pawn's & platform's heights from target
+		target = target - Vector3.Normalize (Physics.gravity) * height / 2.0f - Vector3.Scale ( - Vector3.Normalize (Physics.gravity), platform.transform.position);
+//		Debug.Log ("Final point: " + target);
+
 		Quaternion _look = Quaternion.LookRotation( target - transform.position, -Vector3.Normalize(Physics.gravity) );
+		
+		lookAtDestroyCoincidents = true;
+		yield return 0;
+		lookAtDestroyCoincidents = false;
 		
 		while (true)
 		{
+			if (lookAtDestroyCoincidents)
+				break;
+
 			timer += Time.deltaTime;
 			
 			Quaternion _rot = transform.rotation;
@@ -501,17 +528,72 @@ public class Pawn : MonoBehaviour
 
 		RaycastHit hit = new RaycastHit();
 
-		if (Physics.SphereCast(transform.position, 1.5f, Physics.gravity, out hit, 10000, ~(1 << 10)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
+		Vector3 _pos = transform.position - Vector3.Normalize (Physics.gravity) * 0.4f;
+
+		// TODO -- Careful, 10 was 10000
+		if (Physics.SphereCast(_pos, height / 2.0f + 0.2f, Physics.gravity, out hit, 10, ~(1 << 10)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
         {
-            p = hit.collider.gameObject.GetComponent<Platform>();
+			p = hit.collider.gameObject.GetComponent<Platform>();
 
             if (p != null) // if it is a platform
                 platform = p;
             else
-                platform = null;
+				platform = null;
+			
+			if ( hit.collider.gameObject.tag == "MovingPlatform" )
+			{
+//				Debug.Log( "on a Moving Platform" );
+
+				// dirty snapping to a moving platform
+				// actually, a mask is used to mix up both player & platform positions
+
+				Vector3 _vec = new Vector3( 0.0f, 0.0f, 0.0f );
+
+				if (path.Count > 0 )
+				{
+					// if the player asked the pawn to move
+
+					_vec = path[0].transform.position - getGroundPosition();
+					_vec = _vec - Vector3.Scale ( Vector3.Scale ( Vector3.Normalize (Physics.gravity), Vector3.Normalize (Physics.gravity)), _vec);
+
+					if (_vec.x != 0)
+						_vec.x = 1;
+					if (_vec.y != 0)
+						_vec.y = 1;
+					if (_vec.z != 0)
+						_vec.z = 1;
+				}
+
+				// _ppos: platform position 
+				Vector3 _ppos = p.transform.position - Vector3.Scale ( Vector3.Scale ( Vector3.Normalize (Physics.gravity), Vector3.Normalize (Physics.gravity)), p.transform.position);
+
+				// first mask: actual gravity
+				Vector3 _mask = Vector3.Scale ( Vector3.Normalize (Physics.gravity), Vector3.Normalize (Physics.gravity));
+
+				// second mask: playerPawn's movement
+				_mask = _mask - _vec;
+
+				// get absolute
+				_mask = Vector3.Scale( _mask, _mask );
+
+				// mask the pawn's position
+				_vec = Vector3.Scale( _mask, transform.position );
+//				Debug.Log( "_vec: " + _vec + ", masque " + _mask );
+
+				// revert the mask
+				_mask = - (_mask - new Vector3( 1.0f, 1.0f, 1.0f ) );
+				
+				// mask the platform's position
+				_ppos = Vector3.Scale( _mask, _ppos );
+//				Debug.Log( "_ppos: " + _ppos + ", masque " + _mask );
+
+				// compute the new position
+				transform.position =  _vec + _ppos;
+//				Debug.Log( "transform: " + transform.position );
+			}
         }
         else
-        {
+		{
             platform = null;
         }
 
@@ -520,7 +602,7 @@ public class Pawn : MonoBehaviour
         {
             p = null;
             RaycastHit hitc = new RaycastHit();
-            if (Physics.SphereCast(transform.position, 1.5f, getGravityVector(orientation), out hitc, 10000, ~(1 << 10)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
+			if (Physics.SphereCast(_pos, height / 2.0f + 0.2f, Physics.gravity, out hitc, 10000, ~(1 << 10)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
             {
                 p = hitc.collider.gameObject.GetComponent<Platform>();
                 if (p != null && p != platform)
@@ -581,7 +663,8 @@ public class Pawn : MonoBehaviour
 						platform = null;
 						
 						desiredPosition = new Vector3( 0, height / 2 * fallInterval, 0 );
-						
+												
+						world.ChangeGravity ();
 						SetWorldGravity( p.orientation );
 						StartCoroutine( DelayedPawnFall ());
 					}
@@ -589,6 +672,8 @@ public class Pawn : MonoBehaviour
 					{
 						path = AStarHelper.Calculate(platform, p);
 						targetPlatform = p;
+						StartCoroutine( LookAt ( targetPlatform.transform.position ) );
+						newTarget = true;
 					}
 	            }
 	        }
