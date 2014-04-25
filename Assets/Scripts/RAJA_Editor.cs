@@ -29,6 +29,7 @@ public class RAJA_Editor : MonoBehaviour {
 		
 		GameObject go = new GameObject("GravityPlatform");
 		go.AddComponent<GravityPlatform>();
+		go.tag = "GravityPlatform";
 
 		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		cube.transform.localScale = new Vector3( 10, 10, 10 );

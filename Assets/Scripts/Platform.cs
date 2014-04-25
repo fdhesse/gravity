@@ -28,6 +28,10 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
     public Transform[] cons; //public array used for debuging, this way you can see the platform list in the editor
     public bool scanToogle = false;// debug toggle used to force rescan of nearby platforms
 	private PlatformType oldType;// auxilliary variable
+	
+#if UNITY_EDITOR
+	private Material[] sourceMaterials;
+#endif
 
     // Use this for initialization
     void Start()
@@ -36,7 +40,30 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
 		applyPlatformMaterial();
 		
 #if UNITY_EDITOR
+
 		GetComponent<Renderer>().enabled = true;
+
+		if ( EditorApplication.isPlaying )
+		{
+			int i;
+			Material[] materials;
+			sourceMaterials = renderer.sharedMaterials;
+
+			List<string> compares = new List<string> { "fill", "valid", "exit" };
+
+			for (i = 0; i < sourceMaterials.Length; i++)
+			{
+				if ( compares.Contains( sourceMaterials[i].name ))
+					break;
+			}
+
+			materials = new Material[] {
+				sourceMaterials[i]
+			};
+			
+			renderer.sharedMaterials = materials;
+		}
+
 #elif UNITY_STANDALONE
 		GetComponent<Renderer>().enabled = false;
 #endif
@@ -175,16 +202,16 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
         switch (type)
         {
 		case PlatformType.Valid:
-				materials[2] = isHighlighted ? Assets.getHighlightedValidBlockMat() : Assets.getValidBlockMat();
-                materials[2] = isFlashing ? Assets.getFlashingValidBlockMat() : materials[2];
+				materials[0] = isHighlighted ? Assets.getHighlightedValidBlockMat() : Assets.getValidBlockMat();
+                materials[0] = isFlashing ? Assets.getFlashingValidBlockMat() : materials[0];
                 break;
 		case PlatformType.Invalid:
-				materials[2] = isHighlighted ? Assets.getHighlightedInvalidBlockMat() : Assets.getInvalidBlockMat();
-                materials[2] = isFlashing ? Assets.getFlashingInvalidBlockMat() : materials[2];
+				materials[0] = isHighlighted ? Assets.getHighlightedInvalidBlockMat() : Assets.getInvalidBlockMat();
+                materials[0] = isFlashing ? Assets.getFlashingInvalidBlockMat() : materials[0];
                 break;
 		case PlatformType.Exit:
-				materials[2] = isHighlighted ? Assets.getHighlightedExitBlockMat() : Assets.getExitBlockMat();
-                materials[2] = isFlashing ? Assets.getFlashingExitBlockMat() : materials[2];
+				materials[0] = isHighlighted ? Assets.getHighlightedExitBlockMat() : Assets.getExitBlockMat();
+                materials[0] = isFlashing ? Assets.getFlashingExitBlockMat() : materials[0];
                 break;
         }
         gameObject.renderer.materials = materials;

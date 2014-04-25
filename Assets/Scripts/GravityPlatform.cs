@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 [RequireComponent(typeof(Rigidbody))]
 public class GravityPlatform : MonoBehaviour {
 	
@@ -56,8 +56,8 @@ public class GravityPlatform : MonoBehaviour {
 */	
 	public enum ConstraintAxis { X, Y, Z };
 
-	public float from;
-	public float to;
+	public float from = 0;
+	public float to = 10;
 
 	public ConstraintAxis constrainedAxis;
 
@@ -110,8 +110,6 @@ public class GravityPlatform : MonoBehaviour {
 
 	public void Unfreeze()
 	{
-		Debug.Log ( "Unfreeze ! " );
-
 		freezed = false;
 
 		if( constrainedAxis == ConstraintAxis.X )
@@ -124,8 +122,6 @@ public class GravityPlatform : MonoBehaviour {
 
 	private void Freeze()
 	{
-//		Debug.Log ( "Freeze ! " );
-
 		rigidbody.velocity = Vector3.zero;
 		rigidbody.angularVelocity = Vector3.zero;
 

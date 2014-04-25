@@ -6,12 +6,12 @@ public class GameplayCube : MonoBehaviour {
 	
 //	private bool __needsUpdate = false;
 	
-	[HideInInspector] [SerializeField] private PlatformType m_left;
-	[HideInInspector] [SerializeField] private PlatformType m_right;
-	[HideInInspector] [SerializeField] private PlatformType m_up;
-	[HideInInspector] [SerializeField] private PlatformType m_down;
-	[HideInInspector] [SerializeField] private PlatformType m_front;
-	[HideInInspector] [SerializeField] private PlatformType m_back;
+	[HideInInspector] [SerializeField] private PlatformType m_left	= PlatformType.None;
+	[HideInInspector] [SerializeField] private PlatformType m_right	= PlatformType.None;
+	[HideInInspector] [SerializeField] private PlatformType m_up	= PlatformType.None;
+	[HideInInspector] [SerializeField] private PlatformType m_down	= PlatformType.None;
+	[HideInInspector] [SerializeField] private PlatformType m_front	= PlatformType.None;
+	[HideInInspector] [SerializeField] private PlatformType m_back	= PlatformType.None;
 	
 	[ExposeProperty]
 	public PlatformType Left
@@ -62,7 +62,9 @@ public class GameplayCube : MonoBehaviour {
 			Debug.LogWarning( "PlatformType.Spikes not implemented yet" );
 			return;
 		}
-		
+
+		// supprimer la plateforme actuelle
+
 		foreach (Transform child in transform)
 		{
 			if (child.gameObject.name == faceName)
@@ -70,21 +72,26 @@ public class GameplayCube : MonoBehaviour {
 				DestroyImmediate( child.gameObject );
 			}
 		}
-		
+
+		// pas de plateforme, fin
+
 		if ( type == PlatformType.None )
 		{
 			return;
 		}
 		
-		GameObject face = GameObject.CreatePrimitive(PrimitiveType.Plane);
 		Platform p;
 		Material[] materials;
+		GameObject face = GameObject.CreatePrimitive(PrimitiveType.Plane);
+
+		// first destroy the MeshCollider to avoid tensor errors
+		DestroyImmediate(face.GetComponent<MeshCollider> ());
+		face.AddComponent<BoxCollider>();
+		p = face.AddComponent<Platform>();
 		
 		face.name = faceName;
 		face.transform.parent = transform;
 		face.transform.position = transform.position;
-		
-		p = face.AddComponent<Platform>();
 		
 		materials = face.renderer.sharedMaterials;
 		materials = new Material[] {
@@ -115,6 +122,8 @@ public class GameplayCube : MonoBehaviour {
 				materials[0].shader = Shader.Find("Diffuse");
 				break;
 		}
+
+//		materials [0].name = "fill";
 		
 		switch( faceName )
 		{
@@ -175,6 +184,15 @@ public class GameplayCube : MonoBehaviour {
 		face.transform.Translate(new Vector3(0, transform.localScale.x/2 + 0.2f, 0), Space.Self);
 		
 		face.renderer.sharedMaterials = materials;
+		
+		// tag accordingly to parent's parent tag
+
+		Debug.Log (transform.parent.tag);
+
+		if (transform.parent.tag != null)
+		{
+			face.tag = transform.parent.tag;
+		}
 	}
 	
 	public void Refresh()
