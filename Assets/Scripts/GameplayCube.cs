@@ -187,9 +187,7 @@ public class GameplayCube : MonoBehaviour {
 		
 		// tag accordingly to parent's parent tag
 
-		Debug.Log (transform.parent.tag);
-
-		if (transform.parent.tag != null)
+		if (transform.parent != null && transform.parent.tag != null)
 		{
 			face.tag = transform.parent.tag;
 		}

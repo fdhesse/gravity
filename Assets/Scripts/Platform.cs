@@ -13,20 +13,22 @@ using System.Collections.Generic;
 [ExecuteInEditMode]
 public class Platform : MonoBehaviour, IPathNode<Platform>
 {
-    public List<Platform> connections; //list of directly accessible platforms
-    private HashSet<Platform> connectionSet; //auxilliary hashset used to ignore duplicates
-
-
-//	public PlatformType type = PlatformType.PlatformTypeEnum.Valid; //type of this platform, can be valid, invalid or exit. Can be changed in editor
 	public PlatformType type = PlatformType.Valid;
-	public PlatformOrientation orientation;// orientation of this platform. Can be changed in editor but will be overriden by the scripts according to its rotation
+
+	public Transform[] _connections; //public array used for debuging, this way you can see the platform list in the editor
+	public List<Platform> connections; //list of directly accessible platforms
+	[HideInInspector] private HashSet<Platform> connectionSet; //auxilliary hashset used to ignore duplicates
+
+	[HideInInspector] public PlatformOrientation orientation;
+	
+	public bool scanToogle = false;// debug toggle used to force rescan of nearby platforms
+
+	// #HIGHLIGHTING#
 
     private bool isHighlighted = false;//whether this platform is highlighted
     private bool isFlashing = false;//wheter this platform is flashing
     private Ticker flash;//timer for platform flashing
 
-    public Transform[] cons; //public array used for debuging, this way you can see the platform list in the editor
-    public bool scanToogle = false;// debug toggle used to force rescan of nearby platforms
 	private PlatformType oldType;// auxilliary variable
 	
 #if UNITY_EDITOR
@@ -36,7 +38,7 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
     // Use this for initialization
     void Start()
     {
- //       defineOrientation();
+        defineOrientation();
 		applyPlatformMaterial();
 		
 #if UNITY_EDITOR
@@ -73,26 +75,21 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
     // Update is called once per frame
     void Update()
     {
-		#if UNITY_EDITOR
+#if UNITY_EDITOR
         if (Selection.Contains(gameObject))
-        {
             defineOrientation();
-        }
-		#endif
+#endif
         if (connectionSet == null) //this isn't in the start method because we have to make sure this is made after all Platforms have been initialized with the proper orientations
         {
             connectionSet = new HashSet<Platform>();
             scanNearbyPlatforms();
         }
+
         if (!oldType.Equals(type)) // if the type was changed in scene mode, reapply the material
-        {
             applyPlatformMaterial();
-        }
 
         if (scanToogle)
-        {
             scanNearbyPlatforms();
-        }
 
         handleFlashing();
     }
@@ -118,6 +115,7 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
     private void defineOrientation()
     {
         Material[] materials = gameObject.renderer.sharedMaterials;
+
         string r = transform.rotation.eulerAngles.ToString();
         //Debug.Log(r);
         switch (r)
@@ -125,37 +123,32 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
             case "(0.0, 180.0, 0.0)":
                 orientation = PlatformOrientation.Up;
                 materials[0] = Assets.getUpBlockMat();
-                materials[1] = Assets.getUpBlockMat();
                 break;
             case "(0.0, 0.0, -180.0)":
                 orientation = PlatformOrientation.Down;
                 materials[0] = Assets.getDownBlockMat();
-                materials[1] = Assets.getDownBlockMat();
                 break;
 			case "(90.0, 90.0, 0.0)":
 				orientation = PlatformOrientation.Left;
 				materials[0] = Assets.getLeftBlockMat();
-				materials[1] = Assets.getLeftBlockMat();
                 break;
 			case "(90.0, 270.0, 0.0)":
 				orientation = PlatformOrientation.Right;
 				materials[0] = Assets.getRightBlockMat();
-				materials[1] = Assets.getRightBlockMat();
                 break;
             case "(90.0, 180.0, 0.0)":
                 orientation = PlatformOrientation.Front;
                 materials[0] = Assets.getFrontBlockMat();
-                materials[1] = Assets.getFrontBlockMat();
                 break;
             case "(90.0, 0.0, 0.0)":
                 orientation = PlatformOrientation.Back;
                 materials[0] = Assets.getBackBlockMat();
-                materials[1] = Assets.getBackBlockMat();
                 break;
             default:
                 Debug.LogError("A block didn't update its orientation correctly, this is because its rotations is funky or not registered, rotation:" + r);
                 break;
         }
+
         gameObject.renderer.materials = materials;
     }
 
@@ -178,11 +171,11 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
                     connectionSet.Add(p);
 
 
-                    cons = new Transform[connectionSet.Count];
+					_connections = new Transform[connectionSet.Count];
                     connections = new List<Platform>(connectionSet);
                     for (int i = 0; i != connections.Count; i++)
                     {
-                        cons[i] = connections[i].transform;
+						_connections[i] = connections[i].transform;
                     }
                 }
             }

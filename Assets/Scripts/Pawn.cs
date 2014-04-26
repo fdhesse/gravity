@@ -18,7 +18,7 @@ using System.Collections.Generic;
 public class Pawn : MonoBehaviour
 {
 	// #WORLD#
-	public World world;
+	[HideInInspector] public World world;
 	private float G;
 	
 	// #PAWN#
@@ -27,7 +27,7 @@ public class Pawn : MonoBehaviour
 	public float fallInterval = 4.0f;
 	private float height;
 	private bool newTarget = true;
-	private bool lookAtDestroyCoincidents;
+	private bool lookAt_DestroyCoincidents;
 	private Vector3 desiredRotation;
 	private Vector3 desiredPosition;
 
@@ -35,8 +35,8 @@ public class Pawn : MonoBehaviour
 	
 	private BoxCollider boxCollider;
 	
-	public bool isFalling;
-	public RigidbodyConstraints nextConstraint;
+	[HideInInspector] public bool isFalling;
+	[HideInInspector] public RigidbodyConstraints nextConstraint;
 	private RigidbodyConstraints transformConstraints;
 	
 	// #ANIMATIONS#
@@ -62,7 +62,7 @@ public class Pawn : MonoBehaviour
 	private HUD hud; //script responsible for the HUD
 	
 	// #MOUSE#
-	public bool isCameraMode = false;
+	[HideInInspector] public bool isCameraMode = false;
 	private float lastClick;
 	private float countdown;
 	
@@ -293,16 +293,12 @@ public class Pawn : MonoBehaviour
 						platformsList.Add(platforms[i]);
 				}
 				
-				if ( platformsList.Count > 0 )
+/*				if ( platformsList.Count > 0 )
 				{
 					Platform nearest = Platform.Closest(platformsList, transform.position); //nearest platform: the directly accessible platform from the platform bellow the Pawn, thats closest to the target platform
 					SnapToPlatform( nearest );
 				}
-				else
-				{
-					Debug.LogError("No Platform found !");
-				}
-			}
+*/			}
 		}
 
 		if (collision.relativeVelocity.magnitude > 1 && audio.enabled)
@@ -393,7 +389,7 @@ public class Pawn : MonoBehaviour
 //			Debug.Log("Ok, ok, I go !");
 			// play animation: walk
 			animState = 2;
-			
+
 			if (newTarget)
 				StartCoroutine( LookAt ( path[0].transform.position ) );
 			
@@ -475,12 +471,11 @@ public class Pawn : MonoBehaviour
 	{
 		newTarget = false;
 		float timer = 0.0f;
-		
-//		Vector3 target = path[0].transform.position +  -Vector3.Normalize(Physics.gravity) * height / 2.0f;
+		Vector3 absG = Vector3.Scale ( Vector3.Normalize (Physics.gravity), Vector3.Normalize (Physics.gravity));
 
 		// get the Y relative
 		// point is scaled to inverted square of G
-		Vector3 target = Vector3.Scale (Vector3.Scale ( - Vector3.Normalize (Physics.gravity), Vector3.Normalize (Physics.gravity)), point);
+		Vector3 target = Vector3.Scale ( - absG, point);
 //		Debug.Log ("Y relative: " + target);
 
 		// get the X, Z relatives
@@ -490,18 +485,17 @@ public class Pawn : MonoBehaviour
 
 		// get the final point
 		// remove pawn's & platform's heights from target
-		target = target - Vector3.Normalize (Physics.gravity) * height / 2.0f - Vector3.Scale ( - Vector3.Normalize (Physics.gravity), platform.transform.position);
-//		Debug.Log ("Final point: " + target);
+		target = target - Vector3.Normalize (Physics.gravity) * height / 2.0f - Vector3.Scale ( - absG, platform.transform.position);
 
 		Quaternion _look = Quaternion.LookRotation( target - transform.position, -Vector3.Normalize(Physics.gravity) );
 		
-		lookAtDestroyCoincidents = true;
+		lookAt_DestroyCoincidents = true;
 		yield return 0;
-		lookAtDestroyCoincidents = false;
+		lookAt_DestroyCoincidents = false;
 		
 		while (true)
 		{
-			if (lookAtDestroyCoincidents)
+			if (lookAt_DestroyCoincidents)
 				break;
 
 			timer += Time.deltaTime;
@@ -670,10 +664,13 @@ public class Pawn : MonoBehaviour
 					}
 					else
 					{
-						path = AStarHelper.Calculate(platform, p);
 						targetPlatform = p;
-						StartCoroutine( LookAt ( targetPlatform.transform.position ) );
-						newTarget = true;
+						
+						if ( targetPlatform.transform != platform.transform )
+						{
+							path = AStarHelper.Calculate(platform, p);
+							StartCoroutine( LookAt ( targetPlatform.transform.position ) );
+						}
 					}
 	            }
 	        }
