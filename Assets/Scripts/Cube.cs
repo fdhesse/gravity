@@ -22,7 +22,7 @@ public class Cube : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
-		// if the cube is stilling falling, game can't continue
+		// if the cube is still falling, game can't continue
 		if ( Vector3.Magnitude(rigidbody.velocity) > 0f && !isDestroyed )
 			isFalling = true;
 		else
@@ -52,8 +52,6 @@ public class Cube : MonoBehaviour {
 	
 	public void Destroy()
 	{
-		Debug.Log( "Cube reached DeadZone" );
-		
 		isDestroyed = true;
 	}
 	

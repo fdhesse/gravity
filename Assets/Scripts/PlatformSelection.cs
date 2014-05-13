@@ -39,9 +39,11 @@ public static class PlatformSelection
         }
         Ray mouseRay = cam.camera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit = new RaycastHit();
-        if (Physics.Raycast(mouseRay, out hit, float.MaxValue, ~(1 << 11))) // cast a raycast ignoring the layer for the DeathZone
+//		if (Physics.Raycast(mouseRay, out hit, float.MaxValue, ~(1 << 11))) // cast a raycast ignoring the layer for the DeathZone
+		if (Physics.Raycast(mouseRay, out hit, float.MaxValue, (1 << 14))) // cast a raycast ignoring all but the layer for the platforms
         {
             p = hit.collider.gameObject.GetComponent<Platform>();
+            
             if (p != null) //if it is a platform
             {
                 p.highlight();

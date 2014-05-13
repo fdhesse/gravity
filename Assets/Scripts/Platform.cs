@@ -51,14 +51,15 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
 			Material[] materials;
 			sourceMaterials = renderer.sharedMaterials;
 
-			List<string> compares = new List<string> { "fill", "valid", "exit" };
+			List<string> compares = new List<string> { "fill", "valid", "invalid", "exit" };
 
 			for (i = 0; i < sourceMaterials.Length; i++)
 			{
 				if ( compares.Contains( sourceMaterials[i].name ))
 					break;
+				
 			}
-
+			
 			materials = new Material[] {
 				sourceMaterials[i]
 			};
@@ -76,6 +77,7 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
     void Update()
     {
 #if UNITY_EDITOR
+		// update the selected platform orientation...
         if (Selection.Contains(gameObject))
             defineOrientation();
 #endif
@@ -114,38 +116,43 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
     /// </summary>
     private void defineOrientation()
     {
-        Material[] materials = gameObject.renderer.sharedMaterials;
-
+//		Material[] materials = gameObject.renderer.sharedMaterials;
+		
+		Material[] materials = new Material[] {
+			gameObject.renderer.sharedMaterials[0],
+			new Material(Shader.Find("Transparent/Diffuse")),
+		};
+        
         string r = transform.rotation.eulerAngles.ToString();
         //Debug.Log(r);
         switch (r)
         {
             case "(0.0, 180.0, 0.0)":
                 orientation = PlatformOrientation.Up;
-                materials[0] = Assets.getUpBlockMat();
+				materials[1] = Assets.getUpBlockMat();
                 break;
             case "(0.0, 0.0, -180.0)":
                 orientation = PlatformOrientation.Down;
-                materials[0] = Assets.getDownBlockMat();
-                break;
+                materials[1] = Assets.getDownBlockMat();
+			break;
 			case "(90.0, 90.0, 0.0)":
 				orientation = PlatformOrientation.Left;
-				materials[0] = Assets.getLeftBlockMat();
+				materials[1] = Assets.getLeftBlockMat();
                 break;
 			case "(90.0, 270.0, 0.0)":
 				orientation = PlatformOrientation.Right;
-				materials[0] = Assets.getRightBlockMat();
+				materials[1] = Assets.getRightBlockMat();
                 break;
             case "(90.0, 180.0, 0.0)":
                 orientation = PlatformOrientation.Front;
-                materials[0] = Assets.getFrontBlockMat();
+                materials[1] = Assets.getFrontBlockMat();
                 break;
             case "(90.0, 0.0, 0.0)":
                 orientation = PlatformOrientation.Back;
-                materials[0] = Assets.getBackBlockMat();
+                materials[1] = Assets.getBackBlockMat();
                 break;
             default:
-                Debug.LogError("A block didn't update its orientation correctly, this is because its rotations is funky or not registered, rotation:" + r);
+//                Debug.LogError("A block didn't update its orientation correctly, this is because its rotations is funky or not registered, rotation:" + r);
                 break;
         }
 
@@ -169,7 +176,6 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
                 if (p != null && p.orientation.Equals(orientation))
                 {
                     connectionSet.Add(p);
-
 
 					_connections = new Transform[connectionSet.Count];
                     connections = new List<Platform>(connectionSet);
@@ -301,14 +307,12 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
     {
         get { return connections; }
     }
+    
     public Vector3 Position
     {
-        get
-        {
-
-            return transform.position;
-        }
+        get { return transform.position; }
     }
+    
     public bool Invalid
     {
 		get { return (this == null || this.type.Equals(PlatformType.Invalid)); }

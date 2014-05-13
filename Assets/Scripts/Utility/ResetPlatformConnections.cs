@@ -9,7 +9,7 @@ using System.Collections;
 
 public class ResetPlatformConnections : MonoBehaviour {
 
-	[MenuItem ("GameObject/RAJA: Reset platforms")] //Place the Set Pivot menu item in the GameObject menu
+	[MenuItem ("GameObject/RAJA: Reset platforms")]
 	static void ResetPlatforms () {
 		
 		Platform[] platforms = FindObjectsOfType<Platform>();
@@ -19,18 +19,16 @@ public class ResetPlatformConnections : MonoBehaviour {
 		
 		for (int i = 0; i != platforms.Length; i++)
 		{
-			Platform p = (Platform) platforms[i];
-			
-			Platform c = p.gameObject.GetComponent<Platform>();
+			Platform platform = (Platform) platforms[i].gameObject.GetComponent<Platform>();
 
-			diff = c.Connections.Count;
+			diff = platform.Connections.Count;
 
-			c._connections = null;
+			platform._connections = null;
 
-			c.connections.Clear();
-			c.Connections.Clear();
+			platform.connections.Clear();
+			platform.Connections.Clear();
 
-			if ( diff != c.Connections.Count )
+			if ( diff != platform.Connections.Count )
 				count++;
 		}
 

@@ -524,9 +524,10 @@ public class Pawn : MonoBehaviour
 
 		Vector3 _pos = transform.position - Vector3.Normalize (Physics.gravity) * 0.4f;
 
-		// TODO -- Careful, 10 was 10000
-		if (Physics.SphereCast(_pos, height / 2.0f + 0.2f, Physics.gravity, out hit, 10, ~(1 << 10)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
-        {
+		// TODO -- Careful, 10 was 10000(1 << 14)
+//		if (Physics.SphereCast(_pos, height / 2.0f + 0.2f, Physics.gravity, out hit, 10, ~(1 << 10)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
+		if (Physics.SphereCast(_pos, height / 2.0f + 0.2f, Physics.gravity, out hit, 10, (1 << 14)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
+		{
 			p = hit.collider.gameObject.GetComponent<Platform>();
 
             if (p != null) // if it is a platform
@@ -543,7 +544,7 @@ public class Pawn : MonoBehaviour
 
 				Vector3 _vec = new Vector3( 0.0f, 0.0f, 0.0f );
 
-				if (path.Count > 0 )
+				if ( path.Count > 0 )
 				{
 					// if the player asked the pawn to move
 
@@ -591,30 +592,38 @@ public class Pawn : MonoBehaviour
             platform = null;
         }
 
-        // puts dots
+		// puts dots
+//		foreach (PlatformOrientation orientation in Enum.GetValues(typeof(PlatformOrientation)))
         foreach (PlatformOrientation orientation in Enum.GetValues(typeof(PlatformOrientation)))
         {
             p = null;
-            RaycastHit hitc = new RaycastHit();
-			if (Physics.SphereCast(_pos, height / 2.0f + 0.2f, Physics.gravity, out hitc, 10000, ~(1 << 10)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
-            {
-                p = hitc.collider.gameObject.GetComponent<Platform>();
-                if (p != null && p != platform)
+            
+			RaycastHit hitc = new RaycastHit();
+//			if (Physics.SphereCast(_pos, height / 2.0f + 0.2f, Physics.gravity, out hitc, 10000, ~(1 << 10)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
+//			if (Physics.SphereCast(_pos, height / 2.0f + 0.2f, Physics.gravity, out hitc, 10000, (1 << 14)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
+//			if (Physics.SphereCast(_pos,  1.5f, getGravityVector( GetWorldGravity() ), out hitc, 10000, (1 << 14)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
+			if (Physics.SphereCast(transform.position, 0.5f + 0.2f, getGravityVector( orientation ), out hitc, 10000, (1 << 14)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
+			{
+				p = hitc.collider.gameObject.GetComponent<Platform>();
+				
+                if (p != null && p != platform )
                 {
                     if (hud.dotIsInside)
                         getOrientationSphere(orientation).transform.position = p.transform.position;
                     else
-                        getOrientationSphere(orientation).transform.position = p.transform.position - (getGravityVector(orientation) * hud.dotSize / 2);
-                }
+						getOrientationSphere(orientation).transform.position = p.transform.position - (getGravityVector( GetWorldGravity() ) * hud.dotSize / 2);
+				}
                 else
                 {
-                    getOrientationSphere(orientation).transform.position = Vector3.one * float.MaxValue; //sphere is moved to infinity muhahahaha, tremble before my power
+                	// Valid target
+					getOrientationSphere(orientation).transform.position = Vector3.one * float.MaxValue; //sphere is moved to infinity muhahahaha, tremble before my power
                 }
 
             }
             else
             {
-                getOrientationSphere(orientation).transform.position = Vector3.one * float.MaxValue; //BEGONE
+				// Falling, no more dots
+				getOrientationSphere(orientation).transform.position = Vector3.one * float.MaxValue; //BEGONE
             }
         }
     }

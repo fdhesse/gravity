@@ -42,23 +42,44 @@ public class RAJA_Editor : MonoBehaviour {
 	[MenuItem ("GameObject/Create Other/RAJA_GameplayCube")]
 	static void AddGameplayCube () {
 		
-		GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+//		GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		GameObject go = new GameObject();
+		go.name = "Gameplay Cube";
 		
 		go.transform.localScale = new Vector3( 10, 10, 10 );
 		
-//		go.AddComponent<MeshRenderer>();
-		go.AddComponent<GameplayCube>();
+		//		go.AddComponent<MeshRenderer>();
+		GameplayCube cube = go.AddComponent<GameplayCube>();
+		
+		cube.Left = PlatformType.Invalid;
+		cube.Right = PlatformType.Invalid;
+		cube.Up = PlatformType.Invalid;
+		cube.Down = PlatformType.Invalid;
+		cube.Front = PlatformType.Invalid;
+		cube.Back = PlatformType.Invalid;
 	}
 	
-	[MenuItem ("GameObject/Create Other/RAJA_Cube")]
+	[MenuItem ("GameObject/Create Other/RAJA_FallingCube")]
 	static void AddStandardCube () {
 		
-		GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+//		GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		GameObject go = new GameObject();
+		
+		go.name = "Falling Cube";
+		go.tag = "FallingCube";
 		
 		go.transform.localScale = new Vector3( 10, 10, 10 );
 		
 		go.AddComponent<Rigidbody>();
-		go.AddComponent<MeshRenderer>();
+		go.AddComponent<BoxCollider>();
+		GameplayCube cube = go.AddComponent<GameplayCube>();
+		
+		cube.Left = PlatformType.Valid;
+		cube.Right = PlatformType.Valid;
+		cube.Up = PlatformType.Valid;
+		cube.Down = PlatformType.Valid;
+		cube.Front = PlatformType.Valid;
+		cube.Back = PlatformType.Valid;
 		
 		AudioSource audio = go.AddComponent<AudioSource>();
 		

@@ -87,11 +87,17 @@ public class GameplayCube : MonoBehaviour {
 		// first destroy the MeshCollider to avoid tensor errors
 		DestroyImmediate(face.GetComponent<MeshCollider> ());
 		face.AddComponent<BoxCollider>();
-		p = face.AddComponent<Platform>();
 		
 		face.name = faceName;
 		face.transform.parent = transform;
 		face.transform.position = transform.position;
+		
+		p = face.AddComponent<Platform>();
+		p.gameObject.layer = 14;
+		p.type = type;
+		
+		// clean up the platform's connections
+		p._connections = null;
 		
 		materials = face.renderer.sharedMaterials;
 		materials = new Material[] {
@@ -99,9 +105,6 @@ public class GameplayCube : MonoBehaviour {
 			new Material(Shader.Find("Transparent/Diffuse")),
 			new Material(Shader.Find("Transparent/Diffuse"))
 		};
-		
-		p.type = type;
-		
 		
 		switch( type )
 		{
@@ -181,7 +184,8 @@ public class GameplayCube : MonoBehaviour {
 		materials[1].shader = Shader.Find("Transparent/Diffuse");
 		materials[2].shader = Shader.Find("Transparent/Diffuse");
 		
-		face.transform.Translate(new Vector3(0, transform.localScale.x/2 + 0.2f, 0), Space.Self);
+//		face.transform.Translate(new Vector3(0, transform.localScale.x/2 + 0.2f, 0), Space.Self);
+		face.transform.Translate(new Vector3(0, transform.localScale.x/2, 0), Space.Self);
 		
 		face.renderer.sharedMaterials = materials;
 		
@@ -199,6 +203,7 @@ public class GameplayCube : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+		GetComponent<MeshFilter>();
 	}
 	
 	// Update is called once per frame
