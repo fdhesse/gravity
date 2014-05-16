@@ -57,11 +57,6 @@ public class GameplayCube : MonoBehaviour {
 	
 	public void SetFace( string faceName, PlatformType type )
 	{
-		if ( type == PlatformType.Spikes)
-		{
-			Debug.LogWarning( "PlatformType.Spikes not implemented yet" );
-			return;
-		}
 
 		// supprimer la plateforme actuelle
 
@@ -194,6 +189,27 @@ public class GameplayCube : MonoBehaviour {
 		if (transform.parent != null && transform.parent.tag != null)
 		{
 			face.tag = transform.parent.tag;
+		}
+		
+		// in case we are in presence of a spike tile
+		
+		if ( type == PlatformType.Spikes)
+		{
+			face.AddComponent<Spikes>();
+			
+			GameObject child = GameObject.Instantiate( Resources.LoadAssetAtPath("Assets/Resources/Prefabs/spikes.prefab", typeof(GameObject)) ) as GameObject;
+			
+//			GameObject child = (GameObject) Resources.Load( "Prefabs/spikes.prefab" );
+			child.name = "spikes";
+			child.transform.parent = p.transform;
+			child.transform.position = new Vector3( 0, 0, 0 );
+			child.transform.localPosition = new Vector3( 0, 0, 0 );
+			child.transform.GetChild(0).transform.position = new Vector3( 0, 0, 0 );
+			child.transform.GetChild(0).transform.localPosition = new Vector3( 0, 0, 0 );
+
+//			Debug.Log( child );
+//			child.AddComponent<MeshFilter>().mesh = "pPlane1";
+//			face.gameObject
 		}
 	}
 	

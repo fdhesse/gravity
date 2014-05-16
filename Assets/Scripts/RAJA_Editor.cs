@@ -72,14 +72,7 @@ public class RAJA_Editor : MonoBehaviour {
 		
 		go.AddComponent<Rigidbody>();
 		go.AddComponent<BoxCollider>();
-		GameplayCube cube = go.AddComponent<GameplayCube>();
-		
-		cube.Left = PlatformType.Valid;
-		cube.Right = PlatformType.Valid;
-		cube.Up = PlatformType.Valid;
-		cube.Down = PlatformType.Valid;
-		cube.Front = PlatformType.Valid;
-		cube.Back = PlatformType.Valid;
+		go.AddComponent<FallingCube>();
 		
 		AudioSource audio = go.AddComponent<AudioSource>();
 		
@@ -87,7 +80,6 @@ public class RAJA_Editor : MonoBehaviour {
 		audio.clip = Assets.bounce;
 		audio.minDistance = 100;
 		
-		go.AddComponent<Cube>();
 	}
 	
 	[MenuItem ("GameObject/Create Other/RAJA_Exit")]

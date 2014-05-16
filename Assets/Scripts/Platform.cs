@@ -21,7 +21,7 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
 
 	[HideInInspector] public PlatformOrientation orientation;
 	
-	public bool scanToogle = false;// debug toggle used to force rescan of nearby platforms
+	[HideInInspector] public bool rescanPath = false;// debug toggle used to force rescan of nearby platforms
 
 	// #HIGHLIGHTING#
 
@@ -68,7 +68,13 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
 		}
 
 #elif UNITY_STANDALONE
-		GetComponent<Renderer>().enabled = false;
+//		GetComponent<Renderer>().enabled = false;
+
+		Material[] materials = new Material[] {
+			gameObject.renderer.sharedMaterials[0]
+		};
+		
+		gameObject.renderer.materials = materials;
 #endif
     }
 
@@ -90,7 +96,7 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
         if (!oldType.Equals(type)) // if the type was changed in scene mode, reapply the material
             applyPlatformMaterial();
 
-        if (scanToogle)
+		if (rescanPath)
             scanNearbyPlatforms();
 
         handleFlashing();
@@ -120,7 +126,7 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
 		
 		Material[] materials = new Material[] {
 			gameObject.renderer.sharedMaterials[0],
-			new Material(Shader.Find("Transparent/Diffuse")),
+			new Material(Shader.Find("Transparent/Diffuse"))
 		};
         
         string r = transform.rotation.eulerAngles.ToString();
@@ -164,6 +170,7 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
     /// </summary>
     private void scanNearbyPlatforms()
     {
+
         connectionSet = new HashSet<Platform>();
         Collider[] hits = Physics.OverlapSphere(transform.position, 5.5f);
         //Debug.DrawLine(transform.position, transform.position + transform.up * 5f);
@@ -175,6 +182,9 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
                 Platform p = hit.gameObject.GetComponent<Platform>();
                 if (p != null && p.orientation.Equals(orientation))
                 {
+					if (rescanPath)
+						p.rescanPath = true;
+					
                     connectionSet.Add(p);
 
 					_connections = new Transform[connectionSet.Count];

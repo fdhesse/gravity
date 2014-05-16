@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Cube : MonoBehaviour {
+[RequireComponent(typeof(GameplayCube))]
+[ExecuteInEditMode]
+public class FallingCube : MonoBehaviour {
 	
 	private Pawn PlayerPawn; // Player Pawn
 
@@ -13,8 +15,24 @@ public class Cube : MonoBehaviour {
 	private bool isDestroyed = false;
 	
 	// Use this for initialization
-	void Start () {
-
+	void Start ()
+	{
+		GameplayCube cube = GetComponent<GameplayCube>();
+		
+		cube.Left = PlatformType.Valid;
+		cube.Right = PlatformType.Valid;
+		cube.Up = PlatformType.Valid;
+		cube.Down = PlatformType.Valid;
+		cube.Front = PlatformType.Valid;
+		cube.Back = PlatformType.Valid;
+		
+		transform.FindChild( "left" ).gameObject.GetComponent<Platform>().rescanPath = true;
+		transform.FindChild( "right" ).gameObject.GetComponent<Platform>().rescanPath = true;
+		transform.FindChild( "up" ).gameObject.GetComponent<Platform>().rescanPath = true;
+		transform.FindChild( "down" ).gameObject.GetComponent<Platform>().rescanPath = true;
+		transform.FindChild( "front" ).gameObject.GetComponent<Platform>().rescanPath = true;
+		transform.FindChild( "back" ).gameObject.GetComponent<Platform>().rescanPath = true;
+		
 		rigidbody.constraints = RigidbodyConstraints.FreezeAll; // .FreezeRotation | RigidbodyConstraints.FreezePositionZ;
 		PlayerPawn = (Pawn) GameObject.Find ("Pawn").GetComponent<Pawn>();
 	}

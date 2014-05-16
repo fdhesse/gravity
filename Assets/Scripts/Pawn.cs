@@ -407,31 +407,45 @@ public class Pawn : MonoBehaviour
 				animState = 0;
 			
         }
-        else if (targetPlatform != null) //ok, there is no path, but is there a target platform ? (this happends when the chosen platform is not directly accessible)
+        else if (targetPlatform != null) // Case where there is no path but a target platform, ie: target platform is not aligned to platform
 		{
 			
-			if (targetPlatformIsAbove(targetPlatform) || targetPlatform.type.Equals(PlatformType.Invalid))//is targetPlatform is above the pawn or of type invalid?
+			if ( targetPlatformIsAbove(targetPlatform) || targetPlatform.type.Equals(PlatformType.Invalid) )//is targetPlatform is above the pawn or of type invalid?
 			{
 	            GetComponent<AudioSource>().PlayOneShot(Assets.invalidSound); //play a failed action sound
 	            targetPlatform = null; //forget target platform
 	        }
 	        else //the platform is in a valid place
 	        {
-	            // the platform isn't directly accessible but it is valid
-	            // the pawn will either go towards the platform and land on a place where them it can access directly the platform
-	            // or it will land on the platform
-	            // or it will fall into the void
+	        	// platform is not accessible but in valid space, so:
+	        	// pawn will go towards the platform, then
+	        	//  - he will land on a neighbourg platform
+	        	//  - he will land on the platform
+	        	//  - he will fall into the void
 
-	            Platform nearest = Platform.Closest(platform.AllAccessiblePlatforms(), targetPlatform.transform.position); //nearest platform: the directly accessible platform from the platform bellow the Pawn, thats closest to the target platform
-	            
-	            if (nearest.Equals(platform)) //is the nearest the one bellow the Pawn?
+				Platform nearest = Platform.Closest(platform.AllAccessiblePlatforms(), targetPlatform.transform.position); //nearest platform: the directly accessible platform from the platform bellow the Pawn, thats closest to the target platform
+				
+	            if (nearest.Equals(platform) ) //is the nearest the one bellow the Pawn?
 				{
-	                Platform landing = Platform.Closest(targetPlatform.AllAccessiblePlatforms(), nearest.transform.position);//landing platform: the directly accessible platform from the target platform, thats closest to the nearest platform
+//					Debug.Log ( "nearest is this" );
 
-	                Vector3 vec = getGroundHeightVector(landing.transform.position) - getGroundPosition(); // calculate the vector from the Pawns position to the landing platform position at the same height
-
+					//landing platform: the directly accessible platform from the target platform, thats closest to the nearest platform
+					Platform landing = Platform.Closest(targetPlatform.AllAccessiblePlatforms(), nearest.transform.position);
+					
+	                // check if landing platform is not JUST under the nearest platform
+					if ( Vector3.Scale ( ( landing.transform.position - nearest.transform.position ), Vector3.Scale ( getGravityVector( GetWorldGravity() ), getGravityVector( GetWorldGravity() ) ) - new Vector3( 1, 1, 1 ) ).magnitude == 0 )
+						landing = Platform.Closest( landing.AllAccessiblePlatforms(), targetPlatform.transform.position );
+					
+					// calculate the vector from the Pawns position to the landing platform position at the same height
+	                Vector3 vec = getGroundHeightVector(landing.transform.position) - getGroundPosition();
+					
+//					Debug.Log ( "vec is: " + vec );
+					
 	                if (moveMe(vec)) //move the pawn towards that vector
+	                {
+//						Debug.Log ( "Ok, I go !" );
 						targetPlatform = null; //if we are already there, forget targetPlatform
+					}
 	            }
 	            else
 				{
