@@ -20,8 +20,8 @@ public class MainGUI : MonoBehaviour
     private Rect windowRect = new Rect(Screen.width / 2 - width / 2, Screen.height / 2 - height / 4, width, height);
 
     private string[] buttonStrings; // name of all levels
-    private int nLevels = 20;
-    private int nRows = 4; //number of rows we want in the level list
+    private int nLevels = 10;
+    private int nRows = 10; //number of rows we want in the level list
     private int nCols;
 
     /// <summary>
@@ -48,7 +48,7 @@ public class MainGUI : MonoBehaviour
     /// </summary>
     void OnGUI()
     {
-        GUI.Label(titleRect, "Select a Level", skin.GetStyle("title")); // create a label
+        GUI.Label(titleRect, "MU demo v0.1", skin.GetStyle("title")); // create a label
 
         // Here I use GUILayouts to distribute the buttons in a table like fashion
         GUILayout.BeginArea(windowRect);
