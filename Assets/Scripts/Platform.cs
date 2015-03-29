@@ -10,14 +10,17 @@ using System.Collections.Generic;
 ///  Each platform holds the directly accessible platforms, via the List connections.
 ///  For pathfinding purposes it inherits IPathNode.
 /// </summary>
+#if UNITY_EDITOR
 [ExecuteInEditMode]
+#endif
 public class Platform : MonoBehaviour, IPathNode<Platform>
 {
 	public PlatformType type = PlatformType.Valid;
 
 	public Transform[] _connections; //public array used for debuging, this way you can see the platform list in the editor
 	public List<Platform> connections; //list of directly accessible platforms
-	[HideInInspector] private HashSet<Platform> connectionSet; //auxilliary hashset used to ignore duplicates
+	[HideInInspector] protected HashSet<Platform> connectionSet; //auxilliary hashset used to ignore duplicates
+	[HideInInspector] protected HashSet<Platform> siblingConnection; //auxilliary hashset used for siblings detection
 
 	[HideInInspector] public PlatformOrientation orientation;
 	
@@ -25,6 +28,7 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
 
 	// #HIGHLIGHTING#
 
+	[HideInInspector] public bool isClickable = false; // wheter this platform can be clicked or not
     private bool isHighlighted = false;//whether this platform is highlighted
     private bool isFlashing = false;//wheter this platform is flashing
     private Ticker flash;//timer for platform flashing
@@ -38,6 +42,8 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
     // Use this for initialization
     void Start()
     {
+		rescanPath = true;
+
         defineOrientation();
 		applyPlatformMaterial();
 		
@@ -49,7 +55,7 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
 		{
 			int i;
 			Material[] materials;
-			sourceMaterials = renderer.sharedMaterials;
+			sourceMaterials = GetComponent<Renderer>().sharedMaterials;
 
 			List<string> compares = new List<string> { "fill", "valid", "invalid", "exit" };
 
@@ -57,21 +63,28 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
 			{
 				if ( compares.Contains( sourceMaterials[i].name ))
 					break;
-				
 			}
+
+			if (gameObject.GetComponent<Stairway> () != null)
+				return;
 			
 			materials = new Material[] {
 				sourceMaterials[i]
 			};
 			
-			renderer.sharedMaterials = materials;
+			GetComponent<Renderer>().sharedMaterials = materials;
 		}
-
+		
 #elif UNITY_STANDALONE
-//		GetComponent<Renderer>().enabled = false;
+		//GetComponent<Renderer>().enabled = false;
 
+		/*
 		Material[] materials = new Material[] {
 			gameObject.renderer.sharedMaterials[0]
+		};
+		*/
+		Material[] materials = new Material[] {
+			Assets.getBlankBlockMat()
 		};
 		
 		gameObject.renderer.materials = materials;
@@ -80,24 +93,19 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
 
 
     // Update is called once per frame
-    void Update()
-    {
+    protected void Update()
+	{
 #if UNITY_EDITOR
 		// update the selected platform orientation...
         if (Selection.Contains(gameObject))
             defineOrientation();
 #endif
-        if (connectionSet == null) //this isn't in the start method because we have to make sure this is made after all Platforms have been initialized with the proper orientations
-        {
-            connectionSet = new HashSet<Platform>();
-            scanNearbyPlatforms();
-        }
+		if (rescanPath)
+			scanNearbyPlatforms();
 
         if (!oldType.Equals(type)) // if the type was changed in scene mode, reapply the material
             applyPlatformMaterial();
 
-		if (rescanPath)
-            scanNearbyPlatforms();
 
         handleFlashing();
     }
@@ -122,65 +130,119 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
     /// </summary>
     private void defineOrientation()
     {
-//		Material[] materials = gameObject.renderer.sharedMaterials;
-		
-		Material[] materials = new Material[] {
-			gameObject.renderer.sharedMaterials[0],
-			new Material(Shader.Find("Transparent/Diffuse"))
-		};
-        
-        string r = transform.rotation.eulerAngles.ToString();
-        //Debug.Log(r);
-        switch (r)
-        {
-            case "(0.0, 180.0, 0.0)":
-                orientation = PlatformOrientation.Up;
-				materials[1] = Assets.getUpBlockMat();
-                break;
-            case "(0.0, 0.0, -180.0)":
-                orientation = PlatformOrientation.Down;
-                materials[1] = Assets.getDownBlockMat();
-			break;
-			case "(90.0, 90.0, 0.0)":
-				orientation = PlatformOrientation.Left;
-				materials[1] = Assets.getLeftBlockMat();
-                break;
-			case "(90.0, 270.0, 0.0)":
-				orientation = PlatformOrientation.Right;
-				materials[1] = Assets.getRightBlockMat();
-                break;
-            case "(90.0, 180.0, 0.0)":
-                orientation = PlatformOrientation.Front;
-                materials[1] = Assets.getFrontBlockMat();
-                break;
-            case "(90.0, 0.0, 0.0)":
-                orientation = PlatformOrientation.Back;
-                materials[1] = Assets.getBackBlockMat();
-                break;
-            default:
-//                Debug.LogError("A block didn't update its orientation correctly, this is because its rotations is funky or not registered, rotation:" + r);
-                break;
-        }
 
-        gameObject.renderer.materials = materials;
+//		Material[] materials = gameObject.renderer.sharedMaterials;
+
+		Material[] materials = new Material[] {
+			new Material(Shader.Find("Transparent/Diffuse")),
+			gameObject.GetComponent<Renderer>().sharedMaterials[0]
+		};
+		
+		string r = transform.rotation.eulerAngles.ToString();
+		//Debug.Log(r);
+		switch (r)
+		{
+		case "(0.0, 180.0, 0.0)":
+			orientation = PlatformOrientation.Up;
+			materials[1] = Assets.getUpBlockMat();
+			break;
+		case "(0.0, 0.0, -180.0)":
+			orientation = PlatformOrientation.Down;
+			materials[1] = Assets.getDownBlockMat();
+			break;
+		case "(90.0, 90.0, 0.0)":
+			orientation = PlatformOrientation.Left;
+			materials[1] = Assets.getLeftBlockMat();
+			break;
+		case "(90.0, 270.0, 0.0)":
+			orientation = PlatformOrientation.Right;
+			materials[1] = Assets.getRightBlockMat();
+			break;
+		case "(90.0, 180.0, 0.0)":
+			orientation = PlatformOrientation.Front;
+			materials[1] = Assets.getFrontBlockMat();
+			break;
+		case "(90.0, 0.0, 0.0)":
+			orientation = PlatformOrientation.Back;
+			materials[1] = Assets.getBackBlockMat();
+			break;
+		default:
+			//                Debug.LogError("A block didn't update its orientation correctly, this is because its rotations is funky or not registered, rotation:" + r);
+			break;
+		}
+		
+		materials[1].SetFloat( "_Mode", 2 );
+		materials[1].SetInt( "_SrcBlend", (int) UnityEngine.Rendering.BlendMode.SrcAlpha );
+		materials[1].SetInt( "_DstBlend", (int) UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha );
+		materials[1].DisableKeyword( "_ALPHATEST_ON" );
+		materials[1].EnableKeyword( "_ALPHABLEND_ON" );
+		materials[1].DisableKeyword( "_ALPHAPREMULTIPLY_ON" );
+		materials[1].renderQueue = 3000;
+        
+
+		Mesh sharedMesh = gameObject.GetComponent<MeshFilter> ().sharedMesh;
+		sharedMesh.subMeshCount = 2;
+		int[] tri = sharedMesh.GetTriangles (0);
+		sharedMesh.SetTriangles (tri, 0);
+		sharedMesh.SetTriangles (tri, 1);
+
+        gameObject.GetComponent<Renderer>().materials = materials;
+        
     }
 
     /// <summary>
     /// scans nearby platforms and puts them in the connections list, to later be used to calculates paths and so on.
     /// </summary>
-    private void scanNearbyPlatforms()
-    {
+    protected virtual void scanNearbyPlatforms()
+	{
+	    connectionSet = new HashSet<Platform>();
 
-        connectionSet = new HashSet<Platform>();
-        Collider[] hits = Physics.OverlapSphere(transform.position, 5.5f);
-        //Debug.DrawLine(transform.position, transform.position + transform.up * 5f);
+		if ( siblingConnection != null )
+		{
+			foreach ( Platform sibling in siblingConnection )
+				connectionSet.Add( sibling );
 
-        foreach (Collider hit in hits)
+			siblingConnection = null;
+		}
+
+		Collider[] hits = Physics.OverlapSphere(transform.position, 5.5f);
+
+		Stack<Collider> hitList = new Stack<Collider> ();
+
+		foreach( Collider hit in hits )
+			hitList.Push (hit);
+
+		while ( hitList.Count > 0 )
         {
-            if (hit.collider.transform != transform)
+			Collider hit = hitList.Pop();
+
+			if ( hit.GetComponent<Collider>().transform != transform )
             {
+				// Si il s'agit d'un escalier
+				Stairway stair = hit.gameObject.GetComponent<Stairway>();
+				if( stair != null )
+				{
+					Platform siblingPlatform = stair.LookForSiblingPlatform( this );
+
+					if ( siblingPlatform != null )
+					{
+						// Jumelle trouvée, la plateforme est ajoutée
+						// à la liste de la plateforme
+						hitList.Push( siblingPlatform.GetComponent<Collider>() );
+
+						if ( siblingPlatform.siblingConnection == null )
+							siblingPlatform.siblingConnection = new HashSet<Platform>();
+
+						if ( !siblingPlatform.siblingConnection.Contains( this ) )
+							siblingPlatform.siblingConnection.Add( this );
+					}
+
+					continue;
+				}
+
                 Platform p = hit.gameObject.GetComponent<Platform>();
-                if (p != null && p.orientation.Equals(orientation))
+
+				if (p != null && p.orientation.Equals(orientation) )
                 {
 					if (rescanPath)
 						p.rescanPath = true;
@@ -200,14 +262,14 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
 
 
     /// <summary>
-    /// <para>Changes the platform material according to the charactristics of the platform.</para>
+    /// <para>Changes the platform material according to the characteristics of the platform.</para>
     /// <para>Although you can change the patforms materials in the editor this script will change all that.</para>
     /// <para>This is responsible for flashing, highlighting, which is also a change in materials.</para>
     /// </summary>
     private void applyPlatformMaterial()
     {
         //for some reason Unity doesn't let us change a single material, we have to change the material array
-        Material[] materials = gameObject.renderer.sharedMaterials;
+        Material[] materials = gameObject.GetComponent<Renderer>().sharedMaterials;
         switch (type)
         {
 		case PlatformType.Valid:
@@ -223,15 +285,18 @@ public class Platform : MonoBehaviour, IPathNode<Platform>
                 materials[0] = isFlashing ? Assets.getFlashingExitBlockMat() : materials[0];
                 break;
         }
-        gameObject.renderer.materials = materials;
-        oldType = type;
+        gameObject.GetComponent<Renderer>().materials = materials;
+		oldType = type;
     }
 
     // this function is called whenever we want to highlight a platform, usually due to mousehover
     public void highlight()
     {
-        isHighlighted = true;
-        applyPlatformMaterial();
+		if ( isClickable )
+		{
+	        isHighlighted = true;
+	        applyPlatformMaterial();
+		}
     }
 
     // this function is called whenever we want to unhighlight a platform, usually right after a mousehover

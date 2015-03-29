@@ -17,7 +17,7 @@ public class CustomPhysics : MonoBehaviour
     void Update()
     {
 
-		rigidbody.useGravity = true;
+		GetComponent<Rigidbody>().useGravity = true;
 //	[EDIT]: commented 1 line
  //           rigidbody.AddForce(pawn.getGravityVector(pawn.gravity) * force);
 

@@ -104,10 +104,10 @@ public class RAJA_Editor : MonoBehaviour {
 		p.type = PlatformType.Exit;
 		p.orientation = PlatformOrientation.Front;
 		
-		materials = front.renderer.sharedMaterials;
+		materials = front.GetComponent<Renderer>().sharedMaterials;
 		
 		materials = new Material[] {
-			front.renderer.sharedMaterial,
+			front.GetComponent<Renderer>().sharedMaterial,
 			new Material(Shader.Find("Transparent/Diffuse")),
 			new Material(Shader.Find("Transparent/Diffuse"))
 		};
@@ -119,7 +119,7 @@ public class RAJA_Editor : MonoBehaviour {
 		materials[2] = Assets.getFrontBlockMat();
 		materials[2].shader = Shader.Find("Transparent/Diffuse");
 		
-		front.renderer.sharedMaterials = materials;
+		front.GetComponent<Renderer>().sharedMaterials = materials;
 		
 		// #BACK#
 		
@@ -135,10 +135,10 @@ public class RAJA_Editor : MonoBehaviour {
 		p.type = PlatformType.Exit;
 		p.orientation = PlatformOrientation.Back;
 		
-		materials = back.renderer.sharedMaterials;
+		materials = back.GetComponent<Renderer>().sharedMaterials;
 		
 		materials = new Material[] {
-			back.renderer.sharedMaterial,
+			back.GetComponent<Renderer>().sharedMaterial,
 			new Material(Shader.Find("Transparent/Diffuse")),
 			new Material(Shader.Find("Transparent/Diffuse"))
 		};
@@ -150,7 +150,7 @@ public class RAJA_Editor : MonoBehaviour {
 		materials[2] = Assets.getBackBlockMat();
 		materials[2].shader = Shader.Find("Transparent/Diffuse");
 		
-		back.renderer.sharedMaterials = materials;
+		back.GetComponent<Renderer>().sharedMaterials = materials;
 		
 		// #UP#
 		
@@ -166,10 +166,10 @@ public class RAJA_Editor : MonoBehaviour {
 		p.type = PlatformType.Exit;
 		p.orientation = PlatformOrientation.Up;
 		
-		materials = up.renderer.sharedMaterials;
+		materials = up.GetComponent<Renderer>().sharedMaterials;
 		
 		materials = new Material[] {
-			up.renderer.sharedMaterial,
+			up.GetComponent<Renderer>().sharedMaterial,
 			new Material(Shader.Find("Transparent/Diffuse")),
 			new Material(Shader.Find("Transparent/Diffuse"))
 		};
@@ -181,7 +181,7 @@ public class RAJA_Editor : MonoBehaviour {
 		materials[2] = Assets.getUpBlockMat();
 		materials[2].shader = Shader.Find("Transparent/Diffuse");
 		
-		up.renderer.sharedMaterials = materials;
+		up.GetComponent<Renderer>().sharedMaterials = materials;
 		
 		// #DOWN#
 		
@@ -197,10 +197,10 @@ public class RAJA_Editor : MonoBehaviour {
 		p.type = PlatformType.Exit;
 		p.orientation = PlatformOrientation.Down;
 		
-		materials = down.renderer.sharedMaterials;
+		materials = down.GetComponent<Renderer>().sharedMaterials;
 		
 		materials = new Material[] {
-			down.renderer.sharedMaterial,
+			down.GetComponent<Renderer>().sharedMaterial,
 			new Material(Shader.Find("Transparent/Diffuse")),
 			new Material(Shader.Find("Transparent/Diffuse"))
 		};
@@ -212,7 +212,7 @@ public class RAJA_Editor : MonoBehaviour {
 		materials[2] = Assets.getDownBlockMat();
 		materials[2].shader = Shader.Find("Transparent/Diffuse");
 		
-		down.renderer.sharedMaterials = materials;
+		down.GetComponent<Renderer>().sharedMaterials = materials;
 		
 		// #LEFT#
 		
@@ -228,10 +228,10 @@ public class RAJA_Editor : MonoBehaviour {
 		p.type = PlatformType.Exit;
 		p.orientation = PlatformOrientation.Left;
 		
-		materials = left.renderer.sharedMaterials;
+		materials = left.GetComponent<Renderer>().sharedMaterials;
 		
 		materials = new Material[] {
-			left.renderer.sharedMaterial,
+			left.GetComponent<Renderer>().sharedMaterial,
 			new Material(Shader.Find("Transparent/Diffuse")),
 			new Material(Shader.Find("Transparent/Diffuse"))
 		};
@@ -243,7 +243,7 @@ public class RAJA_Editor : MonoBehaviour {
 		materials[2] = Assets.getLeftBlockMat();
 		materials[2].shader = Shader.Find("Transparent/Diffuse");
 		
-		left.renderer.sharedMaterials = materials;
+		left.GetComponent<Renderer>().sharedMaterials = materials;
 		
 		// #RIGHT#
 		
@@ -259,10 +259,10 @@ public class RAJA_Editor : MonoBehaviour {
 		p.type = PlatformType.Exit;
 		p.orientation = PlatformOrientation.Right;
 		
-		materials = right.renderer.sharedMaterials;
+		materials = right.GetComponent<Renderer>().sharedMaterials;
 		
 		materials = new Material[] {
-			right.renderer.sharedMaterial,
+			right.GetComponent<Renderer>().sharedMaterial,
 			new Material(Shader.Find("Transparent/Diffuse")),
 			new Material(Shader.Find("Transparent/Diffuse"))
 		};
@@ -274,7 +274,7 @@ public class RAJA_Editor : MonoBehaviour {
 		materials[2] = Assets.getRightBlockMat();
 		materials[2].shader = Shader.Find("Transparent/Diffuse");
 		
-		right.renderer.sharedMaterials = materials;
+		right.GetComponent<Renderer>().sharedMaterials = materials;
 	}
 	#endif
 }

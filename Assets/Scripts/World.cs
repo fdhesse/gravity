@@ -77,12 +77,12 @@ public class World : MonoBehaviour {
 		return false;
 	}
 
-	public void ChangeGravity()
+	public void ChangeGravity( PlatformOrientation orientation )
 	{
 		for (int i = 0; i != gravityPlatforms.Length; i++)
 		{
 			GravityPlatform gPlatform = (GravityPlatform) gravityPlatforms[i];
-			gPlatform.Unfreeze();
+			gPlatform.Unfreeze( orientation );
 		}
 	}
 }

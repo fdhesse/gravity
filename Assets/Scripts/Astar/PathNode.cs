@@ -55,7 +55,7 @@ public class PathNode : MonoBehaviour, IPathNode<PathNode>
         obj.name = "pn_" + pnIndex;
         obj.transform.position = inPosition;
         obj.transform.localScale = Vector3.one * 10.0f;
-        obj.renderer.enabled = false;
+        obj.GetComponent<Renderer>().enabled = false;
         pnIndex++;
 
         PathNode newNode = obj.AddComponent<PathNode>();

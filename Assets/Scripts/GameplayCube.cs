@@ -94,9 +94,9 @@ public class GameplayCube : MonoBehaviour {
 		// clean up the platform's connections
 		p._connections = null;
 		
-		materials = face.renderer.sharedMaterials;
+		materials = face.GetComponent<Renderer>().sharedMaterials;
 		materials = new Material[] {
-			face.renderer.sharedMaterial,
+			face.GetComponent<Renderer>().sharedMaterial,
 			new Material(Shader.Find("Transparent/Diffuse")),
 			new Material(Shader.Find("Transparent/Diffuse"))
 		};
@@ -182,7 +182,7 @@ public class GameplayCube : MonoBehaviour {
 //		face.transform.Translate(new Vector3(0, transform.localScale.x/2 + 0.2f, 0), Space.Self);
 		face.transform.Translate(new Vector3(0, transform.localScale.x/2, 0), Space.Self);
 		
-		face.renderer.sharedMaterials = materials;
+		face.GetComponent<Renderer>().sharedMaterials = materials;
 		
 		// tag accordingly to parent's parent tag
 
@@ -259,10 +259,10 @@ public class GameplayCube : MonoBehaviour {
 		p.type = PlatformType.Exit;
 		p.orientation = PlatformOrientation.Front;
 		
-		materials = face.renderer.sharedMaterials;
+		materials = face.GetComponent<Renderer>().sharedMaterials;
 		
 		materials = new Material[] {
-			face.renderer.sharedMaterial,
+			face.GetComponent<Renderer>().sharedMaterial,
 			new Material(Shader.Find("Transparent/Diffuse")),
 			new Material(Shader.Find("Transparent/Diffuse"))
 		};
@@ -274,6 +274,14 @@ public class GameplayCube : MonoBehaviour {
 		materials[2] = Assets.getFrontBlockMat();
 		materials[2].shader = Shader.Find("Transparent/Diffuse");
 		
-		face.renderer.sharedMaterials = materials;
+		face.GetComponent<Renderer>().sharedMaterials = materials;
 	}
+
+#if UNITY_EDITOR
+	void OnDrawGizmosSelected()
+	{
+		Gizmos.color = Color.red;
+		Gizmos.DrawWireCube (transform.position, transform.localScale);
+	}
+#endif
 }

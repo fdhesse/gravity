@@ -56,12 +56,14 @@ public class GravityPlatform : MonoBehaviour {
 */	
 	public enum ConstraintAxis { X, Y, Z };
 
+	public bool invert = false;
 	public float from = 0;
 	public float to = 10;
 
 	public ConstraintAxis constrainedAxis;
 
-	private bool freezed;
+
+	private bool freezed = false;
 
 	private float position
 	{
@@ -86,52 +88,97 @@ public class GravityPlatform : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
+		if ( invert )
+		{
+			float swap = from;
+
+			from = to;
+			to = swap;
+		}
 		Reset ();
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		if ( !(position <= to && position >= from) && !freezed )
-			Freeze();
-		else if ( freezed && (position > to || position < from) )
-			Unfreeze();
+	void Update ()
+	{
+		if ( !invert )
+		{
+			if ( !freezed && (position > to || position < from) )
+				Freeze();
+		}
+		else
+		{
+			if ( !freezed && (position > from || position < to) )
+				Freeze();
+		}
 	}
 
 	public void Reset()
 	{
+		GetComponent<Rigidbody> ().isKinematic = false;
 		position = from;
 		
 		Freeze ();
-		Unfreeze ();
-
-//		Debug.Log (rigidbody.constraints);
+		//Unfreeze ( null );
 	}
 
-	public void Unfreeze()
+	public void Unfreeze( PlatformOrientation orientation )
 	{
-		freezed = false;
-
-		if( constrainedAxis == ConstraintAxis.X )
-			rigidbody.constraints = RigidbodyConstraints.FreezeRotation | ~RigidbodyConstraints.FreezePositionX;
-		if( constrainedAxis == ConstraintAxis.Y )
-			rigidbody.constraints = RigidbodyConstraints.FreezeRotation | ~RigidbodyConstraints.FreezePositionY;
-		if( constrainedAxis == ConstraintAxis.Z )
-			rigidbody.constraints = RigidbodyConstraints.FreezeRotation | ~RigidbodyConstraints.FreezePositionZ;
+		if ( orientation == PlatformOrientation.Down || orientation == PlatformOrientation.Up )
+		{
+			if( constrainedAxis == ConstraintAxis.Y )
+			{
+				GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | ~RigidbodyConstraints.FreezePositionY;
+				freezed = false;
+			}
+		}
+		else if ( orientation == PlatformOrientation.Right || orientation == PlatformOrientation.Left )
+		{
+			if( constrainedAxis == ConstraintAxis.X )
+			{
+				GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | ~RigidbodyConstraints.FreezePositionX;
+				freezed = false;
+			}
+		}
+		else if ( orientation == PlatformOrientation.Front || orientation == PlatformOrientation.Back )
+		{
+			if( constrainedAxis == ConstraintAxis.Z )
+			{
+				GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | ~RigidbodyConstraints.FreezePositionZ;
+				freezed = false;
+			}
+		}
 	}
 
 	private void Freeze()
 	{
-		rigidbody.velocity = Vector3.zero;
-		rigidbody.angularVelocity = Vector3.zero;
+		GetComponent<Rigidbody>().velocity = Vector3.zero;
+		GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 
-		rigidbody.constraints = RigidbodyConstraints.FreezeAll;
-
-		if (position > to)
-			position = to - 1;
-		else if (position < from)
-			position = from + 1;
+		GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+		
+		if ( !invert )
+		{
+			if (position > to)
+				position = to - 0.001f;
+			else if (position < from)
+				position = from + 0.001f;
+		}
+		else
+		{
+			if (position > from)
+				position = from - 0.001f;
+			else if (position < to)
+				position = to + 0.001f;
+		}
 
 		freezed = true;
+
+		Platform[] childrenPlatforms = GetComponentsInChildren<Platform> ();
+
+		for ( int i = 0, l = childrenPlatforms.Length; i < l; i++ )
+			childrenPlatforms[i].rescanPath = true;
 	}
 }

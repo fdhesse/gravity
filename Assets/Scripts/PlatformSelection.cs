@@ -7,11 +7,13 @@ using System.Collections;
 public static class PlatformSelection
 {
     private static Platform platform;//currently selected platform
-    private static GameObject cam;//camera for this scene
+	private static Camera camera;//camera for this scene
+	//private static GameObject cam;//camera for this scene
 
     static PlatformSelection()
     {
-        cam = GameObject.FindGameObjectWithTag("MainCamera"); //initialize the camera
+		//cam = GameObject.FindGameObjectWithTag("MainCamera"); //initialize the camera
+		camera = Camera.main;
     }
 
     /// <summary>
@@ -33,11 +35,13 @@ public static class PlatformSelection
     public static Platform getPlatform()
     {
         Platform p = null;
-        if (cam == null)//if there isn't a camera associated with this script, get the main camera
+		if (camera == null)//if there isn't a camera associated with this script, get the main camera
         {
-            cam = GameObject.FindGameObjectWithTag("MainCamera");
+			//cam = GameObject.FindGameObjectWithTag("MainCamera");
+			camera = Camera.main;
         }
-        Ray mouseRay = cam.camera.ScreenPointToRay(Input.mousePosition);
+
+		Ray mouseRay = camera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit = new RaycastHit();
 //		if (Physics.Raycast(mouseRay, out hit, float.MaxValue, ~(1 << 11))) // cast a raycast ignoring the layer for the DeathZone
 		if (Physics.Raycast(mouseRay, out hit, float.MaxValue, (1 << 14))) // cast a raycast ignoring all but the layer for the platforms
@@ -45,9 +49,7 @@ public static class PlatformSelection
             p = hit.collider.gameObject.GetComponent<Platform>();
             
             if (p != null) //if it is a platform
-            {
                 p.highlight();
-            }
         }
         return p;
     }

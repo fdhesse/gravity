@@ -31,19 +31,38 @@ static class Assets
         //frontBlockMat = new Material(Resources.Load("Resources/Materials/orientations/front") as Material);
         //backBlockMat = new Material(Resources.Load("Resources/Materials/orientations/back") as Material);
     }
-
+	
+#if UNITY_EDITOR
     public static Material getValidBlockMat()
     {
         return new Material(Resources.Load("Materials/blocks/valid") as Material);
-    }
-    public static Material getInvalidBlockMat()
-    {
-        return new Material(Resources.Load("Materials/blocks/invalid") as Material);
-    }
-    public static Material getExitBlockMat()
-    {
-        return new Material(Resources.Load("Materials/blocks/exit") as Material);
-    }
+	}
+	public static Material getInvalidBlockMat()
+	{
+		return new Material(Resources.Load("Materials/blocks/invalid") as Material);
+	}
+	public static Material getExitBlockMat()
+	{
+		return new Material(Resources.Load("Materials/blocks/exit") as Material);
+	}
+#elif UNITY_STANDALONE
+	public static Material getBlankBlockMat()
+	{
+		return new Material(Resources.Load("Materials/blocks/blank") as Material);
+	}
+	public static Material getValidBlockMat()
+	{
+		return getBlankBlockMat();
+	}
+	public static Material getInvalidBlockMat()
+	{
+		return getBlankBlockMat();
+	}
+	public static Material getExitBlockMat()
+	{
+		return getBlankBlockMat();
+	}
+#endif
     public static Material getHighlightedValidBlockMat()
     {
         return new Material(Resources.Load("Materials/blocks/highlighted/validHighlighted") as Material);

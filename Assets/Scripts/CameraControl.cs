@@ -8,6 +8,8 @@ public class CameraControl : MonoBehaviour
 {
     public Transform target;      // the transform of the target GameObject (has position, rotation and scale values)
 
+	public float rotationTime = 0.1f;
+
     public float distance = 5f; // distance to the target
     public float xPivotingSpeed = 120.0f; // x orbiting speed
     public float yPivotingSpeed = 120.0f; // y orbiting speed
@@ -17,18 +19,21 @@ public class CameraControl : MonoBehaviour
 //    private float yMaxLimit = 360f;
     private float distanceMin = 5f; //minimum distance, changeable via zoom
     private float distanceMax = 1000f; //maximum distance, changeable via zoom
+	
+	[HideInInspector] public float roll = 0.0f;
+	[HideInInspector] public float pan = 0.0f;
+	[HideInInspector] public float tilt = 0.0f;
 
-    float x = 0.0f;
-    float y = 0.0f;
     void Start()
     {
         Vector3 angles = transform.eulerAngles;
-        x = angles.y;
-        y = angles.x;
+        pan = angles.y;
+        tilt = angles.x;
+		//roll = 0.0f;
 
         // Make the rigid body not change rotation
-        if (rigidbody)
-            rigidbody.freezeRotation = true;
+        if (GetComponent<Rigidbody>())
+            GetComponent<Rigidbody>().freezeRotation = true;
     }
 
 	public Vector3 delta = Vector3.zero;
@@ -39,8 +44,6 @@ public class CameraControl : MonoBehaviour
 
 		if (target && ( !target.GetComponent<Pawn>() || target.GetComponent<Pawn>().isCameraMode ))
         {
-            
-
 			if ( Input.GetMouseButtonDown(0) )
 			{
 				lastPos = Input.mousePosition;
@@ -56,13 +59,38 @@ public class CameraControl : MonoBehaviour
 				
 //				Debug.Log( "delta distance : " + delta.magnitude );		delta.y = ClampAngle(delta.y, yMinLimit, yMaxLimit);
 
-				x += delta.x;
-				y -= delta.y;
+				if ( roll >= 90 && roll < 180 )
+				{
+					pan -= delta.y;
+					tilt -= delta.x;
+				}
+				else if ( roll >= 180 && roll < 270 )
+				{
+					pan -= delta.x;
+					tilt += delta.y;
+				}/*
+				else if ( roll >= 270 && roll < 360 )
+				{
+					x += delta.y;
+					y -= delta.x;
+				}*/
+				else
+				{
+					pan += delta.x;
+					tilt -= delta.y;
+				}
+
 			}
 
         }
 
-		Quaternion rotation = Quaternion.Euler(y, x, 0);
+		Quaternion rotation;
+		
+		if ( roll >= 90 && roll < 180 )
+			rotation = Quaternion.Euler(pan, tilt, roll);
+		else
+			rotation = Quaternion.Euler(tilt, pan, roll);
+
 		distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel") * 50, distanceMin, distanceMax);
 
 		//camera collisions
@@ -91,5 +119,4 @@ public class CameraControl : MonoBehaviour
             angle -= 360F;
         return Mathf.Clamp(angle, min, max);
     }
-
 }

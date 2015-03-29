@@ -33,7 +33,7 @@ public class FallingCube : MonoBehaviour {
 		transform.FindChild( "front" ).gameObject.GetComponent<Platform>().rescanPath = true;
 		transform.FindChild( "back" ).gameObject.GetComponent<Platform>().rescanPath = true;
 		
-		rigidbody.constraints = RigidbodyConstraints.FreezeAll; // .FreezeRotation | RigidbodyConstraints.FreezePositionZ;
+		GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll; // .FreezeRotation | RigidbodyConstraints.FreezePositionZ;
 		PlayerPawn = (Pawn) GameObject.Find ("Pawn").GetComponent<Pawn>();
 	}
 	
@@ -41,17 +41,17 @@ public class FallingCube : MonoBehaviour {
 	void Update () {
 	
 		// if the cube is still falling, game can't continue
-		if ( Vector3.Magnitude(rigidbody.velocity) > 0f && !isDestroyed )
+		if ( Vector3.Magnitude(GetComponent<Rigidbody>().velocity) > 0f && !isDestroyed )
 			isFalling = true;
 		else
 			isFalling = false;
 			
-		if (PlayerPawn.rigidbody.useGravity) {
-			rigidbody.constraints = PlayerPawn.rigidbody.constraints;
+		if (PlayerPawn.GetComponent<Rigidbody>().useGravity) {
+			GetComponent<Rigidbody>().constraints = PlayerPawn.GetComponent<Rigidbody>().constraints;
 		}
 		else
 		{
-			rigidbody.constraints = PlayerPawn.nextConstraint;
+			GetComponent<Rigidbody>().constraints = PlayerPawn.nextConstraint;
 		}
 	}
 
@@ -62,8 +62,8 @@ public class FallingCube : MonoBehaviour {
 		else
 			transform.position = spawnPosition;
 
-		rigidbody.velocity = Vector3.zero;
-		rigidbody.angularVelocity = Vector3.zero;
+		GetComponent<Rigidbody>().velocity = Vector3.zero;
+		GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 		
 		isDestroyed = false;
 	}
@@ -81,6 +81,6 @@ public class FallingCube : MonoBehaviour {
 		if (collision.gameObject.tag == "Player")
 			PlayerPawn.CubeContact (transform.position);
 		else if (collision.relativeVelocity.magnitude > 2)
-			audio.Play();
+			GetComponent<AudioSource>().Play();
 	}
 }
