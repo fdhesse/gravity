@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 1b0155801f79c496ba25a7455c1becd0
-timeCreated: 1427869657
+guid: a187e77c9afa0468f845f14da1aee1fd
+timeCreated: 1427982464
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: cube_plane3
+    4300000: column_x2_deco
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -30,7 +30,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: .100000001
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
@@ -46,9 +46,9 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 0
+    normalSmoothAngle: 60
     splitTangentsAcrossUV: 1
-    normalImportMode: 1
+    normalImportMode: 0
     tangentImportMode: 1
   importAnimation: 1
   copyAvatar: 0
