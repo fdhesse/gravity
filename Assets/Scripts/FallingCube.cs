@@ -7,7 +7,7 @@ public class FallingCube : MonoBehaviour {
 	
 	private Pawn PlayerPawn; // Player Pawn
 
-	public Platform platform; // Platform beneath the Cube
+	public Tile platform; // Tile beneath the Cube
 
 	public Vector3 spawnPosition; // position of the Cube GameObject initial position
 	
@@ -19,19 +19,19 @@ public class FallingCube : MonoBehaviour {
 	{
 		GameplayCube cube = GetComponent<GameplayCube>();
 		
-		cube.Left = PlatformType.Valid;
-		cube.Right = PlatformType.Valid;
-		cube.Up = PlatformType.Valid;
-		cube.Down = PlatformType.Valid;
-		cube.Front = PlatformType.Valid;
-		cube.Back = PlatformType.Valid;
+		cube.Left = TileType.Valid;
+		cube.Right = TileType.Valid;
+		cube.Up = TileType.Valid;
+		cube.Down = TileType.Valid;
+		cube.Front = TileType.Valid;
+		cube.Back = TileType.Valid;
 		
-		transform.FindChild( "left" ).gameObject.GetComponent<Platform>().rescanPath = true;
-		transform.FindChild( "right" ).gameObject.GetComponent<Platform>().rescanPath = true;
-		transform.FindChild( "up" ).gameObject.GetComponent<Platform>().rescanPath = true;
-		transform.FindChild( "down" ).gameObject.GetComponent<Platform>().rescanPath = true;
-		transform.FindChild( "front" ).gameObject.GetComponent<Platform>().rescanPath = true;
-		transform.FindChild( "back" ).gameObject.GetComponent<Platform>().rescanPath = true;
+		transform.FindChild( "left" ).gameObject.GetComponent<Tile>().rescanPath = true;
+		transform.FindChild( "right" ).gameObject.GetComponent<Tile>().rescanPath = true;
+		transform.FindChild( "up" ).gameObject.GetComponent<Tile>().rescanPath = true;
+		transform.FindChild( "down" ).gameObject.GetComponent<Tile>().rescanPath = true;
+		transform.FindChild( "front" ).gameObject.GetComponent<Tile>().rescanPath = true;
+		transform.FindChild( "back" ).gameObject.GetComponent<Tile>().rescanPath = true;
 		
 		GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll; // .FreezeRotation | RigidbodyConstraints.FreezePositionZ;
 		PlayerPawn = (Pawn) GameObject.Find ("Pawn").GetComponent<Pawn>();

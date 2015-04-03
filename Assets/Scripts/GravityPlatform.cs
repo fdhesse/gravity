@@ -124,9 +124,9 @@ public class GravityPlatform : MonoBehaviour {
 		//Unfreeze ( null );
 	}
 
-	public void Unfreeze( PlatformOrientation orientation )
+	public void Unfreeze( TileOrientation orientation )
 	{
-		if ( orientation == PlatformOrientation.Down || orientation == PlatformOrientation.Up )
+		if ( orientation == TileOrientation.Down || orientation == TileOrientation.Up )
 		{
 			if( constrainedAxis == ConstraintAxis.Y )
 			{
@@ -134,7 +134,7 @@ public class GravityPlatform : MonoBehaviour {
 				freezed = false;
 			}
 		}
-		else if ( orientation == PlatformOrientation.Right || orientation == PlatformOrientation.Left )
+		else if ( orientation == TileOrientation.Right || orientation == TileOrientation.Left )
 		{
 			if( constrainedAxis == ConstraintAxis.X )
 			{
@@ -142,7 +142,7 @@ public class GravityPlatform : MonoBehaviour {
 				freezed = false;
 			}
 		}
-		else if ( orientation == PlatformOrientation.Front || orientation == PlatformOrientation.Back )
+		else if ( orientation == TileOrientation.Front || orientation == TileOrientation.Back )
 		{
 			if( constrainedAxis == ConstraintAxis.Z )
 			{
@@ -176,7 +176,7 @@ public class GravityPlatform : MonoBehaviour {
 
 		freezed = true;
 
-		Platform[] childrenPlatforms = GetComponentsInChildren<Platform> ();
+		Tile[] childrenPlatforms = GetComponentsInChildren<Tile> ();
 
 		for ( int i = 0, l = childrenPlatforms.Length; i < l; i++ )
 			childrenPlatforms[i].rescanPath = true;

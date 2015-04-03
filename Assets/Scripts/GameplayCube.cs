@@ -1,61 +1,58 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[ExecuteInEditMode]
 public class GameplayCube : MonoBehaviour {
-	
-//	private bool __needsUpdate = false;
-	
-	[HideInInspector] [SerializeField] private PlatformType m_left	= PlatformType.None;
-	[HideInInspector] [SerializeField] private PlatformType m_right	= PlatformType.None;
-	[HideInInspector] [SerializeField] private PlatformType m_up	= PlatformType.None;
-	[HideInInspector] [SerializeField] private PlatformType m_down	= PlatformType.None;
-	[HideInInspector] [SerializeField] private PlatformType m_front	= PlatformType.None;
-	[HideInInspector] [SerializeField] private PlatformType m_back	= PlatformType.None;
+
+	[HideInInspector] [SerializeField] private TileType m_left	= TileType.None;
+	[HideInInspector] [SerializeField] private TileType m_right	= TileType.None;
+	[HideInInspector] [SerializeField] private TileType m_up	= TileType.None;
+	[HideInInspector] [SerializeField] private TileType m_down	= TileType.None;
+	[HideInInspector] [SerializeField] private TileType m_front	= TileType.None;
+	[HideInInspector] [SerializeField] private TileType m_back	= TileType.None;
 	
 	[ExposeProperty]
-	public PlatformType Left
+	public TileType Left
 	{
 		get { return m_left; }
 		set	{ if(value != m_left) { SetFace( "left", value ); m_left = value; } }
 //		set	{ if(value != m_left) { __needsUpdate = true; m_left = value; } }
 	}
 	[ExposeProperty]
-	public PlatformType Right
+	public TileType Right
 	{
 		get { return m_right; }
 		set	{ if(value != m_right) { SetFace( "right", value ); m_right = value; } }
 //		set	{ if(value != m_left) { __needsUpdate = true; m_right = value; } }
 	}
 	[ExposeProperty]
-	public PlatformType Up
+	public TileType Up
 	{
 		get { return m_up; }
 		set	{ if(value != m_up) { SetFace( "up", value ); m_up = value; } }
 //		set	{ if(value != m_up) { __needsUpdate = true; m_up = value; } }
 	}
 	[ExposeProperty]
-	public PlatformType Down
+	public TileType Down
 	{
 		get { return m_down; }
 		set	{ if(value != m_down) { SetFace( "down", value ); m_down = value; } }
 //		set	{ if(value != m_down) { __needsUpdate = true; m_down = value; } }
 	}
 	[ExposeProperty]
-	public PlatformType Front
+	public TileType Front
 	{
 		get { return m_front; }
 		set	{ if(value != m_front) { SetFace( "front", value ); m_front = value; } }
 //		set	{ if(value != m_front) { __needsUpdate = true; m_front = value; } }
 	}
 	[ExposeProperty]
-	public PlatformType Back
+	public TileType Back
 	{
 		get { return m_back; }
 		set	{ if(value != m_back) { SetFace( "back", value ); m_back = value; } }
 	}
 	
-	public void SetFace( string faceName, PlatformType type )
+	public void SetFace( string faceName, TileType type )
 	{
 
 		// supprimer la plateforme actuelle
@@ -70,12 +67,12 @@ public class GameplayCube : MonoBehaviour {
 
 		// pas de plateforme, fin
 
-		if ( type == PlatformType.None )
+		if ( type == TileType.None )
 		{
 			return;
 		}
 		
-		Platform p;
+		Tile p;
 		Material[] materials;
 		GameObject face = GameObject.CreatePrimitive(PrimitiveType.Plane);
 
@@ -87,7 +84,7 @@ public class GameplayCube : MonoBehaviour {
 		face.transform.parent = transform;
 		face.transform.position = transform.position;
 		
-		p = face.AddComponent<Platform>();
+		p = face.AddComponent<Tile>();
 		p.gameObject.layer = 14;
 		p.type = type;
 		
@@ -103,15 +100,15 @@ public class GameplayCube : MonoBehaviour {
 		
 		switch( type )
 		{
-			case PlatformType.Valid:
+			case TileType.Valid:
 				materials[0] = Assets.getValidBlockMat();
 				materials[0].shader = Shader.Find("Diffuse");
 				break;
-			case PlatformType.Invalid:
+			case TileType.Invalid:
 				materials[0] = Assets.getInvalidBlockMat();
 				materials[0].shader = Shader.Find("Diffuse");
 				break;
-			case PlatformType.Exit:
+			case TileType.Exit:
 				materials[0] = Assets.getExitBlockMat();
 				materials[0].shader = Shader.Find("Diffuse");
 				break;
@@ -130,49 +127,49 @@ public class GameplayCube : MonoBehaviour {
 				materials[2] = Assets.getLeftBlockMat();
 				
 				face.transform.rotation = Quaternion.Euler( new Vector3( 90, 90, 0 ));
-				p.orientation = PlatformOrientation.Left;
+				p.orientation = TileOrientation.Left;
 				break;
 			case "right":
 				materials[1] = Assets.getRightBlockMat();
 				materials[2] = Assets.getRightBlockMat();
 				
 				face.transform.rotation = Quaternion.Euler( new Vector3( 90, 270, 0 ));
-				p.orientation = PlatformOrientation.Right;
+				p.orientation = TileOrientation.Right;
 					break;
 			case "up":
 				materials[1] = Assets.getUpBlockMat();
 				materials[2] = Assets.getUpBlockMat();
 				
 				face.transform.rotation = Quaternion.Euler( new Vector3( 0, 180, 0 ));
-				p.orientation = PlatformOrientation.Up;
+				p.orientation = TileOrientation.Up;
 					break;
 			case "down":
 				materials[1] = Assets.getDownBlockMat();
 				materials[2] = Assets.getDownBlockMat();
 				
 				face.transform.rotation = Quaternion.Euler( new Vector3( 0, 0, 180 ));
-				p.orientation = PlatformOrientation.Down;
+				p.orientation = TileOrientation.Down;
 					break;
 			case "front":
 				materials[1] = Assets.getFrontBlockMat();
 				materials[2] = Assets.getFrontBlockMat();
 				
 				face.transform.rotation = Quaternion.Euler( new Vector3( 90, 180, 0 ));
-				p.orientation = PlatformOrientation.Front;
+				p.orientation = TileOrientation.Front;
 					break;
 			case "back":
 				materials[1] = Assets.getBackBlockMat();
 				materials[2] = Assets.getBackBlockMat();
 				
 				face.transform.rotation = Quaternion.Euler( new Vector3( 90, 0, 0 ));
-				p.orientation = PlatformOrientation.Back;
+				p.orientation = TileOrientation.Back;
 					break;
 			default:
 				materials[1] = Assets.getFrontBlockMat();
 				materials[2] = Assets.getFrontBlockMat();
 				
 				face.transform.rotation = Quaternion.Euler( new Vector3( 0, 0, 0 ));
-				p.orientation = PlatformOrientation.Front;
+				p.orientation = TileOrientation.Front;
 				break;
 		}
 		
@@ -193,13 +190,13 @@ public class GameplayCube : MonoBehaviour {
 		
 		// in case we are in presence of a spike tile
 		
-		if ( type == PlatformType.Spikes)
+		if ( type == TileType.Spikes)
 		{
 			face.AddComponent<Spikes>();
 			
-			GameObject child = GameObject.Instantiate( Resources.LoadAssetAtPath("Assets/Resources/Prefabs/spikes.prefab", typeof(GameObject)) ) as GameObject;
-			
-//			GameObject child = (GameObject) Resources.Load( "Prefabs/spikes.prefab" );
+			//GameObject child = GameObject.Instantiate( Resources.LoadAssetAtPath("Assets/Resources/PREFABS/spikes.prefab", typeof(GameObject)) ) as GameObject;
+			GameObject child = (GameObject) Resources.Load( "Prefabs/spikes.prefab" );
+
 			child.name = "spikes";
 			child.transform.parent = p.transform;
 			child.transform.position = new Vector3( 0, 0, 0 );
@@ -244,7 +241,7 @@ public class GameplayCube : MonoBehaviour {
 		}
 		
 		GameObject face = GameObject.CreatePrimitive(PrimitiveType.Plane);
-		Platform p;
+		Tile p;
 		Material[] materials;
 		
 		face.name = "front";
@@ -255,9 +252,9 @@ public class GameplayCube : MonoBehaviour {
 		face.transform.position = new Vector3( 25, 5, 60 );
 		face.transform.rotation = Quaternion.Euler( new Vector3( 90, 180, 0 ));
 		
-		p = face.AddComponent<Platform>();
-		p.type = PlatformType.Exit;
-		p.orientation = PlatformOrientation.Front;
+		p = face.AddComponent<Tile>();
+		p.type = TileType.Exit;
+		p.orientation = TileOrientation.Front;
 		
 		materials = face.GetComponent<Renderer>().sharedMaterials;
 		

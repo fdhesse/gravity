@@ -1,71 +1,74 @@
 ﻿using UnityEngine;
-#if UNITY_EDITOR
 using UnityEditor;
-#endif
 using System.Collections;
 
-[ExecuteInEditMode]
-public class RAJA_Editor : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-	#if UNITY_EDITOR
-	
-	/*	[ContextMenu("Context-Menu")] 
-	public void Deb()
+public static class MuObjects
+{
+	[MenuItem ("GameObject/Mu/RotatingPlatform", false, 10)]
+	static void AddRotatingPlatform ( MenuCommand menuCmd )
 	{
-		Debug.Log("Do...");
-	}*/
-	
-	[MenuItem ("GameObject/Create Other/RAJA_GravityPlatform")]
-	static void AddGravityPlatform () {
-		
-		GameObject go = new GameObject("GravityPlatform");
-		go.AddComponent<GravityPlatform>();
+		GameObject go = new GameObject( "RotatingPlatform" );
 		go.tag = "GravityPlatform";
-
+		
+		if ( menuCmd != null )
+			GameObjectUtility.SetParentAndAlign( go, menuCmd.context as GameObject );
+		
+		go.AddComponent<RotatingPlatform>();
+		
 		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		cube.transform.localScale = new Vector3( 10, 10, 10 );
 		cube.transform.parent = go.transform;
 		
-//		cube.AddComponent<MeshRenderer>();
+		cube.AddComponent<GameplayCube>();
+	}
+
+	[MenuItem ("GameObject/Mu/GravityPlatform", false, 10)]
+	static void AddGravityPlatform ( MenuCommand menuCmd )
+	{
+		GameObject go = new GameObject( "GravityPlatform" );
+		go.tag = "GravityPlatform";
+		
+		if ( menuCmd != null )
+			GameObjectUtility.SetParentAndAlign( go, menuCmd.context as GameObject );
+		
+		go.AddComponent<GravityPlatform>();
+		
+		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		cube.transform.localScale = new Vector3( 10, 10, 10 );
+		cube.transform.parent = go.transform;
+		
 		cube.AddComponent<GameplayCube>();
 	}
 	
-	[MenuItem ("GameObject/Create Other/RAJA_GameplayCube")]
-	static void AddGameplayCube () {
+	[MenuItem ("GameObject/Mu/GameplayCube", false, 10)]
+	static void AddGameplayCube ( MenuCommand menuCmd ) {
 		
-//		GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-		GameObject go = new GameObject();
-		go.name = "Gameplay Cube";
+		GameObject go = new GameObject( "Gameplay Cube" );
 		
+		if ( menuCmd != null )
+			GameObjectUtility.SetParentAndAlign( go, menuCmd.context as GameObject );
+
 		go.transform.localScale = new Vector3( 10, 10, 10 );
 		
-		//		go.AddComponent<MeshRenderer>();
+		go.AddComponent<MeshRenderer>();
 		GameplayCube cube = go.AddComponent<GameplayCube>();
 		
-		cube.Left = PlatformType.Invalid;
-		cube.Right = PlatformType.Invalid;
-		cube.Up = PlatformType.Invalid;
-		cube.Down = PlatformType.Invalid;
-		cube.Front = PlatformType.Invalid;
-		cube.Back = PlatformType.Invalid;
+		cube.Left = TileType.Invalid;
+		cube.Right = TileType.Invalid;
+		cube.Up = TileType.Invalid;
+		cube.Down = TileType.Invalid;
+		cube.Front = TileType.Invalid;
+		cube.Back = TileType.Invalid;
 	}
 	
-	[MenuItem ("GameObject/Create Other/RAJA_FallingCube")]
-	static void AddStandardCube () {
+	[MenuItem ("GameObject/Mu/FallingCube", false, 10)]
+	static void AddStandardCube ( MenuCommand menuCmd ) {
 		
-//		GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-		GameObject go = new GameObject();
+		GameObject go = new GameObject( "Falling Cube" );
 		
-		go.name = "Falling Cube";
+		if ( menuCmd != null )
+			GameObjectUtility.SetParentAndAlign( go, menuCmd.context as GameObject );
+		
 		go.tag = "FallingCube";
 		
 		go.transform.localScale = new Vector3( 10, 10, 10 );
@@ -77,18 +80,21 @@ public class RAJA_Editor : MonoBehaviour {
 		AudioSource audio = go.AddComponent<AudioSource>();
 		
 		audio.playOnAwake = false;
-		audio.clip = Assets.bounce;
+//		audio.clip = Assets.bounce;
 		audio.minDistance = 100;
 		
 	}
-	
-	[MenuItem ("GameObject/Create Other/RAJA_Exit")]
-	static void AddExitCube () {
+
+	[MenuItem ("GameObject/Mu/Exit", false, 10)]
+	static void AddExitCube ( MenuCommand menuCmd ) {
 		
 		Material[] materials;
-		Platform p;
+		Tile p;
 		
 		GameObject exit = new GameObject("exit");
+		
+		if ( menuCmd != null )
+			GameObjectUtility.SetParentAndAlign( exit, menuCmd.context as GameObject );
 		
 		// #FRONT#
 		
@@ -100,9 +106,9 @@ public class RAJA_Editor : MonoBehaviour {
 		front.transform.position = new Vector3( 25, 5, 60 );
 		front.transform.rotation = Quaternion.Euler( new Vector3( 90, 180, 0 ));
 		
-		p = front.AddComponent<Platform>();
-		p.type = PlatformType.Exit;
-		p.orientation = PlatformOrientation.Front;
+		p = front.AddComponent<Tile>();
+		p.type = TileType.Exit;
+		p.orientation = TileOrientation.Front;
 		
 		materials = front.GetComponent<Renderer>().sharedMaterials;
 		
@@ -131,9 +137,9 @@ public class RAJA_Editor : MonoBehaviour {
 		back.transform.position = new Vector3( 25, 5, 70 );
 		back.transform.rotation = Quaternion.Euler( new Vector3( 90, 0, 0 ));
 		
-		p = back.AddComponent<Platform>();
-		p.type = PlatformType.Exit;
-		p.orientation = PlatformOrientation.Back;
+		p = back.AddComponent<Tile>();
+		p.type = TileType.Exit;
+		p.orientation = TileOrientation.Back;
 		
 		materials = back.GetComponent<Renderer>().sharedMaterials;
 		
@@ -162,9 +168,9 @@ public class RAJA_Editor : MonoBehaviour {
 		up.transform.position = new Vector3( 25, 10, 65 );
 		up.transform.rotation = Quaternion.Euler( new Vector3( 0, 180, 0 ));
 		
-		p = up.AddComponent<Platform>();
-		p.type = PlatformType.Exit;
-		p.orientation = PlatformOrientation.Up;
+		p = up.AddComponent<Tile>();
+		p.type = TileType.Exit;
+		p.orientation = TileOrientation.Up;
 		
 		materials = up.GetComponent<Renderer>().sharedMaterials;
 		
@@ -193,9 +199,9 @@ public class RAJA_Editor : MonoBehaviour {
 		down.transform.position = new Vector3( 25, 0, 65 );
 		down.transform.rotation = Quaternion.Euler( new Vector3( 0, 0, 180 ));
 		
-		p = down.AddComponent<Platform>();
-		p.type = PlatformType.Exit;
-		p.orientation = PlatformOrientation.Down;
+		p = down.AddComponent<Tile>();
+		p.type = TileType.Exit;
+		p.orientation = TileOrientation.Down;
 		
 		materials = down.GetComponent<Renderer>().sharedMaterials;
 		
@@ -224,9 +230,9 @@ public class RAJA_Editor : MonoBehaviour {
 		left.transform.position = new Vector3( 30, 5, 65 );
 		left.transform.rotation = Quaternion.Euler( new Vector3( 90, 90, 0 ));
 		
-		p = left.AddComponent<Platform>();
-		p.type = PlatformType.Exit;
-		p.orientation = PlatformOrientation.Left;
+		p = left.AddComponent<Tile>();
+		p.type = TileType.Exit;
+		p.orientation = TileOrientation.Left;
 		
 		materials = left.GetComponent<Renderer>().sharedMaterials;
 		
@@ -255,9 +261,9 @@ public class RAJA_Editor : MonoBehaviour {
 		right.transform.position = new Vector3( 20, 5, 65 );
 		right.transform.rotation = Quaternion.Euler( new Vector3( 90, 270, 0 ));
 		
-		p = right.AddComponent<Platform>();
-		p.type = PlatformType.Exit;
-		p.orientation = PlatformOrientation.Right;
+		p = right.AddComponent<Tile>();
+		p.type = TileType.Exit;
+		p.orientation = TileOrientation.Right;
 		
 		materials = right.GetComponent<Renderer>().sharedMaterials;
 		
@@ -276,5 +282,4 @@ public class RAJA_Editor : MonoBehaviour {
 		
 		right.GetComponent<Renderer>().sharedMaterials = materials;
 	}
-	#endif
 }

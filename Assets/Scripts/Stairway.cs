@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(Platform))]
+[RequireComponent(typeof(Tile))]
 [RequireComponent(typeof(BoxCollider))]
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
@@ -15,8 +15,8 @@ using System.Collections.Generic;
 #endif
 public class Stairway : MonoBehaviour {
 
-	//public Platform targetUp = null;
-	//public Platform targetDown = null;
+	//public Tile targetUp = null;
+	//public Tile targetDown = null;
 	
 	// 8 directions (I stands for inverted):
 	// Left, Right, Front, Back
@@ -57,14 +57,14 @@ public class Stairway : MonoBehaviour {
 		set	{ if(value != stairwayAxis) { SetAxis( value ); } }
 	}
 
-	public Platform LookForSiblingPlatform( Platform previousPlatform )
+	public Tile LookForSiblingTile( Tile previousTile )
 	{
-		if ( previousPlatform == null )
+		if ( previousTile == null )
 			return null;
 
 		// Propage l'orientation de la plateforme source
-		Platform stairPlatform = GetComponent<Platform>();
-		stairPlatform.orientation = previousPlatform.orientation;
+		Tile stairTile = GetComponent<Tile>();
+		stairTile.orientation = previousTile.orientation;
 
 		Collider[] hits = Physics.OverlapSphere(transform.position, 8.5f);
 
@@ -77,7 +77,7 @@ public class Stairway : MonoBehaviour {
 		{
 			//Debug.Log ("Il y a " + hits.Length + " collisions" );
 
-			if ( hit.transform != previousPlatform.transform && hit.transform != transform )
+			if ( hit.transform != previousTile.transform && hit.transform != transform )
 			{
 				//Debug.Log ("Qui ne sont pas la précédente plateforme" );
 				if ( stairwayAxis == StairwayAxis.X && !Mathf.Approximately( hit.transform.position.z, transform.position.z) )
@@ -89,10 +89,10 @@ public class Stairway : MonoBehaviour {
 
 				Stairway stair = hit.GetComponent<Stairway>();
 				if ( stair != null )
-					return stair.LookForSiblingPlatform( stairPlatform );
+					return stair.LookForSiblingTile( stairTile );
 				
-				Platform p = hit.gameObject.GetComponent<Platform>();
-				if (p != null && p.orientation.Equals(stairPlatform.orientation) )
+				Tile p = hit.gameObject.GetComponent<Tile>();
+				if (p != null && p.orientation.Equals(stairTile.orientation) )
 					return p;
 			}
 		}
@@ -103,9 +103,9 @@ public class Stairway : MonoBehaviour {
 	
 	void Start()
 	{
-		//type = PlatformType.Valid;
+		//type = TileType.Valid;
 
-		gameObject.layer = LayerMask.NameToLayer ("Platforms");
+		gameObject.layer = LayerMask.NameToLayer ("Tiles");
 		gameObject.tag = "Stairway";
 		
 		GameObject go = GameObject.CreatePrimitive (PrimitiveType.Plane);
@@ -296,18 +296,18 @@ public class Stairway : MonoBehaviour {
 #endif
 
 	/*
-	protected override void scanNearbyPlatforms()
+	protected override void scanNearbyTiles()
 	{
 		targetUp = null;
 		targetDown = null;
-		connectionSet = new HashSet<Platform>();
+		connectionSet = new HashSet<Tile>();
 		Collider[] hits = Physics.OverlapSphere(transform.position, 7.5f);
 		
 		foreach (Collider hit in hits)
 		{
 			if (hit.collider.transform != transform)
 			{
-				Platform p = hit.gameObject.GetComponent<Platform>();
+				Tile p = hit.gameObject.GetComponent<Tile>();
 
 				if (p != null && p.orientation.Equals(orientation))
 				{
@@ -379,7 +379,7 @@ public class Stairway : MonoBehaviour {
 					connectionSet.Add(p);
 					
 					_connections = new Transform[connectionSet.Count];
-					connections = new List<Platform>(connectionSet);
+					connections = new List<Tile>(connectionSet);
 					for (int i = 0; i != connections.Count; i++)
 					{
 						_connections[i] = connections[i].transform;

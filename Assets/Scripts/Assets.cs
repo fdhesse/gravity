@@ -1,11 +1,18 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using System.Collections;
 
 /// <summary>
 /// This class is responsible for Asset Loading.
 /// If you want to boost performance, start here.
 /// </summary>
-static class Assets
+[ExecuteInEditMode]
+#if UNITY_EDITOR
+[InitializeOnLoad]
+#endif
+public static class Assets
 {
 	public static AudioClip invalidSound;
 	public static AudioClip bounce;
@@ -17,8 +24,8 @@ static class Assets
     //public static Material rightBlockMat;
     //public static Material frontBlockMat;
     //public static Material backBlockMat;
-    static Assets()
-    {
+	static Assets()
+	{
 		invalidSound = Resources.Load("Sounds/invalidSound") as AudioClip;
 		bounce = Resources.Load("Sounds/bounce") as AudioClip;
 		bounce2 = Resources.Load("Sounds/bounce2") as AudioClip;
@@ -31,6 +38,11 @@ static class Assets
         //frontBlockMat = new Material(Resources.Load("Resources/Materials/orientations/front") as Material);
         //backBlockMat = new Material(Resources.Load("Resources/Materials/orientations/back") as Material);
     }
+
+	static void Test()
+	{
+		Debug.Log("Test ok");
+	}
 	
 #if UNITY_EDITOR
     public static Material getValidBlockMat()

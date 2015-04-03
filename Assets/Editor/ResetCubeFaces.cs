@@ -22,7 +22,7 @@ public class ResetCubeFaces : MonoBehaviour {
 			
 			cube.transform.localScale = new Vector3( 10.0f, 10.0f, 10.0f );
 			
-			foreach ( Platform platform in cube.GetComponentsInChildren<Platform>() )
+			foreach ( Tile platform in cube.GetComponentsInChildren<Tile>() )
 			{
 				count++;
 				

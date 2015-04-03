@@ -4,13 +4,13 @@ using System.Collections;
 /// <summary>
 /// This is more of a auxilliary class for handling platform selection
 /// </summary>
-public static class PlatformSelection
+public static class TileSelection
 {
-    private static Platform platform;//currently selected platform
+    private static Tile platform;//currently selected platform
 	private static Camera camera;//camera for this scene
 	//private static GameObject cam;//camera for this scene
 
-    static PlatformSelection()
+    static TileSelection()
     {
 		//cam = GameObject.FindGameObjectWithTag("MainCamera"); //initialize the camera
 		camera = Camera.main;
@@ -19,22 +19,22 @@ public static class PlatformSelection
     /// <summary>
     /// Highlights target platform
     /// </summary>
-    public static void highlightTargetPlatform()
+    public static void highlightTargetTile()
     {
         if (platform != null)
         {
             platform.unHighlight();
         }
 
-        platform = getPlatform();
+        platform = getTile();
     }
 
     /// <summary>
     /// Gets the platform that is being targeted.
     /// </summary>
-    public static Platform getPlatform()
+    public static Tile getTile()
     {
-        Platform p = null;
+        Tile p = null;
 		if (camera == null)//if there isn't a camera associated with this script, get the main camera
         {
 			//cam = GameObject.FindGameObjectWithTag("MainCamera");
@@ -46,7 +46,7 @@ public static class PlatformSelection
 //		if (Physics.Raycast(mouseRay, out hit, float.MaxValue, ~(1 << 11))) // cast a raycast ignoring the layer for the DeathZone
 		if (Physics.Raycast(mouseRay, out hit, float.MaxValue, (1 << 14))) // cast a raycast ignoring all but the layer for the platforms
         {
-            p = hit.collider.gameObject.GetComponent<Platform>();
+            p = hit.collider.gameObject.GetComponent<Tile>();
             
             if (p != null) //if it is a platform
                 p.highlight();

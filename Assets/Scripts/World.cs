@@ -10,6 +10,7 @@ public class World : MonoBehaviour {
 	private bool isGameOver = false;		//Game state
 	private FallingCube[] cubes;
 	private GravityPlatform[] gravityPlatforms;
+	private RotatingPlatform[] rotatingPlatforms;
 	
 	private Pawn PlayerPawn; // Player Pawn
 	
@@ -27,6 +28,7 @@ public class World : MonoBehaviour {
 	{
 		cubes = FindObjectsOfType<FallingCube>();
 		gravityPlatforms = FindObjectsOfType<GravityPlatform>();
+		rotatingPlatforms = FindObjectsOfType<RotatingPlatform>();
 		PlayerPawn = (Pawn) GameObject.Find ("Pawn").GetComponent<Pawn>();
 	}
 	
@@ -34,17 +36,14 @@ public class World : MonoBehaviour {
 	{
 		PlayerPawn.respawn();
 		
-		for (int i = 0; i != cubes.Length; i++)
-		{
-			FallingCube cube = (FallingCube) cubes[i];
-			cube.Reset();
-		}
+		for (int i = 0; i < cubes.Length; i++)
+			((FallingCube) cubes[i]).Reset();
+		
+		for (int i = 0; i < gravityPlatforms.Length; i++)
+			((GravityPlatform) gravityPlatforms[i]).Reset();
 
-		for (int i = 0; i != gravityPlatforms.Length; i++)
-		{
-			GravityPlatform gPlatform = (GravityPlatform) gravityPlatforms[i];
-			gPlatform.Reset();
-		}
+		for (int i = 0; i < rotatingPlatforms.Length; i++)
+			((RotatingPlatform) rotatingPlatforms[i]).Reset();
 	}
 	
 	public bool IsGameOver()
@@ -77,12 +76,35 @@ public class World : MonoBehaviour {
 		return false;
 	}
 
-	public void ChangeGravity( PlatformOrientation orientation )
+	public void ChangeGravity( TileOrientation orientation )
 	{
-		for (int i = 0; i != gravityPlatforms.Length; i++)
+		for (int i = 0; i < gravityPlatforms.Length; i++)
+			((GravityPlatform) gravityPlatforms[i]).Unfreeze( orientation );
+
+		for (int i = 0; i < rotatingPlatforms.Length; i++)
+			((RotatingPlatform) rotatingPlatforms[i]).SendMessage( "ChangeGravity", orientation );
+	}
+
+	
+	/// <summary>
+	/// Gets the gravitational orientation vector.
+	/// </summary>
+	public Vector3 getGravityVector(TileOrientation vec)
+	{
+		switch (vec)
 		{
-			GravityPlatform gPlatform = (GravityPlatform) gravityPlatforms[i];
-			gPlatform.Unfreeze( orientation );
+		default:
+			return new Vector3(0, -1, 0);
+		case TileOrientation.Down:
+			return new Vector3(0, 1, 0);
+		case TileOrientation.Right:
+			return new Vector3(-1, 0, 0);
+		case TileOrientation.Left:
+			return new Vector3(1, 0, 0);
+		case TileOrientation.Front:
+			return new Vector3(0, 0, 1);
+		case TileOrientation.Back:
+			return new Vector3(0, 0, -1);
 		}
 	}
 }

@@ -7,19 +7,19 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-public class ResetPlatformConnections : MonoBehaviour {
+public class ResetTileConnections : MonoBehaviour {
 
 	[MenuItem ("GameObject/RAJA: Reset platforms")]
-	static void ResetPlatforms () {
+	static void ResetTiles () {
 		
-		Platform[] platforms = FindObjectsOfType<Platform>();
+		Tile[] platforms = FindObjectsOfType<Tile>();
 
 		int count = 0;
 		int diff = 0;
 		
 		for (int i = 0; i != platforms.Length; i++)
 		{
-			Platform platform = (Platform) platforms[i].gameObject.GetComponent<Platform>();
+			Tile platform = (Tile) platforms[i].gameObject.GetComponent<Tile>();
 
 			diff = platform.Connections.Count;
 
@@ -32,6 +32,6 @@ public class ResetPlatformConnections : MonoBehaviour {
 				count++;
 		}
 
-		Debug.Log ("ResetPlatformConnections: " + count + " platforms reseted.");
+		Debug.Log ("ResetTileConnections: " + count + " platforms reseted.");
 	}
 }
