@@ -9,40 +9,17 @@ public class RotatingPlatform : MonoBehaviour
 	public enum ConstraintAxis { X, Y, Z };
 	public ConstraintAxis constrainedAxis;
 
-	public bool Clockwise = true;
+	public enum ClockwiseConstraint { None, Clockwise, CounterClockwise };
+	public ClockwiseConstraint clockwiseConstraint = ClockwiseConstraint.Clockwise;
 
 	public float delay = 1.0f;
 
 	public enum Interpolation { Linear, Sinerp };
-	public Interpolation interpolation;
+	public Interpolation interpolation = Interpolation.Sinerp;
 
 	private Vector3 startPosition;
 	private Quaternion startRotation;
 
-
-	private float rotation
-	{
-		get
-		{
-			if( constrainedAxis == ConstraintAxis.X )
-				return transform.rotation.eulerAngles.x;
-			if( constrainedAxis == ConstraintAxis.Y )
-				return transform.rotation.eulerAngles.y;
-			if ( constrainedAxis == ConstraintAxis.Z )
-				return transform.rotation.eulerAngles.z;
-
-			return 0f;
-			}
-		set
-		{
-			if( constrainedAxis == ConstraintAxis.X )
-				transform.rotation = Quaternion.Euler( new Vector3( value, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z ) );
-			else if( constrainedAxis == ConstraintAxis.Y )
-				transform.rotation = Quaternion.Euler( new Vector3( transform.rotation.eulerAngles.x, value, transform.rotation.eulerAngles.z ) );
-			else if ( constrainedAxis == ConstraintAxis.Z )
-				transform.rotation = Quaternion.Euler( new Vector3( transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, value ) );
-		}
-	}
 	void Awake()
 	{
 		startPosition = transform.position;
@@ -51,7 +28,7 @@ public class RotatingPlatform : MonoBehaviour
 
 	void Start()
 	{
-		rotation = GetDesiredAngle ();
+		ChangeGravityImmediate (TileOrientation.Down);
 	}
 	
 	// Update is called once per frame
@@ -64,48 +41,30 @@ public class RotatingPlatform : MonoBehaviour
 		transform.position = startPosition;
 		transform.rotation = startRotation;
 	}
-
-	private float GetDesiredAngle()
+	
+	private void ChangeGravityImmediate( TileOrientation orientation )
 	{
-		//transform.rotation = tLocalRotation;
-		Quaternion tRotation = transform.rotation;
-
-		Vector3 lookAtPos = transform.position + Physics.gravity;
-
-		transform.LookAt (lookAtPos);
-
-		//Vector3 localTarget = transform.InverseTransformPoint (lookAtPos);
-		//float angle = Mathf.RoundToInt( Mathf.Atan2( localTarget.x, localTarget.z ) * Mathf.Rad2Deg );
-
-		Quaternion desiredRotation = transform.rotation;
-
-		//if (constrainedAxis == ConstraintAxis.X)
-		//	Debug.Log ("desiredRotation: " + desiredRotation.eulerAngles);
+		if ( constrainedAxis == ConstraintAxis.X )
+		{
+			if ( orientation == TileOrientation.Right || orientation == TileOrientation.Left )
+				return;
+		}
+		else if ( constrainedAxis == ConstraintAxis.Y )
+		{
+			if ( orientation == TileOrientation.Up || orientation == TileOrientation.Down )
+				return;
+		}
+		else if ( constrainedAxis == ConstraintAxis.Z )
+		{
+			if ( orientation == TileOrientation.Front || orientation == TileOrientation.Back )
+				return;
+		}
 		
-		//transform.rotation = tLocalRotation;
-		transform.rotation = tRotation;
-
-		float desiredAngle = 0;
-
-		
-		//desiredAngle = desiredRotation.eulerAngles.x + desiredRotation.eulerAngles.y + desiredRotation.eulerAngles.z;
-
-		if (constrainedAxis == ConstraintAxis.X)
-			desiredAngle = desiredRotation.eulerAngles.x;
-		else if (constrainedAxis == ConstraintAxis.Y)
-			desiredAngle = desiredRotation.eulerAngles.y;
-		else if (constrainedAxis == ConstraintAxis.Z)
-			desiredAngle = desiredRotation.eulerAngles.y;
-			
-		
-
-		return Vector3.Angle( tRotation.eulerAngles, desiredRotation.eulerAngles );
-		//return 0f;
+		transform.rotation = GetDesiredRotation ();
 	}
 	
 	private void ChangeGravity( TileOrientation orientation )
 	{
-
 		if ( constrainedAxis == ConstraintAxis.X )
 		{
 			if ( orientation == TileOrientation.Right || orientation == TileOrientation.Left )
@@ -122,38 +81,61 @@ public class RotatingPlatform : MonoBehaviour
 				return;
 		}
 
-		StartCoroutine (LookTowardsGravity ( GetDesiredAngle() ));
+		StartCoroutine (LookTowardsDirection ( GetDesiredRotation() ));
+	}
+	
+	private Quaternion GetDesiredRotation()
+	{
+		float angle;
+		Vector3 axis = Vector3.up;
+		
+		Quaternion tRotation = transform.rotation;
+		Vector3 targetPosition = transform.position + Physics.gravity;
+		
+		if (constrainedAxis == ConstraintAxis.X)
+			axis = Vector3.right;
+		else if (constrainedAxis == ConstraintAxis.Y)
+			axis = Vector3.up;
+		else if (constrainedAxis == ConstraintAxis.Z)
+			axis = Vector3.forward;
+		
+		transform.LookAt (targetPosition, axis);
+		transform.rotation.ToAngleAxis (out angle, out axis);
+		transform.rotation = tRotation;
+		
+		return Quaternion.AngleAxis( angle, axis );
 	}
 
-	private IEnumerator LookTowardsGravity( float desiredAngle )
+	private IEnumerator LookTowardsDirection( Quaternion toRotation )
 	{
-		if ( constrainedAxis == ConstraintAxis.X )
-		Debug.Log ("angle: " + desiredAngle);
 		float elapsedTime = 0;
+		
+		if ( clockwiseConstraint == ClockwiseConstraint.Clockwise )
+		{
+		}
+		else if ( clockwiseConstraint == ClockwiseConstraint.CounterClockwise )
+		{
+			//toRotation = -toRotation;
+		}
 
-		int rotationDirection = 1;
-
-		if (!Clockwise)
-			rotationDirection = -1;
-
-		float fromAngle = rotation;
-
+		Quaternion fromAngle = transform.rotation;
+		
 		while ( elapsedTime < delay )
 		{
 			float t = elapsedTime / delay;
-
+			
 			if ( interpolation == Interpolation.Sinerp )
 				t = Mathf.Sin( t * Mathf.PI * 0.5f );
-
-			rotation = Mathf.Lerp( fromAngle, desiredAngle, t );
-
+			
+			transform.rotation = Quaternion.Lerp( fromAngle, toRotation, t );
+			
 			elapsedTime += Time.deltaTime;
-
+			
 			yield return null;
 		}
-
-		rotation = desiredAngle;
-
+		
+		transform.rotation = toRotation;
+		
 		// Recompute the platform's tiles directions
 		RecomputePlatformTiles ();
 	}
@@ -174,22 +156,22 @@ public class RotatingPlatform : MonoBehaviour
 		
 		if ( constrainedAxis == ConstraintAxis.X )
 		{
-			from.x -= 10;
-			to.x += 10;
+			from.x -= 20;
+			to.x += 20;
 		}
 		else if ( constrainedAxis == ConstraintAxis.Y )
 		{
-			from.y -= 10;
-			to.y += 10;
+			from.y -= 20;
+			to.y += 20;
 		}
 		else if ( constrainedAxis == ConstraintAxis.Z )
 		{
-			from.z -= 10;
-			to.z += 10;
+			from.z -= 20;
+			to.z += 20;
 		}
 		
 		// Draw the platform pivot
-		Gizmos.color = Color.red;
+		Gizmos.color = Color.magenta;
 		Gizmos.DrawLine ( from, to );
 
 		// Draw the platform direction

@@ -656,52 +656,47 @@ public class Pawn : MonoBehaviour
             platform = null;
         }
 
-		// puts dots
-//		foreach (TileOrientation orientation in Enum.GetValues(typeof(TileOrientation)))
-        foreach (TileOrientation orientation in Enum.GetValues(typeof(TileOrientation)))
-        {
-            p = null;
-            
-			RaycastHit hitc = new RaycastHit();
-//			if (Physics.SphereCast(_pos, height / 2.0f + 0.2f, Physics.gravity, out hitc, 10000, ~(1 << 10)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
-//			if (Physics.SphereCast(_pos, height / 2.0f + 0.2f, Physics.gravity, out hitc, 10000, (1 << 14)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
-//			if (Physics.SphereCast(_pos,  1.5f, getGravityVector( GetWorldGravity() ), out hitc, 10000, (1 << 14)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
-			if (Physics.SphereCast(transform.position, 0.5f + 0.2f, world.getGravityVector( orientation ), out hitc, 10000, (1 << 14)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
-			{
-				p = hitc.collider.gameObject.GetComponent<Tile>();
 
-                if (p != null && p != platform )
-				{
-					p.isClickable = true;
+			// puts dots
+			//		foreach (TileOrientation orientation in Enum.GetValues(typeof(TileOrientation)))
+		foreach (TileOrientation orientation in Enum.GetValues(typeof(TileOrientation))) {
+			if (!isFalling) {
+				p = null;
+	            
+				RaycastHit hitc = new RaycastHit ();
+				//			if (Physics.SphereCast(_pos, height / 2.0f + 0.2f, Physics.gravity, out hitc, 10000, ~(1 << 10)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
+				//			if (Physics.SphereCast(_pos, height / 2.0f + 0.2f, Physics.gravity, out hitc, 10000, (1 << 14)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
+				//			if (Physics.SphereCast(_pos,  1.5f, getGravityVector( GetWorldGravity() ), out hitc, 10000, (1 << 14)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
+				if (Physics.SphereCast (transform.position, 0.5f + 0.2f, world.getGravityVector (orientation), out hitc, 10000, (1 << 14))) {//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
+					p = hitc.collider.gameObject.GetComponent<Tile> ();
 
-					if ( !clickableTiles.Contains( p ) )
-						clickableTiles.Add( p );
+					if (p != null && p != platform) {
+						p.isClickable = true;
 
-                    if (hud.dotIsInside)
-                        getOrientationSphere(orientation).transform.position = p.transform.position;
-                    else
-						getOrientationSphere(orientation).transform.position = p.transform.position - (world.getGravityVector( GetWorldGravity() ) * hud.dotSize / 2);
+						if (!clickableTiles.Contains (p))
+							clickableTiles.Add (p);
 
-					if ( p.GetComponent<Stairway>() )
-					{
-						// don't put dots on stairways
-						getOrientationSphere(orientation).transform.position = Vector3.one * float.MaxValue; //sphere is moved to infinity muhahahaha, tremble before my power
+						if (hud.dotIsInside)
+							getOrientationSphere (orientation).transform.position = p.transform.position;
+						else
+							getOrientationSphere (orientation).transform.position = p.transform.position - (world.getGravityVector (GetWorldGravity ()) * hud.dotSize / 2);
+
+						if (p.GetComponent<Stairway> ()) {
+							// don't put dots on stairways
+							getOrientationSphere (orientation).transform.position = Vector3.one * float.MaxValue; //sphere is moved to infinity muhahahaha, tremble before my power
+						}
+					} else {
+						p.isClickable = false;
+						// Valid target
+						getOrientationSphere (orientation).transform.position = Vector3.one * float.MaxValue; //sphere is moved to infinity muhahahaha, tremble before my power
 					}
-				}
-                else
-				{
-					p.isClickable = false;
-                	// Valid target
-					getOrientationSphere(orientation).transform.position = Vector3.one * float.MaxValue; //sphere is moved to infinity muhahahaha, tremble before my power
-                }
 
-            }
-            else
-            {
+				}
+			} else {
 				// Falling, no more dots
 				getOrientationSphere(orientation).transform.position = Vector3.one * float.MaxValue; //BEGONE
-            }
-        }
+			}
+		}
     }
 
     /// <summary>

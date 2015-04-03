@@ -14,6 +14,14 @@ using System.Collections;
 #endif
 public static class Assets
 {
+	private static Material highlightedValidBlockMat;
+	private static Material highlightedInvalidBlockMat;
+	private static Material highlightedExitBlockMat;
+	private static Material flashingValidBlockMat;
+	private static Material flashingInvalidBlockMat;
+	private static Material flashingExitBlockMat;
+	private static Material sphereMat;
+
 	public static AudioClip invalidSound;
 	public static AudioClip bounce;
 	public static AudioClip bounce2;
@@ -38,29 +46,99 @@ public static class Assets
         //frontBlockMat = new Material(Resources.Load("Resources/Materials/orientations/front") as Material);
         //backBlockMat = new Material(Resources.Load("Resources/Materials/orientations/back") as Material);
     }
-
-	static void Test()
-	{
-		Debug.Log("Test ok");
-	}
 	
 #if UNITY_EDITOR
+	
+	private static Material upBlockMat;
+	private static Material downBlockMat;
+	private static Material leftBlockMat;
+	private static Material rightBlockMat;
+	private static Material frontBlockMat;
+	private static Material backBlockMat;
+	
+	private static Material validBlockMat;
+	private static Material invalidBlockMat;
+	private static Material exitBlockMat;
+
     public static Material getValidBlockMat()
-    {
-        return new Material(Resources.Load("Materials/blocks/valid") as Material);
+	{
+		if ( validBlockMat == null )
+			validBlockMat = Resources.Load("Materials/blocks/valid") as Material;
+		
+		return new Material( validBlockMat );
 	}
 	public static Material getInvalidBlockMat()
 	{
-		return new Material(Resources.Load("Materials/blocks/invalid") as Material);
+		if ( invalidBlockMat == null )
+			invalidBlockMat = Resources.Load("Materials/blocks/invalid") as Material;
+		
+		return new Material( invalidBlockMat );
 	}
 	public static Material getExitBlockMat()
 	{
-		return new Material(Resources.Load("Materials/blocks/exit") as Material);
+		if ( exitBlockMat == null )
+			exitBlockMat = Resources.Load("Materials/blocks/exit") as Material;
+		
+		return new Material( exitBlockMat );
+	}
+	
+	public static Material getUpBlockMat()
+	{
+		if ( upBlockMat == null )
+			upBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Game Assets/Materials/orientations/up.mat", typeof(Material)) as Material;
+
+		return new Material( upBlockMat );
+	}
+	
+	public static Material getDownBlockMat()
+	{
+		if ( downBlockMat == null )
+			downBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Game Assets/Materials/orientations/down.mat", typeof(Material)) as Material;
+		
+		return new Material( downBlockMat );
+	}
+	
+	public static Material getLeftBlockMat()
+	{
+		if ( leftBlockMat == null )
+			leftBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Game Assets/Materials/orientations/left.mat", typeof(Material)) as Material;
+		
+		return new Material( leftBlockMat );
+	}
+	
+	public static Material getRightBlockMat()
+	{
+		if ( rightBlockMat == null )
+			rightBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Game Assets/Materials/orientations/right.mat", typeof(Material)) as Material;
+		
+		return new Material( rightBlockMat );
+	}
+	
+	public static Material getFrontBlockMat()
+	{
+		if ( frontBlockMat == null )
+			frontBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Game Assets/Materials/orientations/front.mat", typeof(Material)) as Material;
+		
+		return new Material( frontBlockMat );
+	}
+	
+	public static Material getBackBlockMat()
+	{
+		if ( backBlockMat == null )
+			backBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Game Assets/Materials/orientations/back.mat", typeof(Material)) as Material;
+		
+		return new Material( backBlockMat );
 	}
 #elif UNITY_STANDALONE
+
+	private static Material blankBlockMat;
+
 	public static Material getBlankBlockMat()
 	{
-		return new Material(Resources.Load("Materials/blocks/blank") as Material);
+		if ( blankBlockMat == null )
+			blankBlockMat = Resources.Load("Materials/blocks/blank") as Material;
+		
+		return new Material( blankBlockMat );
 	}
 	public static Material getValidBlockMat()
 	{
@@ -75,63 +153,55 @@ public static class Assets
 		return getBlankBlockMat();
 	}
 #endif
+
     public static Material getHighlightedValidBlockMat()
-    {
-        return new Material(Resources.Load("Materials/blocks/highlighted/validHighlighted") as Material);
+	{
+		if ( highlightedValidBlockMat == null )
+			highlightedValidBlockMat = Resources.Load("Materials/blocks/highlighted/validHighlighted") as Material;
+		
+		return new Material( highlightedValidBlockMat );
     }
     public static Material getHighlightedInvalidBlockMat()
-    {
-        return new Material(Resources.Load("Materials/blocks/highlighted/invalidHighlighted") as Material);
+	{
+		if ( highlightedInvalidBlockMat == null )
+			highlightedInvalidBlockMat = Resources.Load("Materials/blocks/highlighted/invalidHighlighted") as Material;
+		
+		return new Material( highlightedInvalidBlockMat );
     }
     public static Material getHighlightedExitBlockMat()
-    {
-        return new Material(Resources.Load("Materials/blocks/highlighted/exitHighlighted") as Material);
+	{
+		if ( highlightedExitBlockMat == null )
+			highlightedExitBlockMat = Resources.Load("Materials/blocks/highlighted/exitHighlighted") as Material;
+		
+		return new Material( highlightedExitBlockMat );
     }
     public static Material getFlashingValidBlockMat()
-    {
-        return new Material(Resources.Load("Materials/blocks/flashing/validFlashing") as Material);
+	{
+		if ( flashingValidBlockMat == null )
+			flashingValidBlockMat = Resources.Load("Materials/blocks/flashing/validFlashing") as Material;
+		
+		return new Material( flashingValidBlockMat );
     }
     public static Material getFlashingInvalidBlockMat()
-    {
-        return new Material(Resources.Load("Materials/blocks/flashing/invalidFlashing") as Material);
+	{
+		if ( flashingInvalidBlockMat == null )
+			flashingInvalidBlockMat = Resources.Load("Materials/blocks/flashing/invalidFlashing") as Material;
+		
+		return new Material( flashingInvalidBlockMat );
     }
     public static Material getFlashingExitBlockMat()
-    {
-        return new Material(Resources.Load("Materials/blocks/flashing/exitFlashing") as Material);
-    }
-
-    public static Material getUpBlockMat()
-    {
-        return new Material(Resources.Load("Materials/orientations/up") as Material);
-    }
-
-    public static Material getDownBlockMat()
-    {
-        return new Material(Resources.Load("Materials/orientations/down") as Material);
-    }
-
-    public static Material getLeftBlockMat()
-    {
-        return new Material(Resources.Load("Materials/orientations/left") as Material);
-    }
-
-    public static Material getRightBlockMat()
-    {
-        return new Material(Resources.Load("Materials/orientations/right") as Material);
-    }
-
-    public static Material getFrontBlockMat()
-    {
-        return new Material(Resources.Load("Materials/orientations/front") as Material);
-    }
-
-    public static Material getBackBlockMat()
-    {
-        return new Material(Resources.Load("Materials/orientations/back") as Material);
+	{
+		if ( flashingExitBlockMat == null )
+			flashingExitBlockMat = Resources.Load("Materials/blocks/flashing/exitFlashing") as Material;
+		
+		return new Material( flashingExitBlockMat );
     }
 
     internal static Material getSphereMat()
-    {
-        return new Material(Resources.Load("Materials/sphere") as Material);
+	{
+		if ( sphereMat == null )
+			sphereMat = Resources.Load("Materials/sphere") as Material;
+		
+		return new Material( sphereMat );
     }
 }
