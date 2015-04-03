@@ -470,7 +470,7 @@ public class Pawn : MonoBehaviour
 					Tile landing = Tile.Closest(targetTile.AllAccessibleTiles(), nearest.transform.position);
 					
 	                // check if landing platform is not JUST under the nearest platform
-					if ( Vector3.Scale ( ( landing.transform.position - nearest.transform.position ), Vector3.Scale ( world.getGravityVector( GetWorldGravity() ), world.getGravityVector( GetWorldGravity() ) ) - new Vector3( 1, 1, 1 ) ).magnitude == 0 )
+					if ( Vector3.Scale ( ( landing.transform.position - nearest.transform.position ), Vector3.Scale ( World.getGravityVector( GetWorldGravity() ), World.getGravityVector( GetWorldGravity() ) ) - new Vector3( 1, 1, 1 ) ).magnitude == 0 )
 						landing = Tile.Closest( landing.AllAccessibleTiles(), targetTile.transform.position );
 					
 					// calculate the vector from the Pawns position to the landing platform position at the same height
@@ -589,7 +589,7 @@ public class Pawn : MonoBehaviour
             else
 				platform = null;
 			
-			if ( hit.collider.gameObject.tag == "MovingTile" )
+			if ( hit.collider.gameObject.tag == "MovingPlatform" )
 			{
 //				Debug.Log( "on a Moving Tile" );
 
@@ -660,14 +660,15 @@ public class Pawn : MonoBehaviour
 			// puts dots
 			//		foreach (TileOrientation orientation in Enum.GetValues(typeof(TileOrientation)))
 		foreach (TileOrientation orientation in Enum.GetValues(typeof(TileOrientation))) {
-			if (!isFalling) {
+			if (!isFalling)
+			{
 				p = null;
 	            
 				RaycastHit hitc = new RaycastHit ();
 				//			if (Physics.SphereCast(_pos, height / 2.0f + 0.2f, Physics.gravity, out hitc, 10000, ~(1 << 10)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
 				//			if (Physics.SphereCast(_pos, height / 2.0f + 0.2f, Physics.gravity, out hitc, 10000, (1 << 14)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
 				//			if (Physics.SphereCast(_pos,  1.5f, getGravityVector( GetWorldGravity() ), out hitc, 10000, (1 << 14)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
-				if (Physics.SphereCast (transform.position, 0.5f + 0.2f, world.getGravityVector (orientation), out hitc, 10000, (1 << 14))) {//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
+				if (Physics.SphereCast (transform.position, 0.5f + 0.2f, World.getGravityVector (orientation), out hitc, 10000, (1 << 14))) {//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
 					p = hitc.collider.gameObject.GetComponent<Tile> ();
 
 					if (p != null && p != platform) {
@@ -679,7 +680,7 @@ public class Pawn : MonoBehaviour
 						if (hud.dotIsInside)
 							getOrientationSphere (orientation).transform.position = p.transform.position;
 						else
-							getOrientationSphere (orientation).transform.position = p.transform.position - (world.getGravityVector (GetWorldGravity ()) * hud.dotSize / 2);
+							getOrientationSphere (orientation).transform.position = p.transform.position - (World.getGravityVector (GetWorldGravity ()) * hud.dotSize / 2);
 
 						if (p.GetComponent<Stairway> ()) {
 							// don't put dots on stairways

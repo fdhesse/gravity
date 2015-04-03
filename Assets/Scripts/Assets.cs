@@ -85,7 +85,7 @@ public static class Assets
 	public static Material getUpBlockMat()
 	{
 		if ( upBlockMat == null )
-			upBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Game Assets/Materials/orientations/up.mat", typeof(Material)) as Material;
+			upBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Editor/Materials/orientations/up.mat", typeof(Material)) as Material;
 
 		return new Material( upBlockMat );
 	}
@@ -93,7 +93,7 @@ public static class Assets
 	public static Material getDownBlockMat()
 	{
 		if ( downBlockMat == null )
-			downBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Game Assets/Materials/orientations/down.mat", typeof(Material)) as Material;
+			downBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Editor/Materials/orientations/down.mat", typeof(Material)) as Material;
 		
 		return new Material( downBlockMat );
 	}
@@ -101,7 +101,7 @@ public static class Assets
 	public static Material getLeftBlockMat()
 	{
 		if ( leftBlockMat == null )
-			leftBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Game Assets/Materials/orientations/left.mat", typeof(Material)) as Material;
+			leftBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Editor/Materials/orientations/left.mat", typeof(Material)) as Material;
 		
 		return new Material( leftBlockMat );
 	}
@@ -109,7 +109,7 @@ public static class Assets
 	public static Material getRightBlockMat()
 	{
 		if ( rightBlockMat == null )
-			rightBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Game Assets/Materials/orientations/right.mat", typeof(Material)) as Material;
+			rightBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Editor/Materials/orientations/right.mat", typeof(Material)) as Material;
 		
 		return new Material( rightBlockMat );
 	}
@@ -117,7 +117,7 @@ public static class Assets
 	public static Material getFrontBlockMat()
 	{
 		if ( frontBlockMat == null )
-			frontBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Game Assets/Materials/orientations/front.mat", typeof(Material)) as Material;
+			frontBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Editor/Materials/orientations/front.mat", typeof(Material)) as Material;
 		
 		return new Material( frontBlockMat );
 	}
@@ -125,7 +125,7 @@ public static class Assets
 	public static Material getBackBlockMat()
 	{
 		if ( backBlockMat == null )
-			backBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Game Assets/Materials/orientations/back.mat", typeof(Material)) as Material;
+			backBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Editor/Materials/orientations/back.mat", typeof(Material)) as Material;
 		
 		return new Material( backBlockMat );
 	}

@@ -70,9 +70,9 @@ public class GravityPlatform : MonoBehaviour {
 		get {
 			if( constrainedAxis == ConstraintAxis.X )
 				return transform.position.x;
-			if( constrainedAxis == ConstraintAxis.Y )
+			else if( constrainedAxis == ConstraintAxis.Y )
 				return transform.position.y;
-			if ( constrainedAxis == ConstraintAxis.Z )
+			else if ( constrainedAxis == ConstraintAxis.Z )
 				return transform.position.z;
 
 			return 0f;
@@ -80,9 +80,9 @@ public class GravityPlatform : MonoBehaviour {
 		set	{
 			if( constrainedAxis == ConstraintAxis.X )
 				transform.position = new Vector3( value, transform.position.y, transform.position.z );
-			if( constrainedAxis == ConstraintAxis.Y )
+			else if( constrainedAxis == ConstraintAxis.Y )
 				transform.position = new Vector3( transform.position.x, value, transform.position.z );
-			if ( constrainedAxis == ConstraintAxis.Z )
+			else if ( constrainedAxis == ConstraintAxis.Z )
 				transform.position = new Vector3( transform.position.x, transform.position.y, value );
 		}
 	}

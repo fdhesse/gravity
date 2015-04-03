@@ -89,7 +89,7 @@ public class World : MonoBehaviour {
 	/// <summary>
 	/// Gets the gravitational orientation vector.
 	/// </summary>
-	public Vector3 getGravityVector(TileOrientation vec)
+	public static Vector3 getGravityVector(TileOrientation vec)
 	{
 		switch (vec)
 		{

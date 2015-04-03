@@ -22,7 +22,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	[HideInInspector] protected HashSet<Tile> connectionSet; //auxilliary hashset used to ignore duplicates
 	[HideInInspector] protected HashSet<Tile> siblingConnection; //auxilliary hashset used for siblings detection
 
-	[HideInInspector] public TileOrientation orientation;
+	public TileOrientation orientation;
 	
 	[HideInInspector] public bool rescanPath = false;// debug toggle used to force rescan of nearby platforms
 
@@ -132,45 +132,42 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
     /// </summary>
     private void defineOrientation()
     {
-
-//		Material[] materials = gameObject.renderer.sharedMaterials;
-
 		Material[] materials = new Material[] {
 			new Material(Shader.Find("Transparent/Diffuse")),
 			gameObject.GetComponent<Renderer>().sharedMaterials[0]
 		};
 		
-		string r = transform.rotation.eulerAngles.ToString();
-
-		switch (r)
+		Vector3 tileDirection = transform.rotation * -Vector3.up;
+		
+		if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Up) ), 0 ) )
 		{
-		case "(0.0, 180.0, 0.0)":
 			orientation = TileOrientation.Up;
 			materials[1] = Assets.getUpBlockMat();
-			break;
-		case "(0.0, 0.0, -180.0)":
+		}
+		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Down) ), 0 ) )
+		{
 			orientation = TileOrientation.Down;
 			materials[1] = Assets.getDownBlockMat();
-			break;
-		case "(90.0, 90.0, 0.0)":
-			orientation = TileOrientation.Left;
-			materials[1] = Assets.getLeftBlockMat();
-			break;
-		case "(90.0, 270.0, 0.0)":
+		}
+		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Left) ), 0 ) )
+		{
 			orientation = TileOrientation.Right;
 			materials[1] = Assets.getRightBlockMat();
-			break;
-		case "(90.0, 180.0, 0.0)":
+		}
+		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Right) ), 0 ) )
+		{
+			orientation = TileOrientation.Left;
+			materials[1] = Assets.getLeftBlockMat();
+		}
+		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Front) ), 0 ) )
+		{
 			orientation = TileOrientation.Front;
 			materials[1] = Assets.getFrontBlockMat();
-			break;
-		case "(90.0, 0.0, 0.0)":
+		}
+		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Back) ), 0 ) )
+		{
 			orientation = TileOrientation.Back;
 			materials[1] = Assets.getBackBlockMat();
-			break;
-		default:
-			//                Debug.LogError("A block didn't update its orientation correctly, this is because its rotations is funky or not registered, rotation:" + r);
-			break;
 		}
 		
 		materials[1].SetFloat( "_Mode", 2 );
