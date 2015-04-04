@@ -62,7 +62,7 @@ public static class MuObjects
 	}
 	
 	[MenuItem ("GameObject/Mu/FallingCube", false, 10)]
-	static void AddStandardCube ( MenuCommand menuCmd ) {
+	static void AddFallingCube ( MenuCommand menuCmd ) {
 		
 		GameObject go = new GameObject( "Falling Cube" );
 		
@@ -76,11 +76,17 @@ public static class MuObjects
 		go.AddComponent<Rigidbody>();
 		go.AddComponent<BoxCollider>();
 		go.AddComponent<FallingCube>();
-		
+
+		GameObject graphics = new GameObject ("Graphics");
+		graphics.AddComponent<MeshFilter> ();
+		graphics.AddComponent<MeshRenderer> ();
+		graphics.transform.parent = go.transform;
+		graphics.transform.localScale = Vector3.one;
+
 		AudioSource audio = go.AddComponent<AudioSource>();
 		
 		audio.playOnAwake = false;
-//		audio.clip = Assets.bounce;
+		audio.clip = Assets.bounce;
 		audio.minDistance = 100;
 		
 	}

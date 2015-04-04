@@ -132,44 +132,65 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
     /// </summary>
     private void defineOrientation()
     {
+#if UNITY_EDITOR
 		Material[] materials = new Material[] {
 			new Material(Shader.Find("Transparent/Diffuse")),
 			gameObject.GetComponent<Renderer>().sharedMaterials[0]
 		};
+#endif
+		
+		if ( GetComponent<MeshFilter>().sharedMesh.name == "Quad" )
+			transform.Rotate( new Vector3( -90, 0, 0 ) );
 		
 		Vector3 tileDirection = transform.rotation * -Vector3.up;
 		
 		if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Up) ), 0 ) )
 		{
 			orientation = TileOrientation.Up;
+#if UNITY_EDITOR
 			materials[1] = Assets.getUpBlockMat();
+#endif
 		}
 		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Down) ), 0 ) )
 		{
 			orientation = TileOrientation.Down;
+#if UNITY_EDITOR
 			materials[1] = Assets.getDownBlockMat();
+#endif
 		}
 		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Left) ), 0 ) )
 		{
 			orientation = TileOrientation.Right;
+#if UNITY_EDITOR
 			materials[1] = Assets.getRightBlockMat();
+#endif
 		}
 		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Right) ), 0 ) )
 		{
 			orientation = TileOrientation.Left;
+#if UNITY_EDITOR
 			materials[1] = Assets.getLeftBlockMat();
+#endif
 		}
 		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Front) ), 0 ) )
 		{
 			orientation = TileOrientation.Front;
+#if UNITY_EDITOR
 			materials[1] = Assets.getFrontBlockMat();
+#endif
 		}
 		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Back) ), 0 ) )
 		{
 			orientation = TileOrientation.Back;
+#if UNITY_EDITOR
 			materials[1] = Assets.getBackBlockMat();
+#endif
 		}
-		
+
+		if ( GetComponent<MeshFilter>().sharedMesh.name == "Quad" )
+			transform.Rotate( new Vector3( 90, 0, 0 ) );
+
+#if UNITY_EDITOR
 		materials[1].SetFloat( "_Mode", 2 );
 		materials[1].SetInt( "_SrcBlend", (int) UnityEngine.Rendering.BlendMode.SrcAlpha );
 		materials[1].SetInt( "_DstBlend", (int) UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha );
@@ -177,16 +198,15 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		materials[1].EnableKeyword( "_ALPHABLEND_ON" );
 		materials[1].DisableKeyword( "_ALPHAPREMULTIPLY_ON" );
 		materials[1].renderQueue = 3000;
-        
 
 		Mesh sharedMesh = gameObject.GetComponent<MeshFilter> ().sharedMesh;
 		sharedMesh.subMeshCount = 2;
 		int[] tri = sharedMesh.GetTriangles (0);
 		sharedMesh.SetTriangles (tri, 0);
 		sharedMesh.SetTriangles (tri, 1);
-
-        gameObject.GetComponent<Renderer>().materials = materials;
-        
+		
+		gameObject.GetComponent<Renderer>().materials = materials;
+#endif
     }
 
     /// <summary>

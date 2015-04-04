@@ -2,13 +2,13 @@
 using UnityEngine;
 using System.Collections;
 
-[CustomEditor(typeof(GameplayCube))]
 [CanEditMultipleObjects]
+[CustomEditor(typeof(GameplayCube))]
 public class GameplayCubeEditor : Editor
 {
+
 	GameplayCube m_Instance;
 	PropertyField[] m_fields;
-	
 	
 	public void OnEnable()
 	{
@@ -16,19 +16,23 @@ public class GameplayCubeEditor : Editor
 		m_fields = ExposeProperties.GetProperties( m_Instance );
 	}
 	
-	public override void OnInspectorGUI () {
-		
+	public override void OnInspectorGUI ()
+	{
+		//serializedObject.Update ();
+
 		if ( m_Instance == null )
 			return;
-		
-//		this.DrawDefaultInspector();
+
+		this.DrawDefaultInspector();
 		
 		ExposeProperties.Expose( m_fields );
-		
+
 		if (GUI.changed)
 		{
 			EditorUtility.SetDirty (target);
 		//	m_Instance.Refresh ();
 		}
+
+		//serializedObject.ApplyModifiedProperties ();
 	}
 }

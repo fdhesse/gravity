@@ -1,9 +1,3 @@
-﻿using UnityEngine;
-using System;
-using System.Collections;
+﻿using System;
 
-[AttributeUsage( AttributeTargets.Property )]
-public class ExposePropertyAttribute : Attribute
-{
-	
-}
+[AttributeUsage(AttributeTargets.Property)] public class ExposePropertyAttribute : Attribute {}

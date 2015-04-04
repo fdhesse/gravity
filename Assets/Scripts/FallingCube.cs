@@ -2,7 +2,6 @@
 using System.Collections;
 
 [RequireComponent(typeof(GameplayCube))]
-[ExecuteInEditMode]
 public class FallingCube : MonoBehaviour {
 	
 	private Pawn PlayerPawn; // Player Pawn
@@ -17,6 +16,8 @@ public class FallingCube : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
 	{
+		PlayerPawn = (Pawn) GameObject.Find ("Pawn").GetComponent<Pawn>();
+		
 		GameplayCube cube = GetComponent<GameplayCube>();
 		
 		cube.Left = TileType.Valid;
@@ -26,15 +27,27 @@ public class FallingCube : MonoBehaviour {
 		cube.Front = TileType.Valid;
 		cube.Back = TileType.Valid;
 		
-		transform.FindChild( "left" ).gameObject.GetComponent<Tile>().rescanPath = true;
-		transform.FindChild( "right" ).gameObject.GetComponent<Tile>().rescanPath = true;
-		transform.FindChild( "up" ).gameObject.GetComponent<Tile>().rescanPath = true;
-		transform.FindChild( "down" ).gameObject.GetComponent<Tile>().rescanPath = true;
-		transform.FindChild( "front" ).gameObject.GetComponent<Tile>().rescanPath = true;
-		transform.FindChild( "back" ).gameObject.GetComponent<Tile>().rescanPath = true;
+		// Change the Colliders in order to make boxColliders;
+		GameObject[] faces = new GameObject[6];
+		
+		faces[0] = transform.FindChild ("left").gameObject;
+		faces[1] = transform.FindChild ("right").gameObject;
+		faces[2] = transform.FindChild ("up").gameObject;
+		faces[3] = transform.FindChild ("down").gameObject;
+		faces[4] = transform.FindChild ("back").gameObject;
+		faces[5] = transform.FindChild ("front").gameObject;
+		
+		foreach( GameObject face in faces )
+		{
+			face.GetComponent<Tile>().rescanPath = true;
+
+			Object.DestroyImmediate( face.GetComponent<MeshCollider> () );
+			
+			BoxCollider box = face.AddComponent<BoxCollider> ();
+			box.isTrigger = true;
+		}
 		
 		GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll; // .FreezeRotation | RigidbodyConstraints.FreezePositionZ;
-		PlayerPawn = (Pawn) GameObject.Find ("Pawn").GetComponent<Pawn>();
 	}
 	
 	// Update is called once per frame
