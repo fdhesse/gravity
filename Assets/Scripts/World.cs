@@ -14,16 +14,6 @@ public class World : MonoBehaviour {
 	
 	private Pawn PlayerPawn; // Player Pawn
 	
-	// Use this for initialization
-	void Start () {
-//		gameObject.AddComponent( "Editor" );
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-	
 	public void Init()
 	{
 		cubes = FindObjectsOfType<FallingCube>();

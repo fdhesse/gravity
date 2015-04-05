@@ -12,6 +12,13 @@ public static class TileSelection
 
 	private static LayerMask tilesLayer = LayerMask.NameToLayer( "Tiles" );
 
+	private static GameObject player;
+
+	public static Vector3 PlayerPosition
+	{
+		get { if ( player == null ) player = GameObject.Find( "Pawn" ); return player.transform.position; }
+	}
+
     static TileSelection()
     {
 		//cam = GameObject.FindGameObjectWithTag("MainCamera"); //initialize the camera
