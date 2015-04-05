@@ -183,6 +183,11 @@ public class RotatingPlatform : MonoBehaviour
 
 	private IEnumerator LookTowardsDirection( float toRotation )
 	{
+		// Disable the colliders
+		Collider[] colliders = GetComponentsInChildren<Collider> ();
+		foreach ( Collider collider in colliders )
+			collider.enabled = false;
+
 		float elapsedTime = 0;
 		Vector3 axis = Vector3.left;
 
@@ -277,11 +282,21 @@ public class RotatingPlatform : MonoBehaviour
 		}
 
 		RecomputePlatformTiles ();
+
+		// Re-enable the colliders
+		foreach ( Collider collider in colliders )
+			collider.enabled = true;
 	}
 
 	private IEnumerator LookTowardsDirection( Quaternion toRotation )
 	{
 		// So effective !
+
+		// Disable the colliders
+		Collider[] colliders = GetComponentsInChildren<Collider> ();
+		foreach ( Collider collider in colliders )
+			collider.enabled = false;
+
 		float elapsedTime = 0;
 
 		Quaternion fromAngle = transform.rotation;
@@ -304,6 +319,10 @@ public class RotatingPlatform : MonoBehaviour
 		
 		// Recompute the platform's tiles directions
 		RecomputePlatformTiles ();
+		
+		// Re-enable the colliders
+		foreach ( Collider collider in colliders )
+			collider.enabled = true;
 	}
 
 	private void RecomputePlatformTiles()

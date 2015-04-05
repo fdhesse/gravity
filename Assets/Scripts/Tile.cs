@@ -34,7 +34,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
     private Ticker flash;//timer for platform flashing
 
 	private TileType oldType;// auxilliary variable
-	
+
 #if UNITY_EDITOR
 	private Material[] sourceMaterials;
 #endif
@@ -51,6 +51,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 
 		GetComponent<Renderer>().enabled = true;
 
+		/*
 		if ( EditorApplication.isPlaying )
 		{
 			int i;
@@ -74,6 +75,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			
 			GetComponent<Renderer>().sharedMaterials = materials;
 		}
+		*/
 		
 #elif UNITY_STANDALONE
 		//GetComponent<Renderer>().enabled = false;
@@ -279,34 +281,72 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
         }
     }
 
-
-    /// <summary>
-    /// <para>Changes the platform material according to the characteristics of the platform.</para>
-    /// <para>Although you can change the patforms materials in the editor this script will change all that.</para>
-    /// <para>This is responsible for flashing, highlighting, which is also a change in materials.</para>
-    /// </summary>
-    private void applyTileMaterial()
-    {
-        //for some reason Unity doesn't let us change a single material, we have to change the material array
-        Material[] materials = gameObject.GetComponent<Renderer>().sharedMaterials;
-        switch (type)
-        {
+	
+	/// <summary>
+	/// <para>Changes the platform material according to the characteristics of the platform.</para>
+	/// <para>Although you can change the patforms materials in the editor this script will change all that.</para>
+	/// <para>This is responsible for flashing, highlighting, which is also a change in materials.</para>
+	/// </summary>
+	private void applyTileMaterial()
+	{
+		//for some reason Unity doesn't let us change a single material, we have to change the material array
+		Material[] materials = gameObject.GetComponent<Renderer>().sharedMaterials;
+		switch (type)
+		{
 		case TileType.Valid:
-				materials[0] = isHighlighted ? Assets.getHighlightedValidBlockMat() : Assets.getValidBlockMat();
-                materials[0] = isFlashing ? Assets.getFlashingValidBlockMat() : materials[0];
-                break;
+			materials[0] = isHighlighted ? Assets.getHighlightedValidBlockMat() : Assets.getValidBlockMat();
+			materials[0] = isFlashing ? Assets.getFlashingValidBlockMat() : materials[0];
+			break;
 		case TileType.Invalid:
-				materials[0] = isHighlighted ? Assets.getHighlightedInvalidBlockMat() : Assets.getInvalidBlockMat();
-                materials[0] = isFlashing ? Assets.getFlashingInvalidBlockMat() : materials[0];
-                break;
+			materials[0] = isHighlighted ? Assets.getHighlightedInvalidBlockMat() : Assets.getInvalidBlockMat();
+			materials[0] = isFlashing ? Assets.getFlashingInvalidBlockMat() : materials[0];
+			break;
 		case TileType.Exit:
-				materials[0] = isHighlighted ? Assets.getHighlightedExitBlockMat() : Assets.getExitBlockMat();
-                materials[0] = isFlashing ? Assets.getFlashingExitBlockMat() : materials[0];
-                break;
-        }
-        gameObject.GetComponent<Renderer>().materials = materials;
+			materials[0] = isHighlighted ? Assets.getHighlightedExitBlockMat() : Assets.getExitBlockMat();
+			materials[0] = isFlashing ? Assets.getFlashingExitBlockMat() : materials[0];
+			break;
+		}
+		gameObject.GetComponent<Renderer>().materials = materials;
 		oldType = type;
-    }
+	}
+
+	/// <summary>
+	/// <para>Highlight the targeted material, using the "MouseCursor" prefab.</para>
+	/// </summary>
+	private void highlightTile()
+	{
+		if ( !isHighlighted )
+		{
+			Assets.mouseCursor.transform.position = Vector3.one * float.MaxValue;
+			return;
+		}
+		//Vector3 cursorPosition = transform.position;
+		Assets.mouseCursor.transform.position = transform.position;
+		Assets.mouseCursor.transform.rotation = transform.rotation;
+
+		if ( GetComponent<MeshFilter>().sharedMesh.name == "Quad" )
+			Assets.mouseCursor.transform.Rotate( new Vector3( -90, 0, 0 ) );
+		
+		Assets.mouseCursor.transform.Translate (new Vector3 (0, 0.5f, 0));
+
+		/*
+		switch (type)
+		{
+		case TileType.Valid:
+			break;
+		case TileType.Invalid:
+			materials[0] = isHighlighted ? Assets.getHighlightedInvalidBlockMat() : Assets.getInvalidBlockMat();
+			materials[0] = isFlashing ? Assets.getFlashingInvalidBlockMat() : materials[0];
+			break;
+		case TileType.Exit:
+			materials[0] = isHighlighted ? Assets.getHighlightedExitBlockMat() : Assets.getExitBlockMat();
+			materials[0] = isFlashing ? Assets.getFlashingExitBlockMat() : materials[0];
+			break;
+		}
+		gameObject.GetComponent<Renderer>().materials = materials;
+		*/
+		oldType = type;
+	}
 
     // this function is called whenever we want to highlight a platform, usually due to mousehover
     public void highlight()
@@ -314,15 +354,17 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		if ( isClickable )
 		{
 	        isHighlighted = true;
-	        applyTileMaterial();
+			highlightTile();
+
+	        //applyTileMaterial();
 		}
     }
 
     // this function is called whenever we want to unhighlight a platform, usually right after a mousehover
     public void unHighlight()
     {
-        isHighlighted = false;
-        applyTileMaterial();
+		isHighlighted = false;
+		highlightTile();
     }
 
     /// <summary>
@@ -331,8 +373,8 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
     public void flashMe()
     {
         isFlashing = true;
-        flash = new Ticker(0.1f, false);
-        applyTileMaterial();
+		flash = new Ticker(0.1f, false);
+		highlightTile();
     }
 
     /// <summary>
@@ -340,8 +382,8 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
     /// </summary>
     public void unFlashMe()
     {
-        isFlashing = false;
-        applyTileMaterial();
+		isFlashing = false;
+		highlightTile();
     }
 
     /// <summary>

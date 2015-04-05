@@ -26,6 +26,8 @@ public static class Assets
 	public static AudioClip bounce;
 	public static AudioClip bounce2;
 
+	public static GameObject mouseCursor;
+
     //public static Material upBlockMat;
     //public static Material downBlockMat;
     //public static Material leftBlockMat;
@@ -34,6 +36,15 @@ public static class Assets
     //public static Material backBlockMat;
 	static Assets()
 	{
+		mouseCursor = GameObject.Find ("Mouse Cursor");
+
+		if ( mouseCursor == null )
+		{
+			mouseCursor = (GameObject) GameObject.Instantiate( Resources.Load( "PREFABS/Mouse Cursor" ) );
+			mouseCursor.name = "Mouse Cursor";
+			mouseCursor.transform.position = Vector3.one * float.MaxValue;
+		}
+
 		invalidSound = Resources.Load("Sounds/invalidSound") as AudioClip;
 		bounce = Resources.Load("Sounds/bounce") as AudioClip;
 		bounce2 = Resources.Load("Sounds/bounce2") as AudioClip;

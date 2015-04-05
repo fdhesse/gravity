@@ -25,6 +25,7 @@ public class Pawn : MonoBehaviour
 	public float speed = 30.0f;					// Speed of the pawn
 	public float turnDelay = 0.5f; // 1.0f		// délai avant la chute
 	public float fallInterval = 4.0f;
+	public float jumpAnimationLength = 0.3f;
 	private float height;
 	private bool newTarget = true;
 	private bool lookAt_DestroyCoincidents;
@@ -33,10 +34,9 @@ public class Pawn : MonoBehaviour
 	private bool isWalkingInStairs;
 	private bool isWalking;
 
-//	private query
-	
 	private BoxCollider boxCollider;
 	
+	[HideInInspector] public bool isJumping;
 	[HideInInspector] public bool isFalling;
 	[HideInInspector] public RigidbodyConstraints nextConstraint;
 	private RigidbodyConstraints transformConstraints;
@@ -197,6 +197,7 @@ public class Pawn : MonoBehaviour
 		targetTile = null;
 		
 		isFalling = true;
+		isJumping = false;
 		
 		transform.position = spawnPosition;
 		transform.rotation = spawnRotation;
@@ -308,6 +309,7 @@ public class Pawn : MonoBehaviour
 		if (isFalling)
 		{
 			isFalling = false;
+			GetComponent<Rigidbody>().mass = 1;
 			
 			if( platform != null )
 			{
@@ -326,6 +328,8 @@ public class Pawn : MonoBehaviour
 					SnapToTile( nearest );
 				}
 */			}
+
+			putDestinationMarks( platform );
 		}
 
 		if (collision.relativeVelocity.magnitude > 1 && GetComponent<AudioSource>().enabled)
@@ -392,7 +396,7 @@ public class Pawn : MonoBehaviour
     /// </summary>
     private void movePawn()
 	{
-        if (isGrounded()) // is the player touching a platform "beneath" him?
+		if (isGrounded() || isJumping) // is the player touching a platform "beneath" him?
 		{
 			if( platform.type.Equals(TileType.Exit) ) //if this platform is an exit platform, make the game end
 				world.GameOver();
@@ -415,7 +419,6 @@ public class Pawn : MonoBehaviour
 		
 		if (path != null && path.Count > 0) //is there a path?
 		{
-//			Debug.Log("Ok, ok, I go !");
 			// play animation: walk
 			animState = 2;
 			isWalking = true;
@@ -426,7 +429,6 @@ public class Pawn : MonoBehaviour
             //if there is, move the pawn towards the next point in that path
             Vector3 vec = path[0].transform.position - getGroundPosition();
 			
-//			Debug.Log( "vector: " + vec );
             if (moveMe(vec))
 			{
 				//SnapToTile( path[0] );
@@ -446,42 +448,53 @@ public class Pawn : MonoBehaviour
         }
         else if (targetTile != null) // Case where there is no path but a target platform, ie: target platform is not aligned to platform
 		{
-			
-			if ( targetTileIsAbove(targetTile) || targetTile.type.Equals(TileType.Invalid) )//is targetTile is above the pawn or of type invalid?
+			if ( targetTileIsAbove(targetTile) || targetTile.type.Equals(TileType.Invalid) ) // is targetTile above the pawn or of type invalid?
 			{
-	            GetComponent<AudioSource>().PlayOneShot(Assets.invalidSound); //play a failed action sound
-	            targetTile = null; //forget target platform
-	        }
-	        else //the platform is in a valid place
+				GetComponent<AudioSource>().PlayOneShot(Assets.invalidSound); // play a failed action sound
+				//targetTile = null; //forget target platform
+			}
+			else //the platform is in a valid place
 	        {
 	        	// platform is not accessible but in valid space, so:
 	        	// pawn will go towards the platform, then
-	        	//  - he will land on a neighbourg platform
+	        	//  (- he will land on a neighbourg platform) no more possible yet
 	        	//  - he will land on the platform
-	        	//  - he will fall into the void
+	        	//  (- he will fall into the void) this case won't happen anymore
 
 				Tile nearest = Tile.Closest(platform.AllAccessibleTiles(), targetTile.transform.position); //nearest platform: the directly accessible platform from the platform bellow the Pawn, thats closest to the target platform
 				
 	            if (nearest.Equals(platform) ) //is the nearest the one bellow the Pawn?
 				{
-//					Debug.Log ( "nearest is this" );
-
-					//landing platform: the directly accessible platform from the target platform, thats closest to the nearest platform
+					// landing platform: the directly accessible platform from the target platform, thats closest to the nearest platform
 					Tile landing = Tile.Closest(targetTile.AllAccessibleTiles(), nearest.transform.position);
 					
-	                // check if landing platform is not JUST under the nearest platform
+	                // check if landing platform is not EXACTLY under the nearest platform
 					if ( Vector3.Scale ( ( landing.transform.position - nearest.transform.position ), Vector3.Scale ( World.getGravityVector( GetWorldGravity() ), World.getGravityVector( GetWorldGravity() ) ) - new Vector3( 1, 1, 1 ) ).magnitude == 0 )
 						landing = Tile.Closest( landing.AllAccessibleTiles(), targetTile.transform.position );
 					
 					// calculate the vector from the Pawns position to the landing platform position at the same height
 	                Vector3 vec = getGroundHeightVector(landing.transform.position) - getGroundPosition();
-					
-//					Debug.Log ( "vec is: " + vec );
-					
-	                if (moveMe(vec)) //move the pawn towards that vector
-	                {
-//						Debug.Log ( "Ok, I go !" );
-						targetTile = null; //if we are already there, forget targetTile
+
+					// There is definitely a platform to fall, jump and go
+					if ( vec != Vector3.zero )
+					{
+						if ( !isJumping )
+						{
+							//GetComponent<Rigidbody>().AddForce( -Physics.gravity * vec.sqrMagnitude * 0.45f );
+							//GetComponent<Rigidbody>().mass = 30;
+							StartCoroutine( JumpToPlatform());
+							isJumping = true;
+						}
+
+						if (moveMe(vec)) //move the pawn towards that vector
+						{
+							targetTile = null; //if we are already there, forget targetTile
+							isJumping = false;
+						}
+					}
+					else
+					{
+						targetTile = null;
 					}
 	            }
 	            else
@@ -492,6 +505,25 @@ public class Pawn : MonoBehaviour
 	    }
     }
 
+	private IEnumerator JumpToPlatform()
+	{
+		float elapsedTime = 0;
+
+		Vector3 jumpPos = Vector3.zero;
+
+		while ( elapsedTime < jumpAnimationLength )
+		{
+			float t = elapsedTime / jumpAnimationLength;
+
+			jumpPos = transform.position - (Physics.gravity.normalized * Mathf.Cos( t ) * 0.75f );
+			transform.position = jumpPos;
+
+			elapsedTime += Time.deltaTime;
+
+			yield return null;
+		}
+	}
+
     /// <summary>
     /// Moves the pawn in the direction of the vector.
     /// Answers the question "am I there yet?"
@@ -500,7 +532,7 @@ public class Pawn : MonoBehaviour
     /// <returns>returns true if the vector is small, i.e. smaller than 1 of magnitude, in this case, the Pawn has reached his destination</returns>
     private bool moveMe(Vector3 vec)
 	{
-		if (Vector3.Magnitude(vec) > 1)
+		if ( vec.magnitude > 1)
 		{
 			transform.Translate(Vector3.Normalize(vec) * Time.deltaTime * speed, Space.World);
 
@@ -656,49 +688,53 @@ public class Pawn : MonoBehaviour
             platform = null;
         }
 
+		putDestinationMarks (p);
 
-			// puts dots
-			//		foreach (TileOrientation orientation in Enum.GetValues(typeof(TileOrientation)))
-		foreach (TileOrientation orientation in Enum.GetValues(typeof(TileOrientation))) {
+    }
+
+	private void putDestinationMarks( Tile tile )
+	{
+		foreach (TileOrientation orientation in Enum.GetValues(typeof(TileOrientation)))
+		{
 			if (!isFalling)
 			{
-				p = null;
-	            
+				tile = null;
+				
 				RaycastHit hitc = new RaycastHit ();
 				//			if (Physics.SphereCast(_pos, height / 2.0f + 0.2f, Physics.gravity, out hitc, 10000, ~(1 << 10)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
 				//			if (Physics.SphereCast(_pos, height / 2.0f + 0.2f, Physics.gravity, out hitc, 10000, (1 << 14)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
 				//			if (Physics.SphereCast(_pos,  1.5f, getGravityVector( GetWorldGravity() ), out hitc, 10000, (1 << 14)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
 				if (Physics.SphereCast (transform.position, 0.5f + 0.2f, World.getGravityVector (orientation), out hitc, 10000, (1 << 14))) {//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
-					p = hitc.collider.gameObject.GetComponent<Tile> ();
-
-					if (p != null && p != platform) {
-						p.isClickable = true;
-
-						if (!clickableTiles.Contains (p))
-							clickableTiles.Add (p);
-
+					tile = hitc.collider.gameObject.GetComponent<Tile> ();
+					
+					if (tile != null && tile != platform) {
+						tile.isClickable = true;
+						
+						if (!clickableTiles.Contains (tile))
+							clickableTiles.Add (tile);
+						
 						if (hud.dotIsInside)
-							getOrientationSphere (orientation).transform.position = p.transform.position;
+							getOrientationSphere (orientation).transform.position = tile.transform.position;
 						else
-							getOrientationSphere (orientation).transform.position = p.transform.position - (World.getGravityVector (GetWorldGravity ()) * hud.dotSize / 2);
-
-						if (p.GetComponent<Stairway> ()) {
+							getOrientationSphere (orientation).transform.position = tile.transform.position - (World.getGravityVector (GetWorldGravity ()) * hud.dotSize / 2);
+						
+						if (tile.GetComponent<Stairway> ()) {
 							// don't put dots on stairways
 							getOrientationSphere (orientation).transform.position = Vector3.one * float.MaxValue; //sphere is moved to infinity muhahahaha, tremble before my power
 						}
 					} else {
-						p.isClickable = false;
+						tile.isClickable = false;
 						// Valid target
 						getOrientationSphere (orientation).transform.position = Vector3.one * float.MaxValue; //sphere is moved to infinity muhahahaha, tremble before my power
 					}
-
+					
 				}
 			} else {
 				// Falling, no more dots
 				getOrientationSphere(orientation).transform.position = Vector3.one * float.MaxValue; //BEGONE
 			}
 		}
-    }
+	}
 
     /// <summary>
     /// Manages the interaction with the mouse.
@@ -817,7 +853,7 @@ public class Pawn : MonoBehaviour
 						if ( targetTile.transform != platform.transform && targetTile.orientation == platform.orientation )
 						{
 							path = AStarHelper.Calculate(platform, p);
-							StartCoroutine( LookAt ( targetTile.transform.position ) );
+							//StartCoroutine( LookAt ( path[0].transform.position ) );
 						}
 					}
 	            }

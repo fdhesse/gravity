@@ -125,7 +125,7 @@ public class GameplayCube : MonoBehaviour {
 			face.AddComponent<Spikes>();
 			
 			//GameObject child = GameObject.Instantiate( Resources.LoadAssetAtPath("Assets/Resources/PREFABS/spikes.prefab", typeof(GameObject)) ) as GameObject;
-			GameObject child = (GameObject) Resources.Load( "Prefabs/spikes.prefab" );
+			GameObject child = (GameObject) Resources.Load( "PREFABS/spikes" );
 
 			child.name = "spikes";
 			child.transform.parent = tile.transform;

@@ -1,0 +1,1 @@
+Put only prefabs which needs to be loaded by scripts !!
