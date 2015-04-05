@@ -138,7 +138,7 @@ ModelImporter:
     400128: R_leg02
     400130: torso
     4300000: Player
-    7400000: Take 001
+    7400000: Fall
     9500000: //RootNode
     13700000: Player
   materials:
@@ -156,7 +156,165 @@ ModelImporter:
     animationScaleError: .5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Fall
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 100
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: DummyMaster
+        weight: 1
+      - path: DummyMaster/Dummy_body
+        weight: 1
+      - path: DummyMaster/Dummy_body/IK_pelvis
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/bag01
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/bag01/Backpack
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/bag01/Backpack/blanket
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/Dummy_L_leg
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/Dummy_L_leg/L_leg01
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/Dummy_L_leg/L_leg01/L_leg02
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/Dummy_L_leg/L_leg01/L_leg02/L_foot01
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/Dummy_L_leg/L_leg01/L_leg02/L_foot01/L_foot02
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/Dummy_L_leg/L_leg01/L_leg02/L_foot01/L_foot02/L_foot03
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/R_leg01
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/R_leg01/R_leg02
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/R_leg01/R_leg02/R_foot01
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/R_leg01/R_leg02/R_foot01/R_foot02
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/R_leg01/R_leg02/R_foot01/R_foot02/R_foot03
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/head01
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/head01/head02
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/head01/head02/hat01
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/head01/head02/hat01/hat02
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/head01/head02/hat01/hat02/hat
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/L_Arm01
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/L_Arm01/L_Arm02
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/L_Arm01/L_Arm02/L_Hand01
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/L_Arm01/L_Arm02/L_Hand01/L_Hand02
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/L_Arm01/L_Arm02/L_Hand01/L_Hand02/L_Hand03
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/R_Arm01
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/R_Arm01/R_Arm02
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/R_Arm01/R_Arm02/R_Hand01
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/R_Arm01/R_Arm02/R_Hand01/R_Hand02
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/R_Arm01/R_Arm02/R_Hand01/R_Hand02/R_Hand03
+        weight: 1
+      - path: DummyMaster/DummyBackpack01
+        weight: 1
+      - path: DummyMaster/DummyBackpack01/DummyBackpack02
+        weight: 1
+      - path: DummyMaster/DummyBackpack01/DummyBackpack02/IK_backpack02
+        weight: 1
+      - path: DummyMaster/DummyBackpack01/IK_backpack01
+        weight: 1
+      - path: DummyMaster/DummyHat
+        weight: 1
+      - path: DummyMaster/DummyHat/IK_Hat
+        weight: 1
+      - path: DummyMaster/DummyHead
+        weight: 1
+      - path: DummyMaster/DummyHead/IK _head
+        weight: 1
+      - path: DummyMaster/DummyL_arm
+        weight: 1
+      - path: DummyMaster/DummyL_arm/DummyL_wrist001
+        weight: 1
+      - path: DummyMaster/DummyL_arm/DummyL_wrist001/DummyL_fingers001
+        weight: 1
+      - path: DummyMaster/DummyL_arm/DummyL_wrist001/DummyL_fingers001/IK _L_arm03
+        weight: 1
+      - path: DummyMaster/DummyL_arm/DummyL_wrist001/IK _L_arm02
+        weight: 1
+      - path: DummyMaster/DummyL_arm/IK _L_arm01
+        weight: 1
+      - path: DummyMaster/DummyL_foot001
+        weight: 1
+      - path: DummyMaster/DummyL_foot001/DummyL_foot02
+        weight: 1
+      - path: DummyMaster/DummyL_foot001/DummyL_foot02/IK_L_Foot02
+        weight: 1
+      - path: DummyMaster/DummyL_foot001/IK_L_Foot01
+        weight: 1
+      - path: DummyMaster/DummyR_arm
+        weight: 1
+      - path: DummyMaster/DummyR_arm/DummyR_wrist
+        weight: 1
+      - path: DummyMaster/DummyR_arm/DummyR_wrist/DummyR_fingers
+        weight: 1
+      - path: DummyMaster/DummyR_arm/DummyR_wrist/DummyR_fingers/IK_R_arm03
+        weight: 1
+      - path: DummyMaster/DummyR_arm/DummyR_wrist/IK_R_arm02
+        weight: 1
+      - path: DummyMaster/DummyR_arm/IK_R_arm01
+        weight: 1
+      - path: DummyMaster/DummyR_foot01
+        weight: 1
+      - path: DummyMaster/DummyR_foot01/DummyR_foot02
+        weight: 1
+      - path: DummyMaster/DummyR_foot01/DummyR_foot02/IK_R_Foot02
+        weight: 1
+      - path: DummyMaster/DummyR_foot01/IK_R_Foot
+        weight: 1
+      - path: DummyMaster/DummyTorso
+        weight: 1
+      - path: DummyMaster/DummyTorso/IK _torso
+        weight: 1
+      - path: Player
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
     isReadable: 1
   meshes:
     lODScreenPercentages: []
