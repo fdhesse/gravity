@@ -436,7 +436,6 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 				continue;
 
             minDist = thisDist;
-			Debug.Log( "new min: " + minDist );
 			closestNode = inNodes[i];
         }
 

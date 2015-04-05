@@ -100,7 +100,7 @@ public class Pawn : MonoBehaviour
 		world.Init();
 		G = world.G;
 		
-		animator = transform.FindChild("Animations").GetComponent<Animator>();
+		animator = transform.FindChild("OldGuy").GetComponent<Animator>();
 		boxCollider = GetComponent<BoxCollider>();
 		height = boxCollider.size.y * boxCollider.transform.localScale.y; // z because "Fennec" child is rotated;
 //		height = collider.size.y;
