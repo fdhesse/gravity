@@ -50,9 +50,9 @@ public class Pawn : MonoBehaviour
 	private Vector3 spawnPosition;// position of the spawn GameObject
 	private Quaternion spawnRotation;// rotation of the spawn GameObject
 	
-	// #PLATFORMS#
-	private List<Tile> path = new List<Tile> (); // List of platforms in the current path
-	private Tile platform;// Tile beneath the Pawn
+	// #TILES#
+	private List<Tile> path = new List<Tile> (); // List of tiles in the current path
+	private Tile tile;// Tile beneath the Pawn
 	private Tile targetTile;// Tile the player targeted
 	private List<Tile> clickableTiles = new List<Tile> ();
 	
@@ -91,10 +91,6 @@ public class Pawn : MonoBehaviour
 		}
 	}
 
-    /// <summary>
-    ///  START
-    ///  THIS IS CALLED ONCE IN THE BEGINNING
-    /// </summary>
     void Start()
 	{
 		isWalking = false;
@@ -114,11 +110,7 @@ public class Pawn : MonoBehaviour
 		initOrientationSpheres();
 		checkUnderneath();
 	}
-	
-	/// <summary>
-	///  UPDATE
-	///  THIS IS CALLED ONCE PER FRAME
-	/// </summary>
+
 	void Update()
 	{
 		if (!(world.IsGameOver() || hud.isPaused)) // is the game active?, i.e. is the game not paused and not finished?
@@ -193,7 +185,7 @@ public class Pawn : MonoBehaviour
 	public void respawn()
 	{
 		path = null;
-		platform = null;
+		tile = null;
 		targetTile = null;
 		
 		isFalling = true;
@@ -301,7 +293,7 @@ public class Pawn : MonoBehaviour
 	private void SnapToTile( Tile p )
 	{
 		moveMe (p.transform.position);
-		//path = AStarHelper.Calculate(platform, p); //give me a path towards the nearest platform
+		//path = AStarHelper.Calculate(tile, p); //give me a path towards the nearest tile
 	}
 
 	public void OnCollisionEnter(Collision collision)
@@ -311,25 +303,25 @@ public class Pawn : MonoBehaviour
 			isFalling = false;
 			GetComponent<Rigidbody>().mass = 1;
 			
-			if( platform != null )
+			if( tile != null )
 			{
-				Tile[] platforms = GameObject.FindObjectsOfType<Tile>();
-				List<Tile> platformsList = new List<Tile>();
+				Tile[] tiles = GameObject.FindObjectsOfType<Tile>();
+				List<Tile> tilesList = new List<Tile>();
 				
-				for (int i = 0; i != platforms.Length; i++)
+				for (int i = 0; i != tiles.Length; i++)
 				{
-					if (platforms[i].orientation == platform.orientation)
-						platformsList.Add(platforms[i]);
+					if (tiles[i].orientation == tile.orientation)
+						tilesList.Add(tiles[i]);
 				}
 				
-/*				if ( platformsList.Count > 0 )
+/*				if ( tilesList.Count > 0 )
 				{
-					Tile nearest = Tile.Closest(platformsList, transform.position); //nearest platform: the directly accessible platform from the platform bellow the Pawn, thats closest to the target platform
+					Tile nearest = Tile.Closest(tilesList, transform.position); //nearest tile: the directly accessible tile from the tile bellow the Pawn, thats closest to the target tile
 					SnapToTile( nearest );
 				}
 */			}
 
-			putDestinationMarks( platform );
+			putDestinationMarks( tile );
 		}
 
 		if (collision.relativeVelocity.magnitude > 1 && GetComponent<AudioSource>().enabled)
@@ -348,7 +340,7 @@ public class Pawn : MonoBehaviour
     {
 		if (world.IsGameOver()) //is the game over? 
         {
-			if (platform != null && platform.type.Equals(TileType.Exit))//Has the player reached an exit Tile?
+			if (tile != null && tile.type.Equals(TileType.Exit))//Has the player reached an exit Tile?
                 hud.isEndScreen = true; //activate the endscreen
 		}
 		
@@ -396,12 +388,12 @@ public class Pawn : MonoBehaviour
     /// </summary>
     private void movePawn()
 	{
-		if (isGrounded() || isJumping) // is the player touching a platform "beneath" him?
+		if (isGrounded() || isJumping) // is the player touching a tile "beneath" him?
 		{
-			if( platform.type.Equals(TileType.Exit) ) //if this platform is an exit platform, make the game end
+			if( tile.type.Equals(TileType.Exit) ) //if this tile is an exit tile, make the game end
 				world.GameOver();
 				
-            moveAlongPath(); //otherwise, move along the path to the player selected platform
+            moveAlongPath(); //otherwise, move along the path to the player selected tile
         }
 		else if (isWalkingInStairs)
 			moveAlongPath();
@@ -410,8 +402,8 @@ public class Pawn : MonoBehaviour
     /// <summary>
     /// Moves along the path.
     /// If there is a path that has been previously decided the Pawn should take, finish the path.
-    /// Otherwise, if there isn't a path, but there is a targetTile, a valid platform that the player has clicked. 
-    /// This targetTile can be in a place not directly accessible to the Pawn, for example if there is a gap or if the platform is lower and the Pawn is supposed to fall.
+    /// Otherwise, if there isn't a path, but there is a targetTile, a valid tile that the player has clicked. 
+    /// This targetTile can be in a place not directly accessible to the Pawn, for example if there is a gap or if the tile is lower and the Pawn is supposed to fall.
     /// </summary>
     private void moveAlongPath()
 	{
@@ -446,50 +438,55 @@ public class Pawn : MonoBehaviour
 			}
 			
         }
-        else if (targetTile != null) // Case where there is no path but a target platform, ie: target platform is not aligned to platform
+        else if (targetTile != null) // Case where there is no path but a target tile, ie: target tile is not aligned to tile
 		{
 			if ( targetTileIsAbove(targetTile) || targetTile.type.Equals(TileType.Invalid) ) // is targetTile above the pawn or of type invalid?
 			{
 				GetComponent<AudioSource>().PlayOneShot(Assets.invalidSound); // play a failed action sound
-				//targetTile = null; //forget target platform
+				//targetTile = null; //forget target tile
 			}
-			else //the platform is in a valid place
+			else //the tile is in a valid place
 	        {
-	        	// platform is not accessible but in valid space, so:
-	        	// pawn will go towards the platform, then
-	        	//  (- he will land on a neighbourg platform) no more possible yet
-	        	//  - he will land on the platform
-	        	//  (- he will fall into the void) this case won't happen anymore
+	        	// tile is not accessible but in valid space, so:
+	        	// pawn will go towards the tile, then
+	        	//  (- he will land on a neighbourg tile) -- no more possible yet
+	        	//  - he will land on the tile
+	        	//  (- he will fall into the void) -- this case won't happen anymore
 
-				Tile nearest = Tile.Closest(platform.AllAccessibleTiles(), targetTile.transform.position); //nearest platform: the directly accessible platform from the platform bellow the Pawn, thats closest to the target platform
+				// nearest tile: the directly accessible tile from the tile bellow the Pawn, thats closest to the target tile
+				Tile nearest = Tile.Closest(tile.AllAccessibleTiles(), targetTile.transform.position);
 				
-	            if (nearest.Equals(platform) ) //is the nearest the one bellow the Pawn?
+	            if (nearest.Equals(tile) ) //is the nearest the one bellow the Pawn?
 				{
-					// landing platform: the directly accessible platform from the target platform, thats closest to the nearest platform
+					// landing tile: the directly accessible tile from the target tile, thats closest to the nearest tile
 					Tile landing = Tile.Closest(targetTile.AllAccessibleTiles(), nearest.transform.position);
 					
-	                // check if landing platform is not EXACTLY under the nearest platform
+	                // check if landing tile is not EXACTLY under the nearest tile
 					if ( Vector3.Scale ( ( landing.transform.position - nearest.transform.position ), Vector3.Scale ( World.getGravityVector( GetWorldGravity() ), World.getGravityVector( GetWorldGravity() ) ) - new Vector3( 1, 1, 1 ) ).magnitude == 0 )
 						landing = Tile.Closest( landing.AllAccessibleTiles(), targetTile.transform.position );
 					
-					// calculate the vector from the Pawns position to the landing platform position at the same height
+					// calculate the vector from the Pawns position to the landing tile position at the same height
 	                Vector3 vec = getGroundHeightVector(landing.transform.position) - getGroundPosition();
 
-					// There is definitely a platform to fall, jump and go
+					// There is definitely a tile to fall, jump and go
 					if ( vec != Vector3.zero )
 					{
 						if ( !isJumping )
 						{
 							//GetComponent<Rigidbody>().AddForce( -Physics.gravity * vec.sqrMagnitude * 0.45f );
 							//GetComponent<Rigidbody>().mass = 30;
-							StartCoroutine( JumpToPlatform());
+							StartCoroutine( JumpToTile());
 							isJumping = true;
+							
+							StartCoroutine( LookAt ( landing.transform.position ) );
 						}
 
 						if (moveMe(vec)) //move the pawn towards that vector
 						{
 							targetTile = null; //if we are already there, forget targetTile
 							isJumping = false;
+							path = AStarHelper.Calculate(landing, nearest); //give me a path towards the nearest tile
+							putDestinationMarks( landing );
 						}
 					}
 					else
@@ -499,13 +496,13 @@ public class Pawn : MonoBehaviour
 	            }
 	            else
 				{
-					path = AStarHelper.Calculate(platform, nearest); //give me a path towards the nearest platform
+					path = AStarHelper.Calculate(tile, nearest); //give me a path towards the nearest tile
 	            }
 			}
 	    }
     }
 
-	private IEnumerator JumpToPlatform()
+	private IEnumerator JumpToTile()
 	{
 		float elapsedTime = 0;
 
@@ -567,8 +564,8 @@ public class Pawn : MonoBehaviour
 //		Debug.Log ("X, Z relatives: " + target);
 
 		// get the final point
-		// remove pawn's & platform's heights from target
-		target = target - Vector3.Normalize (Physics.gravity) * height / 2.0f - Vector3.Scale ( - absG, platform.transform.position);
+		// remove pawn's & tile's heights from target
+		target = target - Vector3.Normalize (Physics.gravity) * height / 2.0f - Vector3.Scale ( - absG, tile.transform.position);
 
 		Quaternion _look = Quaternion.LookRotation( target - transform.position, -Vector3.Normalize(Physics.gravity) );
 		
@@ -594,9 +591,9 @@ public class Pawn : MonoBehaviour
 	}
 
     /// <summary>
-    /// Updates the value of platform to the platform beneath the Pawn.
+    /// Updates the value of tile to the tile beneath the Pawn.
     /// Checks the space underneath the Pawn
-    /// Assigns the spheres/dots to the platforms of other orientations where the Pawn would land after gravity changes
+    /// Assigns the spheres/dots to the tiles of other orientations where the Pawn would land after gravity changes
     /// </summary>
     private void checkUnderneath()
 	{
@@ -616,17 +613,17 @@ public class Pawn : MonoBehaviour
 		{
 			p = hit.collider.gameObject.GetComponent<Tile>();
 
-            if (p != null) // if it is a platform
-                platform = p;
+            if (p != null) // if it is a tile
+                tile = p;
             else
-				platform = null;
+				tile = null;
 			
 			if ( hit.collider.gameObject.tag == "MovingPlatform" )
 			{
 //				Debug.Log( "on a Moving Tile" );
 
-				// dirty snapping to a moving platform
-				// actually, a mask is used to mix up both player & platform positions
+				// dirty snapping to a moving tile
+				// actually, a mask is used to mix up both player & tile positions
 
 				Vector3 _vec = Vector3.zero;
 
@@ -648,7 +645,7 @@ public class Pawn : MonoBehaviour
 						_vec.z = 1;
 				}
 
-				// _ppos: platform position 
+				// _ppos: tile position 
 				Vector3 _ppos = p.transform.position - Vector3.Scale ( _g, p.transform.position);
 
 				// first mask: actual gravity
@@ -667,7 +664,7 @@ public class Pawn : MonoBehaviour
 				// revert the mask
 				_mask = - (_mask - Vector3.one );
 				
-				// mask the platform's position
+				// mask the tile's position
 				_ppos = Vector3.Scale( _mask, _ppos );
 
 				// compute the new position
@@ -685,49 +682,48 @@ public class Pawn : MonoBehaviour
         }
         else
 		{
-            platform = null;
+            tile = null;
         }
 
 		putDestinationMarks (p);
 
     }
 
-	private void putDestinationMarks( Tile tile )
+	private void putDestinationMarks( Tile t )
 	{
 		foreach (TileOrientation orientation in Enum.GetValues(typeof(TileOrientation)))
 		{
 			if (!isFalling)
 			{
-				tile = null;
+				t = null;
 				
 				RaycastHit hitc = new RaycastHit ();
 				//			if (Physics.SphereCast(_pos, height / 2.0f + 0.2f, Physics.gravity, out hitc, 10000, ~(1 << 10)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
 				//			if (Physics.SphereCast(_pos, height / 2.0f + 0.2f, Physics.gravity, out hitc, 10000, (1 << 14)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
 				//			if (Physics.SphereCast(_pos,  1.5f, getGravityVector( GetWorldGravity() ), out hitc, 10000, (1 << 14)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
-				if (Physics.SphereCast (transform.position, 0.5f + 0.2f, World.getGravityVector (orientation), out hitc, 10000, (1 << 14))) {//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
-					tile = hitc.collider.gameObject.GetComponent<Tile> ();
+				if (Physics.SphereCast (transform.position, 0.5f + 0.2f, World.getGravityVector (orientation), out hitc, 10000, (1 << LayerMask.NameToLayer( "Tiles" )))) {//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
+					t = hitc.collider.gameObject.GetComponent<Tile> ();
 					
-					if (tile != null && tile != platform) {
-						tile.isClickable = true;
+					if (t != null && t != tile) {
+						t.isClickable = true;
 						
-						if (!clickableTiles.Contains (tile))
-							clickableTiles.Add (tile);
+						if (!clickableTiles.Contains (t))
+							clickableTiles.Add (t);
 						
 						if (hud.dotIsInside)
-							getOrientationSphere (orientation).transform.position = tile.transform.position;
+							getOrientationSphere (orientation).transform.position = t.transform.position;
 						else
-							getOrientationSphere (orientation).transform.position = tile.transform.position - (World.getGravityVector (GetWorldGravity ()) * hud.dotSize / 2);
+							getOrientationSphere (orientation).transform.position = t.transform.position - (World.getGravityVector (GetWorldGravity ()) * hud.dotSize / 2);
 						
-						if (tile.GetComponent<Stairway> ()) {
+						if (t.GetComponent<Stairway> ()) {
 							// don't put dots on stairways
 							getOrientationSphere (orientation).transform.position = Vector3.one * float.MaxValue; //sphere is moved to infinity muhahahaha, tremble before my power
 						}
 					} else {
-						tile.isClickable = false;
+						t.isClickable = false;
 						// Valid target
 						getOrientationSphere (orientation).transform.position = Vector3.one * float.MaxValue; //sphere is moved to infinity muhahahaha, tremble before my power
 					}
-					
 				}
 			} else {
 				// Falling, no more dots
@@ -744,12 +740,12 @@ public class Pawn : MonoBehaviour
         TileSelection.highlightTargetTile();
 		Tile p = TileSelection.getTile();
 
-		if ( p != null && platform != null && p != platform && platform.GetComponent<Stairway>() == null )
+		if ( p != null && tile != null && p != tile && tile.GetComponent<Stairway>() == null )
 		{
 			if ( p.GetComponent<Stairway>() != null )
 				return;
 
-			List<Tile> accessibleTiles = AStarHelper.Calculate(platform, p);
+			List<Tile> accessibleTiles = AStarHelper.Calculate(tile, p);
 			
 			if ( accessibleTiles != null && accessibleTiles.Count > 0 )
 			{
@@ -762,41 +758,41 @@ public class Pawn : MonoBehaviour
 				p.highlight();
 			}
 
-			// Check if the platform is accessible "by fall"
-			if ( p.orientation == platform.orientation )
+			// Check if the tile is accessible "by fall"
+			if ( p.orientation == tile.orientation )
 			{
 				bool isAccessibleByFall = true;
 				
-				if ( platform.orientation == TileOrientation.Down && p.transform.position.y < platform.transform.position.y)
+				if ( tile.orientation == TileOrientation.Down && p.transform.position.y < tile.transform.position.y)
 					isAccessibleByFall = false;
-				else if ( platform.orientation == TileOrientation.Up && p.transform.position.y > platform.transform.position.y )
+				else if ( tile.orientation == TileOrientation.Up && p.transform.position.y > tile.transform.position.y )
 					isAccessibleByFall = false;
-				else if ( platform.orientation == TileOrientation.Left && p.transform.position.x > platform.transform.position.x )
+				else if ( tile.orientation == TileOrientation.Left && p.transform.position.x > tile.transform.position.x )
 					isAccessibleByFall = false;
-				else if ( platform.orientation == TileOrientation.Right && p.transform.position.x < platform.transform.position.x )
+				else if ( tile.orientation == TileOrientation.Right && p.transform.position.x < tile.transform.position.x )
 					isAccessibleByFall = false;
-				else if ( platform.orientation == TileOrientation.Front && p.transform.position.z < platform.transform.position.z )
+				else if ( tile.orientation == TileOrientation.Front && p.transform.position.z < tile.transform.position.z )
 					isAccessibleByFall = false;
-				else if ( platform.orientation == TileOrientation.Back && p.transform.position.z > platform.transform.position.z )
+				else if ( tile.orientation == TileOrientation.Back && p.transform.position.z > tile.transform.position.z )
 					isAccessibleByFall = false;
 
-				if ( isAccessibleByFall && platform.orientation != TileOrientation.Down && platform.orientation != TileOrientation.Up )
+				if ( isAccessibleByFall && tile.orientation != TileOrientation.Down && tile.orientation != TileOrientation.Up )
 				{
-					float distance = Mathf.Abs( platform.transform.position.y - p.transform.position.y );
+					float distance = Mathf.Abs( tile.transform.position.y - p.transform.position.y );
 					if ( distance > 10.1f )
 						isAccessibleByFall = false;
 				}
 				
-				if ( isAccessibleByFall && platform.orientation != TileOrientation.Left && platform.orientation != TileOrientation.Right )
+				if ( isAccessibleByFall && tile.orientation != TileOrientation.Left && tile.orientation != TileOrientation.Right )
 				{
-					float distance = Mathf.Abs( platform.transform.position.x - p.transform.position.x );
+					float distance = Mathf.Abs( tile.transform.position.x - p.transform.position.x );
 					if ( distance > 10.1f )
 						isAccessibleByFall = false;
 				}
 				
-				if ( isAccessibleByFall && platform.orientation != TileOrientation.Front && platform.orientation != TileOrientation.Back )
+				if ( isAccessibleByFall && tile.orientation != TileOrientation.Front && tile.orientation != TileOrientation.Back )
 				{
-					float distance = Mathf.Abs( platform.transform.position.z - p.transform.position.z );
+					float distance = Mathf.Abs( tile.transform.position.z - p.transform.position.z );
 					if ( distance > 10.1f )
 						isAccessibleByFall = false;
 				}
@@ -835,10 +831,10 @@ public class Pawn : MonoBehaviour
 
 				if (p != null && p.isClickable && !isFalling && !world.FallingCubes())
 				{
-					if ( !isWalking && ( platform == null || p.orientation != platform.orientation ) ) //for punishing gravity take the platform == null here
+					if ( !isWalking && ( tile == null || p.orientation != tile.orientation ) ) //for punishing gravity take the tile == null here
 					{
 						hud.gravityChangeCount++;
-						platform = null;
+						tile = null;
 						
 						desiredPosition = new Vector3( 0, height / 2 * fallInterval, 0 );
 						
@@ -850,9 +846,9 @@ public class Pawn : MonoBehaviour
 					{
 						targetTile = p;
 						
-						if ( targetTile.transform != platform.transform && targetTile.orientation == platform.orientation )
+						if ( targetTile.transform != tile.transform && targetTile.orientation == tile.orientation )
 						{
-							path = AStarHelper.Calculate(platform, p);
+							path = AStarHelper.Calculate(tile, p);
 							//StartCoroutine( LookAt ( path[0].transform.position ) );
 						}
 					}
@@ -870,7 +866,7 @@ public class Pawn : MonoBehaviour
 
 		if ( clickableTiles != null )
 		{
-			// clear the "clickable platforms"
+			// clear the "clickable tiles"
 			for ( int i = 0, l = clickableTiles.Count; i < l; i++ )
 				clickableTiles[i].isClickable = false;
 			
@@ -1055,11 +1051,11 @@ public class Pawn : MonoBehaviour
 	
 	/// <summary>
 	/// Checks if the pawn is grounded.
-	/// Answers the question " is the player touching a platform "beneath" him?" where beneath relates to the current gravitational orientation.
+	/// Answers the question " is the player touching a tile "beneath" him?" where beneath relates to the current gravitational orientation.
 	/// </summary>
 	private bool isGrounded()
 	{
-		if (platform != null) //is there even a platform beneath the Pawn
+		if (tile != null) //is there even a tile beneath the Pawn
 		{
 			Vector3 origin = transform.position;
 			
@@ -1081,41 +1077,41 @@ public class Pawn : MonoBehaviour
 			return Physics.SphereCast( ray, height * 0.5f + 0.2f, 3.5f, (1 << 14) );
 
 			/*
-			float proximityThreshold = 0.2f; // the value bellow which can be said that the platform is touching the Pawn, it's like an error margin
+			float proximityThreshold = 0.2f; // the value bellow which can be said that the tile is touching the Pawn, it's like an error margin
 			
-			if (platform.orientation.Equals(TileOrientation.Up) || platform.orientation.Equals(TileOrientation.Down)) //check for up and down
-				return Math.Abs(platform.transform.position.y - getGroundPosition().y) < proximityThreshold; //check distance
+			if (tile.orientation.Equals(TileOrientation.Up) || tile.orientation.Equals(TileOrientation.Down)) //check for up and down
+				return Math.Abs(tile.transform.position.y - getGroundPosition().y) < proximityThreshold; //check distance
 			
-			if (platform.orientation.Equals(TileOrientation.Left) || platform.orientation.Equals(TileOrientation.Right)) //check for left and right
-				return Math.Abs(platform.transform.position.x - getGroundPosition().x) < proximityThreshold; //check distance
+			if (tile.orientation.Equals(TileOrientation.Left) || tile.orientation.Equals(TileOrientation.Right)) //check for left and right
+				return Math.Abs(tile.transform.position.x - getGroundPosition().x) < proximityThreshold; //check distance
 			
-			if (platform.orientation.Equals(TileOrientation.Front) || platform.orientation.Equals(TileOrientation.Back)) //check for front and back
-				return Math.Abs(platform.transform.position.z - getGroundPosition().z) < proximityThreshold; //check distance
+			if (tile.orientation.Equals(TileOrientation.Front) || tile.orientation.Equals(TileOrientation.Back)) //check for front and back
+				return Math.Abs(tile.transform.position.z - getGroundPosition().z) < proximityThreshold; //check distance
 				*/
 		}
 		
-		return false; // if there isn't a platform beneath him, he isn't grounded
+		return false; // if there isn't a tile beneath him, he isn't grounded
 	}
 	
 	/// <summary>
-	/// Is the target platform above the Pawn?
+	/// Is the target tile above the Pawn?
 	/// </summary>
 	private bool targetTileIsAbove(Tile target)
 	{
-        switch (platform.orientation)
+        switch (tile.orientation)
         {
             default:
-                return platform.transform.position.y < target.transform.position.y;
+                return tile.transform.position.y < target.transform.position.y;
             case TileOrientation.Down:
-				return platform.transform.position.y > target.transform.position.y;
+				return tile.transform.position.y > target.transform.position.y;
 			case TileOrientation.Left:
-				return platform.transform.position.x < target.transform.position.x;
+				return tile.transform.position.x < target.transform.position.x;
 			case TileOrientation.Right:
-                return platform.transform.position.x > target.transform.position.x;
+                return tile.transform.position.x > target.transform.position.x;
             case TileOrientation.Front:
-                return platform.transform.position.z > target.transform.position.z;
+                return tile.transform.position.z > target.transform.position.z;
             case TileOrientation.Back:
-                return platform.transform.position.z < target.transform.position.z;
+                return tile.transform.position.z < target.transform.position.z;
         }
 	}
 
@@ -1194,9 +1190,9 @@ public class Pawn : MonoBehaviour
     /// <returns>The position of something at the same height as the Pawn</returns>
     private Vector3 getGroundHeightVector(Vector3 position)
 	{
-		if (platform.orientation.Equals(TileOrientation.Up) || platform.orientation.Equals(TileOrientation.Down))
+		if (tile.orientation.Equals(TileOrientation.Up) || tile.orientation.Equals(TileOrientation.Down))
             return new Vector3(position.x, getGroundPosition().y, position.z);
-		else if (platform.orientation.Equals(TileOrientation.Left) || platform.orientation.Equals(TileOrientation.Right))
+		else if (tile.orientation.Equals(TileOrientation.Left) || tile.orientation.Equals(TileOrientation.Right))
             return new Vector3(getGroundPosition().x, position.y, position.z);
         else
             return new Vector3(position.x, position.y, getGroundPosition().z);

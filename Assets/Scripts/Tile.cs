@@ -426,12 +426,18 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
         {
             if (AStarHelper.Invalid(inNodes[i]))
                 continue;
+
             float thisDist = Vector3.Distance(toPoint, inNodes[i].Position);
+
             if (thisDist > minDist)
                 continue;
 
+			if ( Vector3.Distance( inNodes[i].Position, TileSelection.PlayerPosition ) > Vector3.Distance( closestNode.Position, TileSelection.PlayerPosition ) )
+				continue;
+
             minDist = thisDist;
-            closestNode = inNodes[i];
+			Debug.Log( "new min: " + minDist );
+			closestNode = inNodes[i];
         }
 
         return closestNode;
