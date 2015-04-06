@@ -38,6 +38,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 #if UNITY_EDITOR
 	private Material[] sourceMaterials;
 
+	/*
 	void OnDestroy()
 	{
 		float factor = 5f * transform.localScale.x;
@@ -50,6 +51,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		
 		transform.localPosition = newPos;
 	}
+	*/
 #endif
 
     // Use this for initialization
@@ -64,6 +66,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 
 		GetComponent<Renderer>().enabled = true;
 
+		/*
 		if ( Application.isPlaying )
 		{
 			if ( type != TileType.Spikes )
@@ -79,6 +82,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 				transform.localPosition = newPos;
 			}
 		}
+		*/
 
 		/*
 		if ( EditorApplication.isPlaying )
