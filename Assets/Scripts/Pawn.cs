@@ -42,8 +42,13 @@ public class Pawn : MonoBehaviour
 	private RigidbodyConstraints transformConstraints;
 	
 	// #ANIMATIONS#
+	// animState
+	// 0 = idle
+	// 1 = walk
+	// 
 	private Animator animator;
 	private int animState;
+	private int idleState;
 	private float idleWait;
 	
 	// #SPAWN#
@@ -61,15 +66,13 @@ public class Pawn : MonoBehaviour
 	public float fadeSpeed = 1.5f;				// Speed that the screen fades to and from black.
 	private float alphaFadeValue;
 	private bool fading; // fading state
-	private bool INOUT;
 	private HUD hud; //script responsible for the HUD
 	
 	// #MOUSE#
 	[HideInInspector] public bool isCameraMode = false;
 	private float lastClick;
-	private float countdown;
-	//private Vector3 cameraRotation = Vector3.zero;
-	
+	private float clickCountdown;
+
 	// #SPHERES#
     private GameObject[] orientationSpheres = new GameObject[6];
 	
@@ -125,11 +128,18 @@ public class Pawn : MonoBehaviour
 	{
 		idleWait += Time.deltaTime;
 		
-		if ( idleWait > 6.0f )
+		if ( idleWait > 3.0f )
+		{
 			idleWait = 0;
-				
-		animator.SetFloat("idle_wait", idleWait);
-		animator.SetInteger("anim_state", animState);
+			idleState = Mathf.RoundToInt( UnityEngine.Random.value );
+		}
+
+		if ( idleWait != animator.GetFloat( "idle_wait" ) )
+			animator.SetFloat("idle_wait", idleWait);
+		if ( animState != animator.GetInteger( "anim_state" ) )
+			animator.SetInteger("anim_state", animState);
+		if ( idleState != animator.GetInteger( "idle_state" ) )
+			animator.SetInteger("idle_state", idleState);
 	}
 	
 	private IEnumerator SetCameraCursor() {
@@ -186,7 +196,8 @@ public class Pawn : MonoBehaviour
 		path = null;
 		tile = null;
 		targetTile = null;
-		
+
+		animState = 2;
 		isFalling = true;
 		isJumping = false;
 		
@@ -299,6 +310,7 @@ public class Pawn : MonoBehaviour
 	{
 		if (isFalling)
 		{
+			animState = 3;
 			isFalling = false;
 			GetComponent<Rigidbody>().mass = 1;
 			
@@ -411,7 +423,7 @@ public class Pawn : MonoBehaviour
 		if (path != null && path.Count > 0) //is there a path?
 		{
 			// play animation: walk
-			animState = 2;
+			animState = 1;
 			isWalking = true;
 
 			if (newTarget)
@@ -814,13 +826,13 @@ public class Pawn : MonoBehaviour
 	        if (Input.GetMouseButton(0))
 			{
 				if(Time.time - lastClick < .1)
-					countdown += Time.deltaTime;
+					clickCountdown += Time.deltaTime;
 				else
-					countdown = 0;
+					clickCountdown = 0;
 
 	            lastClick = Time.time;
 
-				if(countdown > .25)
+				if(clickCountdown > .25)
 				{
 					isCameraMode = true;
 					StartCoroutine(SetCameraCursor());
@@ -829,7 +841,7 @@ public class Pawn : MonoBehaviour
 
 			if (Input.GetMouseButtonUp(0) && !isCameraMode && GetComponent<Rigidbody>().useGravity)
 			{
-				countdown = 0;
+				clickCountdown = 0;
 
 				if (p != null && p.isClickable && !world.FallingCubes())
 				{
@@ -885,6 +897,7 @@ public class Pawn : MonoBehaviour
 
 		float timer = 0.0f;
 
+		animState = 2;
 		isFalling = true;
 		
 		while(true)
