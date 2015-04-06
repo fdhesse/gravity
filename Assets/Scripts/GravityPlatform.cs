@@ -56,13 +56,12 @@ public class GravityPlatform : MonoBehaviour {
 */	
 	public enum ConstraintAxis { X, Y, Z };
 
-	public bool invert = false;
 	public float from = 0;
 	public float to = 10;
 
 	public ConstraintAxis constrainedAxis;
 
-
+	private float startPos = 0;
 	private bool freezed = false;
 
 	private float position
@@ -88,40 +87,32 @@ public class GravityPlatform : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	void Start ()
+	void Awake ()
 	{
-		if ( invert )
+		startPos = from;
+
+		if ( from > to )
 		{
 			float swap = from;
 
 			from = to;
 			to = swap;
 		}
-		Reset ();
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		if ( !invert )
-		{
-			if ( !freezed && (position > to || position < from) )
-				Freeze();
-		}
-		else
-		{
-			if ( !freezed && (position > from || position < to) )
-				Freeze();
-		}
+		if ( !freezed && (position < from || position > to ) )
+			Freeze();
 	}
 
 	public void Reset()
 	{
 		GetComponent<Rigidbody> ().isKinematic = false;
-		position = from;
+		position = startPos;
 		
 		Freeze ();
-		//Unfreeze ( null );
 	}
 
 	public void Unfreeze( TileOrientation orientation )
@@ -156,23 +147,12 @@ public class GravityPlatform : MonoBehaviour {
 	{
 		GetComponent<Rigidbody>().velocity = Vector3.zero;
 		GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-
 		GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
 		
-		if ( !invert )
-		{
-			if (position > to)
-				position = to - 0.001f;
-			else if (position < from)
-				position = from + 0.001f;
-		}
-		else
-		{
-			if (position > from)
-				position = from - 0.001f;
-			else if (position < to)
-				position = to + 0.001f;
-		}
+		if (position > to)
+			position = to - 0.001f;
+		else if (position < from)
+			position = from + 0.001f;
 
 		freezed = true;
 

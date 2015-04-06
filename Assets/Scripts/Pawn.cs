@@ -736,6 +736,9 @@ public class Pawn : MonoBehaviour
     /// </summary>
     private void manageMouse()
 	{
+		if (isFalling || isJumping || (path != null) && path.Count > 0)
+			return;
+
         TileSelection.highlightTargetTile();
 		Tile p = TileSelection.getTile();
 
@@ -828,7 +831,7 @@ public class Pawn : MonoBehaviour
 			{
 				countdown = 0;
 
-				if (p != null && p.isClickable && !isFalling && !world.FallingCubes())
+				if (p != null && p.isClickable && !world.FallingCubes())
 				{
 					if ( !isWalking && ( tile == null || p.orientation != tile.orientation ) ) //for punishing gravity take the tile == null here
 					{
