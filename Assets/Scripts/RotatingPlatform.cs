@@ -50,20 +50,14 @@ public class RotatingPlatform : MonoBehaviour
 		startRotation = transform.rotation;
 	}
 
-	void Start()
-	{
-		ChangeGravityImmediate (TileOrientation.Down);
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-	}
-
 	public void Reset()
 	{
+		lastGravity = -Vector3.up;
+
 		transform.position = startPosition;
 		transform.rotation = startRotation;
+
+		ChangeGravityImmediate (TileOrientation.Down);
 	}
 	
 	private void ChangeGravityImmediate( TileOrientation orientation )

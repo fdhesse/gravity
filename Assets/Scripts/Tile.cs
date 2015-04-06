@@ -16,14 +16,15 @@ using System.Collections.Generic;
 public class Tile : MonoBehaviour, IPathNode<Tile>
 {
 	public TileType type = TileType.Valid;
+	private TileType startType;
+
+	public TileOrientation orientation;
 
 	public Transform[] _connections; //public array used for debuging, this way you can see the platform list in the editor
 	public List<Tile> connections; //list of directly accessible platforms
 	[HideInInspector] protected HashSet<Tile> connectionSet; //auxilliary hashset used to ignore duplicates
 	[HideInInspector] protected HashSet<Tile> siblingConnection; //auxilliary hashset used for siblings detection
 
-	public TileOrientation orientation;
-	
 	[HideInInspector] public bool rescanPath = false;// debug toggle used to force rescan of nearby platforms
 
 	// #HIGHLIGHTING#
@@ -35,114 +36,29 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 
 	private TileType oldType;// auxilliary variable
 
-#if UNITY_EDITOR
-	private Material[] sourceMaterials;
-
-	/*
-	void OnDestroy()
-	{
-		float factor = 5f * transform.localScale.x;
-		
-		if ( orientation == TileOrientation.Left || orientation == TileOrientation.Right )
-			factor = -factor;
-
-		Vector3 newPos = transform.localPosition;
-		newPos = World.getGravityVector( orientation ).normalized * factor;
-		
-		transform.localPosition = newPos;
-	}
-	*/
-#endif
-
     // Use this for initialization
-    void Awake()
-    {
+    void Start()
+	{
 		rescanPath = true;
 
         defineOrientation();
 		applyTileMaterial();
 		
 #if UNITY_EDITOR
-
 		GetComponent<Renderer>().enabled = true;
-
-		/*
-		if ( Application.isPlaying )
-		{
-			if ( type != TileType.Spikes )
-			{
-				float factor = -0.2f * transform.localScale.x;
-
-				if ( orientation == TileOrientation.Left || orientation == TileOrientation.Right )
-					factor = -factor;
-
-				Vector3 newPos = transform.localPosition;
-				newPos += World.getGravityVector( orientation ).normalized * factor;
-				
-				transform.localPosition = newPos;
-			}
-		}
-		*/
-
-		/*
-		if ( EditorApplication.isPlaying )
-		{
-			int i;
-			Material[] materials;
-			sourceMaterials = GetComponent<Renderer>().sharedMaterials;
-
-			List<string> compares = new List<string> { "fill", "valid", "invalid", "exit" };
-
-			for (i = 0; i < sourceMaterials.Length; i++)
-			{
-				if ( compares.Contains( sourceMaterials[i].name ))
-					break;
-			}
-
-			if (gameObject.GetComponent<Stairway> () != null)
-				return;
-			
-			materials = new Material[] {
-				sourceMaterials[i]
-			};
-			
-			GetComponent<Renderer>().sharedMaterials = materials;
-		}
-		*/
-		
 #elif UNITY_STANDALONE
-		//GetComponent<Renderer>().enabled = false;
-
-		/*
-		Material[] materials = new Material[] {
-			gameObject.GetComponent<Renderer>().sharedMaterials[0]
-		};
-		*/
-		Material[] materials = new Material[] {
-			Assets.getBlankBlockMat()
-		};
-		
-		gameObject.GetComponent<Renderer>().materials = materials;
+		GetComponent<Renderer>().enabled = false;
 #endif
     }
-
 
     // Update is called once per frame
     protected void Update()
 	{
-		/*
-#if UNITY_EDITOR
-		// update the selected platform orientation...
-        if (Selection.Contains(gameObject))
-            defineOrientation();
-#endif
-*/
 		if (rescanPath)
 			scanNearbyTiles();
 
         if (!oldType.Equals(type)) // if the type was changed in scene mode, reapply the material
             applyTileMaterial();
-
 
         handleFlashing();
     }
@@ -153,12 +69,8 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
     private void handleFlashing()
     {
         if (isFlashing)
-        {
             if (flash.isOver())
-            {
                 unFlashMe();
-            }
-        }
     }
 
     /// <summary>

@@ -6,25 +6,26 @@ using System.Collections;
 /// </summary>
 public class World : MonoBehaviour {
 	
-	public float G = 40.0f;	// 9.81f		// constante gravité
+	public static float G = 40.0f;	// 9.81f		// constante gravité
 	private bool isGameOver = false;		//Game state
 	private FallingCube[] cubes;
 	private GravityPlatform[] gravityPlatforms;
 	private RotatingPlatform[] rotatingPlatforms;
 	
-	private Pawn PlayerPawn; // Player Pawn
+	private Pawn playerPawn; // Player Pawn
 	
-	public void Init()
+	public void Init( Pawn player )
 	{
+		playerPawn = player;
+
 		cubes = FindObjectsOfType<FallingCube>();
 		gravityPlatforms = FindObjectsOfType<GravityPlatform>();
 		rotatingPlatforms = FindObjectsOfType<RotatingPlatform>();
-		PlayerPawn = (Pawn) GameObject.Find ("Pawn").GetComponent<Pawn>();
 	}
 	
 	public void Restart()
 	{
-		PlayerPawn.respawn();
+		playerPawn.respawn();
 		
 		for (int i = 0; i < cubes.Length; i++)
 			((FallingCube) cubes[i]).Reset();

@@ -36,15 +36,6 @@ public static class Assets
     //public static Material backBlockMat;
 	static Assets()
 	{
-		mouseCursor = GameObject.FindWithTag ("Mouse Cursor");
-
-		if ( mouseCursor == null )
-		{
-			mouseCursor = (GameObject) GameObject.Instantiate( Resources.Load( "PREFABS/Mouse Cursor" ) );
-			mouseCursor.name = "Mouse Cursor";
-			mouseCursor.transform.position = Vector3.one * float.MaxValue;
-		}
-		
 		invalidSound = Resources.Load("Sounds/invalidSound") as AudioClip;
 		bounce = Resources.Load("Sounds/bounce") as AudioClip;
 		bounce2 = Resources.Load("Sounds/bounce2") as AudioClip;
@@ -57,6 +48,18 @@ public static class Assets
         //frontBlockMat = new Material(Resources.Load("Resources/Materials/orientations/front") as Material);
         //backBlockMat = new Material(Resources.Load("Resources/Materials/orientations/back") as Material);
     }
+
+	public static void SetMouseCursor()
+	{
+		GameObject[] cursorsObjects = GameObject.FindGameObjectsWithTag ("Mouse Cursor");
+		
+		foreach( GameObject cursor in cursorsObjects )
+			GameObject.DestroyImmediate( cursor );
+
+		mouseCursor = (GameObject) GameObject.Instantiate( Resources.Load( "PREFABS/Mouse Cursor" ) );
+		mouseCursor.name = "Mouse Cursor";
+		mouseCursor.transform.position = Vector3.one * float.MaxValue;
+	}
 	
 #if UNITY_EDITOR
 	
