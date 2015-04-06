@@ -36,7 +36,7 @@ public static class Assets
     //public static Material backBlockMat;
 	static Assets()
 	{
-		mouseCursor = GameObject.Find ("Mouse Cursor");
+		mouseCursor = GameObject.FindWithTag ("Mouse Cursor");
 
 		if ( mouseCursor == null )
 		{
@@ -44,7 +44,7 @@ public static class Assets
 			mouseCursor.name = "Mouse Cursor";
 			mouseCursor.transform.position = Vector3.one * float.MaxValue;
 		}
-
+		
 		invalidSound = Resources.Load("Sounds/invalidSound") as AudioClip;
 		bounce = Resources.Load("Sounds/bounce") as AudioClip;
 		bounce2 = Resources.Load("Sounds/bounce2") as AudioClip;

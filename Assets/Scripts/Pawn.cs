@@ -99,13 +99,23 @@ public class Pawn : MonoBehaviour
 		isWalking = false;
 		isWalkingInStairs = false;
 
-		world = gameObject.AddComponent<World>(  ) as World;
+		world = gameObject.AddComponent<World>() as World;
 		world.Init();
 		G = world.G;
 		
 		animator = transform.FindChild("OldGuy").GetComponent<Animator>();
 		boxCollider = GetComponent<BoxCollider>();
 		height = boxCollider.size.y * boxCollider.transform.localScale.y;
+
+		// Game cursor
+		GameObject[] cursors = GameObject.FindGameObjectsWithTag ("Mouse Cursor");
+		foreach( GameObject cursor in cursors )
+		{
+			if ( cursor == Assets.mouseCursor )
+				continue;
+			
+			GameObject.DestroyImmediate( cursor );
+		}
 
 		initSpawn();
         initHUD();
@@ -128,10 +138,14 @@ public class Pawn : MonoBehaviour
 	{
 		idleWait += Time.deltaTime;
 		
-		if ( idleWait > 3.0f )
+		if ( idleWait > 1.0f )
 		{
 			idleWait = 0;
-			idleState = Mathf.RoundToInt( UnityEngine.Random.value );
+
+			float rand = UnityEngine.Random.value;
+
+			if ( rand > 0.65f )
+				idleState = Mathf.RoundToInt( rand );
 		}
 
 		if ( idleWait != animator.GetFloat( "idle_wait" ) )
@@ -139,7 +153,17 @@ public class Pawn : MonoBehaviour
 		if ( animState != animator.GetInteger( "anim_state" ) )
 			animator.SetInteger("anim_state", animState);
 		if ( idleState != animator.GetInteger( "idle_state" ) )
+		{
 			animator.SetInteger("idle_state", idleState);
+
+			StartCoroutine( SetIdleToZero() );
+		}
+	}
+
+	private IEnumerator SetIdleToZero()
+	{
+		yield return new WaitForSeconds (1);
+		idleState = 0;
 	}
 	
 	private IEnumerator SetCameraCursor() {
@@ -767,9 +791,12 @@ public class Pawn : MonoBehaviour
 				{
 					clickableTiles.Add( accessibleTiles[i] );
 				}
-				
-				p.isClickable = true;
-				p.highlight();
+
+				if ( TileSelection.isClickableType( p.type ) )
+				{
+					p.isClickable = true;
+					p.highlight();
+				}
 			}
 
 			// Check if the tile is accessible "by fall"
@@ -814,9 +841,13 @@ public class Pawn : MonoBehaviour
 				if ( isAccessibleByFall )
 				{
 					clickableTiles.Add( p );
-
-					p.isClickable = true;
-					p.highlight();
+					
+					
+					if ( TileSelection.isClickableType( p.type ) )
+					{
+						p.isClickable = true;
+						p.highlight();
+					}
 				}
 			}
 		}

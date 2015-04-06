@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(GameplayCube))]
 public class FallingCube : MonoBehaviour {
@@ -12,12 +13,16 @@ public class FallingCube : MonoBehaviour {
 	
 	public bool isFalling;
 	private bool isDestroyed = false;
+
+	private Dictionary<Tile, TileType> obstructedTiles;
 	
 	// Use this for initialization
 	void Start ()
 	{
 		PlayerPawn = (Pawn) GameObject.Find ("Pawn").GetComponent<Pawn>();
-		
+
+		obstructedTiles = new Dictionary<Tile, TileType> ();
+
 		GameplayCube cube = GetComponent<GameplayCube>();
 		
 		cube.Left = TileType.Valid;
@@ -92,8 +97,47 @@ public class FallingCube : MonoBehaviour {
 		// in order to avoir "gluing effect"
 		
 		if (collision.gameObject.tag == "Player")
+		{
 			PlayerPawn.CubeContact (transform.position);
+			return;
+		}
 		else if (collision.relativeVelocity.magnitude > 2)
 			GetComponent<AudioSource>().Play();
+
+		// Detect all the obstructed tiles
+		foreach ( TileOrientation orientation in System.Enum.GetValues( typeof( TileOrientation ) ) )
+		{
+			RaycastHit[] hitInfos = Physics.RaycastAll( transform.position, World.getGravityVector( orientation ), transform.localScale.x * 0.55f, 1 << LayerMask.NameToLayer( "Tiles" ) );
+
+			foreach ( RaycastHit hitInfo in hitInfos )
+			{
+				if ( !hitInfo.collider.transform.IsChildOf( transform ) )
+				{
+					Tile tile = hitInfo.collider.GetComponent<Tile>();
+
+					if ( obstructedTiles.ContainsKey( tile ) )
+						continue;
+
+					obstructedTiles.Add( tile, tile.type );
+					tile.type = TileType.Invalid;
+					tile.rescanPath = true;
+				}
+			}
+		}
+	}
+
+	public void OnCollisionExit( Collision collision )
+	{
+		if (collision.gameObject.tag == "Player")
+			return;
+
+		foreach ( KeyValuePair<Tile, TileType > entry in obstructedTiles )
+		{
+			Tile tile = entry.Key;
+			tile.type = entry.Value;
+			tile.rescanPath = true;
+		}
+
+		obstructedTiles.Clear ();
 	}
 }

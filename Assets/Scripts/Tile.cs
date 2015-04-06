@@ -37,10 +37,23 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 
 #if UNITY_EDITOR
 	private Material[] sourceMaterials;
+
+	void OnDestroy()
+	{
+		float factor = 5f * transform.localScale.x;
+		
+		if ( orientation == TileOrientation.Left || orientation == TileOrientation.Right )
+			factor = -factor;
+
+		Vector3 newPos = transform.localPosition;
+		newPos = World.getGravityVector( orientation ).normalized * factor;
+		
+		transform.localPosition = newPos;
+	}
 #endif
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
 		rescanPath = true;
 
@@ -50,6 +63,22 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 #if UNITY_EDITOR
 
 		GetComponent<Renderer>().enabled = true;
+
+		if ( Application.isPlaying )
+		{
+			if ( type != TileType.Spikes )
+			{
+				float factor = -0.2f * transform.localScale.x;
+
+				if ( orientation == TileOrientation.Left || orientation == TileOrientation.Right )
+					factor = -factor;
+
+				Vector3 newPos = transform.localPosition;
+				newPos += World.getGravityVector( orientation ).normalized * factor;
+				
+				transform.localPosition = newPos;
+			}
+		}
 
 		/*
 		if ( EditorApplication.isPlaying )
@@ -261,14 +290,14 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 					continue;
 				}
 
-                Tile p = hit.gameObject.GetComponent<Tile>();
+                Tile t = hit.gameObject.GetComponent<Tile>();
 
-				if (p != null && p.orientation.Equals(orientation) )
+				if (t != null && t.orientation.Equals(orientation) && t.type == TileType.Valid )
                 {
 					if (rescanPath)
-						p.rescanPath = true;
+						t.rescanPath = true;
 					
-                    connectionSet.Add(p);
+                    connectionSet.Add(t);
 
 					_connections = new Transform[connectionSet.Count];
                     connections = new List<Tile>(connectionSet);
@@ -317,10 +346,10 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	{
 		if ( !isHighlighted )
 		{
+			Assets.mouseCursor.transform.parent = null;
 			Assets.mouseCursor.transform.position = Vector3.one * float.MaxValue;
 			return;
 		}
-		//Vector3 cursorPosition = transform.position;
 		Assets.mouseCursor.transform.position = transform.position;
 		Assets.mouseCursor.transform.rotation = transform.rotation;
 
@@ -328,23 +357,8 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			Assets.mouseCursor.transform.Rotate( new Vector3( -90, 0, 0 ) );
 		
 		Assets.mouseCursor.transform.Translate (new Vector3 (0, 0.5f, 0));
+		Assets.mouseCursor.transform.parent = transform;
 
-		/*
-		switch (type)
-		{
-		case TileType.Valid:
-			break;
-		case TileType.Invalid:
-			materials[0] = isHighlighted ? Assets.getHighlightedInvalidBlockMat() : Assets.getInvalidBlockMat();
-			materials[0] = isFlashing ? Assets.getFlashingInvalidBlockMat() : materials[0];
-			break;
-		case TileType.Exit:
-			materials[0] = isHighlighted ? Assets.getHighlightedExitBlockMat() : Assets.getExitBlockMat();
-			materials[0] = isFlashing ? Assets.getFlashingExitBlockMat() : materials[0];
-			break;
-		}
-		gameObject.GetComponent<Renderer>().materials = materials;
-		*/
 		oldType = type;
 	}
 

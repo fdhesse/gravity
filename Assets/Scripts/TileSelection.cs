@@ -24,6 +24,17 @@ public static class TileSelection
 		//cam = GameObject.FindGameObjectWithTag("MainCamera"); //initialize the camera
 		camera = Camera.main;
 	}
+	
+	/// <summary>
+	/// Is the platform of a Clickable Type ?
+	/// </summary>
+	public static bool isClickableType( TileType type )
+	{
+		if ( type == TileType.Valid || type == TileType.Exit )
+			return true;
+		
+		return false;
+	}
 
     /// <summary>
     /// Highlights target platform
@@ -52,8 +63,8 @@ public static class TileSelection
 		if (Physics.Raycast(mouseRay, out hit, float.MaxValue, (1 << tilesLayer))) // cast a raycast ignoring all but the layer for the platforms
         {
             p = hit.collider.gameObject.GetComponent<Tile>();
-            
-            if (p != null) //if it is a platform
+
+			if (p != null && TileSelection.isClickableType( p.type ) ) //if it is a platform
                 p.highlight();
 		}
 		return p;

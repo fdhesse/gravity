@@ -122,17 +122,17 @@ public class GameplayCube : MonoBehaviour {
 		// Case of a spike tile
 		if ( type == TileType.Spikes)
 		{
-			face.AddComponent<Spikes>();
+			//face.AddComponent<Spikes>();
 			
 			//GameObject child = GameObject.Instantiate( Resources.LoadAssetAtPath("Assets/Resources/PREFABS/spikes.prefab", typeof(GameObject)) ) as GameObject;
-			GameObject child = (GameObject) Resources.Load( "PREFABS/spikes" );
+			GameObject child = (GameObject) GameObject.Instantiate( Resources.Load( "PREFABS/spikes" ) );
 
 			child.name = "spikes";
 			child.transform.parent = tile.transform;
 			child.transform.position = new Vector3( 0, 0, 0 );
-			child.transform.localPosition = new Vector3( 0, 0, 0 );
-			child.transform.GetChild(0).transform.position = new Vector3( 0, 0, 0 );
-			child.transform.GetChild(0).transform.localPosition = new Vector3( 0, 0, 0 );
+			child.transform.localPosition = new Vector3( 0.5f, -0.5f, 0 );
+			//child.transform.GetChild(0).transform.position = new Vector3( 0, 0, 0 );
+			//child.transform.GetChild(0).transform.localPosition = new Vector3( 0, 0, 0 );
 		}
 	}
 

@@ -2,10 +2,9 @@
 using System.Collections;
 
 /// <summary>
-/// Monobehaviour for the game object inside which the game should take place, can be a cube or anything else.
-/// The Pawn is considered out of bounds when it moves out of the GameSpace object.
+/// Monobehaviour for the spikes
 /// </summary>
-public class Spikes : Tile
+public class Spikes : MonoBehaviour
 {
     void OnTriggerEnter(Collider c)
 	{
