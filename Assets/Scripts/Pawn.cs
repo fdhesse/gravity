@@ -882,10 +882,8 @@ public class Pawn : MonoBehaviour
 						tile = null;
 						
 						desiredPosition = new Vector3( 0, height / 2 * fallInterval, 0 );
-						
-						SetWorldGravity( p.orientation );
-						world.ChangeGravity ( p.orientation );
-						StartCoroutine( DelayedPawnFall ());
+
+						StartCoroutine( DelayedPawnFall ( p ));
 					}
 					else
 					{
@@ -919,7 +917,7 @@ public class Pawn : MonoBehaviour
 		}
 	}
 	
-	private IEnumerator DelayedPawnFall()
+	private IEnumerator DelayedPawnFall( Tile t )
 	{
 //		collider.gameObject.layer = 12;
 		nextConstraint = GetComponent<Rigidbody>().constraints;
@@ -930,7 +928,8 @@ public class Pawn : MonoBehaviour
 
 		animState = 2;
 		isFalling = true;
-		
+
+		// Make the pawn float in the airs a little
 		while(true)
 		{
 			GetComponent<Rigidbody>().useGravity = false;
@@ -945,6 +944,9 @@ public class Pawn : MonoBehaviour
 			yield return 0;
 		}
 		
+		SetPawnOrientation( t.orientation );
+
+		// Rotate the pawn in order to face the correct direction
 		while(true)
 		{
 			GetComponent<Rigidbody>().useGravity = false;
@@ -962,9 +964,8 @@ public class Pawn : MonoBehaviour
 		GetComponent<Rigidbody>().constraints = nextConstraint;
 		GetComponent<Rigidbody>().useGravity = true;
 
-//		yield return new WaitForSeconds (0.1f);
-
-//		gameObject.layer = 0;
+		SetWorldGravity( t.orientation );
+		world.ChangeGravity ( t.orientation );
 	}
 	
 	private bool adjustPawnPosition( ref float timer )
@@ -1017,6 +1018,37 @@ public class Pawn : MonoBehaviour
 			return false;
 	}
 
+	private void SetPawnOrientation(TileOrientation orientation)
+	{
+		switch (orientation)
+		{
+		case TileOrientation.Front:
+			desiredRotation = new Vector3(270, 0, 0);
+			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationX;
+			break;
+		case TileOrientation.Back:
+			desiredRotation = new Vector3(90, 0, 0);
+			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationX;
+			break;
+		case TileOrientation.Right:
+			desiredRotation = new Vector3(0, 0, 90);
+			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationZ;
+			break;
+		case TileOrientation.Left:
+			desiredRotation = new Vector3(0, 0, 270);
+			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationZ;
+			break;
+		case TileOrientation.Up:
+			desiredRotation = new Vector3(0, 0, 0);
+			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationY;
+			break;
+		case TileOrientation.Down:
+			desiredRotation = new Vector3(180, 0, 0);
+			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationY;
+			break;
+		}
+	}
+
 	private void SetWorldGravity(TileOrientation orientation)
 	{
 		switch (orientation)
@@ -1024,52 +1056,22 @@ public class Pawn : MonoBehaviour
 		default:
 			break;
 		case TileOrientation.Front:
-//			Debug.Log("Front");
-			GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezePositionZ;
-			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationX;
 			Physics.gravity = new Vector3(0, 0, G);
-			desiredRotation = new Vector3(270, 0, 0);
-			//cameraRotation = new Vector3( 30, 30, 90 );
 			break;
 		case TileOrientation.Back:
-//			Debug.Log("Back");
-			GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezePositionZ;
-			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationX;
 			Physics.gravity = new Vector3(0, 0, -G);
-			desiredRotation = new Vector3(90, 0, 0);
-			//cameraRotation = new Vector3( 30, 30, 90 );
 			break;
 		case TileOrientation.Right:
-//			Debug.Log("Right");
-			GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezePositionX;
-			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationZ;
 			Physics.gravity = new Vector3(G, 0, 0);
-			desiredRotation = new Vector3(0, 0, 90);
-			//cameraRotation = new Vector3( 30, 30, 90 );
 			break;
 		case TileOrientation.Left:
-//			Debug.Log("Left");
-			GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezePositionX;
-			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationZ;
 			Physics.gravity = new Vector3(-G, 0, 0);
-			desiredRotation = new Vector3(0, 0, 270);
-			//cameraRotation = new Vector3( 30, 30, 90 );
 			break;
 		case TileOrientation.Up:
-//			Debug.Log("Up");
-			GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezePositionY;
-			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationY;
 			Physics.gravity = new Vector3(0, -G, 0);
-			desiredRotation = new Vector3(0, 0, 0);
-			//cameraRotation = new Vector3( 30, 30, 0 );
 			break;
 		case TileOrientation.Down:
-//			Debug.Log("Down");
-			GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezePositionY;
-			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationY;
 			Physics.gravity = new Vector3(0, G, 0);
-			desiredRotation = new Vector3(180, 0, 0);
-			//cameraRotation = new Vector3( -30, -30, 180 );
 			break;
 		}
 	}
