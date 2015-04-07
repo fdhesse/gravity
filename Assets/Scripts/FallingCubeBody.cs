@@ -17,7 +17,10 @@ public class FallingCubeBody : MonoBehaviour
 		GameObject bodyDummyParent = GameObject.Find ("RigidBody Dummies");
 		
 		if ( bodyDummyParent == null )
+		{
 			bodyDummyParent = new GameObject( "RigidBody Dummies" );
+			bodyDummyParent.hideFlags = HideFlags.HideInHierarchy;
+		}
 		
 		PlayerPawn = (Pawn) GameObject.Find ("Pawn").GetComponent<Pawn>();
 		

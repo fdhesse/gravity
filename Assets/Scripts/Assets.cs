@@ -59,6 +59,8 @@ public static class Assets
 		mouseCursor = (GameObject) GameObject.Instantiate( Resources.Load( "PREFABS/Mouse Cursor" ) );
 		mouseCursor.name = "Mouse Cursor";
 		mouseCursor.transform.position = Vector3.one * float.MaxValue;
+
+		mouseCursor.hideFlags = HideFlags.HideAndDontSave;
 	}
 	
 #if UNITY_EDITOR

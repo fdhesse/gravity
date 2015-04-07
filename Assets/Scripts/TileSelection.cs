@@ -52,7 +52,7 @@ public static class TileSelection
     /// </summary>
     public static Tile getTile()
     {
-        Tile p = null;
+        Tile tile = null;
 
 		if (camera == null)//if there isn't a camera associated with this script, get the main camera
 			camera = Camera.main;
@@ -62,12 +62,12 @@ public static class TileSelection
 
 		if (Physics.Raycast(mouseRay, out hit, float.MaxValue, (1 << tilesLayer))) // cast a raycast ignoring all but the layer for the platforms
         {
-            p = hit.collider.gameObject.GetComponent<Tile>();
+			tile = hit.collider.gameObject.GetComponent<Tile>();
 
-			if (p != null && TileSelection.isClickableType( p.type ) ) //if it is a platform
-                p.highlight();
+			if (tile != null && TileSelection.isClickableType( tile.type ) ) //if it is a platform
+				tile.highlight();
 		}
-		return p;
+		return tile;
     }
 
 }
