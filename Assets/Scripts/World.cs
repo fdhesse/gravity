@@ -8,27 +8,30 @@ public class World : MonoBehaviour {
 	
 	public static float G = 40.0f;	// 9.81f		// constante gravité
 	private bool isGameOver = false;		//Game state
-	private FallingCube[] cubes;
+	private FallingCube[] fallingCubes;
 	private GravityPlatform[] gravityPlatforms;
 	private RotatingPlatform[] rotatingPlatforms;
 	
 	private Pawn playerPawn; // Player Pawn
+
+	void Awake()
+	{
+		fallingCubes = FindObjectsOfType<FallingCube>();
+		gravityPlatforms = FindObjectsOfType<GravityPlatform>();
+		rotatingPlatforms = FindObjectsOfType<RotatingPlatform>();
+	}
 	
 	public void Init( Pawn player )
 	{
 		playerPawn = player;
-
-		cubes = FindObjectsOfType<FallingCube>();
-		gravityPlatforms = FindObjectsOfType<GravityPlatform>();
-		rotatingPlatforms = FindObjectsOfType<RotatingPlatform>();
 	}
 	
 	public void Restart()
 	{
 		playerPawn.respawn();
 		
-		for (int i = 0; i < cubes.Length; i++)
-			((FallingCube) cubes[i]).Reset();
+		for (int i = 0; i < fallingCubes.Length; i++)
+			((FallingCube) fallingCubes[i]).Reset();
 		
 		for (int i = 0; i < gravityPlatforms.Length; i++)
 			((GravityPlatform) gravityPlatforms[i]).Reset();
@@ -55,9 +58,9 @@ public class World : MonoBehaviour {
 	
 	public bool FallingCubes()
 	{
-		for (int i = 0; i != cubes.Length; i++)
+		for (int i = 0; i != fallingCubes.Length; i++)
 		{
-			FallingCube cube = (FallingCube) cubes[i];
+			FallingCube cube = (FallingCube) fallingCubes[i];
 
 			if ( cube.isFalling )
 				return true;

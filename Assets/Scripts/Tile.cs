@@ -36,18 +36,29 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 
 	private TileType oldType;// auxilliary variable
 
+	[HideInInspector] public bool isQuad;
+
     // Use this for initialization
-    void Start()
+    void Awake()
 	{
 		rescanPath = true;
+
+		isQuad = false;
+		
+		MeshCollider mCollider = GetComponent<MeshCollider> ();
+		
+		if ( mCollider != null && mCollider.sharedMesh.name == "Quad" )
+			isQuad = true;
 
         defineOrientation();
 		applyTileMaterial();
 		
 #if UNITY_EDITOR
-		GetComponent<Renderer>().enabled = true;
+		if ( transform.childCount > 0 )
+			transform.GetChild( 0 ).gameObject.SetActive( true );
 #elif UNITY_STANDALONE
-		GetComponent<Renderer>().enabled = false;
+		if ( transform.childCount > 0 )
+			transform.GetChild( 0 ).gameObject.SetActive( false );
 #endif
     }
 
@@ -78,18 +89,62 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
     /// It was initially used for only 6 vectors, later I added some more, but you are supposed to use the default angles
     /// </summary>
     private void defineOrientation()
-    {
-#if UNITY_EDITOR
-		Material[] materials = new Material[] {
-			new Material(Shader.Find("Transparent/Diffuse")),
-			gameObject.GetComponent<Renderer>().sharedMaterials[0]
-		};
-#endif
-		
-		if ( GetComponent<MeshFilter>().sharedMesh.name == "Quad" )
+	{
+		if (GetComponent<Stairway> ())
+			return;
+
+		if ( isQuad )
 			transform.Rotate( new Vector3( -90, 0, 0 ) );
 		
 		Vector3 tileDirection = transform.rotation * -Vector3.up;
+
+#if UNITY_EDITOR
+		GameObject graphics;
+		Transform t = transform.FindChild ("graphics");
+		
+		if ( t != null )
+			graphics = t.gameObject;
+		else
+		{
+			graphics = new GameObject( "graphics" );
+			graphics.transform.parent = transform;
+
+			MeshFilter meshFilter = graphics.AddComponent<MeshFilter>();
+			graphics.AddComponent<MeshRenderer>();
+
+			if ( isQuad )
+			{
+				graphics.transform.localPosition = graphics.transform.forward * -0.02f;
+				
+				Mesh mesh = gameObject.GetComponent<MeshCollider>().sharedMesh;
+				meshFilter.sharedMesh = mesh;
+			}
+			else
+			{
+				graphics.transform.localPosition = Vector3.up * 0.2f;
+				
+				Mesh mesh = gameObject.GetComponent<MeshFilter>().sharedMesh;
+				meshFilter.sharedMesh = mesh;
+			}
+
+			graphics.transform.localRotation = Quaternion.identity;
+			graphics.transform.localScale = Vector3.one;
+
+			
+			MeshFilter _mFilter = gameObject.GetComponent<MeshFilter>();
+			MeshRenderer _mRenderer = gameObject.GetComponent<MeshRenderer>();
+			
+			if ( _mFilter )
+				GameObject.DestroyImmediate( _mFilter );
+			if ( _mRenderer )
+				GameObject.DestroyImmediate( _mRenderer );
+		}
+
+		Material[] materials = new Material[] {
+			new Material(Shader.Find("Transparent/Diffuse")),
+			graphics.GetComponent<Renderer>().sharedMaterials[0]
+		};
+#endif
 		
 		if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Up) ), 0 ) )
 		{
@@ -134,7 +189,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 #endif
 		}
 
-		if ( GetComponent<MeshFilter>().sharedMesh.name == "Quad" )
+		if ( isQuad )
 			transform.Rotate( new Vector3( 90, 0, 0 ) );
 
 #if UNITY_EDITOR
@@ -146,13 +201,13 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		materials[1].DisableKeyword( "_ALPHAPREMULTIPLY_ON" );
 		materials[1].renderQueue = 3000;
 
-		Mesh sharedMesh = gameObject.GetComponent<MeshFilter> ().sharedMesh;
+		Mesh sharedMesh = graphics.GetComponent<MeshFilter> ().sharedMesh;
 		sharedMesh.subMeshCount = 2;
 		int[] tri = sharedMesh.GetTriangles (0);
 		sharedMesh.SetTriangles (tri, 0);
 		sharedMesh.SetTriangles (tri, 1);
 		
-		gameObject.GetComponent<Renderer>().materials = materials;
+		graphics.GetComponent<Renderer>().materials = materials;
 #endif
     }
 
@@ -234,8 +289,17 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	/// </summary>
 	private void applyTileMaterial()
 	{
+#if UNITY_EDITOR
+		GameObject graphics;
+		Transform t = transform.FindChild ("graphics");
+
+		if ( t != null )
+			graphics = t.gameObject;
+		else
+			return;
+
 		//for some reason Unity doesn't let us change a single material, we have to change the material array
-		Material[] materials = gameObject.GetComponent<Renderer>().sharedMaterials;
+		Material[] materials = graphics.GetComponent<Renderer>().sharedMaterials;
 		switch (type)
 		{
 		case TileType.Valid:
@@ -251,8 +315,10 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			materials[0] = isFlashing ? Assets.getFlashingExitBlockMat() : materials[0];
 			break;
 		}
-		gameObject.GetComponent<Renderer>().materials = materials;
+		graphics.GetComponent<Renderer>().materials = materials;
 		oldType = type;
+
+#endif
 	}
 
 	/// <summary>
@@ -269,7 +335,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		Assets.mouseCursor.transform.position = transform.position;
 		Assets.mouseCursor.transform.rotation = transform.rotation;
 
-		if ( GetComponent<MeshFilter>().sharedMesh.name == "Quad" )
+		if ( isQuad )
 			Assets.mouseCursor.transform.Rotate( new Vector3( -90, 0, 0 ) );
 		
 		Assets.mouseCursor.transform.Translate (new Vector3 (0, 0.5f, 0));
