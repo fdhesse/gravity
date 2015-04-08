@@ -200,6 +200,7 @@ public class Pawn : MonoBehaviour
 	private void initOrientationSpheres()
 	{
 		GameObject o = new GameObject();
+		o.hideFlags = HideFlags.HideInHierarchy;
 		o.name = "Orientation Dots";
 		
 		for (int i = 0; i != orientationSpheres.Length; i++)

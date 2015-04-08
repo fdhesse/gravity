@@ -15,6 +15,8 @@ public class FallingCube : MonoBehaviour
 	void Awake()
 	{
 		GameObject bodyGo = new GameObject ("rigidbody");
+		bodyGo.tag = gameObject.tag;
+		bodyGo.layer = gameObject.layer;
 		bodyGo.transform.position = transform.position;
 		bodyGo.transform.rotation = transform.rotation;
 		bodyGo.transform.localScale = transform.lossyScale;
@@ -124,10 +126,5 @@ public class FallingCube : MonoBehaviour
 		}
 		
 		obstructedTiles.Clear ();
-	}
-
-	public void OutOfBounds()
-	{
-		body.OutOfBounds ();
 	}
 }

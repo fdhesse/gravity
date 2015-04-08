@@ -12,6 +12,6 @@ public class GameSpace : MonoBehaviour {
 		if (c.gameObject.tag == "Player" )
 	        c.gameObject.GetComponent<Pawn>().outOfBounds();
 		else if (c.gameObject.tag == "FallingCube" )
-			c.gameObject.GetComponent<FallingCube>().OutOfBounds();
+			c.gameObject.GetComponent<FallingCubeBody>().OutOfBounds();
     }
 }
