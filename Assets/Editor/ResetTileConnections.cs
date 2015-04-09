@@ -9,9 +9,9 @@ using System.Collections;
 
 public class ResetTileConnections : MonoBehaviour {
 
-	[MenuItem ("GameObject/RAJA: Reset platforms")]
-	static void ResetTiles () {
-		
+	[MenuItem ("Mu/Clear platforms connections")]
+	static void ResetTiles ()
+	{
 		Tile[] platforms = FindObjectsOfType<Tile>();
 
 		int count = 0;
@@ -23,15 +23,12 @@ public class ResetTileConnections : MonoBehaviour {
 
 			diff = platform.Connections.Count;
 
-			platform._connections = null;
-
-			platform.connections.Clear();
 			platform.Connections.Clear();
 
 			if ( diff != platform.Connections.Count )
 				count++;
 		}
 
-		Debug.Log ("ResetTileConnections: " + count + " platforms reseted.");
+		Debug.Log (count + " platforms cleared.");
 	}
 }
