@@ -1,4 +1,4 @@
-﻿using UnityEditor;
+using UnityEditor;
 using UnityEngine;
 using System.Collections;
 
@@ -6,7 +6,6 @@ using System.Collections;
 [CustomEditor(typeof(GameplayCube))]
 public class GameplayCubeEditor : Editor
 {
-
 	GameplayCube m_Instance;
 	PropertyField[] m_fields;
 	

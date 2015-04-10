@@ -5,5 +5,5 @@ using System.Collections;
 /// </summary>
 public enum TileOrientation
 {
-	Up,Down,Left,Right,Front,Back
+	None,Up,Down,Left,Right,Front,Back
 }

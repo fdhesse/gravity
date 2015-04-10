@@ -34,8 +34,13 @@ public class Pawn : MonoBehaviour
 	private bool isWalkingInStairs;
 	private bool isWalking;
 
+	private LayerMask tilesLayer;
 	private BoxCollider boxCollider;
 	
+	public TileOrientation orientation;
+	public bool isGlued;
+	public Vector3 tileGravityVector;
+
 	[HideInInspector] public bool isJumping;
 	[HideInInspector] public bool isFalling;
 	[HideInInspector] public RigidbodyConstraints nextConstraint;
@@ -96,8 +101,10 @@ public class Pawn : MonoBehaviour
 
 	void Awake()
 	{
+		tilesLayer = LayerMask.NameToLayer ("Tiles");
+
 		world = gameObject.AddComponent<World>() as World;
-		world.Init( this );
+		World.Init( this );
 	}
 
     void Start()
@@ -422,14 +429,14 @@ public class Pawn : MonoBehaviour
     /// </summary>
     private void movePawn()
 	{
-		if (isGrounded() || isJumping) // is the player touching a tile "beneath" him?
+		if (isGrounded() ) // is the player touching a tile "beneath" him?
 		{
 			if( playerTile.type.Equals(TileType.Exit) ) //if this tile is an exit tile, make the game end
 				world.GameOver();
 				
             moveAlongPath(); //otherwise, move along the path to the player selected tile
         }
-		else if (isWalkingInStairs)
+		else if (isWalkingInStairs || isJumping)
 			moveAlongPath();
     }
 	
@@ -445,21 +452,23 @@ public class Pawn : MonoBehaviour
 		
 		if (path != null && path.Count > 0) //is there a path?
 		{
+			Tile destinationTile = path[0];
+
 			// play animation: walk
 			animState = 1;
 			isWalking = true;
 
 			if (newTarget)
-				StartCoroutine( LookAt ( path[0].transform.position ) );
+				StartCoroutine( LookAt ( destinationTile.transform.position ) );
 			
             //if there is, move the pawn towards the next point in that path
-            Vector3 vec = path[0].transform.position - getGroundPosition();
+			Vector3 vec = destinationTile.transform.position - getGroundPosition();
 			
             if (moveMe(vec))
 			{
 				//SnapToTile( path[0] );
 				//transform.position = new Vector3( path[0].transform.position.x, transform.position.y, path[0].transform.position.z );
-				position = path[0].transform.position;
+				position = destinationTile.transform.position;
 
 				newTarget = true;
 				path.RemoveAt(0); //if we have reached this path point, delete it from the list so we can go to the next one next time
@@ -469,6 +478,7 @@ public class Pawn : MonoBehaviour
 			{
 				animState = 0;
 				isWalking = false;
+				putDestinationMarks( destinationTile );
 			}
 			
         }
@@ -500,7 +510,8 @@ public class Pawn : MonoBehaviour
 					Tile landing = Tile.Closest(targetTile.AllAccessibleTiles(), nearest.transform.position);
 					
 	                // check if landing tile is not EXACTLY under the nearest tile
-					if ( Vector3.Scale ( ( landing.transform.position - nearest.transform.position ), Vector3.Scale ( World.getGravityVector( GetWorldGravity() ), World.getGravityVector( GetWorldGravity() ) ) - new Vector3( 1, 1, 1 ) ).magnitude == 0 )
+					//if ( Vector3.Scale ( ( landing.transform.position - nearest.transform.position ), Vector3.Scale ( World.getGravityVector( GetWorldGravity() ), World.getGravityVector( GetWorldGravity() ) ) - new Vector3( 1, 1, 1 ) ).magnitude == 0 )
+					if ( Vector3.Scale ( ( landing.transform.position - nearest.transform.position ), Vector3.Scale ( Physics.gravity.normalized , Physics.gravity.normalized ) - Vector3.one ).magnitude == 0 )
 						landing = Tile.Closest( landing.AllAccessibleTiles(), targetTile.transform.position );
 					
 					// calculate the vector from the Pawns position to the landing tile position at the same height
@@ -567,6 +578,7 @@ public class Pawn : MonoBehaviour
     /// <returns>returns true if the vector is small, i.e. smaller than 1 of magnitude, in this case, the Pawn has reached his destination</returns>
     private bool moveMe(Vector3 vec)
 	{
+		Debug.Log ("MoveMe");
 		if ( vec.magnitude > 1)
 		{
 			transform.Translate(Vector3.Normalize(vec) * Time.deltaTime * speed, Space.World);
@@ -587,9 +599,14 @@ public class Pawn : MonoBehaviour
 
 	private IEnumerator LookAt( Vector3 point )
 	{
+		Vector3 down = Physics.gravity.normalized;
+		
+		if (isGlued)
+			down = tileGravityVector;
+
 		newTarget = false;
 		float timer = 0.0f;
-		Vector3 absG = Vector3.Scale ( Vector3.Normalize (Physics.gravity), Vector3.Normalize (Physics.gravity));
+		Vector3 absG = Vector3.Scale ( down, down );
 
 		// get the Y relative
 		// point is scaled to inverted square of G
@@ -603,14 +620,14 @@ public class Pawn : MonoBehaviour
 
 		// get the final point
 		// remove pawn's & tile's heights from target
-		target = target - Vector3.Normalize (Physics.gravity) * height * 0.5f - Vector3.Scale ( - absG, playerTile.transform.position);
+		target = target - down * height * 0.5f - Vector3.Scale ( -absG, playerTile.transform.position );
 
 		Vector3 forward = target - transform.position;
 
-		Quaternion _look = Quaternion.identity;
+		Quaternion lookAt = Quaternion.identity;
 
 		if ( forward != Vector3.zero )
-			_look = Quaternion.LookRotation( forward, -Vector3.Normalize(Physics.gravity) );
+			lookAt = Quaternion.LookRotation( forward, -down );
 		
 		lookAt_DestroyCoincidents = true;
 		yield return 0;
@@ -624,13 +641,15 @@ public class Pawn : MonoBehaviour
 			timer += Time.deltaTime;
 			
 			Quaternion _rot = transform.rotation;
-			transform.rotation = Quaternion.Slerp( transform.rotation, _look, timer / turnDelay );
+			transform.rotation = Quaternion.Slerp( transform.rotation, lookAt, timer / turnDelay );
 			
 			if ( _rot == transform.rotation || Vector3.Magnitude(target - transform.position) < 2 )
 				break;
 			
 			yield return 0;
 		}
+
+		transform.rotation = lookAt;
 	}
 
     /// <summary>
@@ -643,39 +662,41 @@ public class Pawn : MonoBehaviour
 		if ( clickableTiles == null )
 			clickableTiles = new List<Tile>();
 
-        //checks underneath the pawn
-		Tile tile = null;
+		if (isJumping)
+			return;
 
 		RaycastHit hit = new RaycastHit();
 
-		Debug.DrawRay (transform.position, Physics.gravity.normalized * width * 0.4f, Color.red, .1f, false);
-
 		// casting a ray down, we need a sphereCast because the capsule has thickness, and we only need tiles layer
-		if (Physics.SphereCast(transform.position, width * 0.4f, Physics.gravity.normalized, out hit, height * 0.5f, (1 << LayerMask.NameToLayer( "Tiles" ) )))
+		if (Physics.SphereCast (transform.position, width * 0.4f, Physics.gravity.normalized, out hit, height * 0.5f, (1 << tilesLayer)))
 		{
-			tile = hit.collider.gameObject.GetComponent<Tile>();
+			GameObject hitTile = hit.collider.gameObject;
 
-			if (tile != null) // if it is a tile
-				playerTile = tile;
-            else
-				playerTile = null;
+			playerTile = hitTile.GetComponent<Tile> ();
+			orientation = playerTile.orientation;
+
+			isWalkingInStairs = false;
 			
-			if ( hit.collider.gameObject.tag == "MovingPlatform" )
+			if (hitTile.tag == "Stairway")
+			{
+				animState = 1;
+				isWalkingInStairs = true;
+			}
+
+			if (hitTile.tag == "MovingPlatform")
 			{
 				// dirty snapping to a moving tile
 				// actually, a mask is used to mix up both player & tile positions
-
 				Vector3 _vec = Vector3.zero;
 
 				// the gravity
-				Vector3 _g = Vector3.Scale ( Vector3.Normalize ( Physics.gravity ), Vector3.Normalize ( Physics.gravity ) );
+				Vector3 _g = Vector3.Scale (Physics.gravity.normalized, Physics.gravity.normalized);
 
-				if ( path.Count > 0 )
-				{
+				if (path.Count > 0) {
 					// the player asked the pawn to move
 
-					_vec = path[0].transform.position - getGroundPosition();
-					_vec = _vec - Vector3.Scale (  _g, _vec);
+					_vec = path[0].transform.position - getGroundPosition ();
+					_vec = _vec - Vector3.Scale (_g, _vec);
 
 					if (_vec.x != 0)
 						_vec.x = 1;
@@ -686,7 +707,7 @@ public class Pawn : MonoBehaviour
 				}
 
 				// _ppos: tile position 
-				Vector3 _ppos = tile.transform.position - Vector3.Scale ( _g, tile.transform.position);
+				Vector3 _ppos = playerTile.transform.position - Vector3.Scale (_g, playerTile.transform.position);
 
 				// first mask: actual gravity
 				Vector3 _mask = _g;
@@ -694,78 +715,86 @@ public class Pawn : MonoBehaviour
 				// second mask: playerPawn's movement
 				_mask = _mask - _vec;
 
-				// get absolute
-				_mask = Vector3.Scale( _mask, _mask );
+				// get absolute value
+				_mask = Vector3.Scale (_mask, _mask);
 
 				// mask the pawn's position
-				_vec = Vector3.Scale( _mask, transform.position );
-//				Debug.Log( "_vec: " + _vec + ", masque " + _mask );
+				_vec = Vector3.Scale (_mask, transform.position);
 
 				// revert the mask
-				_mask = - (_mask - Vector3.one );
+				_mask = - (_mask - Vector3.one);
 				
 				// mask the tile's position
-				_ppos = Vector3.Scale( _mask, _ppos );
+				_ppos = Vector3.Scale (_mask, _ppos);
 
 				// compute the new position
-				position =  _vec + _ppos;
-//				Debug.Log( "transform: " + transform.position );
+				position = _vec + _ppos;
 			}
-			else if ( hit.collider.gameObject.tag == "Stairway" )
-			{
-				isWalkingInStairs = true;
-				//moveAlongPath();
-				//moveMe();
-				//Debug.Log("Ok !!");
-				//rigidbody.MovePosition( transform.position + transform.forward * 0.1f );
-			}
-        }
-        else
+		}
+		else if ( !isGlued )
 		{
 			playerTile = null;
         }
+	}
 
-		putDestinationMarks (tile);
-
-    }
-
-	private void putDestinationMarks( Tile t )
+	private void removeDestinationMarks()
 	{
 		foreach (TileOrientation orientation in Enum.GetValues(typeof(TileOrientation)))
 		{
+			if ((int)orientation == 0)
+				continue;
+
+			getOrientationSphere (orientation).transform.position = Vector3.one * float.MaxValue; //sphere is moved to infinity muhahahaha, tremble before my power
+
+		}
+	}
+
+	private void putDestinationMarks( Tile tile )
+	{
+		foreach (TileOrientation orientation in Enum.GetValues(typeof(TileOrientation)))
+		{
+			if ( (int) orientation == 0 )
+				continue;
+
 			if (!isFalling)
 			{
-				t = null;
+				tile = null;
 				
-				RaycastHit hitc = new RaycastHit ();
-				//			if (Physics.SphereCast(_pos, height / 2.0f + 0.2f, Physics.gravity, out hitc, 10000, ~(1 << 10)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
-				//			if (Physics.SphereCast(_pos, height / 2.0f + 0.2f, Physics.gravity, out hitc, 10000, (1 << 14)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
-				//			if (Physics.SphereCast(_pos,  1.5f, getGravityVector( GetWorldGravity() ), out hitc, 10000, (1 << 14)))//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
-				if (Physics.SphereCast (transform.position, 0.5f + 0.2f, World.getGravityVector (orientation).normalized, out hitc, 10000, (1 << LayerMask.NameToLayer( "Tiles" )))) {//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
-					t = hitc.collider.gameObject.GetComponent<Tile> ();
+				RaycastHit hit = new RaycastHit ();
+
+				//casting a ray down, we need a sphereCast because the capsule has thickness, and we need to ignore the Pawn collider
+				//if (Physics.SphereCast (transform.position, 0.5f + 0.2f, World.getGravityVector (orientation).normalized, out hitc, 10000, (1 << tilesLayer)))
+				if (Physics.SphereCast (transform.position, width * 0.4f, World.getGravityVector (orientation).normalized, out hit, 10000, (1 << tilesLayer)))
+				{
+					tile = hit.collider.gameObject.GetComponent<Tile> ();
 					
-					if (t != null && t != playerTile) {
-						t.isClickable = true;
+					if (tile != null && tile != playerTile)
+					{
+						tile.isClickable = true;
 						
-						if (!clickableTiles.Contains (t))
-							clickableTiles.Add (t);
+						if (!clickableTiles.Contains (tile))
+							clickableTiles.Add (tile);
 						
 						if (hud.dotIsInside)
-							getOrientationSphere (orientation).transform.position = t.transform.position;
+							getOrientationSphere (orientation).transform.position = tile.transform.position;
 						else
-							getOrientationSphere (orientation).transform.position = t.transform.position - (World.getGravityVector (GetWorldGravity ()) * hud.dotSize / 2);
+							getOrientationSphere (orientation).transform.position = tile.transform.position - (World.getGravityVector (GetWorldGravity ()) * hud.dotSize / 2);
 						
-						if (t.GetComponent<Stairway> ()) {
-							// don't put dots on stairways
+						// No dots on stairways
+						if (tile.GetComponent<Stairway> ())
 							getOrientationSphere (orientation).transform.position = Vector3.one * float.MaxValue; //sphere is moved to infinity muhahahaha, tremble before my power
-						}
-					} else {
-						t.isClickable = false;
+
+					}
+					else
+					{
+						tile.isClickable = false;
 						// Valid target
-						getOrientationSphere (orientation).transform.position = Vector3.one * float.MaxValue; //sphere is moved to infinity muhahahaha, tremble before my power
+						getOrientationSphere(orientation).transform.position = Vector3.one * float.MaxValue; //sphere is moved to infinity muhahahaha, tremble before my power
 					}
 				}
-			} else {
+			}
+			else
+			{
 				// Falling, no more dots
 				getOrientationSphere(orientation).transform.position = Vector3.one * float.MaxValue; //BEGONE
 			}
@@ -777,53 +806,55 @@ public class Pawn : MonoBehaviour
     /// </summary>
     private void manageMouse()
 	{
-		if (isFalling || isJumping || (path != null) && path.Count > 0)
+		if (isFalling || isJumping || (path != null && path.Count > 0))
 			return;
 
 		Tile tile = TileSelection.getTile();
 
 		if ( tile != null && playerTile != null && tile != playerTile && playerTile.GetComponent<Stairway>() == null )
 		{
-			if ( tile.GetComponent<Stairway>() != null )
+			// Ban not clickable tiles
+			if ( !TileSelection.isClickableType( tile.type ) )
 				return;
 
 			List<Tile> accessibleTiles = AStarHelper.Calculate(playerTile, tile);
 			
 			if ( accessibleTiles != null && accessibleTiles.Count > 0 )
 			{
-				for ( int i = 0, l = accessibleTiles.Count; i < l; i++ )
+				foreach ( Tile accessibleTile in accessibleTiles )
 				{
-					clickableTiles.Add( accessibleTiles[i] );
+					// Keep only valid types
+					if ( TileSelection.isClickableType( accessibleTile.type ) )
+						clickableTiles.Add( accessibleTile );
 				}
-
-				if ( TileSelection.isClickableType( tile.type ) )
-				{
-					tile.isClickable = true;
-					tile.highlight();
-				}
+				
+				tile.isClickable = true;
+				tile.highlight();
 			}
 
 			// Check if the tile is accessible "by fall"
 			if ( tile.orientation == playerTile.orientation )
 			{
-				bool isAccessibleByFall = true;
-				
-				if ( playerTile.orientation == TileOrientation.Down && tile.transform.position.y < playerTile.transform.position.y)
-					isAccessibleByFall = false;
-				else if ( playerTile.orientation == TileOrientation.Up && tile.transform.position.y > playerTile.transform.position.y )
-					isAccessibleByFall = false;
-				else if ( playerTile.orientation == TileOrientation.Left && tile.transform.position.x > playerTile.transform.position.x )
-					isAccessibleByFall = false;
-				else if ( playerTile.orientation == TileOrientation.Right && tile.transform.position.x < playerTile.transform.position.x )
-					isAccessibleByFall = false;
-				else if ( playerTile.orientation == TileOrientation.Front && tile.transform.position.z < playerTile.transform.position.z )
-					isAccessibleByFall = false;
-				else if ( playerTile.orientation == TileOrientation.Back && tile.transform.position.z > playerTile.transform.position.z )
-					isAccessibleByFall = false;
+				bool isAccessibleByFall = false;
+
+				// Cjeck wether the tile is aligned to the player's one
+				if ( playerTile.orientation == TileOrientation.Down && tile.transform.position.y < playerTile.transform.position.y )
+					isAccessibleByFall = true;
+				else if ( !(playerTile.orientation == TileOrientation.Up && tile.transform.position.y > playerTile.transform.position.y) )
+					isAccessibleByFall = true;
+				else if ( !(playerTile.orientation == TileOrientation.Left && tile.transform.position.x > playerTile.transform.position.x) )
+					isAccessibleByFall = true;
+				else if ( !(playerTile.orientation == TileOrientation.Right && tile.transform.position.x < playerTile.transform.position.x) )
+					isAccessibleByFall = true;
+				else if ( !(playerTile.orientation == TileOrientation.Front && tile.transform.position.z < playerTile.transform.position.z) )
+					isAccessibleByFall = true;
+				else if ( !(playerTile.orientation == TileOrientation.Back && tile.transform.position.z > playerTile.transform.position.z) )
+					isAccessibleByFall = true;
 
 				if ( isAccessibleByFall && playerTile.orientation != TileOrientation.Down && playerTile.orientation != TileOrientation.Up )
 				{
 					float distance = Mathf.Abs( playerTile.transform.position.y - tile.transform.position.y );
+
 					if ( distance > 10.1f )
 						isAccessibleByFall = false;
 				}
@@ -831,6 +862,7 @@ public class Pawn : MonoBehaviour
 				if ( isAccessibleByFall && playerTile.orientation != TileOrientation.Left && playerTile.orientation != TileOrientation.Right )
 				{
 					float distance = Mathf.Abs( playerTile.transform.position.x - tile.transform.position.x );
+
 					if ( distance > 10.1f )
 						isAccessibleByFall = false;
 				}
@@ -838,6 +870,7 @@ public class Pawn : MonoBehaviour
 				if ( isAccessibleByFall && playerTile.orientation != TileOrientation.Front && playerTile.orientation != TileOrientation.Back )
 				{
 					float distance = Mathf.Abs( playerTile.transform.position.z - tile.transform.position.z );
+
 					if ( distance > 10.1f )
 						isAccessibleByFall = false;
 				}
@@ -875,13 +908,32 @@ public class Pawn : MonoBehaviour
 				}
 	        }
 
-			if (Input.GetMouseButtonUp(0) && !isCameraMode && GetComponent<Rigidbody>().useGravity)
+			//if (Input.GetMouseButtonUp(0) && !isCameraMode && GetComponent<Rigidbody>().useGravity)
+			if (Input.GetMouseButtonUp(0) && !isCameraMode && !isFalling)
 			{
 				clickCountdown = 0;
 
 				if (tile != null && tile.isClickable && !world.FallingCubes())
 				{
-					if ( !isWalking && ( playerTile == null || tile.orientation != playerTile.orientation ) ) //for punishing gravity take the tile == null here
+					removeDestinationMarks();
+
+					// If the pawn is on a glue tile
+					if ( isGlued && tile.orientation != playerTile.orientation )
+					{
+						// We only consider the click if the gravity change
+						if ( World.getGravityVector( tile.orientation ) != Physics.gravity.normalized )
+						{
+							hud.gravityChangeCount++;
+							
+							GetComponent<Rigidbody>().useGravity = false;
+							
+							tileGravityVector = World.getGravityVector( playerTile.orientation );
+							
+							SetWorldGravity( tile.orientation );
+							world.ChangeGravity ( tile.orientation );
+						}
+					}
+					else if ( !isWalking && ( playerTile == null || tile.orientation != playerTile.orientation ) ) //for punishing gravity take the tile == null here
 					{
 						hud.gravityChangeCount++;
 						playerTile = null;
@@ -893,12 +945,7 @@ public class Pawn : MonoBehaviour
 					else
 					{
 						targetTile = tile;
-						
-						if ( targetTile.transform != playerTile.transform && targetTile.orientation == playerTile.orientation )
-						{
-							path = AStarHelper.Calculate(playerTile, tile);
-							//StartCoroutine( LookAt ( path[0].transform.position ) );
-						}
+						path = AStarHelper.Calculate(playerTile, targetTile);
 					}
 	            }
 	        }
@@ -922,7 +969,7 @@ public class Pawn : MonoBehaviour
 		}
 	}
 	
-	private IEnumerator DelayedPawnFall( Tile t )
+	private IEnumerator DelayedPawnFall( Tile tile )
 	{
 //		collider.gameObject.layer = 12;
 		nextConstraint = GetComponent<Rigidbody>().constraints;
@@ -949,7 +996,7 @@ public class Pawn : MonoBehaviour
 			yield return 0;
 		}
 		
-		SetPawnOrientation( t.orientation );
+		SetPawnOrientation( tile.orientation );
 
 		// Rotate the pawn in order to face the correct direction
 		while(true)
@@ -969,8 +1016,8 @@ public class Pawn : MonoBehaviour
 		GetComponent<Rigidbody>().constraints = nextConstraint;
 		GetComponent<Rigidbody>().useGravity = true;
 
-		SetWorldGravity( t.orientation );
-		world.ChangeGravity ( t.orientation );
+		SetWorldGravity( tile.orientation );
+		world.ChangeGravity ( tile.orientation );
 	}
 	
 	private bool adjustPawnPosition( ref float timer )
@@ -1083,20 +1130,25 @@ public class Pawn : MonoBehaviour
 
 	private TileOrientation GetWorldGravity()
 	{
-		if (Physics.gravity.x > 0)
+		Vector3 down = Physics.gravity;
+		
+		if (isGlued)
+			down = tileGravityVector;
+		
+		if (down.x > 0)
 			return TileOrientation.Right;
-		if (Physics.gravity.x < 0)
+		if (down.x < 0)
 			return TileOrientation.Left;
-		if (Physics.gravity.y > 0)
+		if (down.y > 0)
 			return TileOrientation.Down;
-		if (Physics.gravity.y < 0)
+		if (down.y < 0)
 			return TileOrientation.Up;
-		if (Physics.gravity.z > 0)
+		if (down.z > 0)
 			return TileOrientation.Front;
-		if (Physics.gravity.z < 0)
+		if (down.z < 0)
 			return TileOrientation.Back;
-		else
-			return TileOrientation.Up;
+
+		return TileOrientation.Up;
 	}
 
 	/// ----- CHECKERS ----- ///
@@ -1108,41 +1160,17 @@ public class Pawn : MonoBehaviour
 	/// </summary>
 	private bool isGrounded()
 	{
-		if (playerTile != null) //is there even a tile beneath the Pawn
+		//is there even a tile beneath the Pawn
+		if (playerTile != null) 
 		{
-			Vector3 origin = transform.position;
-			/*
-			if ( GetWorldGravity() == TileOrientation.Up )
-				origin.y += 1;
-			else if ( GetWorldGravity() == TileOrientation.Down )
-				origin.y -= 1;
-			else if ( GetWorldGravity() == TileOrientation.Back )
-				origin.z += 1;
-			else if ( GetWorldGravity() == TileOrientation.Front )
-				origin.z -= 1;
-			else if ( GetWorldGravity() == TileOrientation.Left )
-				origin.x += 1;
-			else if (  GetWorldGravity() == TileOrientation.Right )
-				origin.x -= 1;
-				*/
+			Vector3 down = Physics.gravity.normalized;
+			
+			if ( isGlued )
+				down = tileGravityVector;
+			
+			Ray ray = new Ray( transform.position, down );
 
-			Ray ray = new Ray( origin, Physics.gravity.normalized );
-			
-			return Physics.SphereCast( ray, width * 0.5f, height * 0.5f, (1 << LayerMask.NameToLayer( "Tiles" )) );
-			//return Physics.SphereCast( ray, height * 0.5f + 0.2f, 3.5f, (1 << LayerMask.NameToLayer( "Tiles" )) );
-
-			/*
-			float proximityThreshold = 0.2f; // the value bellow which can be said that the tile is touching the Pawn, it's like an error margin
-			
-			if (tile.orientation.Equals(TileOrientation.Up) || tile.orientation.Equals(TileOrientation.Down)) //check for up and down
-				return Math.Abs(tile.transform.position.y - getGroundPosition().y) < proximityThreshold; //check distance
-			
-			if (tile.orientation.Equals(TileOrientation.Left) || tile.orientation.Equals(TileOrientation.Right)) //check for left and right
-				return Math.Abs(tile.transform.position.x - getGroundPosition().x) < proximityThreshold; //check distance
-			
-			if (tile.orientation.Equals(TileOrientation.Front) || tile.orientation.Equals(TileOrientation.Back)) //check for front and back
-				return Math.Abs(tile.transform.position.z - getGroundPosition().z) < proximityThreshold; //check distance
-				*/
+			return Physics.SphereCast( ray, width * 0.5f, height * 0.5f, (1 << tilesLayer) );
 		}
 		
 		return false; // if there isn't a tile beneath him, he isn't grounded
@@ -1245,7 +1273,7 @@ public class Pawn : MonoBehaviour
     /// </summary>
     private GameObject getOrientationSphere(TileOrientation orientation)
     {
-        return orientationSpheres[(int)orientation];
+		return orientationSpheres [(int)orientation - 1];
 	}
 	/// <summary>
 	/// Is the Pawn out of bounds?

@@ -18,9 +18,13 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	public TileType type = TileType.Valid;
 	private TileType startType;
 
-	public TileOrientation orientation;
+	public bool isGlueTile = false;
 
-	public Transform[] _connections; //public array used for debuging, this way you can see the platform list in the editor
+	//[HideInInspector]
+	public TileOrientation orientation;
+	
+	//public Transform[] _connections; //public array used for debuging, this way you can see the platform list in the editor
+	//[HideInInspector] 
 	public List<Tile> connections; //list of directly accessible platforms
 	[HideInInspector] protected HashSet<Tile> connectionSet; //auxilliary hashset used to ignore duplicates
 	[HideInInspector] protected HashSet<Tile> siblingConnection; //auxilliary hashset used for siblings detection
@@ -38,11 +42,62 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 
 	[HideInInspector] public bool isQuad;
 
+	void OnValidate()
+	{
+		if (isGlueTile)
+			AddGlueBehaviour ();
+		else
+			AddGlueBehaviour ();
+	}
+	
+	private void AddGlueBehaviour()
+	{
+		// Check if the behaviour already exist
+		//if (collisionDelegate != null)
+		//	return;
+	}
+	
+	private void RemoveGlueBehaviour()
+	{
+		// Check if the behaviour doesn't exist
+		//if (collisionDelegate == null)
+		//	return;
+	}
+	
+	void OnCollisionEnter( Collision collision )
+	{
+		if (collision.collider.gameObject.tag != "Player" || orientation != World.Pawn.orientation )
+			return;
+		
+		if ( isGlueTile )
+		{
+			World.Pawn.isGlued = true;
+			World.Pawn.tileGravityVector = World.getGravityVector( orientation );
+			//World.Pawn.tileGravityVector = Physics.gravity;
+		}
+		else
+		{
+			World.Pawn.isGlued = false;
+		}
+	}
+	
+	/*
+	void OnCollisionExit( Collision collision )
+	{
+		if ( isGlueTile && collision.collider.gameObject.tag == "Player" )
+		{
+			World.Pawn.isGlued = false;
+		}
+	}
+	*/
+
     // Use this for initialization
     void Awake()
 	{
-		rescanPath = true;
+		gameObject.hideFlags = HideFlags.NotEditable;
 
+		connections = new List<Tile>();
+		rescanPath = true;
 		isQuad = false;
 		
 		MeshCollider mCollider = GetComponent<MeshCollider> ();
@@ -90,8 +145,11 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
     /// </summary>
     private void defineOrientation()
 	{
-		if (GetComponent<Stairway> ())
+		if (GetComponent<Stairway> () != null )
+		{
+			orientation = TileOrientation.None;
 			return;
+		}
 
 		if ( isQuad )
 			transform.Rotate( new Vector3( -90, 0, 0 ) );
@@ -101,12 +159,16 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 #if UNITY_EDITOR
 		GameObject graphics;
 		Transform t = transform.FindChild ("graphics");
-		
+
 		if ( t != null )
+		{
 			graphics = t.gameObject;
+			graphics.hideFlags = HideFlags.NotEditable;
+		}
 		else
 		{
 			graphics = new GameObject( "graphics" );
+			graphics.hideFlags = HideFlags.NotEditable;
 			graphics.transform.parent = transform;
 
 			MeshFilter meshFilter = graphics.AddComponent<MeshFilter>();
@@ -270,12 +332,14 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 					
                     connectionSet.Add(t);
 
-					_connections = new Transform[connectionSet.Count];
+					//_connections = new Transform[connectionSet.Count];
                     connections = new List<Tile>(connectionSet);
+					/*
                     for (int i = 0; i != connections.Count; i++)
                     {
 						_connections[i] = connections[i].transform;
                     }
+                    */
                 }
             }
         }

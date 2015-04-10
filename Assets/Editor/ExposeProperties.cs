@@ -1,4 +1,4 @@
-﻿using UnityEditor;
+using UnityEditor;
 using UnityEngine;
 using System;
 using System.Collections;
@@ -69,12 +69,10 @@ public static class ExposeProperties
 
 					foreach (Transform t in Selection.transforms)
 					{
-						GameplayCube gameplayCube = t.GetComponent<GameplayCube>();
+						
+						PropertyField[] props;
 
-						if ( gameplayCube == null )
-							continue;
-
-						PropertyField[] props = GetProperties( gameplayCube );
+						props = t.GetProperties ();
 
 						foreach (PropertyField f in props)
 						{
@@ -96,6 +94,21 @@ public static class ExposeProperties
 			EditorGUILayout.EndHorizontal();
 		}
 		EditorGUILayout.EndVertical();
+	}
+
+	private static PropertyField[] GetProperties( this Transform source )
+	{
+		GameplayCube c = source.GetComponent<GameplayCube> ();
+		
+		if ( c != null)
+			return GetProperties( c );
+
+		Stairway s = source.GetComponent<Stairway> ();
+		
+		if ( s != null)
+			return GetProperties( s );
+
+		return null;
 	}
 	
 	public static PropertyField[] GetProperties(object obj)

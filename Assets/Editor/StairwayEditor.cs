@@ -1,9 +1,9 @@
-﻿using UnityEditor;
+using UnityEditor;
 using UnityEngine;
 using System.Collections;
 
-[CustomEditor(typeof(Stairway))]
 [CanEditMultipleObjects]
+[CustomEditor(typeof(Stairway))]
 public class StairwayEditor : Editor
 {
 	Stairway m_Instance;
@@ -19,6 +19,8 @@ public class StairwayEditor : Editor
 	{
 		if ( m_Instance == null )
 			return;
+		
+		this.DrawDefaultInspector();
 		
 		ExposeProperties.Expose( m_fields );
 		

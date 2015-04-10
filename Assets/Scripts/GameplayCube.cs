@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[SelectionBase]
 public class GameplayCube : MonoBehaviour {
 
 	[HideInInspector] [SerializeField] private TileType m_left	= TileType.None;
@@ -85,10 +86,7 @@ public class GameplayCube : MonoBehaviour {
 		tile = face.AddComponent<Tile>();
 		tile.gameObject.layer = LayerMask.NameToLayer( "Tiles" );
 		tile.type = type;
-		
-		// Clean up all platform's connections
-		tile._connections = null;
-		
+
 		switch( faceName )
 		{
 		case "front":

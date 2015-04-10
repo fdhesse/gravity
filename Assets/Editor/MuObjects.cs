@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
@@ -73,7 +73,7 @@ public static class MuObjects
 		
 		go.transform.localScale = new Vector3( 10, 10, 10 );
 		
-		go.AddComponent<Rigidbody>();
+		//go.AddComponent<Rigidbody>();
 		go.AddComponent<BoxCollider>();
 		go.AddComponent<FallingCube>();
 
