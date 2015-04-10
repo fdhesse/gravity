@@ -28,7 +28,6 @@ public class Pawn : MonoBehaviour
 	private float height;
 	private float width;
 	private bool newTarget = true;
-	private bool lookAt_DestroyCoincidents;
 	private Vector3 desiredRotation;
 	private Vector3 desiredPosition;
 	private bool isWalkingInStairs;
@@ -52,6 +51,7 @@ public class Pawn : MonoBehaviour
 	// 1 = walk
 	// 2 = fall
 	// 3 = land
+	private IEnumerator lookCoroutine;
 	private Animator animator;
 	private int animState;
 	private int idleState;
@@ -456,25 +456,29 @@ public class Pawn : MonoBehaviour
     /// </summary>
     private void moveAlongPath()
 	{
-		//ResetDynamic ();
-		
 		if (path != null && path.Count > 0) //is there a path?
 		{
-			Tile destinationTile = path[0];
+			Tile nextTile = path[0];
 
 			// play animation: walk
 			animState = 1;
 			isWalking = true;
 
 			if (newTarget)
-				StartCoroutine( LookAt ( destinationTile.transform.position ) );
+			{
+				if( lookCoroutine != null )
+					StopCoroutine( lookCoroutine );
+
+				lookCoroutine = LookAt ( nextTile.transform.position );
+				StartCoroutine( lookCoroutine );
+			}
 			
             //if there is, move the pawn towards the next point in that path
-			Vector3 vec = destinationTile.transform.position - getGroundPosition();
+			Vector3 vec = nextTile.transform.position - getGroundPosition();
 			
             if (moveMe(vec))
 			{
-				position = destinationTile.transform.position;
+				position = nextTile.transform.position;
 
 				newTarget = true;
 				path.RemoveAt(0); //if we have reached this path point, delete it from the list so we can go to the next one next time
@@ -484,7 +488,9 @@ public class Pawn : MonoBehaviour
 			{
 				animState = 0;
 				isWalking = false;
-				putDestinationMarks( destinationTile );
+				putDestinationMarks( nextTile );
+
+				ResetDynamic ();
 			}
 			
         }
@@ -524,7 +530,12 @@ public class Pawn : MonoBehaviour
 							isJumping = true;
 							isFalling = true;
 							StartCoroutine( JumpToTile());
-							StartCoroutine( LookAt ( landing.transform.position ) );
+							
+							if( lookCoroutine != null )
+								StopCoroutine( lookCoroutine );
+
+							lookCoroutine = LookAt ( landing.transform.position );
+							StartCoroutine( lookCoroutine );
 						}
 
 						if (moveMe(vec)) // move the pawn towards that vector
@@ -595,48 +606,43 @@ public class Pawn : MonoBehaviour
 			down = tileGravityVector;
 
 		newTarget = false;
-		float timer = 0.0f;
-		Vector3 absG = Vector3.Scale ( down, down );
+		float elapsedTime = .0f;
 
-		// get the Y relative
-		// point is scaled to inverted square of G
-		Vector3 target = Vector3.Scale ( - absG, point);
-//		Debug.Log ("Y relative: " + target);
+		// Absolute gravity
+		Vector3 absolutGravity = Vector3.Scale ( down, down );
 
-		// get the X, Z relatives
-		// remove the Y relative from target
-		target = point + target;
-//		Debug.Log ("X, Z relatives: " + target);
+		// 'Y' relative
+		Vector3 targetPoint = Vector3.Scale ( absolutGravity, point );
 
-		// get the final point
-		// remove pawn's & tile's heights from target
-		target = target - down * height * 0.5f - Vector3.Scale ( -absG, playerTile.transform.position );
+		// Remove the 'Y' relative from target
+		targetPoint = point - targetPoint;
 
-		Vector3 forward = target - transform.position;
+		// pawn's 'Y'
+		Vector3 pawnPoint = Vector3.Scale( absolutGravity, transform.position );
+		
+		// The final point: merged targetPoint with pawn's 'Y'
+		targetPoint = targetPoint + pawnPoint;
+
+		Vector3 forward = targetPoint - transform.position;
 
 		Quaternion lookAt = Quaternion.identity;
-
+		
 		if ( forward != Vector3.zero )
 			lookAt = Quaternion.LookRotation( forward, -down );
-		
-		lookAt_DestroyCoincidents = true;
-		yield return 0;
-		lookAt_DestroyCoincidents = false;
-		
-		while (true)
-		{
-			if (lookAt_DestroyCoincidents)
-				break;
 
-			timer += Time.deltaTime;
-			
-			Quaternion _rot = transform.rotation;
-			transform.rotation = Quaternion.Slerp( transform.rotation, lookAt, timer / turnDelay );
-			
-			if ( _rot == transform.rotation || Vector3.Magnitude(target - transform.position) < 2 )
-				break;
-			
-			yield return 0;
+		Quaternion fromRot = transform.rotation;
+
+		float angle = Quaternion.Angle (fromRot, lookAt);
+		float delay = turnDelay;
+
+		if (angle > 90)
+			delay *= .5f;
+		
+		while ( elapsedTime < delay )
+		{
+			elapsedTime += Time.deltaTime;
+			transform.rotation = Quaternion.Lerp( fromRot, lookAt, elapsedTime / delay );
+			yield return null;
 		}
 
 		transform.rotation = lookAt;
@@ -675,6 +681,10 @@ public class Pawn : MonoBehaviour
 
 			if (hitTile.tag == "MovingPlatform")
 			{
+				// [TODO]
+				// It would be nice that pawn's speed would
+				// be relative to the moving platforms'
+
 				// dirty snapping to a moving tile
 				// actually, a mask is used to mix up both player & tile positions
 				Vector3 _vec = Vector3.zero;
@@ -920,8 +930,8 @@ public class Pawn : MonoBehaviour
 					else if ( !isWalking && ( playerTile == null || tile.orientation != playerTile.orientation ) ) //for punishing gravity take the tile == null here
 					{
 						hud.gravityChangeCount++;
+
 						playerTile = null;
-						
 						desiredPosition = new Vector3( 0, height / 2 * fallInterval, 0 );
 
 						StartCoroutine( DelayedPawnFall ( tile ));
@@ -1114,7 +1124,7 @@ public class Pawn : MonoBehaviour
 
 	private TileOrientation GetWorldGravity()
 	{
-		Vector3 down = Physics.gravity;
+		Vector3 down = Physics.gravity.normalized;
 		
 		if (isGlued)
 			down = tileGravityVector;
@@ -1151,10 +1161,8 @@ public class Pawn : MonoBehaviour
 			
 			if ( isGlued )
 				down = tileGravityVector;
-			
-			Ray ray = new Ray( transform.position, down );
 
-			return Physics.SphereCast( ray, width * 0.5f, height * 0.5f, (1 << tilesLayer) );
+			return Physics.SphereCast( new Ray( transform.position, down ), width * 0.5f, height * 0.5f, (1 << tilesLayer) );
 		}
 		
 		return false; // if there isn't a tile beneath him, he isn't grounded

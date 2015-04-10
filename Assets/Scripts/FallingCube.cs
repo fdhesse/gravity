@@ -5,6 +5,7 @@ using System.Collections.Generic;
 [RequireComponent(typeof(GameplayCube))]
 public class FallingCube : MonoBehaviour
 {
+	public bool isInit;
 	public bool isFalling;
 	
 	private Tile[] tiles;
@@ -14,6 +15,7 @@ public class FallingCube : MonoBehaviour
 
 	void Awake()
 	{
+		Debug.Log ("Awake");
 		GameObject bodyGo = new GameObject ("rigidbody");
 		bodyGo.tag = gameObject.tag;
 		bodyGo.layer = gameObject.layer;
@@ -26,11 +28,13 @@ public class FallingCube : MonoBehaviour
 		body = bodyGo.AddComponent<FallingCubeBody> ();
 		body.LegacyParent = this;
 
+		isInit = true;
 	}
 	
 	// Use this for initialization
 	void Start ()
 	{
+		Debug.Log ("Start");
 		obstructedTiles = new Dictionary<Tile, TileType> ();
 
 		GameplayCube cube = GetComponent<GameplayCube>();
@@ -70,8 +74,10 @@ public class FallingCube : MonoBehaviour
 
 	public void Reset ()
 	{
-		body.Reset ();
+		if (!isInit)
+			Awake ();
 
+		body.Reset ();
 		//isDestroyed = false;
 	}
 

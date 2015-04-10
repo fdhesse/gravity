@@ -8,7 +8,7 @@ public static class MuObjects
 	static void AddRotatingPlatform ( MenuCommand menuCmd )
 	{
 		GameObject go = new GameObject( "RotatingPlatform" );
-		go.tag = "GravityPlatform";
+		//go.tag = "GravityPlatform";
 		
 		if ( menuCmd != null )
 			GameObjectUtility.SetParentAndAlign( go, menuCmd.context as GameObject );
@@ -41,8 +41,8 @@ public static class MuObjects
 	}
 	
 	[MenuItem ("GameObject/Mu/GameplayCube", false, 10)]
-	static void AddGameplayCube ( MenuCommand menuCmd ) {
-		
+	static void AddGameplayCube ( MenuCommand menuCmd )
+	{
 		GameObject go = new GameObject( "Gameplay Cube" );
 		
 		if ( menuCmd != null )
@@ -62,13 +62,31 @@ public static class MuObjects
 	}
 	
 	[MenuItem ("GameObject/Mu/FallingCube", false, 10)]
-	static void AddFallingCube ( MenuCommand menuCmd ) {
+	static void AddFallingCube ( MenuCommand menuCmd )
+	{
+		string path = "Assets/PREFABS/gameplay Platforms/Falling Cube.prefab";
+
+		Object asset = Resources.LoadAssetAtPath ( path, typeof( GameObject ) );
+
+		if (asset == null)
+		{
+			Debug.LogError ("No prefab at path '" + path + "', did somebody moved or renamed the prefab/folder ?");
+			return;
+		}
+
+		Vector3 position = SceneView.lastActiveSceneView.pivot;
+		//SceneView.currentDrawingSceneView.camera.ViewportToWorldPoint( new Vector3( .5f, .5f, 10f ) )
+
+		GameObject go = (GameObject) GameObject.Instantiate( asset, position, Quaternion.identity );
+		go.name = asset.name;
 		
-		GameObject go = new GameObject( "Falling Cube" );
+		//GameObject go = new GameObject( "Falling Cube" );
 		
 		if ( menuCmd != null )
 			GameObjectUtility.SetParentAndAlign( go, menuCmd.context as GameObject );
-		
+
+
+		/*
 		go.tag = "FallingCube";
 		
 		go.transform.localScale = new Vector3( 10, 10, 10 );
@@ -88,12 +106,31 @@ public static class MuObjects
 		audio.playOnAwake = false;
 		audio.clip = Assets.bounce;
 		audio.minDistance = 100;
-		
+		*/
 	}
 
 	[MenuItem ("GameObject/Mu/Exit", false, 10)]
-	static void AddExitCube ( MenuCommand menuCmd ) {
+	static void AddExitCube ( MenuCommand menuCmd )
+	{
+		string path = "Assets/PREFABS/gameplay Platforms/exit.prefab";
 		
+		Object asset = Resources.LoadAssetAtPath ( path, typeof( GameObject ) );
+		
+		if (asset == null)
+		{
+			Debug.LogError ("No prefab at path '" + path + "', did somebody moved or renamed the prefab/folder ?");
+			return;
+		}
+		
+		Vector3 position = SceneView.lastActiveSceneView.pivot;
+		
+		GameObject go = (GameObject) GameObject.Instantiate( asset, position, Quaternion.identity );
+		go.name = asset.name;
+		
+		if ( menuCmd != null )
+			GameObjectUtility.SetParentAndAlign( go, menuCmd.context as GameObject );
+
+		/*
 		Material[] materials;
 		Tile p;
 		
@@ -287,5 +324,6 @@ public static class MuObjects
 		materials[2].shader = Shader.Find("Transparent/Diffuse");
 		
 		right.GetComponent<Renderer>().sharedMaterials = materials;
+		*/
 	}
 }
