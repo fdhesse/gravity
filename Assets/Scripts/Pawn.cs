@@ -488,13 +488,6 @@ public class Pawn : MonoBehaviour
 				targetTile = null;
 			else
 			{
-			//if ( targetTileIsAbove(targetTile) || targetTile.type.Equals(TileType.Invalid) ) // is targetTile above the pawn or of type invalid?
-			//{
-			//	GetComponent<AudioSource>().PlayOneShot(Assets.invalidSound); // play a failed action sound
-				//targetTile = null; //forget target tile
-			//}
-			//else //the tile is in a valid place
-	        //{
 	        	// tile is not accessible but in valid space, so:
 	        	// pawn will go towards the tile, then
 	        	//  (- he will land on a neighbourg tile) -- no more possible yet
@@ -510,7 +503,6 @@ public class Pawn : MonoBehaviour
 					Tile landing = Tile.Closest(targetTile.AllAccessibleTiles(), nearest.transform.position);
 					
 	                // check if landing tile is not EXACTLY under the nearest tile
-					//if ( Vector3.Scale ( ( landing.transform.position - nearest.transform.position ), Vector3.Scale ( World.getGravityVector( GetWorldGravity() ), World.getGravityVector( GetWorldGravity() ) ) - new Vector3( 1, 1, 1 ) ).magnitude == 0 )
 					if ( Vector3.Scale ( ( landing.transform.position - nearest.transform.position ), Vector3.Scale ( Physics.gravity.normalized , Physics.gravity.normalized ) - Vector3.one ).magnitude == 0 )
 						landing = Tile.Closest( landing.AllAccessibleTiles(), targetTile.transform.position );
 					
@@ -522,11 +514,8 @@ public class Pawn : MonoBehaviour
 					{
 						if ( !isJumping )
 						{
-							//GetComponent<Rigidbody>().AddForce( -Physics.gravity * vec.sqrMagnitude * 0.45f );
-							//GetComponent<Rigidbody>().mass = 30;
-							StartCoroutine( JumpToTile());
 							isJumping = true;
-							
+							StartCoroutine( JumpToTile());
 							StartCoroutine( LookAt ( landing.transform.position ) );
 						}
 
@@ -578,21 +567,14 @@ public class Pawn : MonoBehaviour
     /// <returns>returns true if the vector is small, i.e. smaller than 1 of magnitude, in this case, the Pawn has reached his destination</returns>
     private bool moveMe(Vector3 vec)
 	{
-		Debug.Log ("MoveMe");
 		if ( vec.magnitude > 1)
 		{
 			transform.Translate(Vector3.Normalize(vec) * Time.deltaTime * speed, Space.World);
-
-//			GetComponent<BoxCollider>().transform.Translate(Vector3.Normalize(vec) * Time.deltaTime * speed, Space.World);
-			
             return false;
         }
         else
 		{
 			transform.Translate(vec * Time.deltaTime * speed, Space.World);
-
-//			GetComponent<BoxCollider>().transform.Translate(vec * Time.deltaTime * speed, Space.World);
-
             return true;
         }
 	}
@@ -770,7 +752,8 @@ public class Pawn : MonoBehaviour
 					
 					if (tile != null && tile != playerTile)
 					{
-						tile.isClickable = true;
+						if ( TileSelection.isClickableType( tile.type ) )
+							tile.isClickable = true;
 						
 						if (!clickableTiles.Contains (tile))
 							clickableTiles.Add (tile);
@@ -806,92 +789,80 @@ public class Pawn : MonoBehaviour
     /// </summary>
     private void manageMouse()
 	{
-		if (isFalling || isJumping || (path != null && path.Count > 0))
-			return;
-
-		Tile tile = TileSelection.getTile();
-
-		if ( tile != null && playerTile != null && tile != playerTile && playerTile.GetComponent<Stairway>() == null )
+		if(!isCameraMode)
 		{
-			// Ban not clickable tiles
-			if ( !TileSelection.isClickableType( tile.type ) )
-				return;
-
-			List<Tile> accessibleTiles = AStarHelper.Calculate(playerTile, tile);
 			
-			if ( accessibleTiles != null && accessibleTiles.Count > 0 )
+			if (isFalling || isJumping || (path != null && path.Count > 0))
+				return;
+			
+			Tile tile = TileSelection.getTile();
+			
+			if ( tile != null && playerTile != null && tile != playerTile && playerTile.GetComponent<Stairway>() == null )
 			{
-				foreach ( Tile accessibleTile in accessibleTiles )
-				{
-					// Keep only valid types
-					if ( TileSelection.isClickableType( accessibleTile.type ) )
-						clickableTiles.Add( accessibleTile );
-				}
+				// Ban unclickable tiles
+				if ( !TileSelection.isClickableType( tile.type ) )
+					return;
 				
-				tile.isClickable = true;
-				tile.highlight();
-			}
-
-			// Check if the tile is accessible "by fall"
-			if ( tile.orientation == playerTile.orientation )
-			{
-				bool isAccessibleByFall = false;
-
-				// Cjeck wether the tile is aligned to the player's one
-				if ( playerTile.orientation == TileOrientation.Down && tile.transform.position.y < playerTile.transform.position.y )
-					isAccessibleByFall = true;
-				else if ( !(playerTile.orientation == TileOrientation.Up && tile.transform.position.y > playerTile.transform.position.y) )
-					isAccessibleByFall = true;
-				else if ( !(playerTile.orientation == TileOrientation.Left && tile.transform.position.x > playerTile.transform.position.x) )
-					isAccessibleByFall = true;
-				else if ( !(playerTile.orientation == TileOrientation.Right && tile.transform.position.x < playerTile.transform.position.x) )
-					isAccessibleByFall = true;
-				else if ( !(playerTile.orientation == TileOrientation.Front && tile.transform.position.z < playerTile.transform.position.z) )
-					isAccessibleByFall = true;
-				else if ( !(playerTile.orientation == TileOrientation.Back && tile.transform.position.z > playerTile.transform.position.z) )
-					isAccessibleByFall = true;
-
-				if ( isAccessibleByFall && playerTile.orientation != TileOrientation.Down && playerTile.orientation != TileOrientation.Up )
-				{
-					float distance = Mathf.Abs( playerTile.transform.position.y - tile.transform.position.y );
-
-					if ( distance > 10.1f )
-						isAccessibleByFall = false;
-				}
+				List<Tile> accessibleTiles = AStarHelper.Calculate(playerTile, tile);
 				
-				if ( isAccessibleByFall && playerTile.orientation != TileOrientation.Left && playerTile.orientation != TileOrientation.Right )
+				if ( accessibleTiles != null && accessibleTiles.Count > 0 )
 				{
-					float distance = Mathf.Abs( playerTile.transform.position.x - tile.transform.position.x );
-
-					if ( distance > 10.1f )
-						isAccessibleByFall = false;
-				}
-				
-				if ( isAccessibleByFall && playerTile.orientation != TileOrientation.Front && playerTile.orientation != TileOrientation.Back )
-				{
-					float distance = Mathf.Abs( playerTile.transform.position.z - tile.transform.position.z );
-
-					if ( distance > 10.1f )
-						isAccessibleByFall = false;
-				}
-
-				if ( isAccessibleByFall )
-				{
-					clickableTiles.Add( tile );
-
-					if ( TileSelection.isClickableType( tile.type ) )
+					foreach ( Tile accessibleTile in accessibleTiles )
 					{
-						tile.isClickable = true;
-						tile.highlight();
+						// Keep only valid types
+						if ( TileSelection.isClickableType( accessibleTile.type ) )
+							clickableTiles.Add( accessibleTile );
+					}
+
+					tile.isClickable = true;
+					tile.highlight();
+				}
+
+
+				// Check if the tile is accessible "by fall"
+				if ( tile.orientation == playerTile.orientation )
+				{
+					bool isAccessibleByFall = !targetTileIsAbove( tile );
+					
+					if ( isAccessibleByFall && playerTile.orientation != TileOrientation.Down && playerTile.orientation != TileOrientation.Up )
+					{
+						float distance = Mathf.Abs( playerTile.transform.position.y - tile.transform.position.y );
+						
+						if ( distance > 10.1f )
+							isAccessibleByFall = false;
+					}
+					
+					if ( isAccessibleByFall && playerTile.orientation != TileOrientation.Left && playerTile.orientation != TileOrientation.Right )
+					{
+						float distance = Mathf.Abs( playerTile.transform.position.x - tile.transform.position.x );
+						
+						if ( distance > 10.1f )
+							isAccessibleByFall = false;
+					}
+					
+					if ( isAccessibleByFall && playerTile.orientation != TileOrientation.Front && playerTile.orientation != TileOrientation.Back )
+					{
+						float distance = Mathf.Abs( playerTile.transform.position.z - tile.transform.position.z );
+						
+						if ( distance > 10.1f )
+							isAccessibleByFall = false;
+					}
+					
+					if ( isAccessibleByFall )
+					{
+						clickableTiles.Add( tile );
+						
+						if ( TileSelection.isClickableType( tile.type ) )
+						{
+							tile.isClickable = true;
+							tile.highlight();
+						}
 					}
 				}
 			}
-		}
+			
+			TileSelection.highlightTargetTile();
 
-		TileSelection.highlightTargetTile();
-
-		if(!isCameraMode)
-		{
 	        if (Input.GetMouseButton(0))
 			{
 				if(Time.time - lastClick < .1)
@@ -901,21 +872,26 @@ public class Pawn : MonoBehaviour
 
 	            lastClick = Time.time;
 
-				if(clickCountdown > .25)
+				if(clickCountdown > .25f)
 				{
 					isCameraMode = true;
 					StartCoroutine(SetCameraCursor());
 				}
 	        }
 
-			//if (Input.GetMouseButtonUp(0) && !isCameraMode && GetComponent<Rigidbody>().useGravity)
-			if (Input.GetMouseButtonUp(0) && !isCameraMode && !isFalling)
+			if (Input.GetMouseButtonUp(0) && clickCountdown > .25f)
+			{
+				StartCoroutine(SetNormalCursor());
+				isCameraMode = false;
+			}
+			else if (Input.GetMouseButtonUp(0) && !isCameraMode && !isFalling)
 			{
 				clickCountdown = 0;
 
 				if (tile != null && tile.isClickable && !world.FallingCubes())
 				{
 					removeDestinationMarks();
+					ClearClickableTiles();
 
 					// If the pawn is on a glue tile
 					if ( isGlued && tile.orientation != playerTile.orientation )
@@ -950,15 +926,15 @@ public class Pawn : MonoBehaviour
 	            }
 	        }
 		}
-		else
+		else if (Input.GetMouseButtonUp(0))
 		{
-			if (Input.GetMouseButtonUp(0))
-			{
-				StartCoroutine(SetNormalCursor());
-				isCameraMode = false;
-			}
+			StartCoroutine(SetNormalCursor());
+			isCameraMode = false;
 		}
+	}
 
+	private void ClearClickableTiles()
+	{
 		if ( clickableTiles != null )
 		{
 			// clear the "clickable tiles"
@@ -1176,7 +1152,7 @@ public class Pawn : MonoBehaviour
 		return false; // if there isn't a tile beneath him, he isn't grounded
 	}
 
-	/*
+
 	/// <summary>
 	/// Is the target tile above the Pawn?
 	/// </summary>
@@ -1198,7 +1174,6 @@ public class Pawn : MonoBehaviour
 				return playerTile.transform.position.z < target.transform.position.z;
         }
 	}
-	*/
 
     /// ----- GETTERS ----- ///
 
