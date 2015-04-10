@@ -20,12 +20,10 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 
 	public bool isGlueTile = false;
 
-	//[HideInInspector]
-	public TileOrientation orientation;
+	[HideInInspector] public TileOrientation orientation;
 	
 	//public Transform[] _connections; //public array used for debuging, this way you can see the platform list in the editor
-	//[HideInInspector] 
-	public List<Tile> connections; //list of directly accessible platforms
+	[HideInInspector] public List<Tile> connections; //list of directly accessible platforms
 	[HideInInspector] protected HashSet<Tile> connectionSet; //auxilliary hashset used to ignore duplicates
 	[HideInInspector] protected HashSet<Tile> siblingConnection; //auxilliary hashset used for siblings detection
 

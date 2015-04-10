@@ -330,37 +330,45 @@ public class Pawn : MonoBehaviour
 		fading = true;
 	}
 
-	private void SnapToTile( Tile tile )
-	{
-		moveMe (tile.transform.position);
-		//path = AStarHelper.Calculate(tile, p); //give me a path towards the nearest tile
-	}
-
 	public void OnCollisionEnter(Collision collision)
 	{
+		removeDestinationMarks ();
+
 		if (isFalling)
 		{
 			animState = 3;
 			isFalling = false;
 			GetComponent<Rigidbody>().mass = 1;
-			
+
+			if( playerTile != null )
+			{
+				moveMe ( playerTile.transform.position );
+				//path = new List<Tile>();
+				//path.Add ( playerTile );
+			}
+
+			/*
 			if( playerTile != null )
 			{
 				Tile[] tiles = GameObject.FindObjectsOfType<Tile>();
 				List<Tile> tilesList = new List<Tile>();
 				
-				for (int i = 0; i != tiles.Length; i++)
+				foreach ( Tile tile in tiles )
 				{
-					if (tiles[i].orientation == playerTile.orientation)
-						tilesList.Add(tiles[i]);
+					if ( tile.orientation == playerTile.orientation )
+						tilesList.Add( tile );
 				}
 				
-/*				if ( tilesList.Count > 0 )
+				if ( tilesList.Count > 0 )
 				{
+					path = new List<Tile>();
+					path.Add ( tilesList[0] );
+				}
+/*				{
 					Tile nearest = Tile.Closest(tilesList, transform.position); //nearest tile: the directly accessible tile from the tile bellow the Pawn, thats closest to the target tile
 					SnapToTile( nearest );
 				}
-*/			}
+*/			//}
 
 			putDestinationMarks( playerTile );
 		}
@@ -466,8 +474,6 @@ public class Pawn : MonoBehaviour
 			
             if (moveMe(vec))
 			{
-				//SnapToTile( path[0] );
-				//transform.position = new Vector3( path[0].transform.position.x, transform.position.y, path[0].transform.position.z );
 				position = destinationTile.transform.position;
 
 				newTarget = true;
@@ -514,7 +520,9 @@ public class Pawn : MonoBehaviour
 					{
 						if ( !isJumping )
 						{
+							animState = 2;
 							isJumping = true;
+							isFalling = true;
 							StartCoroutine( JumpToTile());
 							StartCoroutine( LookAt ( landing.transform.position ) );
 						}
