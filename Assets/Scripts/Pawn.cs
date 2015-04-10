@@ -784,8 +784,8 @@ public class Pawn : MonoBehaviour
 
 		if ( tile != null && playerTile != null && tile != playerTile && playerTile.GetComponent<Stairway>() == null )
 		{
-			//if ( tile.GetComponent<Stairway>() != null )
-			//	return;
+			if ( tile.GetComponent<Stairway>() != null )
+				return;
 
 			List<Tile> accessibleTiles = AStarHelper.Calculate(playerTile, tile);
 			
