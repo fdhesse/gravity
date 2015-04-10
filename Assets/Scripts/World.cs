@@ -12,11 +12,7 @@ public class World : MonoBehaviour {
 	private GravityPlatform[] gravityPlatforms;
 	private RotatingPlatform[] rotatingPlatforms;
 	
-	private static Pawn playerPawn; // Player Pawn
-	public static Pawn Pawn
-	{
-		get { return playerPawn; }
-	}
+	private Pawn playerPawn; // Player Pawn
 
 	void Awake()
 	{
@@ -25,7 +21,7 @@ public class World : MonoBehaviour {
 		rotatingPlatforms = FindObjectsOfType<RotatingPlatform>();
 	}
 	
-	public static void Init( Pawn player )
+	public void Init( Pawn player )
 	{
 		playerPawn = player;
 	}

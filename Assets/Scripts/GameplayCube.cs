@@ -86,6 +86,9 @@ public class GameplayCube : MonoBehaviour {
 		tile.gameObject.layer = LayerMask.NameToLayer( "Tiles" );
 		tile.type = type;
 		
+		// Clean up all platform's connections
+		tile._connections = null;
+		
 		switch( faceName )
 		{
 		case "front":

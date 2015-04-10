@@ -13,18 +13,15 @@ using System.Collections.Generic;
 #if UNITY_EDITOR
 [ExecuteInEditMode]
 #endif
-[SelectionBase]
 public class Tile : MonoBehaviour, IPathNode<Tile>
 {
 	public TileType type = TileType.Valid;
 	private TileType startType;
 
-	public bool isGlueTile = false;
+	public TileOrientation orientation;
 
-	[HideInInspector] public TileOrientation orientation;
-
-	//public Transform[] _connections; //public array used for debuging, this way you can see the platform list in the editor
-	[HideInInspector] public List<Tile> connections; //list of directly accessible platforms
+	public Transform[] _connections; //public array used for debuging, this way you can see the platform list in the editor
+	public List<Tile> connections; //list of directly accessible platforms
 	[HideInInspector] protected HashSet<Tile> connectionSet; //auxilliary hashset used to ignore duplicates
 	[HideInInspector] protected HashSet<Tile> siblingConnection; //auxilliary hashset used for siblings detection
 
@@ -40,55 +37,6 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	private TileType oldType;// auxilliary variable
 
 	[HideInInspector] public bool isQuad;
-
-	void OnValidate()
-	{
-		if (isGlueTile)
-			AddGlueBehaviour ();
-		else
-			AddGlueBehaviour ();
-	}
-	
-	private void AddGlueBehaviour()
-	{
-		// Check if the behaviour already exist
-		//if (collisionDelegate != null)
-		//	return;
-	}
-
-	private void RemoveGlueBehaviour()
-	{
-		// Check if the behaviour doesn't exist
-		//if (collisionDelegate == null)
-		//	return;
-	}
-
-	void OnCollisionEnter( Collision collision )
-	{
-		if (collision.collider.gameObject.tag != "Player" || orientation != World.Pawn.orientation )
-			return;
-
-		if ( isGlueTile )
-		{
-			World.Pawn.isGlued = true;
-			World.Pawn.tileGravityVector = World.getGravityVector( orientation );
-			//World.Pawn.tileGravityVector = Physics.gravity;
-		}
-		else
-		{
-			World.Pawn.isGlued = false;
-		}
-	}
-
-	/*
-	void OnCollisionExit( Collision collision )
-	{
-		if ( isGlueTile && collision.collider.gameObject.tag == "Player" )
-		{
-			World.Pawn.isGlued = false;
-		}
-	}
-	*/
 
     // Use this for initialization
     void Awake()
@@ -322,14 +270,12 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 					
                     connectionSet.Add(t);
 
-					//_connections = new Transform[connectionSet.Count];
+					_connections = new Transform[connectionSet.Count];
                     connections = new List<Tile>(connectionSet);
-                    
-					/*for (int i = 0; i != connections.Count; i++)
+                    for (int i = 0; i != connections.Count; i++)
                     {
 						_connections[i] = connections[i].transform;
                     }
-                    */
                 }
             }
         }
