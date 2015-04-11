@@ -92,7 +92,10 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
     // Use this for initialization
     void Awake()
 	{
-		gameObject.hideFlags = HideFlags.NotEditable;
+		if ( GetComponent<Stairway>() == null )
+			gameObject.hideFlags = HideFlags.NotEditable;
+		else
+			gameObject.hideFlags = 0;
 
 		connections = new List<Tile>();
 		rescanPath = true;
@@ -145,6 +148,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	{
 		if (GetComponent<Stairway> () != null )
 		{
+			hideFlags = HideFlags.NotEditable;
 			orientation = TileOrientation.None;
 			return;
 		}

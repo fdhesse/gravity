@@ -36,6 +36,7 @@ public static class TileSelection
 		return false;
 	}
 
+	/*
     /// <summary>
     /// Highlights target platform
     /// </summary>
@@ -44,14 +45,18 @@ public static class TileSelection
         if (platform != null)
             platform.unHighlight();
 
-        platform = getTile();
+        //platform = getTile();
     }
+    */
 
     /// <summary>
     /// Gets the platform that is being targeted.
     /// </summary>
     public static Tile getTile()
-    {
+	{
+		if (platform != null)
+			platform.unHighlight();
+
         Tile tile = null;
 
 		if (camera == null)//if there isn't a camera associated with this script, get the main camera
@@ -67,6 +72,9 @@ public static class TileSelection
 			if (tile != null && TileSelection.isClickableType( tile.type ) ) //if it is a platform
 				tile.highlight();
 		}
+
+		platform = tile;
+
 		return tile;
     }
 

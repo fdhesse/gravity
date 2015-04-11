@@ -15,7 +15,6 @@ public class FallingCube : MonoBehaviour
 
 	void Awake()
 	{
-		Debug.Log ("Awake");
 		GameObject bodyGo = new GameObject ("rigidbody");
 		bodyGo.tag = gameObject.tag;
 		bodyGo.layer = gameObject.layer;
@@ -34,7 +33,6 @@ public class FallingCube : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		Debug.Log ("Start");
 		obstructedTiles = new Dictionary<Tile, TileType> ();
 
 		GameplayCube cube = GetComponent<GameplayCube>();
