@@ -40,8 +40,8 @@ public class Pawn : MonoBehaviour
 	public bool isGlued;
 	public Vector3 tileGravityVector;
 
-	[HideInInspector] public bool isJumping;
-	[HideInInspector] public bool isFalling;
+	public bool isJumping;
+	public bool isFalling;
 	[HideInInspector] public RigidbodyConstraints nextConstraint;
 	private RigidbodyConstraints transformConstraints;
 	
@@ -338,17 +338,19 @@ public class Pawn : MonoBehaviour
 
 	public void OnCollisionEnter(Collision collision)
 	{
+		if (collision.collider.gameObject.layer != tilesLayer)
+			return;
+
 		if (isFalling)
 		{
 			animState = 3;
 			isFalling = false;
 
 			// Snap to the tile
-			if( pawnTile != null )
-			{
-				moveMe ( pawnTile.transform.position );
-				putDestinationMarks( pawnTile );
-			}
+			pawnTile = collision.collider.gameObject.GetComponent<Tile>();
+
+			moveMe ( pawnTile.transform.position );
+			putDestinationMarks( pawnTile );
 		}
 
 		if (collision.relativeVelocity.magnitude > 1 && GetComponent<AudioSource>().enabled)
@@ -596,15 +598,14 @@ public class Pawn : MonoBehaviour
 		targetPoint = targetPoint + pawnPoint;
 
 		Vector3 forward = targetPoint - transform.position;
-
-		Quaternion lookAt = Quaternion.identity;
+		
+		Quaternion fromRot = transform.rotation;
+		Quaternion toRot = Quaternion.identity;
 		
 		if ( forward != Vector3.zero )
-			lookAt = Quaternion.LookRotation( forward, -down );
+			toRot = Quaternion.LookRotation( forward, -down );
 
-		Quaternion fromRot = transform.rotation;
-
-		float angle = Quaternion.Angle (fromRot, lookAt);
+		float angle = Quaternion.Angle (fromRot, toRot);
 		float delay = turnDelay;
 
 		if (angle > 90)
@@ -613,11 +614,11 @@ public class Pawn : MonoBehaviour
 		while ( elapsedTime < delay )
 		{
 			elapsedTime += Time.deltaTime;
-			transform.rotation = Quaternion.Lerp( fromRot, lookAt, elapsedTime / delay );
+			transform.rotation = Quaternion.Lerp( fromRot, toRot, elapsedTime / delay );
 			yield return null;
 		}
 
-		transform.rotation = lookAt;
+		transform.rotation = toRot;
 	}
 
     /// <summary>
@@ -627,10 +628,7 @@ public class Pawn : MonoBehaviour
     /// </summary>
     private void checkUnderneath()
 	{
-		if ( clickableTiles == null )
-			clickableTiles = new List<Tile>();
-
-		if (isJumping)
+		if (isJumping || isFalling)
 			return;
 
 		RaycastHit hit = new RaycastHit();
@@ -784,7 +782,7 @@ public class Pawn : MonoBehaviour
 			return null;
 
 		//  Pawn's tile is null or same as cursor's
-		if ( clickedTile == null && tile == pawnTile )
+		if ( pawnTile == null || tile == pawnTile )
 			return null;
 
 		//Debug.Log( "Ok, tile is accessible, valid type, etc. ! Let's work !" );
@@ -917,7 +915,7 @@ public class Pawn : MonoBehaviour
 							hud.gravityChangeCount++;
 							
 							pawnTile = null;
-							desiredPosition = new Vector3( 0, height / 2 * fallInterval, 0 );
+							desiredPosition = new Vector3( 0, height * 0.5f * fallInterval, 0 );
 							
 							StartCoroutine( DelayedPawnFall ( tile ));
 						}
@@ -939,115 +937,63 @@ public class Pawn : MonoBehaviour
 
 	private void ClearClickableTiles()
 	{
-		if ( clickableTiles != null )
-		{
-			// clear the "clickable tiles"
-			for ( int i = 0, l = clickableTiles.Count; i < l; i++ )
-				clickableTiles[i].isClickable = false;
-			
-			clickableTiles.Clear ();
-		}
+		// clear the "clickable tiles"
+		for ( int i = 0, l = clickableTiles.Count; i < l; i++ )
+			clickableTiles[i].isClickable = false;
+
+		clickableTiles.Clear ();
 	}
 	
 	private IEnumerator DelayedPawnFall( Tile tile )
 	{
+		// Block the "manageMouse" loop
+		isFalling = true;
+
 //		collider.gameObject.layer = 12;
 		nextConstraint = GetComponent<Rigidbody>().constraints;
 
 		ResetDynamic();
+		GetComponent<Rigidbody>().useGravity = false;
+		GetComponent<Rigidbody>().constraints = transformConstraints;
 
-		float timer = 0.0f;
-
-		animState = 2;
-		isFalling = true;
+		float timer = .0f;
+		float delay = turnDelay * 0.5f;
 
 		// Make the pawn float in the airs a little
-		while(true)
+		while( timer < delay )
 		{
-			GetComponent<Rigidbody>().useGravity = false;
-			GetComponent<Rigidbody>().constraints = transformConstraints;
-			
-			if(adjustPawnPosition( ref timer ))
-			{
-				timer = 0.0f;
-				break;
-			}
-			
-			yield return 0;
+			timer += Time.deltaTime;
+			Vector3 toPos = desiredPosition * timer / delay;
+			desiredPosition = desiredPosition - toPos;
+			transform.Translate( toPos, Space.Self );
+			yield return null;
 		}
 		
 		SetPawnOrientation( tile.orientation );
+		
+		Quaternion fromRot = transform.rotation;
+		Quaternion toRot = Quaternion.Euler ( desiredRotation );
+
+		timer = .0f;
 
 		// Rotate the pawn in order to face the correct direction
-		while(true)
+		while( timer < delay )
 		{
-			GetComponent<Rigidbody>().useGravity = false;
-			GetComponent<Rigidbody>().constraints = transformConstraints;
-			
-			if( adjustPawnRotation( ref timer ) )
-			{
-				timer = 0.0f;
-				break;
-			}
-
-			yield return 0;
+			timer += Time.deltaTime;
+			transform.rotation = Quaternion.Lerp(fromRot, toRot, timer / delay);
+			yield return null;
 		}
+
+		transform.rotation = toRot;
+
+		// Fall animation
+		animState = 2;
 		
 		GetComponent<Rigidbody>().constraints = nextConstraint;
 		GetComponent<Rigidbody>().useGravity = true;
 
 		SetWorldGravity( tile.orientation );
 		world.ChangeGravity ( tile.orientation );
-	}
-	
-	private bool adjustPawnPosition( ref float timer )
-	{
-		timer += Time.deltaTime;
-		
-		Vector3 _pos = transform.position;
-		Vector3 _to = desiredPosition * timer / turnDelay;
-		
-		transform.Translate( _to, Space.Self );
-		
-		// compute the difference between before & now
-		// in order to stop at the relative goal
-		desiredPosition = desiredPosition - _to;
-		
-		if ( _pos == transform.position )
-			return true;
-		else
-			return false;
-	}
-	
-	/// <summary>
-	/// Align the pawn with the orientation provided by SetWorldGravity()
-	/// Also determines the "animation" of this movement. (not yet)
-	/// </summary>
-	private bool adjustPawnRotation( ref float timer )
-	{
-		timer += Time.deltaTime;
-			
-		Quaternion _to = Quaternion.Euler (desiredRotation);
-		Quaternion _rot = transform.rotation;
-
-		transform.rotation = Quaternion.Slerp(transform.rotation, _to, timer / turnDelay);
-		
-		//CameraControl cam = Camera.main.GetComponent<CameraControl> ();
-		//cam.roll = Mathf.Lerp( cam.roll, cameraRotation.z, timer / turnDelay );
-		//cam.pan = Mathf.Lerp( cam.pan, -cameraRotation.x, timer / turnDelay );
-		//cam.tilt = Mathf.Lerp( cam.tilt, cameraRotation.y, timer / turnDelay );
-
-		if ( _rot == transform.rotation )
-		{
-			//cam.roll = cameraRotation.z;
-			//cam.pan = -cameraRotation.x;
-			//cam.tilt = cameraRotation.y;
-			transform.rotation = _to;
-
-			return true;
-		}
-		else
-			return false;
 	}
 
 	private void SetPawnOrientation(TileOrientation orientation)

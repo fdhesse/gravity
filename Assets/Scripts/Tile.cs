@@ -23,11 +23,11 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	[HideInInspector] public TileOrientation orientation;
 	
 	//public Transform[] _connections; //public array used for debuging, this way you can see the platform list in the editor
-	[HideInInspector] public List<Tile> connections; //list of directly accessible platforms
-	[HideInInspector] protected HashSet<Tile> connectionSet; //auxilliary hashset used to ignore duplicates
-	[HideInInspector] protected HashSet<Tile> siblingConnection; //auxilliary hashset used for siblings detection
+	public List<Tile> connections; //list of directly accessible platforms
+	protected HashSet<Tile> connectionSet; //auxilliary hashset used to ignore duplicates
+	protected HashSet<Tile> siblingConnection; //auxilliary hashset used for siblings detection
 
-	[HideInInspector] public bool rescanPath = false;// debug toggle used to force rescan of nearby platforms
+	public bool rescanPath = false;// debug toggle used to force rescan of nearby platforms
 
 	// #HIGHLIGHTING#
 
@@ -40,6 +40,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 
 	[HideInInspector] public bool isQuad;
 
+	/*
 	void OnValidate()
 	{
 		if (isGlueTile)
@@ -62,6 +63,15 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		//	return;
 	}
 	
+	void OnCollisionExit( Collision collision )
+	{
+		if ( isGlueTile && collision.collider.gameObject.tag == "Player" )
+		{
+			World.Pawn.isGlued = false;
+		}
+	}
+	*/
+	
 	void OnCollisionEnter( Collision collision )
 	{
 		if (collision.collider.gameObject.tag != "Player" || orientation != World.Pawn.orientation )
@@ -78,16 +88,6 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			World.Pawn.isGlued = false;
 		}
 	}
-	
-	/*
-	void OnCollisionExit( Collision collision )
-	{
-		if ( isGlueTile && collision.collider.gameObject.tag == "Player" )
-		{
-			World.Pawn.isGlued = false;
-		}
-	}
-	*/
 
     // Use this for initialization
     void Awake()
@@ -148,6 +148,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	{
 		if (GetComponent<Stairway> () != null )
 		{
+			GetComponent<Stairway> ().hideFlags = HideFlags.NotEditable;
 			hideFlags = HideFlags.NotEditable;
 			orientation = TileOrientation.None;
 			return;
@@ -305,6 +306,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
             {
 				// Si il s'agit d'un escalier
 				Stairway stair = hit.gameObject.GetComponent<Stairway>();
+
 				if( stair != null )
 				{
 					Tile siblingTile = stair.LookForSiblingTile( this );
@@ -333,15 +335,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 						t.rescanPath = true;
 					
                     connectionSet.Add(t);
-
-					//_connections = new Transform[connectionSet.Count];
                     connections = new List<Tile>(connectionSet);
-					/*
-                    for (int i = 0; i != connections.Count; i++)
-                    {
-						_connections[i] = connections[i].transform;
-                    }
-                    */
                 }
             }
         }
