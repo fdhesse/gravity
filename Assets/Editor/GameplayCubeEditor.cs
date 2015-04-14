@@ -24,6 +24,9 @@ public class GameplayCubeEditor : Editor
 
 		this.DrawDefaultInspector();
 		
+		EditorGUILayout.Space ();
+		EditorGUILayout.LabelField("Faces", EditorStyles.boldLabel);
+
 		ExposeProperties.Expose( m_fields );
 
 		if (GUI.changed)

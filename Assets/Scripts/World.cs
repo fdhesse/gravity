@@ -74,20 +74,11 @@ public class World : MonoBehaviour {
 		return false;
 	}
 
-	public void ChangeGravity( TileOrientation orientation )
-	{
-		for (int i = 0; i < gravityPlatforms.Length; i++)
-			((GravityPlatform) gravityPlatforms[i]).Unfreeze( orientation );
-
-		for (int i = 0; i < rotatingPlatforms.Length; i++)
-			((RotatingPlatform) rotatingPlatforms[i]).SendMessage( "ChangeGravity", orientation );
-	}
-
 	
 	/// <summary>
 	/// Gets the gravitational orientation vector.
 	/// </summary>
-	public static Vector3 getGravityVector(TileOrientation vec)
+	public static Vector3 getGravityVector( TileOrientation vec )
 	{
 		switch (vec)
 		{
@@ -103,6 +94,45 @@ public class World : MonoBehaviour {
 			return new Vector3(0, 0, 1);
 		case TileOrientation.Back:
 			return new Vector3(0, 0, -1);
+		}
+	}
+	
+	public void ChangeGravity( TileOrientation orientation )
+	{
+		for (int i = 0; i < gravityPlatforms.Length; i++)
+			((GravityPlatform) gravityPlatforms[i]).Unfreeze( orientation );
+		
+		for (int i = 0; i < rotatingPlatforms.Length; i++)
+			((RotatingPlatform) rotatingPlatforms[i]).SendMessage( "ChangeGravity", orientation );
+	}
+	
+	/// <summary>
+	/// Sets the gravitational orientation vector.
+	/// </summary>
+	public static void SetGravity(TileOrientation orientation)
+	{
+		switch (orientation)
+		{
+		default:
+			break;
+		case TileOrientation.Front:
+			Physics.gravity = new Vector3(0, 0, G);
+			break;
+		case TileOrientation.Back:
+			Physics.gravity = new Vector3(0, 0, -G);
+			break;
+		case TileOrientation.Left:
+			Physics.gravity = new Vector3(G, 0, 0);
+			break;
+		case TileOrientation.Right:
+			Physics.gravity = new Vector3(-G, 0, 0);
+			break;
+		case TileOrientation.Up:
+			Physics.gravity = new Vector3(0, -G, 0);
+			break;
+		case TileOrientation.Down:
+			Physics.gravity = new Vector3(0, G, 0);
+			break;
 		}
 	}
 }

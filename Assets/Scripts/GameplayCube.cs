@@ -2,7 +2,19 @@
 using System.Collections;
 
 [SelectionBase]
-public class GameplayCube : MonoBehaviour {
+public class GameplayCube : MonoBehaviour
+{
+	//[System.Flags]
+	public enum GlueSides
+	{
+		None = 0x00,
+		Up = 0x01,
+		Down = 0x02,
+		Left = 0x04,
+		Right = 0x08,
+		Front = 0x10,
+		Back = 0x20
+	}
 
 	[HideInInspector] [SerializeField] private TileType m_left	= TileType.None;
 	[HideInInspector] [SerializeField] private TileType m_right	= TileType.None;
@@ -60,7 +72,77 @@ public class GameplayCube : MonoBehaviour {
 		get { return m_back; }
 		set	{ if(value != m_back) { SetFace( "back", value ); m_back = value; } }
 	}
+
+	//public GluedSides GlueSides;
+	[Header("Glue")]
+	[BitMask(typeof(GlueSides))]
+	public GlueSides GluedSides;
 	
+	void OnValidate()
+	{
+		bool isUp = (GluedSides & GlueSides.Up) != GlueSides.None;
+		bool isDown = (GluedSides & GlueSides.Down) != GlueSides.None;
+		bool isRight = (GluedSides & GlueSides.Right) != GlueSides.None;
+		bool isLeft = (GluedSides & GlueSides.Left) != GlueSides.None;
+		bool isFront = (GluedSides & GlueSides.Front) != GlueSides.None;
+		bool isBack = (GluedSides & GlueSides.Back) != GlueSides.None;
+		
+		Transform up = transform.FindChild ("up");
+		Transform down = transform.FindChild ("down");
+		Transform right = transform.FindChild ("right");
+		Transform left = transform.FindChild ("left");
+		Transform front = transform.FindChild ("front");
+		Transform back = transform.FindChild ("back");
+
+		if ( up != null )
+		{
+			if (isUp)
+				up.GetComponent<Tile> ().IsGlueTile = true;
+			else
+				up.GetComponent<Tile> ().IsGlueTile = false;
+		}
+		
+		if ( down != null )
+		{
+			if (isDown)
+				down.GetComponent<Tile> ().IsGlueTile = true;
+			else
+				down.GetComponent<Tile> ().IsGlueTile = false;
+		}
+		
+		if ( right != null )
+		{
+			if (isRight)
+				right.GetComponent<Tile> ().IsGlueTile = true;
+			else
+				right.GetComponent<Tile> ().IsGlueTile = false;
+		}
+		
+		if ( left != null )
+		{
+			if (isLeft)
+				left.GetComponent<Tile> ().IsGlueTile = true;
+			else
+				left.GetComponent<Tile> ().IsGlueTile = false;
+		}
+		
+		if ( front != null )
+		{
+			if (isFront)
+				front.GetComponent<Tile> ().IsGlueTile = true;
+			else
+				front.GetComponent<Tile> ().IsGlueTile = false;
+		}
+		
+		if ( back != null )
+		{
+			if (isBack)
+				back.GetComponent<Tile> ().IsGlueTile = true;
+			else
+				back.GetComponent<Tile> ().IsGlueTile = false;
+		}
+	}
+
 	public void SetFace( string faceName, TileType type )
 	{
 		// Delete existing tile

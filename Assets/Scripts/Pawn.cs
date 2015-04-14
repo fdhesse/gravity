@@ -29,19 +29,19 @@ public class Pawn : MonoBehaviour
 	private float width;
 	private bool newTarget = true;
 	private Vector3 desiredRotation;
-	private Vector3 desiredPosition;
-	private bool isWalkingInStairs;
 	private bool isWalking;
+	private bool isWalkingInStairs;
 
 	private LayerMask tilesLayer;
 	private BoxCollider boxCollider;
 	
-	public TileOrientation orientation;
-	public bool isGlued;
-	public Vector3 tileGravityVector;
+	[HideInInspector] public TileOrientation orientation;
+	[HideInInspector] public bool isGlued;
+	[HideInInspector] public bool isLeavingGlueTile;
+	[HideInInspector] public Vector3 tileGravityVector;
 
-	public bool isJumping;
-	public bool isFalling;
+	[HideInInspector] public bool isJumping;
+	[HideInInspector] public bool isFalling;
 	[HideInInspector] public RigidbodyConstraints nextConstraint;
 	private RigidbodyConstraints transformConstraints;
 	
@@ -111,7 +111,6 @@ public class Pawn : MonoBehaviour
     void Start()
 	{
 		desiredRotation = Vector3.zero;
-		desiredPosition = Vector3.zero;
 
 		isWalking = false;
 		isWalkingInStairs = false;
@@ -222,8 +221,11 @@ public class Pawn : MonoBehaviour
 			orientationSphere.layer = layer;
 			orientationSphere.transform.parent = dotsGroup.transform;
 			orientationSphere.transform.localScale = Vector3.one * hud.dotSize;
-			orientationSphere.GetComponent<Renderer>().material = Assets.getSphereMat();
-			orientationSphere.GetComponent<Renderer>().material.color = hud.dotColor;
+			Renderer oRenderer = orientationSphere.GetComponent<Renderer>();
+			oRenderer.material = Assets.getSphereMat();
+			oRenderer.material.color = hud.dotColor;
+			oRenderer.receiveShadows = false;
+			oRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
 			orientationSphere.GetComponent<Collider>().enabled = false;
 
 			orientationSpheres[i] = orientationSphere;
@@ -244,7 +246,7 @@ public class Pawn : MonoBehaviour
 		transform.position = spawnPosition;
 		transform.rotation = spawnRotation;
 		
-		SetWorldGravity( TileOrientation.Up );
+		World.SetGravity( TileOrientation.Up );
 		ResetDynamic();
 		
 		GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
@@ -268,7 +270,7 @@ public class Pawn : MonoBehaviour
 		GetComponent<Rigidbody>().velocity = Vector3.zero;
 		GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 		
-		SetWorldGravity (GetWorldGravity());
+		//World.SetGravity (GetWorldGravity());
 	}
 	
 	// TODO -- Pawn.CubeContact() -> traverser le joueur / pass through player
@@ -456,6 +458,21 @@ public class Pawn : MonoBehaviour
 
 				newTarget = true;
 				path.RemoveAt(0); //if we have reached this path point, delete it from the list so we can go to the next one next time
+
+				if ( isLeavingGlueTile )
+				{
+					// Remove the glue effect
+					isGlued = false;
+					tileGravityVector = Physics.gravity.normalized;
+
+					pawnTile = null;
+					clickedTile = null;
+
+					StartCoroutine( DelayedPawnFall ( GetWorldGravity() ));
+					path.Clear();
+
+					isLeavingGlueTile = false;
+				}
 			}
 			
 			if (path.Count == 0)
@@ -483,13 +500,22 @@ public class Pawn : MonoBehaviour
 				// nearest tile: the directly accessible tile from the tile bellow the Pawn, thats closest to the target tile
 				Tile nearest = Tile.Closest(pawnTile.AllAccessibleTiles(), clickedTile.transform.position);
 				
-				if (nearest.Equals(pawnTile) ) //is the nearest the one bellow the Pawn?
+				if (nearest.Equals(pawnTile)) //is the nearest the one bellow the Pawn?
 				{
+					// [TODO] It seems bad:
+					// The pawn is glued to a tile, not the gravity,
+					// so it can't jump on another tile, gravity
+					// would make it fall !
+					Vector3 down = Physics.gravity.normalized;
+					
+					if (isGlued)
+						down = tileGravityVector;
+
 					// landing tile: the directly accessible tile from the target tile, thats closest to the nearest tile
 					Tile landing = Tile.Closest(clickedTile.AllAccessibleTiles(), nearest.transform.position);
 					
 	                // check if landing tile is not EXACTLY under the nearest tile
-					if ( Vector3.Scale ( ( landing.transform.position - nearest.transform.position ), Vector3.Scale ( Physics.gravity.normalized , Physics.gravity.normalized ) - Vector3.one ).magnitude == 0 )
+					if ( Vector3.Scale ( ( landing.transform.position - nearest.transform.position ), Vector3.Scale ( down, down ) - Vector3.one ).magnitude == 0 )
 						landing = Tile.Closest( landing.AllAccessibleTiles(), clickedTile.transform.position );
 					
 					// calculate the vector from the Pawns position to the landing tile position at the same height
@@ -539,11 +565,16 @@ public class Pawn : MonoBehaviour
 
 		Vector3 jumpPos = Vector3.zero;
 
+		Vector3 down = Physics.gravity.normalized;
+		
+		if (isGlued)
+			down = tileGravityVector;
+
 		while ( elapsedTime < jumpAnimationLength )
 		{
 			float t = elapsedTime / jumpAnimationLength;
 
-			jumpPos = transform.position - (Physics.gravity.normalized * Mathf.Cos( t ) * 0.75f );
+			jumpPos = transform.position - (down * Mathf.Cos( t ) * 0.75f );
 			transform.position = jumpPos;
 
 			elapsedTime += Time.deltaTime;
@@ -605,16 +636,16 @@ public class Pawn : MonoBehaviour
 		if ( forward != Vector3.zero )
 			toRot = Quaternion.LookRotation( forward, -down );
 
-		float angle = Quaternion.Angle (fromRot, toRot);
-		float delay = turnDelay;
+		//float angle = Quaternion.Angle (fromRot, toRot);
+		//float delay = turnDelay;
 
-		if (angle > 90)
-			delay *= .5f;
+		//if (angle > 90)
+		//	delay *= .5f;
 		
-		while ( elapsedTime < delay )
+		while ( elapsedTime < turnDelay )
 		{
 			elapsedTime += Time.deltaTime;
-			transform.rotation = Quaternion.Lerp( fromRot, toRot, elapsedTime / delay );
+			transform.rotation = Quaternion.Lerp( fromRot, toRot, elapsedTime / turnDelay );
 			yield return null;
 		}
 
@@ -630,11 +661,16 @@ public class Pawn : MonoBehaviour
 	{
 		if (isJumping || isFalling)
 			return;
+		
+		Vector3 down = Physics.gravity.normalized;
+		
+		if (isGlued)
+			down = tileGravityVector;
 
 		RaycastHit hit = new RaycastHit();
 
 		// casting a ray down, we need a sphereCast because the capsule has thickness, and we only need tiles layer
-		if (Physics.SphereCast (transform.position, width * 0.4f, Physics.gravity.normalized, out hit, height * 0.5f, (1 << tilesLayer)))
+		if (Physics.SphereCast (transform.position, width * 0.4f, down, out hit, height * 0.5f, (1 << tilesLayer)))
 		{
 			GameObject hitTile = hit.collider.gameObject;
 
@@ -660,7 +696,7 @@ public class Pawn : MonoBehaviour
 				Vector3 _vec = Vector3.zero;
 
 				// the gravity
-				Vector3 _g = Vector3.Scale (Physics.gravity.normalized, Physics.gravity.normalized);
+				Vector3 _g = Vector3.Scale (down, down);
 
 				if (path.Count > 0) {
 					// the player asked the pawn to move
@@ -789,7 +825,7 @@ public class Pawn : MonoBehaviour
 
 		focusedTile = tile;
 
-		List<Tile> accessibleTiles = AStarHelper.Calculate(pawnTile, tile);
+		List<Tile> accessibleTiles = AStarHelper.Calculate( pawnTile, tile );
 		
 		if ( accessibleTiles != null && accessibleTiles.Count > 0 )
 		{
@@ -907,17 +943,14 @@ public class Pawn : MonoBehaviour
 							GetComponent<Rigidbody>().useGravity = false;
 							tileGravityVector = World.getGravityVector( pawnTile.orientation );
 							
-							SetWorldGravity( tile.orientation );
+							World.SetGravity( tile.orientation );
 							world.ChangeGravity ( tile.orientation );
 						}
 						else //for punishing gravity take the tile == null here
 						{
 							hud.gravityChangeCount++;
-							
 							pawnTile = null;
-							desiredPosition = new Vector3( 0, height * 0.5f * fallInterval, 0 );
-							
-							StartCoroutine( DelayedPawnFall ( tile ));
+							StartCoroutine( DelayedPawnFall ( tile.orientation ));
 						}
 					}
 					else
@@ -943,9 +976,11 @@ public class Pawn : MonoBehaviour
 
 		clickableTiles.Clear ();
 	}
-	
-	private IEnumerator DelayedPawnFall( Tile tile )
+
+	private IEnumerator DelayedPawnFall( TileOrientation orientation )
 	{
+		Vector3 desiredPosition = new Vector3( 0, height * 0.5f * fallInterval, 0 );
+
 		// Block the "manageMouse" loop
 		isFalling = true;
 
@@ -969,7 +1004,7 @@ public class Pawn : MonoBehaviour
 			yield return null;
 		}
 		
-		SetPawnOrientation( tile.orientation );
+		SetPawnOrientation( orientation );
 		
 		Quaternion fromRot = transform.rotation;
 		Quaternion toRot = Quaternion.Euler ( desiredRotation );
@@ -992,8 +1027,8 @@ public class Pawn : MonoBehaviour
 		GetComponent<Rigidbody>().constraints = nextConstraint;
 		GetComponent<Rigidbody>().useGravity = true;
 
-		SetWorldGravity( tile.orientation );
-		world.ChangeGravity ( tile.orientation );
+		World.SetGravity( orientation );
+		world.ChangeGravity ( orientation );
 	}
 
 	private void SetPawnOrientation(TileOrientation orientation)
@@ -1008,11 +1043,11 @@ public class Pawn : MonoBehaviour
 			desiredRotation = new Vector3(90, 0, 0);
 			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationX;
 			break;
-		case TileOrientation.Right:
+		case TileOrientation.Left:
 			desiredRotation = new Vector3(0, 0, 90);
 			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationZ;
 			break;
-		case TileOrientation.Left:
+		case TileOrientation.Right:
 			desiredRotation = new Vector3(0, 0, 270);
 			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationZ;
 			break;
@@ -1027,34 +1062,7 @@ public class Pawn : MonoBehaviour
 		}
 	}
 
-	private void SetWorldGravity(TileOrientation orientation)
-	{
-		switch (orientation)
-		{
-		default:
-			break;
-		case TileOrientation.Front:
-			Physics.gravity = new Vector3(0, 0, World.G);
-			break;
-		case TileOrientation.Back:
-			Physics.gravity = new Vector3(0, 0, -World.G);
-			break;
-		case TileOrientation.Right:
-			Physics.gravity = new Vector3(World.G, 0, 0);
-			break;
-		case TileOrientation.Left:
-			Physics.gravity = new Vector3(-World.G, 0, 0);
-			break;
-		case TileOrientation.Up:
-			Physics.gravity = new Vector3(0, -World.G, 0);
-			break;
-		case TileOrientation.Down:
-			Physics.gravity = new Vector3(0, World.G, 0);
-			break;
-		}
-	}
-
-	private TileOrientation GetWorldGravity()
+	public TileOrientation GetWorldGravity()
 	{
 		Vector3 down = Physics.gravity.normalized;
 		
@@ -1125,6 +1133,7 @@ public class Pawn : MonoBehaviour
 
     /// ----- GETTERS ----- ///
 
+	/*
     /// <summary>
     /// Gets the player rotation according to the current gravitational orientation.
     /// </summary>
@@ -1136,9 +1145,9 @@ public class Pawn : MonoBehaviour
                 return Vector3.zero;
             case TileOrientation.Down:
 				return new Vector3(0, 180, 180);
-			case TileOrientation.Left:
-				return new Vector3(0, 180, 90);
 			case TileOrientation.Right:
+				return new Vector3(0, 180, 90);
+			case TileOrientation.Left:
                 return new Vector3(0, 0, 90);
             case TileOrientation.Front:
                 return new Vector3(0, 270, 90);
@@ -1146,20 +1155,21 @@ public class Pawn : MonoBehaviour
                 return new Vector3(0, 90, 90);
         }
 	}
+	*/
 
     /// <summary>
     /// Gets the player ground position, i.e. the position of the "feet" of the Pawn, pawn has 8 height
     /// </summary>
     private Vector3 getGroundPosition()
 	{
-		float n = (transform.localScale.y * height) / 2.0f;
+		float n = (transform.localScale.y * height) *.5f;
 
 		switch (GetWorldGravity())
 		{
 		default:
 			return new Vector3 (transform.position.x, transform.position.y - n, transform.position.z);
-		case TileOrientation.Up:
-			return new Vector3 (transform.position.x, transform.position.y - n, transform.position.z);
+		//case TileOrientation.Up:
+		//	return new Vector3 (transform.position.x, transform.position.y - n, transform.position.z);
 		case TileOrientation.Down:
 			return new Vector3 (transform.position.x, transform.position.y + n, transform.position.z);
 		case TileOrientation.Left:
@@ -1170,7 +1180,6 @@ public class Pawn : MonoBehaviour
 			return new Vector3 (transform.position.x, transform.position.y, transform.position.z + n);
 		case TileOrientation.Back:
 			return new Vector3 (transform.position.x, transform.position.y, transform.position.z - n);
-			//*/
 		}
     }
 

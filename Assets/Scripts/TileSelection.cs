@@ -6,7 +6,7 @@ using System.Collections;
 /// </summary>
 public static class TileSelection
 {
-    private static Tile platform;//currently selected platform
+    private static Tile currentTile;//currently selected platform
 	private static Camera camera;//camera for this scene
 	//private static GameObject cam;//camera for this scene
 
@@ -54,8 +54,8 @@ public static class TileSelection
     /// </summary>
     public static Tile getTile()
 	{
-		if (platform != null)
-			platform.unHighlight();
+		if (currentTile != null)
+			currentTile.unHighlight();
 
         Tile tile = null;
 
@@ -65,16 +65,15 @@ public static class TileSelection
 		Ray mouseRay = camera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit = new RaycastHit();
 
-		if (Physics.Raycast(mouseRay, out hit, float.MaxValue, (1 << tilesLayer))) // cast a raycast ignoring all but the layer for the platforms
+		if (Physics.Raycast(mouseRay, out hit, float.MaxValue, (1 << tilesLayer))) // cast a raycast ignoring all but the layer for the tiles
         {
 			tile = hit.collider.gameObject.GetComponent<Tile>();
 
-			if (tile != null && TileSelection.isClickableType( tile.type ) ) //if it is a platform
+			if (tile != null && TileSelection.isClickableType( tile.type ) ) //if it is a tile
 				tile.highlight();
 		}
 
-		platform = tile;
-
+		currentTile = tile;
 		return tile;
     }
 

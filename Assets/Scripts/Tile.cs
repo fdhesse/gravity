@@ -18,7 +18,19 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	public TileType type = TileType.Valid;
 	private TileType startType;
 
-	public bool isGlueTile = false;
+	private bool isGlueTile = false;
+	public bool IsGlueTile
+	{
+		get
+		{
+			return isGlueTile;
+		}
+		set
+		{
+			isGlueTile = value;
+			applyTileMaterial();
+		}
+	}
 
 	[HideInInspector] public TileOrientation orientation;
 	
@@ -74,18 +86,23 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	
 	void OnCollisionEnter( Collision collision )
 	{
-		if (collision.collider.gameObject.tag != "Player" || orientation != World.Pawn.orientation )
+		//if (collision.collider.gameObject.tag != "Player" || orientation != World.Pawn.orientation )
+		if (collision.collider.gameObject.tag != "Player" )
 			return;
 		
 		if ( isGlueTile )
 		{
 			World.Pawn.isGlued = true;
 			World.Pawn.tileGravityVector = World.getGravityVector( orientation );
-			//World.Pawn.tileGravityVector = Physics.gravity;
+		}
+		else if ( World.Pawn.isGlued && Physics.gravity.normalized != World.getGravityVector( orientation ) )
+		{
+			World.Pawn.isLeavingGlueTile = true;
 		}
 		else
 		{
 			World.Pawn.isGlued = false;
+			World.Pawn.tileGravityVector = Physics.gravity.normalized;
 		}
 	}
 
@@ -124,20 +141,13 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		if (rescanPath)
 			scanNearbyTiles();
 
-        if (!oldType.Equals(type)) // if the type was changed in scene mode, reapply the material
+		// if the type was changed in scene mode, reapply the material
+        if (!oldType.Equals(type))
             applyTileMaterial();
-
-        handleFlashing();
-    }
-
-    /// <summary>
-    /// handles the flashing of the platform
-    /// </summary>
-    private void handleFlashing()
-    {
-        if (isFlashing)
-            if (flash.isOver())
-                unFlashMe();
+		
+		/// handles the flashing of the platform
+		if (isFlashing && flash.isOver())
+			unFlashMe();
     }
 
     /// <summary>
@@ -225,14 +235,14 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			materials[1] = Assets.getDownBlockMat();
 #endif
 		}
-		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Left) ), 0 ) )
+		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Right) ), 0 ) )
 		{
 			orientation = TileOrientation.Right;
 #if UNITY_EDITOR
 			materials[1] = Assets.getRightBlockMat();
 #endif
 		}
-		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Right) ), 0 ) )
+		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Left) ), 0 ) )
 		{
 			orientation = TileOrientation.Left;
 #if UNITY_EDITOR
@@ -375,6 +385,10 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			materials[0] = isFlashing ? Assets.getFlashingExitBlockMat() : materials[0];
 			break;
 		}
+
+		if ( isGlueTile )
+			materials[0].color = Color.green;
+
 		graphics.GetComponent<Renderer>().materials = materials;
 		oldType = type;
 
