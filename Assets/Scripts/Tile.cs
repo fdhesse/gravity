@@ -34,7 +34,6 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 
 	[HideInInspector] public TileOrientation orientation;
 	
-	//public Transform[] _connections; //public array used for debuging, this way you can see the platform list in the editor
 	public List<Tile> connections; //list of directly accessible platforms
 	protected HashSet<Tile> connectionSet; //auxilliary hashset used to ignore duplicates
 	protected HashSet<Tile> siblingConnection; //auxilliary hashset used for siblings detection

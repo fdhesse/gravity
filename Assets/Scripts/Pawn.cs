@@ -22,9 +22,12 @@ public class Pawn : MonoBehaviour
 	
 	// #PAWN#
 	public float speed = 30.0f;					// Speed of the pawn
-	public float turnDelay = 0.5f; // 1.0f		// délai avant la chute
-	public float fallInterval = 4.0f;
+	public float maxTranslation = 2.5f;			// Max translation of the pawn
+	public float turnDelay = .5f;				// Time of pawn's rotation
+	public float fallDelay = .5f;				// Time of pawn's fall
+	public float fallInterval = .5f;			// Gap between tile and pawn before fall
 	public float jumpAnimationLength = 0.3f;
+
 	private float height;
 	private float width;
 	private bool newTarget = true;
@@ -442,22 +445,22 @@ public class Pawn : MonoBehaviour
 
 			if (newTarget)
 			{
-				if( lookCoroutine != null )
+				if ( lookCoroutine != null )
 					StopCoroutine( lookCoroutine );
 
 				lookCoroutine = LookAt ( nextTile.transform.position );
 				StartCoroutine( lookCoroutine );
 			}
 			
-            //if there is, move the pawn towards the next point in that path
+            // if there is, move the pawn towards the next point in that path
 			Vector3 vec = nextTile.transform.position - getGroundPosition();
 			
             if (moveMe(vec))
 			{
+				newTarget = true;
 				position = nextTile.transform.position;
 
-				newTarget = true;
-				path.RemoveAt(0); //if we have reached this path point, delete it from the list so we can go to the next one next time
+				path.RemoveAt(0); // if we have reached this path point, delete it from the list so we can go to the next one next time
 
 				if ( isLeavingGlueTile )
 				{
@@ -469,9 +472,9 @@ public class Pawn : MonoBehaviour
 					clickedTile = null;
 
 					StartCoroutine( DelayedPawnFall ( GetWorldGravity() ));
-					path.Clear();
 
 					isLeavingGlueTile = false;
+					path.Clear();
 				}
 			}
 			
@@ -591,14 +594,15 @@ public class Pawn : MonoBehaviour
     /// <returns>returns true if the vector is small, i.e. smaller than 1 of magnitude, in this case, the Pawn has reached his destination</returns>
     private bool moveMe(Vector3 vec)
 	{
-		if ( vec.magnitude > 1)
+		if ( vec.magnitude > 1 )
 		{
-			transform.Translate(Vector3.Normalize(vec) * Time.deltaTime * speed, Space.World);
+			Vector3 translate = Vector3.ClampMagnitude ( ( vec.normalized * Time.deltaTime * speed ), maxTranslation );
+			transform.Translate( translate, Space.World );
             return false;
         }
         else
 		{
-			transform.Translate(vec * Time.deltaTime * speed, Space.World);
+			transform.Translate( vec * Time.deltaTime * speed, Space.World );
             return true;
         }
 	}
@@ -992,7 +996,7 @@ public class Pawn : MonoBehaviour
 		GetComponent<Rigidbody>().constraints = transformConstraints;
 
 		float timer = .0f;
-		float delay = turnDelay * 0.5f;
+		float delay = fallDelay * 0.5f;
 
 		// Make the pawn float in the airs a little
 		while( timer < delay )
