@@ -35,7 +35,6 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	[HideInInspector] public TileOrientation orientation;
 	
 	public List<Tile> connections; //list of directly accessible platforms
-	protected HashSet<Tile> connectionSet; //auxilliary hashset used to ignore duplicates
 	protected HashSet<Tile> siblingConnection; //auxilliary hashset used for siblings detection
 
 	public bool rescanPath = false;// debug toggle used to force rescan of nearby platforms
@@ -82,28 +81,6 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		}
 	}
 	*/
-	
-	void OnCollisionEnter( Collision collision )
-	{
-		//if (collision.collider.gameObject.tag != "Player" || orientation != World.Pawn.orientation )
-		if (collision.collider.gameObject.tag != "Player" )
-			return;
-		
-		if ( isGlueTile )
-		{
-			World.Pawn.isGlued = true;
-			World.Pawn.tileGravityVector = World.getGravityVector( orientation );
-		}
-		else if ( World.Pawn.isGlued && Physics.gravity.normalized != World.getGravityVector( orientation ) )
-		{
-			World.Pawn.isLeavingGlueTile = true;
-		}
-		else
-		{
-			World.Pawn.isGlued = false;
-			World.Pawn.tileGravityVector = Physics.gravity.normalized;
-		}
-	}
 
     // Use this for initialization
     void Awake()
@@ -137,6 +114,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
     // Update is called once per frame
     protected void Update()
 	{
+		// NearbyTiles changed, need a rescan
 		if (rescanPath)
 			scanNearbyTiles();
 
@@ -147,7 +125,29 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		/// handles the flashing of the platform
 		if (isFlashing && flash.isOver())
 			unFlashMe();
-    }
+	}
+	
+	void OnCollisionEnter( Collision collision )
+	{
+		//if (collision.collider.gameObject.tag != "Player" || orientation != World.Pawn.orientation )
+		if (collision.collider.gameObject.tag != "Player" )
+			return;
+		
+		if ( isGlueTile )
+		{
+			World.Pawn.isGlued = true;
+			World.Pawn.tileGravityVector = World.getGravityVector( orientation );
+		}
+		else if ( World.Pawn.isGlued && Physics.gravity.normalized != World.getGravityVector( orientation ) )
+		{
+			World.Pawn.isLeavingGlueTile = true;
+		}
+		else
+		{
+			World.Pawn.isGlued = false;
+			World.Pawn.tileGravityVector = Physics.gravity.normalized;
+		}
+	}
 
     /// <summary>
     /// Used to assert the platform orientation. Changes materials accordingly
@@ -290,7 +290,10 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
     /// </summary>
     protected virtual void scanNearbyTiles()
 	{
-	    connectionSet = new HashSet<Tile>();
+		if ( tag != "MovingPlatform" )
+			rescanPath = false;
+
+		HashSet<Tile> connectionSet = new HashSet<Tile>();
 
 		if ( siblingConnection != null )
 		{
@@ -336,18 +339,29 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 					continue;
 				}
 
-                Tile t = hit.gameObject.GetComponent<Tile>();
+                Tile neighbourgTile = hit.gameObject.GetComponent<Tile>();
 
-				if (t != null && t.orientation.Equals(orientation) && t.type == TileType.Valid )
+				if (neighbourgTile != null && neighbourgTile.orientation.Equals(orientation) && TileSelection.isClickableType( neighbourgTile.type ) )
                 {
-					if (rescanPath)
-						t.rescanPath = true;
-					
-                    connectionSet.Add(t);
-                    connections = new List<Tile>(connectionSet);
+					//if (rescanPath)
+					connectionSet.Add(neighbourgTile);
                 }
             }
-        }
+		}
+
+		// Check if there is any difference
+		if ( connectionSet.Count != connections.Count )
+		{
+			// Rescan previous connections
+			foreach( Tile connectedTile in connections )
+				connectedTile.rescanPath = true;
+
+			connections = new List<Tile>(connectionSet);
+
+			// Rescan new connections too
+			foreach( Tile connectedTile in connections )
+				connectedTile.rescanPath = true;
+		}
     }
 
 	

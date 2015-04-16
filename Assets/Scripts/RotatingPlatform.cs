@@ -353,7 +353,12 @@ public class RotatingPlatform : MonoBehaviour
 		if (clockwiseConstraint == ClockwiseConstraint.None)
 			Gizmos.DrawLine (transform.position, (transform.position + transform.forward * 30));
 		else
-			Gizmos.DrawLine (transform.position, (transform.position + transform.up * -30));
+		{
+			if (constrainedAxis != ConstraintAxis.Y)
+				Gizmos.DrawLine (transform.position, (transform.position + transform.up * -30));
+			else
+				Gizmos.DrawLine (transform.position, (transform.position + transform.forward * -30));
+		}
 	}
 	#endif
 }

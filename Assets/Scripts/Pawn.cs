@@ -143,6 +143,11 @@ public class Pawn : MonoBehaviour
 			checkUnderneath();
 		}
 	}
+
+	void FixedUpdate()
+	{
+		putDestinationMarks ();
+	}
 	
 	private void UpdateAnimation()
 	{
@@ -355,7 +360,7 @@ public class Pawn : MonoBehaviour
 			pawnTile = collision.collider.gameObject.GetComponent<Tile>();
 
 			moveMe ( pawnTile.transform.position );
-			putDestinationMarks( pawnTile );
+			putDestinationMarks();
 		}
 
 		if (collision.relativeVelocity.magnitude > 1 && GetComponent<AudioSource>().enabled)
@@ -482,7 +487,7 @@ public class Pawn : MonoBehaviour
 			{
 				animState = 0;
 				isWalking = false;
-				putDestinationMarks( nextTile );
+				putDestinationMarks();
 
 				ResetDynamic ();
 			}
@@ -546,7 +551,7 @@ public class Pawn : MonoBehaviour
 							clickedTile = null; // target reached, forget it
 							isJumping = false;
 							path = AStarHelper.Calculate(landing, nearest); // give me a path towards the nearest tile
-							putDestinationMarks( landing );
+							putDestinationMarks();
 						}
 					}
 					else
@@ -762,8 +767,11 @@ public class Pawn : MonoBehaviour
 		}
 	}
 
-	private void putDestinationMarks( Tile tile )
+	private void putDestinationMarks()
 	{
+		if ( isWalking || isWalkingInStairs || isFalling || isJumping )
+			return;
+
 		removeDestinationMarks ();
 
 		foreach (TileOrientation orientation in Enum.GetValues(typeof(TileOrientation)))
@@ -771,31 +779,29 @@ public class Pawn : MonoBehaviour
 			if ( (int) orientation == 0 )
 				continue;
 
-			tile = null;
-			
 			RaycastHit hit = new RaycastHit ();
 
 			// Casting a ray towards 'orientation', SphereCast needed because of Pawn's capsule thickness and ignoring Pawn's collider
 			if (Physics.SphereCast (transform.position, width * 0.4f, World.getGravityVector (orientation).normalized, out hit, 10000, (1 << tilesLayer)))
 			{
-				tile = hit.collider.gameObject.GetComponent<Tile> ();
+				Tile tile = hit.collider.gameObject.GetComponent<Tile> ();
 				
-				if (tile != null && tile != pawnTile)
+				if ( tile != null && tile != pawnTile && TileSelection.isClickableType( tile.type ) )
 				{
-					if ( TileSelection.isClickableType( tile.type ) && !clickableTiles.Contains (tile) )
-					{
-						tile.isClickable = true;
+					//if ( TileSelection.isClickableType( tile.type ) && !clickableTiles.Contains (tile) )
+					tile.isClickable = true;
+
+					if ( !clickableTiles.Contains (tile) )
 						clickableTiles.Add (tile);
 
-						if (hud.dotIsInside)
-							getOrientationSphere (orientation).transform.position = tile.transform.position;
-						else
-							getOrientationSphere (orientation).transform.position = tile.transform.position - (World.getGravityVector (GetWorldGravity ()) * hud.dotSize * .5f );
-					}
+					if (hud.dotIsInside)
+						getOrientationSphere (orientation).transform.position = tile.transform.position;
+					else
+						getOrientationSphere (orientation).transform.position = tile.transform.position - (World.getGravityVector (GetWorldGravity ()) * hud.dotSize * .5f );
 				}
 				else
 				{
-					tile.isClickable = false;
+					//tile.isClickable = false;
 					getOrientationSphere(orientation).transform.position = Vector3.one * float.MaxValue; // dot is moved to infinity
 				}
 			}
@@ -812,18 +818,37 @@ public class Pawn : MonoBehaviour
 		// Cursor tile is null
 		if ( tile == null )
 			return null;
-
-		// The focused tile didn't changed
-		if ( focusedTile != null && tile == focusedTile )
-			return focusedTile;
-
+		
 		// Cursor tile is unvalid type
 		if ( !TileSelection.isClickableType( tile.type ) )
 			return null;
-
+		
 		//  Pawn's tile is null or same as cursor's
 		if ( pawnTile == null || tile == pawnTile )
 			return null;
+
+		if ( focusedTile != null )
+		{
+			// The player tile is a moving platform, force a total recheck
+			if ( pawnTile.tag == "MovingPlatform" )
+			{
+				focusedTile.isClickable = false;
+				focusedTile = null;
+			}
+			// The previous tile was a moving platform, force a recheck
+			else if ( focusedTile.tag == "MovingPlatform" )
+			{
+				focusedTile = null;
+				tile.isClickable = false;
+				pawnTile.isClickable = false;
+
+				return tile;
+			}
+			
+			// The focused tile didn't changed
+			else if ( tile == focusedTile )
+				return focusedTile;
+		}
 
 		//Debug.Log( "Ok, tile is accessible, valid type, etc. ! Let's work !" );
 
@@ -884,6 +909,9 @@ public class Pawn : MonoBehaviour
 				}
 			}
 		}
+
+		// Pawn tile is never clickable
+		pawnTile.isClickable = false;
 
 		return tile;
 	}
