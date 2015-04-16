@@ -1074,9 +1074,9 @@ public class Pawn : MonoBehaviour
 			down = tileGravityVector;
 		
 		if (down.x > 0)
-			return TileOrientation.Right;
-		if (down.x < 0)
 			return TileOrientation.Left;
+		if (down.x < 0)
+			return TileOrientation.Right;
 		if (down.y > 0)
 			return TileOrientation.Down;
 		if (down.y < 0)
