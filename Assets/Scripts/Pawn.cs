@@ -1176,9 +1176,9 @@ public class Pawn : MonoBehaviour
 		//	return new Vector3 (transform.position.x, transform.position.y - n, transform.position.z);
 		case TileOrientation.Down:
 			return new Vector3 (transform.position.x, transform.position.y + n, transform.position.z);
-		case TileOrientation.Left:
-			return new Vector3 (transform.position.x - n, transform.position.y, transform.position.z);
 		case TileOrientation.Right:
+			return new Vector3 (transform.position.x - n, transform.position.y, transform.position.z);
+		case TileOrientation.Left:
 			return new Vector3 (transform.position.x + n, transform.position.y, transform.position.z);
 		case TileOrientation.Front:
 			return new Vector3 (transform.position.x, transform.position.y, transform.position.z + n);
