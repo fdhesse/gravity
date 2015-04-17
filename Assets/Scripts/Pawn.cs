@@ -360,7 +360,9 @@ public class Pawn : MonoBehaviour
 			pawnTile = collision.collider.gameObject.GetComponent<Tile>();
 
 			moveMe ( pawnTile.transform.position );
-			putDestinationMarks();
+
+			if ( path != null && path.Count == 0 )
+				putDestinationMarks();
 		}
 
 		if (collision.relativeVelocity.magnitude > 1 && GetComponent<AudioSource>().enabled)
@@ -548,14 +550,15 @@ public class Pawn : MonoBehaviour
 
 						if (moveMe(vec)) // move the pawn towards that vector
 						{
+							path = AStarHelper.Calculate(landing, clickedTile); //give me a path towards the clicked tile
 							clickedTile = null; // target reached, forget it
 							isJumping = false;
-							path = AStarHelper.Calculate(landing, nearest); // give me a path towards the nearest tile
 							putDestinationMarks();
 						}
 					}
 					else
 					{
+						//path = AStarHelper.Calculate(nearest, clickedTile); //give me a path towards the clicked tile
 						clickedTile = null;
 					}
 	            }
@@ -811,7 +814,7 @@ public class Pawn : MonoBehaviour
 	/// <summary>
 	/// Get the tile focused by cursor, if valid.
 	/// </summary>
-	private Tile getCursorTile( )
+	private Tile getCursorTile()
 	{
 		Tile tile = TileSelection.getTile();
 
@@ -870,31 +873,62 @@ public class Pawn : MonoBehaviour
 		}
 		
 		// Check if the tile is accessible "by fall"
-		if ( tile.orientation == pawnTile.orientation )
+		else if ( tile.orientation == pawnTile.orientation )
 		{
 			bool isAccessibleByFall = !tileIsAbove( tile );
-			
-			if ( isAccessibleByFall && pawnTile.orientation != TileOrientation.Down && pawnTile.orientation != TileOrientation.Up )
+
+			// iff (if and only if)
+			if ( isAccessibleByFall && ( pawnTile.orientation == TileOrientation.Down || pawnTile.orientation == TileOrientation.Up ) )
 			{
-				float distance = Mathf.Abs( pawnTile.transform.position.y - tile.transform.position.y );
-				
-				if ( distance > 10.1f )
+				float xDist = Mathf.Abs( pawnTile.transform.position.x - tile.transform.position.x );
+				float zDist = Mathf.Abs( pawnTile.transform.position.z - tile.transform.position.z );
+				bool xTest = xDist > .1f;
+				bool zTest = zDist > .1f;
+
+				if ( xTest && zTest )
+					isAccessibleByFall = false;
+				else if ( !xTest && !zTest )
+					isAccessibleByFall = false;
+
+				if ( xDist > 10.1f )
+					isAccessibleByFall = false;
+				if ( zDist > 10.1f )
 					isAccessibleByFall = false;
 			}
 			
-			if ( isAccessibleByFall && pawnTile.orientation != TileOrientation.Left && pawnTile.orientation != TileOrientation.Right )
+			if ( isAccessibleByFall && ( pawnTile.orientation == TileOrientation.Left || pawnTile.orientation == TileOrientation.Right ) )
 			{
-				float distance = Mathf.Abs( pawnTile.transform.position.x - tile.transform.position.x );
+				float yDist = Mathf.Abs( pawnTile.transform.position.y - tile.transform.position.y );
+				float zDist = Mathf.Abs( pawnTile.transform.position.z - tile.transform.position.z );
+				bool yTest = yDist > .1f;
+				bool zTest = zDist > .1f;
 				
-				if ( distance > 10.1f )
+				if ( yTest && zTest )
+					isAccessibleByFall = false;
+				else if ( !yTest && !zTest )
+					isAccessibleByFall = false;
+
+				if ( yDist > 10.1f )
+					isAccessibleByFall = false;
+				if ( zDist > 10.1f )
 					isAccessibleByFall = false;
 			}
 			
-			if ( isAccessibleByFall && pawnTile.orientation != TileOrientation.Front && pawnTile.orientation != TileOrientation.Back )
+			if ( isAccessibleByFall && ( pawnTile.orientation == TileOrientation.Front || pawnTile.orientation == TileOrientation.Back ) )
 			{
-				float distance = Mathf.Abs( pawnTile.transform.position.z - tile.transform.position.z );
+				float xDist = Mathf.Abs( pawnTile.transform.position.x - tile.transform.position.x );
+				float yDist = Mathf.Abs( pawnTile.transform.position.y - tile.transform.position.y );
+				bool xTest = xDist > .1f && xDist < 10.1f;
+				bool yTest = yDist > .1f && yDist < 10.1f;
 				
-				if ( distance > 10.1f )
+				if ( xTest && yTest )
+					isAccessibleByFall = false;
+				else if ( !xTest && !yTest )
+					isAccessibleByFall = false;
+				
+				if ( xDist > 10.1f )
+					isAccessibleByFall = false;
+				if ( yDist > 10.1f )
 					isAccessibleByFall = false;
 			}
 			
@@ -1075,11 +1109,11 @@ public class Pawn : MonoBehaviour
 			desiredRotation = new Vector3(90, 0, 0);
 			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationX;
 			break;
-		case TileOrientation.Left:
+		case TileOrientation.Right:
 			desiredRotation = new Vector3(0, 0, 90);
 			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationZ;
 			break;
-		case TileOrientation.Right:
+		case TileOrientation.Left:
 			desiredRotation = new Vector3(0, 0, 270);
 			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationZ;
 			break;
@@ -1102,9 +1136,9 @@ public class Pawn : MonoBehaviour
 			down = tileGravityVector;
 		
 		if (down.x > 0)
-			return TileOrientation.Left;
-		if (down.x < 0)
 			return TileOrientation.Right;
+		if (down.x < 0)
+			return TileOrientation.Left;
 		if (down.y > 0)
 			return TileOrientation.Down;
 		if (down.y < 0)
@@ -1165,30 +1199,6 @@ public class Pawn : MonoBehaviour
 
     /// ----- GETTERS ----- ///
 
-	/*
-    /// <summary>
-    /// Gets the player rotation according to the current gravitational orientation.
-    /// </summary>
-    private Vector3 getPlayerRotation()
-	{
-		switch (GetWorldGravity())
-		{
-		default:
-                return Vector3.zero;
-            case TileOrientation.Down:
-				return new Vector3(0, 180, 180);
-			case TileOrientation.Right:
-				return new Vector3(0, 180, 90);
-			case TileOrientation.Left:
-                return new Vector3(0, 0, 90);
-            case TileOrientation.Front:
-                return new Vector3(0, 270, 90);
-            case TileOrientation.Back:
-                return new Vector3(0, 90, 90);
-        }
-	}
-	*/
-
     /// <summary>
     /// Gets the player ground position, i.e. the position of the "feet" of the Pawn, pawn has 8 height
     /// </summary>
@@ -1204,9 +1214,9 @@ public class Pawn : MonoBehaviour
 		//	return new Vector3 (transform.position.x, transform.position.y - n, transform.position.z);
 		case TileOrientation.Down:
 			return new Vector3 (transform.position.x, transform.position.y + n, transform.position.z);
-		case TileOrientation.Right:
-			return new Vector3 (transform.position.x - n, transform.position.y, transform.position.z);
 		case TileOrientation.Left:
+			return new Vector3 (transform.position.x - n, transform.position.y, transform.position.z);
+		case TileOrientation.Right:
 			return new Vector3 (transform.position.x + n, transform.position.y, transform.position.z);
 		case TileOrientation.Front:
 			return new Vector3 (transform.position.x, transform.position.y, transform.position.z + n);

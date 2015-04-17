@@ -86,9 +86,9 @@ public class World : MonoBehaviour {
 			return new Vector3(0, -1, 0);
 		case TileOrientation.Down:
 			return new Vector3(0, 1, 0);
-		case TileOrientation.Right:
-			return new Vector3(-1, 0, 0);
 		case TileOrientation.Left:
+			return new Vector3(-1, 0, 0);
+		case TileOrientation.Right:
 			return new Vector3(1, 0, 0);
 		case TileOrientation.Front:
 			return new Vector3(0, 0, 1);
@@ -121,10 +121,10 @@ public class World : MonoBehaviour {
 		case TileOrientation.Back:
 			Physics.gravity = new Vector3(0, 0, -G);
 			break;
-		case TileOrientation.Left:
+		case TileOrientation.Right:
 			Physics.gravity = new Vector3(G, 0, 0);
 			break;
-		case TileOrientation.Right:
+		case TileOrientation.Left:
 			Physics.gravity = new Vector3(-G, 0, 0);
 			break;
 		case TileOrientation.Up:
