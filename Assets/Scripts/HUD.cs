@@ -6,15 +6,15 @@ using System.Collections;
 /// </summary>
 public class HUD : MonoBehaviour
 {
-
     private GUISkin skin;// skin we are using, should be assigned via editor
 
     public float ClickDelay = 0.1f;
     public int minGravityChange = 0;// minimum gravity change for this level
     public int gravityChangeCount = 0;// times that the gravity has been changed
 
-    public bool isEndScreen = false;// is the end screen up?
-    public bool isPaused = false;// is the game pause screen up?
+	public bool isTextScreen = false; // is a text screen up ?
+    public bool isEndScreen = false; // is the end screen up ?
+    public bool isPaused = false; // is the game pause screen up ?
 
     public Color dotColor = Color.cyan;
     public float dotSize = 2.0f;
@@ -24,24 +24,41 @@ public class HUD : MonoBehaviour
     static private int resultWindowWidth = 800;
     static private int resultWindowHeight = 400;
     static private int pauseWindowWidth = 400;
-    static private int pauseWindowHeight = 200;
-    private Rect pauseWindowRect = new Rect(Screen.width / 2 - pauseWindowWidth / 2, Screen.height / 2 - pauseWindowHeight / 4, pauseWindowWidth, pauseWindowHeight);
-    private Rect resultWindowRect = new Rect(Screen.width / 2 - resultWindowWidth / 2, Screen.height / 2 - resultWindowHeight / 4, resultWindowWidth, resultWindowHeight);
+	static private int pauseWindowHeight = 200;
+	static private int textWindowWidth = 400;
+	static private int textWindowHeight = 200;
+	private Rect pauseWindowRect = new Rect(Screen.width *.5f - pauseWindowWidth *.5f, Screen.height *.5f - pauseWindowHeight *.25f, pauseWindowWidth, pauseWindowHeight);
+	private Rect textWindowRect = new Rect(Screen.width *.5f - textWindowWidth *.5f, Screen.height *.5f - textWindowWidth *.25f, textWindowWidth, textWindowHeight);
+	private Rect resultWindowRect = new Rect(Screen.width *.5f - resultWindowWidth *.5f, Screen.height *.5f - resultWindowHeight *.25f, resultWindowWidth, resultWindowHeight);
     private Rect pauseRect = new Rect(10, 10, 50, 50);
+
+	private string[] textPages;
+	private int pageId;
+
+	// Camera reference
+	private CameraControl cameraControl;
 
     // Use this for initialization
     void Start()
-    {
+	{
         skin = Resources.Load("skin") as GUISkin;
+		cameraControl = Camera.main.GetComponent<CameraControl> ();
     }
 
     // Update is called once per frame
     void OnGUI()
     {
-        if (isEndScreen || isPaused)
+		if (isEndScreen || isPaused || isTextScreen)
         {
-            GUI.Box(new Rect(0,0,Screen.width,Screen.height),GUIContent.none,skin.GetStyle("overlay"));
-        }
+			GUI.Box(new Rect(0,0,Screen.width,Screen.height),GUIContent.none,skin.GetStyle("overlay"));
+			Time.timeScale = 0;
+			cameraControl.enabled = false;
+		}
+		else
+		{
+			Time.timeScale = 1;
+			cameraControl.enabled = true;
+		}
 
         if (isEndScreen)
         {
@@ -51,11 +68,16 @@ public class HUD : MonoBehaviour
         {
             GUIStyle buttonStyle = isPaused ? skin.GetStyle("pauseOn") : skin.GetStyle("pauseOff");
             if (GUI.Button(pauseRect, "", buttonStyle))
-            {
+			{
                 isPaused = !isPaused;
             }
             GUI.Label(new Rect(Screen.width - 80, 10, 70, 50), gravityChangeCount + "", skin.GetStyle("gravityCounter"));
         }
+
+		if (isTextScreen)
+		{
+			textWindowRect = GUI.Window(0, textWindowRect, textWindow, "Text", skin.GetStyle("window"));
+		}
 
         if (isPaused)
         {
@@ -93,7 +115,6 @@ public class HUD : MonoBehaviour
 
     void pauseWindow(int windowID)
     {
-
         if (isPaused)
         {
 
@@ -103,8 +124,9 @@ public class HUD : MonoBehaviour
             }
 
             if (GUI.Button(new Rect(150, 100, 100, 20), "Restart"))
-            {
-                Application.LoadLevel(Application.loadedLevel);
+			{
+				Application.LoadLevel(Application.loadedLevel);
+				Time.timeScale = 1;
             }
 
             if (GUI.Button(new Rect(275, 100, 100, 20), "Change level"))
@@ -113,7 +135,45 @@ public class HUD : MonoBehaviour
             }
         }
 
-    }
+	}
+	
+	void textWindow(int windowID)
+	{
+		if (isTextScreen)
+		{
+			GUI.Label(new Rect( 0, 0, 250, 100), textPages[ pageId ], skin.GetStyle("gravityCounter"));
+			
+			if ( pageId < ( textPages.Length - 1 ) )
+			{
+				if (GUI.Button(new Rect(275, 100, 100, 20), "Next"))
+				{
+					pageId++;
+				}
+			}
+			if ( pageId > 0 )
+			{
+				if (GUI.Button(new Rect(275, 130, 100, 20), "Previous"))
+				{
+					pageId--;
+				}
+			}
 
+			GUIStyle buttonStyle = skin.GetStyle("pauseOn");
 
+			if (GUI.Button(new Rect(375, 5, 20, 20), "", buttonStyle))
+			{
+				isTextScreen = false;
+			}
+		}
+		
+	}
+
+	public void DisplayNarrativeText( string[] pages )
+	{
+		pageId = 0;
+		textPages = pages;
+
+		if ( textPages.Length > 0 )
+			isTextScreen = true;
+	}
 }
