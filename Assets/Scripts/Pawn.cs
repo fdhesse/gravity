@@ -506,28 +506,32 @@ public class Pawn : MonoBehaviour
 	        	//  (- he will land on a neighbourg tile) -- no more possible yet
 	        	//  - he will land on the tile
 	        	//  (- he will fall into the void) -- this case won't happen anymore
+				
+				// [TODO] It seems bad:
+				// The pawn is glued to a tile, not the gravity,
+				// so it can't jump on another tile, gravity
+				// would make it fall !
+				Vector3 down = Physics.gravity.normalized;
+				
+				if (isGlued)
+					down = tileGravityVector;
 
 				// nearest tile: the directly accessible tile from the tile bellow the Pawn, thats closest to the target tile
 				Tile nearest = Tile.Closest(pawnTile.AllAccessibleTiles(), clickedTile.transform.position);
-				
+
 				if (nearest.Equals(pawnTile)) //is the nearest the one bellow the Pawn?
 				{
-					// [TODO] It seems bad:
-					// The pawn is glued to a tile, not the gravity,
-					// so it can't jump on another tile, gravity
-					// would make it fall !
-					Vector3 down = Physics.gravity.normalized;
-					
-					if (isGlued)
-						down = tileGravityVector;
-
 					// landing tile: the directly accessible tile from the target tile, thats closest to the nearest tile
 					Tile landing = Tile.Closest(clickedTile.AllAccessibleTiles(), nearest.transform.position);
 					
 	                // check if landing tile is not EXACTLY under the nearest tile
-					if ( Vector3.Scale ( ( landing.transform.position - nearest.transform.position ), Vector3.Scale ( down, down ) - Vector3.one ).magnitude == 0 )
-						landing = Tile.Closest( landing.AllAccessibleTiles(), clickedTile.transform.position );
-					
+					if ( Mathf.Abs( Vector3.Scale ( ( landing.transform.position - nearest.transform.position ), Vector3.Scale ( down, down ) - Vector3.one ).magnitude ) < .1f )
+					{
+						landing = clickedTile;
+						
+						//Debug.Log("landing: " + landing.transform.parent.name, landing.transform.parent );
+					}
+
 					// calculate the vector from the Pawns position to the landing tile position at the same height
 	                Vector3 vec = getGroundHeightVector(landing.transform.position) - getGroundPosition();
 

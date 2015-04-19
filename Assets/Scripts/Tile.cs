@@ -207,8 +207,8 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 				transform.Rotate( new Vector3( 90, 0, 0 ) );
 				transform.localScale = Vector3.one;
 
-				graphics.transform.Translate( Vector3.forward * -.4f, Space.Self );
-				//graphics.transform.localPosition = transform.forward * -0.2f;
+				graphics.transform.localPosition = Vector3.zero;
+				graphics.transform.Translate( Vector3.forward * -4f / graphics.transform.lossyScale.x, Space.Self );
 				
 				DestroyImmediate( tmpQuad );
 			}
@@ -223,13 +223,14 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			graphics.AddComponent<MeshRenderer>();
 
 			//graphics.transform.localPosition = graphics.transform.forward * -0.2f;
-			graphics.transform.Translate( Vector3.forward * -.4f, Space.Self );
 			
 			Mesh mesh = gameObject.GetComponent<MeshCollider>().sharedMesh;
 			meshFilter.sharedMesh = mesh;
 
 			graphics.transform.localRotation = Quaternion.identity;
 			graphics.transform.localScale = Vector3.one;
+			graphics.transform.localPosition = Vector3.zero;
+			graphics.transform.Translate( Vector3.forward * -4f / graphics.transform.lossyScale.x, Space.Self );
 
 			MeshFilter _mFilter = gameObject.GetComponent<MeshFilter>();
 			MeshRenderer _mRenderer = gameObject.GetComponent<MeshRenderer>();
