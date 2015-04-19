@@ -163,8 +163,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			return;
 		}
 
-		if ( isQuad )
-			transform.Rotate( new Vector3( -90, 0, 0 ) );
+		transform.Rotate( new Vector3( -90, 0, 0 ) );
 		
 		Vector3 tileDirection = transform.rotation * -Vector3.up;
 
@@ -176,6 +175,43 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		{
 			graphics = t.gameObject;
 			graphics.hideFlags = HideFlags.NotEditable;
+
+			if ( !isQuad )
+			{
+				BoxCollider boxCollider = GetComponent<BoxCollider>();
+				
+				if ( boxCollider != null )
+					DestroyImmediate( boxCollider );
+				
+				GameObject tmpQuad = GameObject.CreatePrimitive(PrimitiveType.Quad);
+				Mesh mesh = tmpQuad.GetComponent<MeshFilter>().sharedMesh;
+				
+				MeshFilter meshFilter = GetComponent<MeshFilter> ();
+				if ( meshFilter == null )
+					meshFilter = gameObject.AddComponent<MeshFilter> ();
+				
+				MeshCollider meshCollider = GetComponent<MeshCollider> ();
+				if ( meshCollider == null )
+					meshCollider = gameObject.AddComponent<MeshCollider> ();
+
+				MeshFilter graphicsMeshFilter = graphics.GetComponent<MeshFilter>();
+				if ( graphicsMeshFilter == null )
+					graphicsMeshFilter = gameObject.AddComponent<MeshFilter> ();
+				
+				graphicsMeshFilter.sharedMesh = meshFilter.sharedMesh = meshCollider.sharedMesh = mesh;
+				
+				graphics.transform.localRotation = Quaternion.identity;
+				graphics.transform.localScale = Vector3.one;
+				graphics.transform.localPosition = Vector3.zero;
+				//transform.localRotation = Quaternion.identity;
+				transform.Rotate( new Vector3( 90, 0, 0 ) );
+				transform.localScale = Vector3.one;
+
+				graphics.transform.Translate( Vector3.forward * -.4f, Space.Self );
+				//graphics.transform.localPosition = transform.forward * -0.2f;
+				
+				DestroyImmediate( tmpQuad );
+			}
 		}
 		else
 		{
@@ -186,25 +222,15 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			MeshFilter meshFilter = graphics.AddComponent<MeshFilter>();
 			graphics.AddComponent<MeshRenderer>();
 
-			if ( isQuad )
-			{
-				graphics.transform.localPosition = graphics.transform.forward * -0.02f;
-				
-				Mesh mesh = gameObject.GetComponent<MeshCollider>().sharedMesh;
-				meshFilter.sharedMesh = mesh;
-			}
-			else
-			{
-				graphics.transform.localPosition = Vector3.up * 0.2f;
-				
-				Mesh mesh = gameObject.GetComponent<MeshFilter>().sharedMesh;
-				meshFilter.sharedMesh = mesh;
-			}
+			//graphics.transform.localPosition = graphics.transform.forward * -0.2f;
+			graphics.transform.Translate( Vector3.forward * -.4f, Space.Self );
+			
+			Mesh mesh = gameObject.GetComponent<MeshCollider>().sharedMesh;
+			meshFilter.sharedMesh = mesh;
 
 			graphics.transform.localRotation = Quaternion.identity;
 			graphics.transform.localScale = Vector3.one;
 
-			
 			MeshFilter _mFilter = gameObject.GetComponent<MeshFilter>();
 			MeshRenderer _mRenderer = gameObject.GetComponent<MeshRenderer>();
 			
@@ -263,8 +289,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 #endif
 		}
 
-		if ( isQuad )
-			transform.Rotate( new Vector3( 90, 0, 0 ) );
+		transform.Rotate( new Vector3( 90, 0, 0 ) );
 
 #if UNITY_EDITOR
 		materials[1].SetFloat( "_Mode", 2 );
@@ -422,8 +447,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		Assets.mouseCursor.transform.position = transform.position;
 		Assets.mouseCursor.transform.rotation = transform.rotation;
 
-		if ( isQuad )
-			Assets.mouseCursor.transform.Rotate( new Vector3( -90, 0, 0 ) );
+		Assets.mouseCursor.transform.Rotate( new Vector3( -90, 0, 0 ) );
 		
 		Assets.mouseCursor.transform.Translate (new Vector3 (0, 0.5f, 0));
 		Assets.mouseCursor.transform.parent = transform;
