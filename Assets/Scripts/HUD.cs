@@ -158,7 +158,7 @@ public class HUD : MonoBehaviour
 				}
 			}
 
-			GUIStyle buttonStyle = skin.GetStyle("pauseOn");
+			GUIStyle buttonStyle = skin.GetStyle("close");
 
 			if (GUI.Button(new Rect(375, 5, 20, 20), "", buttonStyle))
 			{

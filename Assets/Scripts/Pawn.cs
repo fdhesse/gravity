@@ -473,19 +473,19 @@ public class Pawn : MonoBehaviour
 				{
 					// Remove the glue effect
 					isGlued = false;
+					isLeavingGlueTile = false;
 					tileGravityVector = Physics.gravity.normalized;
 
 					pawnTile = null;
 					clickedTile = null;
 
-					StartCoroutine( DelayedPawnFall ( GetWorldGravity() ));
-
-					isLeavingGlueTile = false;
 					path.Clear();
+
+					StartCoroutine( DelayedPawnFall ( GetWorldGravity() ));
 				}
 			}
 			
-			if (path.Count == 0)
+			if ( path.Count == 0 )
 			{
 				animState = 0;
 				isWalking = false;
