@@ -6,10 +6,18 @@ using System.Collections;
 /// </summary>
 public class HUD : MonoBehaviour
 {
+	[System.Serializable]
+	public struct Stars
+	{
+		public int three;
+		public int two;
+	}
+
     private GUISkin skin;// skin we are using, should be assigned via editor
 
     public float ClickDelay = 0.1f;
-    public int minGravityChange = 0;// minimum gravity change for this level
+	public int minGravityChange = 0;// minimum gravity change for this level
+	public Stars stars;
     public int gravityChangeCount = 0;// times that the gravity has been changed
 
 	public bool isTextScreen = false; // is a text screen up ?
@@ -37,12 +45,18 @@ public class HUD : MonoBehaviour
 
 	// Camera reference
 	private CameraControl cameraControl;
+	
+	private Texture greyStar;
+	private Texture goldStar;
 
     // Use this for initialization
     void Start()
 	{
-        skin = Resources.Load("skin") as GUISkin;
+        skin = Resources.Load("HUD/skin") as GUISkin;
 		cameraControl = Camera.main.GetComponent<CameraControl> ();
+		
+		goldStar = Resources.Load ("HUD/goldstar") as Texture;
+		greyStar = Resources.Load ("HUD/greyStar") as Texture;
     }
 
     // Update is called once per frame
@@ -90,10 +104,34 @@ public class HUD : MonoBehaviour
     {
 
         if (isEndScreen)
-        {
-            //GUI.Label(new Rect(50, 50, width-100, 50), "The minimum amount of gravity changes to complete this level is " + minGravityChange, skin.GetStyle("centeredLabel"));
-            GUI.Label(new Rect(50, 50, resultWindowWidth - 100, 50), "Gravity changes necessary: " + minGravityChange, skin.GetStyle("centeredLabel"));
-            GUI.Label(new Rect(50, 150, resultWindowWidth - 100, 50), "Times you changed gravity: " + gravityChangeCount, skin.GetStyle("centeredLabel"));
+		{
+			if ( gravityChangeCount <= stars.three )
+			{
+					// Three gold stars
+					GUI.DrawTexture(new Rect(275, 50, 50, 50), goldStar);
+					GUI.DrawTexture(new Rect(375, 50, 50, 50), goldStar);
+					GUI.DrawTexture(new Rect(475, 50, 50, 50), goldStar);
+			}
+			else
+			{
+				if ( gravityChangeCount <= stars.two )
+				{
+					// Two gold stars
+					GUI.DrawTexture(new Rect(275, 50, 50, 50), goldStar);
+					GUI.DrawTexture(new Rect(375, 50, 50, 50), goldStar);
+					GUI.DrawTexture(new Rect(475, 50, 50, 50), greyStar);
+				}
+				else
+				{
+					// One gold star
+					GUI.DrawTexture(new Rect(275, 50, 50, 50), goldStar);
+					GUI.DrawTexture(new Rect(375, 50, 50, 50), greyStar);
+					GUI.DrawTexture(new Rect(475, 50, 50, 50), greyStar);
+				}
+			}
+
+            GUI.Label(new Rect(100, 150, 150, 50), "Minimum changes: " + minGravityChange, skin.GetStyle("centeredLabel"));
+			GUI.Label(new Rect( resultWindowWidth - 300, 150, 200, 50), "Gravity changes: " + gravityChangeCount, skin.GetStyle("centeredLabel"));
 
             if (GUI.Button(new Rect(200, 300, 100, 20), "Replay"))
             {
