@@ -71,4 +71,10 @@ public class MainGUI : MonoBehaviour
         GUILayout.EndVertical();
         GUILayout.EndArea();
     }
+
+	public void ExitGame()
+	{
+		Debug.Log ("Exit now");
+		//Application.Quit();
+	}
 }

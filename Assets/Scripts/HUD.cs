@@ -133,19 +133,14 @@ public class HUD : MonoBehaviour
             GUI.Label(new Rect(100, 150, 150, 50), "Minimum changes: " + minGravityChange, skin.GetStyle("centeredLabel"));
 			GUI.Label(new Rect( resultWindowWidth - 300, 150, 200, 50), "Gravity changes: " + gravityChangeCount, skin.GetStyle("centeredLabel"));
 
-            if (GUI.Button(new Rect(200, 300, 100, 20), "Replay"))
+            if (GUI.Button(new Rect(280, 300, 100, 20), "Restart"))
             {
                 Application.LoadLevel(Application.loadedLevel);
             }
 
-            if (GUI.Button(new Rect(350, 300, 100, 20), "Change level"))
-            {
-                Application.LoadLevel("main");
-            }
-
-            if (GUI.Button(new Rect(500, 300, 100, 20), "Exit"))
-            {
-                Application.Quit();
+            if (GUI.Button(new Rect(420, 300, 100, 20), "Exit"))
+			{
+				Application.LoadLevel("main");
             }
         }
 
@@ -154,20 +149,20 @@ public class HUD : MonoBehaviour
     void pauseWindow(int windowID)
     {
         if (isPaused)
-        {
+		{
+			
+			if (GUI.Button(new Rect(25, 100, 100, 20), "Restart"))
+			{
+				Application.LoadLevel(Application.loadedLevel);
+				Time.timeScale = 1;
+			}
 
-            if (GUI.Button(new Rect(25, 100, 100, 20), "Resume"))
+            if (GUI.Button(new Rect(150, 100, 100, 20), "Resume"))
             {
                 isPaused = false;
             }
 
-            if (GUI.Button(new Rect(150, 100, 100, 20), "Restart"))
-			{
-				Application.LoadLevel(Application.loadedLevel);
-				Time.timeScale = 1;
-            }
-
-            if (GUI.Button(new Rect(275, 100, 100, 20), "Change level"))
+            if (GUI.Button(new Rect(275, 100, 100, 20), "Exit"))
             {
                 Application.LoadLevel("main");
             }
