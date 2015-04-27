@@ -185,8 +185,8 @@ public class Pawn : MonoBehaviour
 	private IEnumerator SetCameraCursor()
 	{
 		yield return null;
-		Texture2D tex = (Texture2D)Resources.Load("cameraCursor", typeof(Texture2D));
-		Cursor.SetCursor(tex,Vector2.zero,CursorMode.Auto);
+		Texture2D tex = (Texture2D)Resources.Load("HUD/cameraCursor", typeof(Texture2D));
+		Cursor.SetCursor(tex, Vector2.zero, CursorMode.Auto);
 	}
 
 	private IEnumerator SetNormalCursor()

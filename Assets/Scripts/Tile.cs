@@ -109,6 +109,9 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		if ( transform.childCount > 0 )
 			transform.GetChild( 0 ).gameObject.SetActive( false );
 #endif
+
+		if ( gameObject.GetComponent<Stairway>() != null )
+			gameObject.GetComponent<Renderer>().enabled = false;
     }
 
     // Update is called once per frame
