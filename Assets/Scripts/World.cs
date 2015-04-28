@@ -11,6 +11,7 @@ public class World : MonoBehaviour {
 	private FallingCube[] fallingCubes;
 	private GravityPlatform[] gravityPlatforms;
 	private RotatingPlatform[] rotatingPlatforms;
+	private GoldTile[] goldTiles;
 	
 	private static Pawn playerPawn; // Player Pawn
 	public static Pawn Pawn
@@ -23,6 +24,7 @@ public class World : MonoBehaviour {
 		fallingCubes = FindObjectsOfType<FallingCube>();
 		gravityPlatforms = FindObjectsOfType<GravityPlatform>();
 		rotatingPlatforms = FindObjectsOfType<RotatingPlatform>();
+		goldTiles = FindObjectsOfType<GoldTile> ();
 	}
 	
 	public static void Init( Pawn player )
@@ -42,6 +44,11 @@ public class World : MonoBehaviour {
 
 		for (int i = 0; i < rotatingPlatforms.Length; i++)
 			((RotatingPlatform) rotatingPlatforms[i]).Reset();
+
+		for (int i = 0; i < goldTiles.Length; i++)
+			((GoldTile)goldTiles [i]).Reset ();
+
+		ChangeGravity ( playerPawn.orientation );
 	}
 	
 	public bool IsGameOver()
@@ -104,6 +111,9 @@ public class World : MonoBehaviour {
 		
 		for (int i = 0; i < rotatingPlatforms.Length; i++)
 			((RotatingPlatform) rotatingPlatforms[i]).SendMessage( "ChangeGravity", orientation );
+		
+		for (int i = 0; i < goldTiles.Length; i++)
+			((GoldTile) goldTiles[i]).SendMessage( "ChangeGravity", orientation );
 	}
 	
 	/// <summary>

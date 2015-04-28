@@ -105,6 +105,8 @@ public class Pawn : MonoBehaviour
 
 	void Awake()
 	{
+		orientation = TileOrientation.Up;
+
 		tilesLayer = LayerMask.NameToLayer ("Tiles");
 
 		world = gameObject.AddComponent<World>() as World;
