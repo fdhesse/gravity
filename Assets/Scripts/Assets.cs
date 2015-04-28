@@ -79,21 +79,21 @@ public static class Assets
     public static Material getValidBlockMat()
 	{
 		if ( validBlockMat == null )
-			validBlockMat = Resources.Load("Materials/blocks/valid") as Material;
+			validBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Editor/Materials/blocks/valid.mat", typeof(Material)) as Material;
 		
 		return new Material( validBlockMat );
 	}
 	public static Material getInvalidBlockMat()
 	{
 		if ( invalidBlockMat == null )
-			invalidBlockMat = Resources.Load("Materials/blocks/invalid") as Material;
+			invalidBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Editor/Materials/blocks/invalid.mat", typeof(Material)) as Material;
 		
 		return new Material( invalidBlockMat );
 	}
 	public static Material getExitBlockMat()
 	{
 		if ( exitBlockMat == null )
-			exitBlockMat = Resources.Load("Materials/blocks/exit") as Material;
+			exitBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Editor/Materials/blocks/exit.mat", typeof(Material)) as Material;
 		
 		return new Material( exitBlockMat );
 	}
@@ -145,6 +145,49 @@ public static class Assets
 		
 		return new Material( backBlockMat );
 	}
+	
+	public static Material getHighlightedValidBlockMat()
+	{
+		if ( highlightedValidBlockMat == null )
+			highlightedValidBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Editor/Materials/blocks/highlighted/validHighlighted.mat", typeof(Material)) as Material;
+		
+		return new Material( highlightedValidBlockMat );
+	}
+	public static Material getHighlightedInvalidBlockMat()
+	{
+		if ( highlightedInvalidBlockMat == null )
+			highlightedInvalidBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Editor/Materials/blocks/highlighted/invalidHighlighted.mat", typeof(Material)) as Material;
+		
+		return new Material( highlightedInvalidBlockMat );
+	}
+	public static Material getHighlightedExitBlockMat()
+	{
+		if ( highlightedExitBlockMat == null )
+			highlightedExitBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Editor/Materials/blocks/highlighted/exitHighlighted.mat", typeof(Material)) as Material;
+		
+		return new Material( highlightedExitBlockMat );
+	}
+	public static Material getFlashingValidBlockMat()
+	{
+		if ( flashingValidBlockMat == null )
+			flashingValidBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Editor/Materials/blocks/flashing/validFlashing.mat", typeof(Material)) as Material;
+		
+		return new Material( flashingValidBlockMat );
+	}
+	public static Material getFlashingInvalidBlockMat()
+	{
+		if ( flashingInvalidBlockMat == null )
+			flashingInvalidBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Editor/Materials/blocks/flashing/invalidFlashing.mat", typeof(Material)) as Material;
+		
+		return new Material( flashingInvalidBlockMat );
+	}
+	public static Material getFlashingExitBlockMat()
+	{
+		if ( flashingExitBlockMat == null )
+			flashingExitBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Editor/Materials/blocks/flashing/exitFlashing.mat", typeof(Material)) as Material;
+		
+		return new Material( flashingExitBlockMat );
+	}
 #elif UNITY_STANDALONE
 
 	private static Material blankBlockMat;
@@ -169,49 +212,6 @@ public static class Assets
 		return getBlankBlockMat();
 	}
 #endif
-
-    public static Material getHighlightedValidBlockMat()
-	{
-		if ( highlightedValidBlockMat == null )
-			highlightedValidBlockMat = Resources.Load("Materials/blocks/highlighted/validHighlighted") as Material;
-		
-		return new Material( highlightedValidBlockMat );
-    }
-    public static Material getHighlightedInvalidBlockMat()
-	{
-		if ( highlightedInvalidBlockMat == null )
-			highlightedInvalidBlockMat = Resources.Load("Materials/blocks/highlighted/invalidHighlighted") as Material;
-		
-		return new Material( highlightedInvalidBlockMat );
-    }
-    public static Material getHighlightedExitBlockMat()
-	{
-		if ( highlightedExitBlockMat == null )
-			highlightedExitBlockMat = Resources.Load("Materials/blocks/highlighted/exitHighlighted") as Material;
-		
-		return new Material( highlightedExitBlockMat );
-    }
-    public static Material getFlashingValidBlockMat()
-	{
-		if ( flashingValidBlockMat == null )
-			flashingValidBlockMat = Resources.Load("Materials/blocks/flashing/validFlashing") as Material;
-		
-		return new Material( flashingValidBlockMat );
-    }
-    public static Material getFlashingInvalidBlockMat()
-	{
-		if ( flashingInvalidBlockMat == null )
-			flashingInvalidBlockMat = Resources.Load("Materials/blocks/flashing/invalidFlashing") as Material;
-		
-		return new Material( flashingInvalidBlockMat );
-    }
-    public static Material getFlashingExitBlockMat()
-	{
-		if ( flashingExitBlockMat == null )
-			flashingExitBlockMat = Resources.Load("Materials/blocks/flashing/exitFlashing") as Material;
-		
-		return new Material( flashingExitBlockMat );
-    }
 
     internal static Material getSphereMat()
 	{
