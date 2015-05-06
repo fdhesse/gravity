@@ -19,7 +19,7 @@ public class FallingCubeBody : MonoBehaviour
 		if ( bodyDummyParent == null )
 		{
 			bodyDummyParent = new GameObject( "RigidBody Dummies" );
-			//bodyDummyParent.hideFlags = HideFlags.HideInHierarchy;
+			bodyDummyParent.hideFlags = HideFlags.HideInHierarchy;
 		}
 		
 		PlayerPawn = (Pawn) GameObject.Find ("Pawn").GetComponent<Pawn>();
@@ -29,8 +29,6 @@ public class FallingCubeBody : MonoBehaviour
 		body.transform.localScale *= 1.001f;
 
 		body.interpolation = RigidbodyInterpolation.Interpolate;
-
-		//Reset ();
 	}
 
 	void Update()
