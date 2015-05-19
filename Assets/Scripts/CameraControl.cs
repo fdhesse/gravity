@@ -17,8 +17,8 @@ public class CameraControl : MonoBehaviour
 //	[EDIT]: commented 2 lines
 //    private float yMinLimit = -360f;
 //    private float yMaxLimit = 360f;
-    private float distanceMin = 5f; //minimum distance, changeable via zoom
-    private float distanceMax = 1000f; //maximum distance, changeable via zoom
+    public float distanceMin = 600f; //minimum distance, changeable via zoom
+    public float distanceMax = 1000f; //maximum distance, changeable via zoom
 	
 	[HideInInspector] public float roll = 0.0f;
 	[HideInInspector] public float pan = 0.0f;
