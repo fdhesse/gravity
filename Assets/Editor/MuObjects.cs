@@ -66,7 +66,7 @@ public static class MuObjects
 	{
 		string path = "Assets/PREFABS/gameplay Platforms/Falling Cube.prefab";
 
-		Object asset = Resources.LoadAssetAtPath ( path, typeof( GameObject ) );
+		Object asset = AssetDatabase.LoadAssetAtPath ( path, typeof( GameObject ) );
 
 		if (asset == null)
 		{
@@ -114,7 +114,7 @@ public static class MuObjects
 	{
 		string path = "Assets/PREFABS/gameplay Platforms/exit.prefab";
 		
-		Object asset = Resources.LoadAssetAtPath ( path, typeof( GameObject ) );
+		Object asset = AssetDatabase.LoadAssetAtPath ( path, typeof( GameObject ) );
 		
 		if (asset == null)
 		{

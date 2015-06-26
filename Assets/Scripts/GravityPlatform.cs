@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 //[ExecuteInEditMode]
-[RequireComponent(typeof(Rigidbody))]
+//[RequireComponent(typeof(Rigidbody))]
 public class GravityPlatform : MonoBehaviour {
 	
 /*	[HideInInspector] [SerializeField] private PlatformType m_left;
@@ -63,8 +64,14 @@ public class GravityPlatform : MonoBehaviour {
 
 	private float startPos = 0;
 	private bool freezed = false;
+	
+	private GravityPlatformBody body;
+	public bool isFalling;
+	public bool isInit;
 
-	private float position
+	private Dictionary<Tile, TileType> obstructedTiles;
+
+	private float Position
 	{
 		get {
 			if( constrainedAxis == ConstraintAxis.X )
@@ -78,17 +85,42 @@ public class GravityPlatform : MonoBehaviour {
 			}
 		set	{
 			if( constrainedAxis == ConstraintAxis.X )
+			{
 				transform.position = new Vector3( value, transform.position.y, transform.position.z );
+				body.transform.position = transform.position;
+			}
 			else if( constrainedAxis == ConstraintAxis.Y )
+			{
 				transform.position = new Vector3( transform.position.x, value, transform.position.z );
+				body.transform.position = transform.position;
+			}
 			else if ( constrainedAxis == ConstraintAxis.Z )
+			{
 				transform.position = new Vector3( transform.position.x, transform.position.y, value );
+				body.transform.position = transform.position;
+			}
 		}
 	}
 
 	// Use this for initialization
 	void Awake ()
 	{
+		obstructedTiles = new Dictionary<Tile, TileType> ();
+
+		GameObject bodyGo = new GameObject ("rigidbody (gravity platform)");
+		bodyGo.tag = gameObject.tag;
+		bodyGo.layer = gameObject.layer;
+		bodyGo.transform.position = transform.position;
+		bodyGo.transform.rotation = transform.rotation;
+		bodyGo.transform.localScale = transform.lossyScale;
+		
+		bodyGo.AddComponent<BoxCollider> ();
+		bodyGo.AddComponent<Rigidbody> ();
+		body = bodyGo.AddComponent<GravityPlatformBody> ();
+		body.LegacyParent = this;
+		
+		isInit = true;
+
 		startPos = from;
 
 		if ( from > to )
@@ -103,62 +135,95 @@ public class GravityPlatform : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-		if ( !freezed && (position < from || position > to ) )
+		//transform.position = body.transform.position;
+
+		if ( !freezed && (Position < from || Position > to ) )
 			Freeze();
 	}
 
 	public void Reset()
 	{
+		if (!isInit)
+			Awake ();
+		
+		body.Reset ();
+		
+		Position = startPos;
+		
+		Freeze ();
+
+		/*
 		GetComponent<Rigidbody> ().isKinematic = false;
 		position = startPos;
 		
 		Freeze ();
+		*/
+	}
+
+	public void Freeze()
+	{
+		body.Freeze();
+
+		if (Position > to)
+			Position = to - 0.001f;
+		else if (Position < from)
+			Position = from + 0.001f;
+		
+		freezed = true;
+		
+		Tile[] childrenPlatforms = GetComponentsInChildren<Tile> ();
+		
+		for ( int i = 0, l = childrenPlatforms.Length; i < l; i++ )
+			childrenPlatforms[i].rescanPath = true;
 	}
 
 	public void Unfreeze( TileOrientation orientation )
 	{
-		if ( orientation == TileOrientation.Down || orientation == TileOrientation.Up )
+		freezed = body.Unfreeze( orientation );
+	}
+	
+	void OnRigidbodyCollisionEnter(Collision collision)
+	{
+		// ADD A Control to avoid player change physic too soon
+		// in order to avoir "gluing effect"
+		
+		//if (collision.relativeVelocity.magnitude > 2)
+		//	GetComponent<AudioSource>().Play();
+		
+		// Detect all the obstructed tiles
+		foreach ( TileOrientation orientation in System.Enum.GetValues( typeof( TileOrientation ) ) )
 		{
-			if( constrainedAxis == ConstraintAxis.Y )
+			RaycastHit[] hitInfos = Physics.RaycastAll( transform.position, World.getGravityVector( orientation ), transform.localScale.x * 0.55f, 1 << LayerMask.NameToLayer( "Tiles" ) );
+			
+			foreach ( RaycastHit hitInfo in hitInfos )
 			{
-				GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | ~RigidbodyConstraints.FreezePositionY;
-				freezed = false;
-			}
-		}
-		else if ( orientation == TileOrientation.Right || orientation == TileOrientation.Left )
-		{
-			if( constrainedAxis == ConstraintAxis.X )
-			{
-				GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | ~RigidbodyConstraints.FreezePositionX;
-				freezed = false;
-			}
-		}
-		else if ( orientation == TileOrientation.Front || orientation == TileOrientation.Back )
-		{
-			if( constrainedAxis == ConstraintAxis.Z )
-			{
-				GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | ~RigidbodyConstraints.FreezePositionZ;
-				freezed = false;
+				if ( !hitInfo.collider.transform.IsChildOf( transform ) )
+				{
+					Tile tile = hitInfo.collider.GetComponent<Tile>();
+					
+					if ( obstructedTiles.ContainsKey( tile ) )
+						continue;
+					
+					obstructedTiles.Add( tile, tile.type );
+					tile.type = TileType.Invalid;
+					tile.rescanPath = true;
+				}
 			}
 		}
 	}
-
-	private void Freeze()
+	
+	void OnRigidbodyCollisionExit( Collision collision )
 	{
-		GetComponent<Rigidbody>().velocity = Vector3.zero;
-		GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-		GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+		if (collision.gameObject.tag == "Player")
+			return;
 		
-		if (position > to)
-			position = to - 0.001f;
-		else if (position < from)
-			position = from + 0.001f;
-
-		freezed = true;
-
-		Tile[] childrenPlatforms = GetComponentsInChildren<Tile> ();
-
-		for ( int i = 0, l = childrenPlatforms.Length; i < l; i++ )
-			childrenPlatforms[i].rescanPath = true;
+		foreach ( KeyValuePair<Tile, TileType > entry in obstructedTiles )
+		{
+			Tile tile = entry.Key;
+			tile.type = entry.Value;
+			tile.rescanPath = true;
+		}
+		
+		obstructedTiles.Clear ();
 	}
 }

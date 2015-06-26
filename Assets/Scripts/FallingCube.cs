@@ -15,7 +15,7 @@ public class FallingCube : MonoBehaviour
 
 	void Awake()
 	{
-		GameObject bodyGo = new GameObject ("rigidbody");
+		GameObject bodyGo = new GameObject ("rigidbody (falling cube)");
 		bodyGo.tag = gameObject.tag;
 		bodyGo.layer = gameObject.layer;
 		bodyGo.transform.position = transform.position;

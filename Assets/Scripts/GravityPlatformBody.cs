@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FallingCubeBody : MonoBehaviour
+public class GravityPlatformBody : MonoBehaviour
 {
 	private bool isOutOfBounds;
 	private Vector3 spawnPosition; // position of the Cube GameObject initial position
@@ -9,7 +9,7 @@ public class FallingCubeBody : MonoBehaviour
 	private Pawn PlayerPawn;
 	private Rigidbody body;
 
-	[HideInInspector] public FallingCube LegacyParent;
+	[HideInInspector] public GravityPlatform LegacyParent;
 
 	void Awake()
 	{
@@ -26,7 +26,8 @@ public class FallingCubeBody : MonoBehaviour
 		
 		body = GetComponent<Rigidbody> ();
 		body.transform.parent = bodyDummyParent.transform;
-		body.transform.localScale *= 1.001f;
+		body.transform.localScale *= 9.99f;
+		//GetComponent<BoxCollider>().size *= 10.001f;
 
 		body.interpolation = RigidbodyInterpolation.Interpolate;
 	}
@@ -38,12 +39,9 @@ public class FallingCubeBody : MonoBehaviour
 			LegacyParent.isFalling = true;
 		else
 			LegacyParent.isFalling = false;
-		
-		if ( PlayerPawn.GetComponent<Rigidbody>().useGravity )
-			body.constraints = PlayerPawn.GetComponent<Rigidbody>().constraints;
-		else
-			body.constraints = PlayerPawn.nextConstraint;
-		
+
+		// APPAREMENT LES vitesses sont doublées ici
+
 		LegacyParent.transform.position = transform.position;
 		LegacyParent.transform.rotation = transform.rotation;
 	}
@@ -58,8 +56,46 @@ public class FallingCubeBody : MonoBehaviour
 		body.velocity = Vector3.zero;
 		body.angularVelocity = Vector3.zero;
 		body.constraints = RigidbodyConstraints.FreezeAll; // .FreezeRotation | RigidbodyConstraints.FreezePositionZ;
+		body.isKinematic = false;
 
 		isOutOfBounds = false;
+	}
+	
+	public void Freeze()
+	{
+		body.velocity = Vector3.zero;
+		body.angularVelocity = Vector3.zero;
+		body.constraints = RigidbodyConstraints.FreezeAll;
+	}
+	
+	public bool Unfreeze( TileOrientation orientation )
+	{
+		if ( orientation == TileOrientation.Down || orientation == TileOrientation.Up )
+		{
+			if( LegacyParent.constrainedAxis == GravityPlatform.ConstraintAxis.Y )
+			{
+				body.constraints = RigidbodyConstraints.FreezeRotation | ~RigidbodyConstraints.FreezePositionY;
+				return false;
+			}
+		}
+		else if ( orientation == TileOrientation.Right || orientation == TileOrientation.Left )
+		{
+			if( LegacyParent.constrainedAxis == GravityPlatform.ConstraintAxis.X )
+			{
+				body.constraints = RigidbodyConstraints.FreezeRotation | ~RigidbodyConstraints.FreezePositionX;
+				return false;
+			}
+		}
+		else if ( orientation == TileOrientation.Front || orientation == TileOrientation.Back )
+		{
+			if( LegacyParent.constrainedAxis == GravityPlatform.ConstraintAxis.Z )
+			{
+				body.constraints = RigidbodyConstraints.FreezeRotation | ~RigidbodyConstraints.FreezePositionZ;
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	public void OutOfBounds()
@@ -69,6 +105,7 @@ public class FallingCubeBody : MonoBehaviour
 	
 	void OnCollisionEnter(Collision collision)
 	{
+		Debug.Log(collision.gameObject.name, collision.gameObject);
 		if (collision.gameObject.tag == "Player")
 		{
 			PlayerPawn.CubeContact (transform.position);
