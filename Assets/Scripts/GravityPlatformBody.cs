@@ -105,7 +105,6 @@ public class GravityPlatformBody : MonoBehaviour
 	
 	void OnCollisionEnter(Collision collision)
 	{
-		Debug.Log(collision.gameObject.name, collision.gameObject);
 		if (collision.gameObject.tag == "Player")
 		{
 			PlayerPawn.CubeContact (transform.position);

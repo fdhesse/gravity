@@ -25,19 +25,26 @@ public static class MuObjects
 	[MenuItem ("GameObject/Mu/GravityPlatform", false, 10)]
 	static void AddGravityPlatform ( MenuCommand menuCmd )
 	{
-		GameObject go = new GameObject( "GravityPlatform" );
-		go.tag = "GravityPlatform";
+		string path = "Assets/PREFABS/gameplay Platforms/Gravity Platform.prefab";
+		
+		Object asset = AssetDatabase.LoadAssetAtPath ( path, typeof( GameObject ) );
+		
+		if (asset == null)
+		{
+			Debug.LogError ("No prefab at path '" + path + "', did somebody moved or renamed the prefab/folder ?");
+			return;
+		}
+		
+		Vector3 position = SceneView.lastActiveSceneView.pivot;
+		//SceneView.currentDrawingSceneView.camera.ViewportToWorldPoint( new Vector3( .5f, .5f, 10f ) )
+		
+		GameObject go = (GameObject) GameObject.Instantiate( asset, position, Quaternion.identity );
+		go.name = asset.name;
+		
+		//GameObject go = new GameObject( "Falling Cube" );
 		
 		if ( menuCmd != null )
 			GameObjectUtility.SetParentAndAlign( go, menuCmd.context as GameObject );
-		
-		go.AddComponent<GravityPlatform>();
-		
-		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-		cube.transform.localScale = new Vector3( 10, 10, 10 );
-		cube.transform.parent = go.transform;
-		
-		cube.AddComponent<GameplayCube>();
 	}
 	
 	[MenuItem ("GameObject/Mu/GameplayCube", false, 10)]
