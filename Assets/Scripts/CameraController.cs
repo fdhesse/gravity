@@ -116,11 +116,11 @@ public class CameraController : MonoBehaviour {
 
 					if (angleOfSwipe < angle)
 					{
-						RotationDirection = RotationDirections.Up;
+						RotationDirection = RotationDirections.Down;
 						rotateTheCameraAround();
 					}else if((STRAIGHT_LINE_Angle - angleOfSwipe) < angle)
 					{
-						RotationDirection = RotationDirections.Down;
+						RotationDirection = RotationDirections.Up;
 						rotateTheCameraAround();
 					}
 					else
