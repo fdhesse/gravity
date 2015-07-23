@@ -67,11 +67,13 @@ public class HUD : MonoBehaviour
 			GUI.Box(new Rect(0,0,Screen.width,Screen.height),GUIContent.none,skin.GetStyle("overlay"));
 			Time.timeScale = 0;
 			//cameraControl.enabled = false;
+			CameraController.Instance.enabled = false;
 		}
 		else
 		{
 			Time.timeScale = 1;
 			//cameraControl.enabled = true;
+			CameraController.Instance.enabled = true;
 		}
 
         if (isEndScreen)
