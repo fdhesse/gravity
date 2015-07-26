@@ -18,6 +18,8 @@ public class CameraController : MonoBehaviour {
 	public GameObject theCameraObject;
 	public Transform theCameraTragetPosition;
 
+	public int rotationInterval = 90;
+
 	Quaternion tempRotation;
 	#endregion
 
@@ -145,29 +147,29 @@ public class CameraController : MonoBehaviour {
 		case RotationDirections.Right:
 			currentRotation = gameObject.transform.localEulerAngles;
 			rotationDirection = 1;
-			targetRotation.y = (currentRotation.y + (90 * -rotationDirection));
-			y-= 90;
+			targetRotation.y = (currentRotation.y + (rotationInterval * -rotationDirection));
+			y-= rotationInterval;
 			StartCoroutine (objectRotationProcess());
 			break;
 		case RotationDirections.Left:
 			currentRotation = gameObject.transform.localEulerAngles;
 			rotationDirection = -1;
-			targetRotation.y = (currentRotation.y - (90 * rotationDirection));
-			y+= 90;
+			targetRotation.y = (currentRotation.y - (rotationInterval * rotationDirection));
+			y+= rotationInterval;
 			StartCoroutine (objectRotationProcess());
 			break;
 		case RotationDirections.Up:
 			currentRotation = gameObject.transform.localEulerAngles;
 			rotationDirection = 1;
-			targetRotation.x = (currentRotation.x + (90 * -rotationDirection));
-			x+= 90;
+			targetRotation.x = (currentRotation.x + (rotationInterval * -rotationDirection));
+			x+= rotationInterval;
 			StartCoroutine (objectRotationProcess());
 			break;
 		case RotationDirections.Down:
 			currentRotation = gameObject.transform.localEulerAngles;
 			rotationDirection = -1;
-			targetRotation.x = (currentRotation.x - (90 * rotationDirection));
-			x-= 90;
+			targetRotation.x = (currentRotation.x - (rotationInterval * rotationDirection));
+			x-= rotationInterval;
 			StartCoroutine (objectRotationProcess());
 			break;
 		}
