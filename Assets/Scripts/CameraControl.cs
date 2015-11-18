@@ -11,8 +11,12 @@ public class CameraControl : MonoBehaviour
 	public float rotationTime = 0.1f;
 
     public float distance = 5f; // distance to the target
-    public float xPivotingSpeed = 120.0f; // x orbiting speed
-    public float yPivotingSpeed = 120.0f; // y orbiting speed
+
+	[Tooltip("The ratio that will be applied to the drag distance on the horizontal of the screen. A value of 1 will keep the original speed, a value less than 1 will slow down the camera rotation speed. A value greater than 1 will increase the rotation speed.")]
+    public float xPivotingRatio = 1.0f; // x orbiting speed
+
+	[Tooltip("The ratio that will be applied to the drag distance on the vertical of the screen. A value of 1 will keep the original speed, a value less than 1 will slow down the camera rotation speed. A value greater than 1 will increase the rotation speed.")]
+	public float yPivotingRatio = 1.0f; // y orbiting speed
 	
 //	[EDIT]: commented 2 lines
 //    private float yMinLimit = -360f;
@@ -50,14 +54,12 @@ public class CameraControl : MonoBehaviour
 			}
 			else if ( Input.GetMouseButton(0) )
 			{
+				// get the drag distance
 				delta = Input.mousePosition - lastPos;
-				
-				// Do Stuff here
-				
-//				Debug.Log( "delta X : " + delta.x );
-//				Debug.Log( "delta Y : " + delta.y );
-				
-//				Debug.Log( "delta distance : " + delta.magnitude );		delta.y = ClampAngle(delta.y, yMinLimit, yMaxLimit);
+
+				// scale the drag distance with the value set in the level
+				delta.x *= xPivotingRatio;
+				delta.y *= yPivotingRatio;
 
 				if ( roll >= 90 && roll < 180 )
 				{
