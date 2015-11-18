@@ -5,6 +5,7 @@ public class FallingCubeBody : MonoBehaviour
 {
 	private bool isOutOfBounds;
 	private Vector3 spawnPosition; // position of the Cube GameObject initial position
+	private Vector3 lastPosition = Vector3.zero; // position of the game object at the previous frame	
 
 	private Pawn PlayerPawn;
 	private Rigidbody body;
@@ -34,10 +35,13 @@ public class FallingCubeBody : MonoBehaviour
 	void Update()
 	{
 		// if the cube is still falling, game can't continue
-		if ( Vector3.Magnitude(body.velocity) > 0f && !isOutOfBounds )
+		if ( Vector3.Magnitude(transform.position - lastPosition) > 0.001f && !isOutOfBounds )
 			LegacyParent.isFalling = true;
 		else
 			LegacyParent.isFalling = false;
+
+		// memorise the last position for testing at the next frame
+		lastPosition = transform.position;
 		
 		if ( PlayerPawn.GetComponent<Rigidbody>().useGravity )
 			body.constraints = PlayerPawn.GetComponent<Rigidbody>().constraints;

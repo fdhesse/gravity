@@ -159,11 +159,16 @@ public class GameplayCube : MonoBehaviour
 		// Destroy the MeshCollider to avoid tensor errors
 		//DestroyImmediate(face.GetComponent<MeshCollider> ());
 		//face.AddComponent<BoxCollider>();
-		
+
+		// add a rigid body and make it kinetic (also freeze in rotation)
+		Rigidbody rb = face.AddComponent<Rigidbody>();
+		rb.isKinematic = true;
+		rb.constraints = RigidbodyConstraints.FreezeRotation;
+
 		face.name = faceName;
 		face.transform.parent = transform;
 		face.transform.position = transform.position;
-		face.transform.localScale = Vector3.one;
+		face.transform.localScale = new Vector3(0.99f, 0.99f, 0.99f);
 		
 		tile = face.AddComponent<Tile>();
 		tile.gameObject.layer = LayerMask.NameToLayer( "Tiles" );
@@ -193,7 +198,7 @@ public class GameplayCube : MonoBehaviour
 
 		tile.CheckTileOrientation();
 
-		face.transform.Translate(new Vector3(0, 0, -transform.localScale.x * 0.5f), Space.Self);
+		face.transform.Translate(new Vector3(0, 0, -transform.localScale.x * 0.495f), Space.Self);
 
 		// Tag up with parent's tag
 		if (transform.parent != null && transform.parent.tag != null)

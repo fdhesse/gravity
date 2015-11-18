@@ -192,8 +192,9 @@ public class Stairway : MonoBehaviour {
 		gameObject.layer = LayerMask.NameToLayer ("Tiles");
 		gameObject.tag = "Stairway";
 		
-		//GameObject go = GameObject.CreatePrimitive (PrimitiveType.Plane);
-		GameObject go = GameObject.CreatePrimitive (PrimitiveType.Quad);
+		GameObject go = GameObject.CreatePrimitive(PrimitiveType.Quad);
+		go.transform.localScale = new Vector3(Mathf.Sqrt(2), 1.0f, 1.0f);
+
 		GetComponent<MeshFilter> ().sharedMesh = go.GetComponent<MeshFilter>().sharedMesh;
 		DestroyImmediate (go);
 
@@ -206,6 +207,14 @@ public class Stairway : MonoBehaviour {
 		}
 
 		meshCollider.sharedMesh = GetComponent<MeshFilter> ().sharedMesh;
+
+		// add a rigid body if not existing
+		Rigidbody rb = GetComponent<Rigidbody>();
+		if (rb == null)
+			rb = gameObject.AddComponent<Rigidbody>();
+		// make the rigid body kinetic (also freeze all as the stairs don't move)
+		rb.isKinematic = true;
+		rb.constraints = RigidbodyConstraints.FreezeAll;
 	}
 	
 #if UNITY_EDITOR
