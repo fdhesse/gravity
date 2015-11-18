@@ -21,15 +21,17 @@ public class Stairway : MonoBehaviour {
 		None,X,Y,Z
 	}
 
-	private bool invertedUp;
-
+	// the stairway axis is perpendicular to the stairway path way, because
+	// a stairway can be used in the plane of the its path way. For example
+	// if the stairways axis is Z, then the path that include the stairways
+	// can run along the X axis, or along the Y axis, so in the XY plane
 	[HideInInspector] [SerializeField] private StairwayAxis stairwayAxis;
 
 	[ExposeProperty]
 	public StairwayAxis Axis
 	{
 		get { return stairwayAxis; }
-		set	{ if(value != stairwayAxis) { SetAxis( value ); } }
+		set	{ stairwayAxis = value; }
 	}
 
 	public Tile LookForSiblingTile( Tile previousTile )
@@ -48,25 +50,20 @@ public class Stairway : MonoBehaviour {
 			// Si il ne s'agit ni de la tile précédente ni de la tile actuelle
 			if ( hit.transform != previousTile.transform && hit.transform != transform )
 			{
-				//Debug.Log ("Qui ne sont pas la précédente plateforme" );
+				// exclude all the block tile that are not in the plane of the stairway path
 				if ( stairwayAxis == StairwayAxis.X )
 				{
-					if ( !invertedUp && Mathf.RoundToInt( hit.transform.position.z ) != Mathf.RoundToInt( transform.position.z ) )
-						continue;
-					else if ( invertedUp && Mathf.RoundToInt( hit.transform.position.y ) != Mathf.RoundToInt( transform.position.y ) )
+					if ( Mathf.RoundToInt( hit.transform.position.x ) != Mathf.RoundToInt( transform.position.x ) )
 						continue;
 				}
-
 				else if ( stairwayAxis == StairwayAxis.Y )
 				{
-					if ( !invertedUp && Mathf.RoundToInt( hit.transform.position.z ) != Mathf.RoundToInt( transform.position.z ) )
+					if ( Mathf.RoundToInt( hit.transform.position.y ) != Mathf.RoundToInt( transform.position.y ) )
 						continue;
 				}
 				else if ( stairwayAxis == StairwayAxis.Z )
 				{
-					if ( !invertedUp && Mathf.RoundToInt( hit.transform.position.x ) != Mathf.RoundToInt( transform.position.x ) )
-						continue;
-					else if ( invertedUp && Mathf.RoundToInt( hit.transform.position.y ) != Mathf.RoundToInt( transform.position.y ) )
+					if ( Mathf.RoundToInt( hit.transform.position.z ) != Mathf.RoundToInt( transform.position.z ) )
 						continue;
 				}
 
@@ -89,81 +86,103 @@ public class Stairway : MonoBehaviour {
 	void Start()
 	{
 		stairwayAxis = StairwayAxis.None;
-		invertedUp = false;
-		
+
 		// X
-		if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (0, 45f, 0) ))) < 0.1f)
-		{
-			stairwayAxis = StairwayAxis.X;
-			invertedUp = true;
-		}
-		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (0, -45f, 0) ))) < 0.1f)
-		{
-			stairwayAxis = StairwayAxis.X;
-			invertedUp = true;
-		}
-		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (45f, 90f, 270f) ))) < 0.1f)
+		if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (45f, 0, 270f) ))) < 0.1f)
 		{
 			stairwayAxis = StairwayAxis.X;
 		}
-		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (-45f, 90f, 270f) ))) < 0.1f)
+		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (135f, 0, 270f) ))) < 0.1f)
 		{
 			stairwayAxis = StairwayAxis.X;
 		}
-		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (45f, 270f, 270f) ))) < 0.1f)
+		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (225f, 0, 270f) ))) < 0.1f)
 		{
 			stairwayAxis = StairwayAxis.X;
 		}
-		// X upside-down
-		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (-45f, 270f, 90f) ))) < 0.1f)
+		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (315f, 0, 270f) ))) < 0.1f)
 		{
 			stairwayAxis = StairwayAxis.X;
+		}
+		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (45f, 180f, 270f) ))) < 0.1f)
+		{
+			stairwayAxis = StairwayAxis.X;
+		}
+		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (135f, 180f, 270f) ))) < 0.1f)
+		{
+			stairwayAxis = StairwayAxis.X;
+		}
+		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (225f, 180f, 270f) ))) < 0.1f)
+		{
+			stairwayAxis = StairwayAxis.X;
+		}
+		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (315f, 180f, 270f) ))) < 0.1f)
+		{
+			stairwayAxis = StairwayAxis.X;
+		}
+		// Y
+		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (0, 45f, 0) ))) < 0.1f)
+		{
+			stairwayAxis = StairwayAxis.Y;
 		}
 		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (0, 135f, 0) ))) < 0.1f)
 		{
-			stairwayAxis = StairwayAxis.X;
-			invertedUp = true;
+			stairwayAxis = StairwayAxis.Y;
 		}
 		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (0, 225f, 0) ))) < 0.1f)
 		{
-			stairwayAxis = StairwayAxis.X;
-			invertedUp = true;
+			stairwayAxis = StairwayAxis.Y;
 		}
-		// Y
-		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (45f, 90f, 180f) ))) < 0.1f)
+		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (0, 315f, 0) ))) < 0.1f)
 		{
 			stairwayAxis = StairwayAxis.Y;
 		}
-		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (-45f, 90f, 180f) ))) < 0.1f)
+		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (180f, 45f, 0) ))) < 0.1f)
 		{
 			stairwayAxis = StairwayAxis.Y;
 		}
-		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (45f, 270f, 180f) ))) < 0.1f)
+		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (180f, 135f, 0) ))) < 0.1f)
 		{
 			stairwayAxis = StairwayAxis.Y;
 		}
-		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (-45f, 270f, 180f) ))) < 0.1f)
+		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (180f, 225f, 0) ))) < 0.1f)
+		{
+			stairwayAxis = StairwayAxis.Y;
+		}
+		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (180f, 315f, 0) ))) < 0.1f)
 		{
 			stairwayAxis = StairwayAxis.Y;
 		}
 		// Z
-		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (45f, 0, 180f) ))) < 0.1f)
+		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (45f, 90f, 270f) ))) < 0.1f)
 		{
 			stairwayAxis = StairwayAxis.Z;
 		}
-		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (-45f, 0, 180f) ))) < 0.1f)
+		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (135f, 90f, 270f) ))) < 0.1f)
 		{
 			stairwayAxis = StairwayAxis.Z;
 		}
-		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (-45f, 180f, 0) ))) < 0.1f)
+		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (225f, 90f, 270f) ))) < 0.1f)
 		{
 			stairwayAxis = StairwayAxis.Z;
 		}
-		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (45f, 180f, 180f) ))) < 0.1f)
+		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (315f, 90f, 270f) ))) < 0.1f)
 		{
 			stairwayAxis = StairwayAxis.Z;
 		}
-		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (-45f, 180f, 180f) ))) < 0.1f)
+		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (45f, 270f, 270f) ))) < 0.1f)
+		{
+			stairwayAxis = StairwayAxis.Z;
+		}
+		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (135f, 270f, 270f) ))) < 0.1f)
+		{
+			stairwayAxis = StairwayAxis.Z;
+		}
+		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (225f, 270f, 270f) ))) < 0.1f)
+		{
+			stairwayAxis = StairwayAxis.Z;
+		}
+		else if (Mathf.Abs ( Quaternion.Angle(transform.rotation, Quaternion.Euler( new Vector3 (315f, 270f, 270f) ))) < 0.1f)
 		{
 			stairwayAxis = StairwayAxis.Z;
 		}
@@ -188,34 +207,7 @@ public class Stairway : MonoBehaviour {
 
 		meshCollider.sharedMesh = GetComponent<MeshFilter> ().sharedMesh;
 	}
-
-	// <summary>
-	// Set stairway's axis
-	// </summary>
-	private void SetAxis( StairwayAxis axis )
-	{
-		Vector3 scale = Vector3.one;
-
-		if ( axis == StairwayAxis.X )
-		{
-			scale.x = Mathf.Sqrt (2);
-			transform.rotation = Quaternion.Euler( new Vector3( 45f, -90f, -90f ) );
-		}
-		else if ( axis == StairwayAxis.Y )
-		{
-			scale.y = Mathf.Sqrt (2);
-			transform.rotation = Quaternion.Euler( new Vector3( 0, -45f, 90f ) );
-		}
-		else if ( axis == StairwayAxis.Z )
-		{
-			scale.y = Mathf.Sqrt (2);
-			transform.rotation = Quaternion.Euler( new Vector3( 135f, 0, 0 ) );
-		}
-
-		stairwayAxis = axis;
-		transform.localScale = scale * 10;
-	}
-
+	
 #if UNITY_EDITOR
 	private Vector3 arrowDirection;
 	private Vector3 arrowPosition;
@@ -235,14 +227,8 @@ public class Stairway : MonoBehaviour {
 			Start ();
 			isInitialized = true;
 		}
-		
-		if ( stairwayAxis == StairwayAxis.X )
-			arrowDirection = transform.right;
-		else if ( stairwayAxis == StairwayAxis.Y )
-			arrowDirection = transform.up;
-		else if ( stairwayAxis == StairwayAxis.Z )
-			arrowDirection = transform.up;
 
+		arrowDirection = transform.right;
 		arrowDirection *= 10f;
 		arrowPosition = transform.position -arrowDirection * 0.5f;
 	}
