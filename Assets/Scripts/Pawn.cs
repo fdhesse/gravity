@@ -10,7 +10,7 @@ using System.Collections.Generic;
 /// </summary>
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(CapsuleCollider))]
 //[RequireComponent(typeof(Animator))]
 //[RequireComponent(typeof(CharacterController))]
 //[RequireComponent(typeof(MeshRenderer))]
@@ -36,7 +36,7 @@ public class Pawn : MonoBehaviour
 	private bool isWalkingInStairs;
 
 	private LayerMask tilesLayer;
-	private BoxCollider boxCollider;
+	private CapsuleCollider capsuleCollider;
 	
 	[HideInInspector] public TileOrientation orientation;
 	[HideInInspector] public bool isGlued;
@@ -122,9 +122,9 @@ public class Pawn : MonoBehaviour
 		
 		animator = transform.FindChild("OldGuy").GetComponent<Animator>();
 
-		boxCollider = GetComponent<BoxCollider>();
-		height = boxCollider.size.y * boxCollider.transform.localScale.y;
-		width = boxCollider.size.x * boxCollider.transform.localScale.x;
+		capsuleCollider = GetComponent<CapsuleCollider>();
+		height = capsuleCollider.height * capsuleCollider.transform.localScale.y;
+		width = capsuleCollider.radius * capsuleCollider.transform.localScale.x;
 
 		// Game cursor
 		Assets.SetMouseCursor ();
@@ -260,7 +260,7 @@ public class Pawn : MonoBehaviour
 		ResetDynamic();
 		
 		GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
-		boxCollider.enabled = true;
+		capsuleCollider.enabled = true;
 
 		StartCoroutine( DelayedReset ());
 	}
