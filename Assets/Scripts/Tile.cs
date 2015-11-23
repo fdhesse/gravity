@@ -101,13 +101,22 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 
         defineOrientation();
 		applyTileMaterial();
-		
+
 #if UNITY_EDITOR
+		// If we are playing in the editor, just disable the graphics face.
+		// but if we are in the editor (if UNITY_EDITOR) and we are not playing (!Application.isPlaying)
+		// then just enable the graphics faces
 		if ( transform.childCount > 0 )
-			transform.GetChild( 0 ).gameObject.SetActive( true );
-#elif UNITY_STANDALONE
+			transform.GetChild( 0 ).gameObject.SetActive( !Application.isPlaying );
+#else
+		// remove the debug graphics faces for all the other player which are not the unity editor
 		if ( transform.childCount > 0 )
-			transform.GetChild( 0 ).gameObject.SetActive( false );
+		{
+			// deactivate the graphics debug tile
+			// transform.GetChild( 0 ).gameObject.SetActive( false );
+			// or we can simply destory them, it's better optimized
+			Destroy( transform.GetChild( 0 ).gameObject );
+		}
 #endif
 
 		if ( gameObject.GetComponent<Stairway>() != null )
