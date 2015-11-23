@@ -43,6 +43,10 @@ public class HUD : MonoBehaviour
 	private string[] textPages;
 	private int pageId;
 
+	// fps related
+	private float fps = 0.0f;
+	private float lastSampledTimeForFPS = 0.0f;
+
 	// Camera reference
 	private CameraControl cameraControl;
 	
@@ -58,6 +62,19 @@ public class HUD : MonoBehaviour
 		goldStar = Resources.Load ("HUD/goldstar") as Texture;
 		greyStar = Resources.Load ("HUD/greyStar") as Texture;
     }
+	
+	// Update is called once per frame
+	void Update()
+	{
+		// compute the FPS
+		const int nbFrameForAverage = 100;
+		if ((Time.frameCount % nbFrameForAverage) == 0)
+		{
+			float averageDeltaTime = (Time.time - lastSampledTimeForFPS) / (float)nbFrameForAverage;
+			fps = 1.0f / averageDeltaTime;
+			lastSampledTimeForFPS = Time.time;
+		}
+	}
 
     // Update is called once per frame
     void OnGUI()
@@ -66,14 +83,14 @@ public class HUD : MonoBehaviour
         {
 			GUI.Box(new Rect(0,0,Screen.width,Screen.height),GUIContent.none,skin.GetStyle("overlay"));
 			Time.timeScale = 0;
-			//cameraControl.enabled = false;
-			CameraController.Instance.enabled = false;
+			cameraControl.enabled = false;
+			//CameraController.Instance.enabled = false;
 		}
 		else
 		{
 			Time.timeScale = 1;
-			//cameraControl.enabled = true;
-			CameraController.Instance.enabled = true;
+			cameraControl.enabled = true;
+			//CameraController.Instance.enabled = true;
 		}
 
         if (isEndScreen)
@@ -99,6 +116,12 @@ public class HUD : MonoBehaviour
         {
             pauseWindowRect = GUI.Window(0, pauseWindowRect, pauseWindow, "Pause", skin.GetStyle("window"));
         }
+
+		// debug print the fps
+		GUI.color = Color.black;
+		GUIStyle style = new GUIStyle();
+		style.alignment = TextAnchor.UpperRight;
+		GUI.Label(new Rect(10, 5, 100, 30), fps.ToString("f1"), style);
     }
 
 
