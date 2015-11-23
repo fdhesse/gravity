@@ -1,37 +1,42 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GoldTile : MonoBehaviour
-{
-	// all the tile will share the same material, either the active or inactive one
-	public Material activeMaterial;
-	public Material inactiveMaterial;
+public class GoldTile : MonoBehaviour {
 
-	private TileOrientation orientation;
+	Material mat;
+	Color matColor;
+
+	TileOrientation orientation;
+	
+	public Color spiralColorActive;
+	public Color spiralColorInactive;
 
 	// Use this for initialization
-	void Awake()
+	void Awake ()
 	{
-		DefineOrientation();
-		Reset();
+		mat = GetComponent<MeshRenderer> ().material;
+		matColor = spiralColorInactive;
+
+		DefineOrientation ();
 	}
 	
+	// Update is called once per frame
+	void Update ()
+	{
+		mat.color = matColor;
+	}
+
 	public void Reset()
 	{
-		// get the world orientation to choose the correct material
-		Pawn PlayerPawn = GameObject.Find("Pawn").GetComponent<Pawn>() as Pawn;
-		if (PlayerPawn != null)
-			ChangeGravity(PlayerPawn.GetWorldGravity());
-		else
-			GetComponent<MeshRenderer>().material = inactiveMaterial;
+		matColor = spiralColorInactive;
 	}
 
 	private void ChangeGravity( TileOrientation gravityOrientation )
 	{
 		if ( gravityOrientation == orientation )
-			GetComponent<MeshRenderer>().material = activeMaterial;
+			matColor = spiralColorActive;
 		else
-			GetComponent<MeshRenderer>().material = inactiveMaterial;
+			matColor = spiralColorInactive;
 	}
 
 	private void DefineOrientation()
