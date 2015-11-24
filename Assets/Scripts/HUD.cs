@@ -44,6 +44,7 @@ public class HUD : MonoBehaviour
 	private int pageId;
 
 	// fps related
+	public bool drawFPS = true;
 	private float fps = 0.0f;
 	private float lastSampledTimeForFPS = 0.0f;
 
@@ -66,13 +67,16 @@ public class HUD : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		// compute the FPS
-		const int nbFrameForAverage = 100;
-		if ((Time.frameCount % nbFrameForAverage) == 0)
+		if (drawFPS)
 		{
-			float averageDeltaTime = (Time.time - lastSampledTimeForFPS) / (float)nbFrameForAverage;
-			fps = 1.0f / averageDeltaTime;
-			lastSampledTimeForFPS = Time.time;
+			// compute the FPS
+			const int nbFrameForAverage = 100;
+			if ((Time.frameCount % nbFrameForAverage) == 0)
+			{
+				float averageDeltaTime = (Time.time - lastSampledTimeForFPS) / (float)nbFrameForAverage;
+				fps = 1.0f / averageDeltaTime;
+				lastSampledTimeForFPS = Time.time;
+			}
 		}
 	}
 
@@ -118,10 +122,13 @@ public class HUD : MonoBehaviour
         }
 
 		// debug print the fps
-		GUI.color = Color.black;
-		GUIStyle style = new GUIStyle();
-		style.alignment = TextAnchor.UpperRight;
-		GUI.Label(new Rect(10, 5, 100, 30), fps.ToString("f1"), style);
+		if (drawFPS)
+		{
+			GUI.color = Color.black;
+			GUIStyle style = new GUIStyle();
+			style.alignment = TextAnchor.UpperRight;
+			GUI.Label(new Rect(10, 5, 100, 30), fps.ToString("f1"), style);
+		}
     }
 
 
