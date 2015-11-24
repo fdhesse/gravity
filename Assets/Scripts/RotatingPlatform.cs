@@ -50,14 +50,14 @@ public class RotatingPlatform : MonoBehaviour
 		startRotation = transform.rotation;
 	}
 
-	public void Reset()
+	public void Reset(TileOrientation startingOrientation)
 	{
 		lastGravity = -Vector3.up;
 
 		transform.position = startPosition;
 		transform.rotation = startRotation;
 
-		ChangeGravityImmediate (TileOrientation.Down);
+		ChangeGravityImmediate( startingOrientation );
 	}
 	
 	private void ChangeGravityImmediate( TileOrientation orientation )

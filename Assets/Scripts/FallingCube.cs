@@ -70,7 +70,7 @@ public class FallingCube : MonoBehaviour
 		}
 	}
 
-	public void Reset ()
+	public void Reset (TileOrientation startingOrientation)
 	{
 		if (!isInit)
 			Awake ();

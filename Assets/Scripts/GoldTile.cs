@@ -13,17 +13,14 @@ public class GoldTile : MonoBehaviour
 	void Awake()
 	{
 		DefineOrientation();
-		Reset();
+		// The first material assignation doesn't really matter, because the reset will be called later
+		// when the game start, so the correct orientation will be given at that time
+		Reset(TileOrientation.Up);
 	}
 	
-	public void Reset()
+	public void Reset(TileOrientation startingOrientation)
 	{
-		// get the world orientation to choose the correct material
-		Pawn PlayerPawn = GameObject.Find("Pawn").GetComponent<Pawn>() as Pawn;
-		if (PlayerPawn != null)
-			ChangeGravity(PlayerPawn.GetWorldGravity());
-		else
-			GetComponent<MeshRenderer>().material = inactiveMaterial;
+		ChangeGravity(startingOrientation);
 	}
 
 	private void ChangeGravity( TileOrientation gravityOrientation )

@@ -32,23 +32,23 @@ public class World : MonoBehaviour {
 		playerPawn = player;
 	}
 	
-	public void Restart()
+	public void Restart(TileOrientation startingOrientation)
 	{
-		playerPawn.respawn();
+		World.SetGravity( startingOrientation );
+
+		playerPawn.respawn( startingOrientation );
 		
 		for (int i = 0; i < fallingCubes.Length; i++)
-			((FallingCube) fallingCubes[i]).Reset();
+			((FallingCube) fallingCubes[i]).Reset( startingOrientation );
 		
 		for (int i = 0; i < gravityPlatforms.Length; i++)
-			((GravityPlatform) gravityPlatforms[i]).Reset();
+			((GravityPlatform) gravityPlatforms[i]).Reset( startingOrientation );
 
 		for (int i = 0; i < rotatingPlatforms.Length; i++)
-			((RotatingPlatform) rotatingPlatforms[i]).Reset();
+			((RotatingPlatform) rotatingPlatforms[i]).Reset( startingOrientation );
 
 		for (int i = 0; i < goldTiles.Length; i++)
-			((GoldTile)goldTiles [i]).Reset ();
-
-		ChangeGravity ( playerPawn.orientation );
+			((GoldTile)goldTiles[i]).Reset( startingOrientation );
 	}
 	
 	public bool IsGameOver()
@@ -64,7 +64,7 @@ public class World : MonoBehaviour {
 	public void GameStart()
 	{
 		isGameOver = false;
-		Restart();
+		Restart(TileOrientation.Up);
 	}
 	
 	public bool FallingCubes()

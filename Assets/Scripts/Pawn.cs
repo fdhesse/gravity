@@ -242,7 +242,7 @@ public class Pawn : MonoBehaviour
 		}
 	}
 	
-	public void respawn()
+	public void respawn(TileOrientation startingOrientation)
 	{
 		path = null;
 		pawnTile = null;
@@ -255,8 +255,8 @@ public class Pawn : MonoBehaviour
 		
 		transform.position = spawnPosition;
 		transform.rotation = spawnRotation;
-		
-		World.SetGravity( TileOrientation.Up );
+
+		orientation = startingOrientation;
 		ResetDynamic();
 		
 		GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;

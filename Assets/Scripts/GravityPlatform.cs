@@ -141,7 +141,7 @@ public class GravityPlatform : MonoBehaviour {
 			Freeze();
 	}
 
-	public void Reset()
+	public void Reset(TileOrientation startingOrientation)
 	{
 		if (!isInit)
 			Awake ();
@@ -151,6 +151,7 @@ public class GravityPlatform : MonoBehaviour {
 		Position = startPos;
 		
 		Freeze ();
+		Unfreeze( startingOrientation );
 
 		/*
 		GetComponent<Rigidbody> ().isKinematic = false;
