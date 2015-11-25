@@ -1,15 +1,25 @@
 fileFormatVersion: 2
-guid: a20f0798e44f141428a411e18b9c7f4c
-timeCreated: 1430933008
+guid: af8062ecbd1d2498d88ac717f09c869e
+timeCreated: 1448461742
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Platform2_tile1
+    100004: Platform2_tile2
     400000: //RootNode
+    400002: Platform2_tile1
+    400004: Platform2_tile2
     2300000: //RootNode
+    2300002: Platform2_tile1
+    2300004: Platform2_tile2
     3300000: //RootNode
-    4300000: floor
+    3300002: Platform2_tile1
+    3300004: Platform2_tile2
+    4300000: Platform2_tile1
+    4300002: Platform2_tile2
+    9500000: //RootNode
   materials:
     importMaterials: 1
     materialName: 0
@@ -49,11 +59,11 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 0
+    normalSmoothAngle: 60
     splitTangentsAcrossUV: 1
-    normalImportMode: 1
+    normalImportMode: 0
     tangentImportMode: 1
-  importAnimation: 0
+  importAnimation: 1
   copyAvatar: 0
   humanDescription:
     human: []
@@ -68,7 +78,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
