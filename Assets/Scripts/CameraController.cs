@@ -83,13 +83,13 @@ public class CameraController : MonoBehaviour {
 		#endregion
 
 		#region Input Mouse and Touch
-		if (Input.GetMouseButtonDown(0))
+		if (InputManager.isClickDown())
 		{
 			swipeStartPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
 			swipeStart = Time.time;
 		}
 		
-		if (Input.GetMouseButtonUp(0)) {
+		if (InputManager.isClickUp()) {
 			float deltaTime = Time.time - swipeStart;
 			Vector2 endPosition  = new Vector2(Input.mousePosition.x,Input.mousePosition.y);
 			Vector2 swipeVector = endPosition - swipeStartPosition;

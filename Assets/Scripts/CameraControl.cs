@@ -48,11 +48,11 @@ public class CameraControl : MonoBehaviour
 
 		if (target && ( !target.GetComponent<Pawn>() || target.GetComponent<Pawn>().isCameraMode ))
         {
-			if ( Input.GetMouseButtonDown(0) )
+			if ( InputManager.isClickDown() )
 			{
 				lastPos = Input.mousePosition;
 			}
-			else if ( Input.GetMouseButton(0) )
+			else if ( InputManager.isClickHeldDown() )
 			{
 				// get the drag distance
 				delta = Input.mousePosition - lastPos;

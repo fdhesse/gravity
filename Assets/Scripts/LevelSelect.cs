@@ -29,7 +29,7 @@ public class LevelSelect : MonoBehaviour {
 			HighlightLevel( targetHit );
 			//targetHit.transform.localScale = Vector3.one * 1.2f;
 
-			if ( Input.GetMouseButtonUp(0) )
+			if ( InputManager.isClickUp() )
 				Application.LoadLevel(targetHit.name);
 		}
 

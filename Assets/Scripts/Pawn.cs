@@ -968,7 +968,7 @@ public class Pawn : MonoBehaviour
 			
 			Tile tile = getCursorTile();
 
-	        if (Input.GetMouseButton(0))
+	        if (InputManager.isClickHeldDown())
 			{
 				if(Time.time - lastClick < .1)
 					clickCountdown += Time.deltaTime;
@@ -984,12 +984,12 @@ public class Pawn : MonoBehaviour
 				}
 	        }
 
-			if (Input.GetMouseButtonUp(0) && clickCountdown > .25f)
+			if (InputManager.isClickUp() && clickCountdown > .25f)
 			{
 				StartCoroutine(SetNormalCursor());
 				isCameraMode = false;
 			}
-			else if (Input.GetMouseButtonUp(0))
+			else if (InputManager.isClickUp())
 			{
 				clickCountdown = 0;
 
@@ -1033,7 +1033,7 @@ public class Pawn : MonoBehaviour
 	            }
 	        }
 		}
-		else if (Input.GetMouseButtonUp(0))
+		else if (InputManager.isClickUp())
 		{
 			StartCoroutine(SetNormalCursor());
 			isCameraMode = false;
