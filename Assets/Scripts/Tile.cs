@@ -16,7 +16,6 @@ using System.Collections.Generic;
 public class Tile : MonoBehaviour, IPathNode<Tile>
 {
 	public TileType type = TileType.Valid;
-	private TileType startType;
 
 	private bool isGlueTile = false;
 	public bool IsGlueTile
@@ -34,10 +33,10 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 
 	[HideInInspector] public TileOrientation orientation;
 	
-	public List<Tile> connections; //list of directly accessible platforms
-	protected HashSet<Tile> siblingConnection; //auxilliary hashset used for siblings detection
+	public List<Tile> connections = null; //list of directly accessible platforms
+	protected HashSet<Tile> siblingConnection = null; //auxilliary hashset used for siblings detection
 
-	public bool rescanPath = false;// debug toggle used to force rescan of nearby platforms
+	public bool rescanPath = true;// debug toggle used to force rescan of nearby platforms
 
 	// #HIGHLIGHTING#
 
@@ -388,18 +387,29 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		}
 
 		// Check if there is any difference
-		if ( connectionSet.Count != connections.Count )
-		{
-			// Rescan previous connections
-			foreach( Tile connectedTile in connections )
-				connectedTile.rescanPath = true;
+		// a flag to tell if we have the same list or not finally
+		bool areListsDifferents = false;
 
+		// Rescan previous connections
+		foreach( Tile connectedTile in connections )
+			if (!connectionSet.Contains(connectedTile))
+			{
+				// we found a tile that was in the old list, but not in the new one
+				connectedTile.rescanPath = true;
+				areListsDifferents = true;
+			}
+
+		// Rescan new connections too
+		foreach( Tile connectedTile in connectionSet )
+			if (!connections.Contains(connectedTile))
+			{
+				// we found a tile that is in the new list, but was not in the old one
+				connectedTile.rescanPath = true;
+				areListsDifferents = true;
+			}
+
+		if (areListsDifferents)
 			connections = new List<Tile>(connectionSet);
-
-			// Rescan new connections too
-			foreach( Tile connectedTile in connections )
-				connectedTile.rescanPath = true;
-		}
     }
 
 	

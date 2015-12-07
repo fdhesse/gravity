@@ -66,9 +66,9 @@ public class Pawn : MonoBehaviour
 	
 	// #TILES#
 	private List<Tile> path = new List<Tile> (); // List of tiles in the current path
-	private Tile pawnTile; // Tile beneath the Pawn
-	private Tile clickedTile; // Tile the player clicked
-	private Tile focusedTile; // Tile the cursor focus
+	private Tile pawnTile = null; // Tile beneath the Pawn
+	private Tile clickedTile = null; // Tile the player clicked
+	private Tile focusedTile = null; // Tile the cursor focus
 	private List<Tile> clickableTiles = new List<Tile> ();
 	
 	// #GUI#
@@ -80,8 +80,7 @@ public class Pawn : MonoBehaviour
 	
 	// #MOUSE#
 	[HideInInspector] public bool isCameraMode = false;
-	private float lastClick;
-	private float clickCountdown;
+	private float clickCountdown = 0.0f;
 
 	// #SPHERES#
     private GameObject[] orientationSpheres = new GameObject[6];
@@ -357,6 +356,7 @@ public class Pawn : MonoBehaviour
 		{
 			animState = 3;
 			isFalling = false;
+			isJumping = false;
 
 			// Snap to the tile
 			pawnTile = collision.collider.gameObject.GetComponent<Tile>();
@@ -961,6 +961,14 @@ public class Pawn : MonoBehaviour
     /// </summary>
     private void manageMouse()
 	{
+		// for very low framerate, we give at least 3 frames to switch to camera mode,
+		// otherwise for normal framerate, we use a fixed value of 1 quarter of second.
+		float durationToSwitchToCameraMode = Math.Max(0.25f, 3.0f * Time.deltaTime);
+
+		// reset the click down duration if the button is up
+		if (InputManager.isClickUp())
+			clickCountdown = 0;
+
 		if( !isCameraMode )
 		{
 			if (isFalling || isJumping || (path != null && path.Count > 0))
@@ -970,65 +978,61 @@ public class Pawn : MonoBehaviour
 
 	        if (InputManager.isClickHeldDown())
 			{
-				if(Time.time - lastClick < .1)
-					clickCountdown += Time.deltaTime;
-				else
-					clickCountdown = 0;
+				clickCountdown += Time.deltaTime;
 
-	            lastClick = Time.time;
-
-				if(clickCountdown > .25f)
+				if(clickCountdown > durationToSwitchToCameraMode)
 				{
 					isCameraMode = true;
 					StartCoroutine(SetCameraCursor());
 				}
 	        }
 
-			if (InputManager.isClickUp() && clickCountdown > .25f)
+			if (InputManager.isClickUp())
 			{
-				StartCoroutine(SetNormalCursor());
-				isCameraMode = false;
-			}
-			else if (InputManager.isClickUp())
-			{
-				clickCountdown = 0;
-
-				if ( isWalking || isFalling || tile == null || world.FallingCubes() )
-					return;
-
-				if (tile.isClickable)
+				if (clickCountdown > durationToSwitchToCameraMode)
 				{
-					removeDestinationMarks();
-					ClearClickableTiles();
+					StartCoroutine(SetNormalCursor());
+					isCameraMode = false;
+				}
+				else
+				{
+					if ( isWalking || isFalling || tile == null || world.FallingCubes() )
+						return;
 
-					focusedTile = null;
-					
-					// If the player clicked a tile with different orientation
-					if ( tile.orientation != pawnTile.orientation )
+					if (tile.isClickable)
 					{
-						// If the pawn is on a glue tile
-						// We only consider the click if the gravity change
-						if ( isGlued && World.getGravityVector( tile.orientation ) != Physics.gravity.normalized )
-						{
-							hud.gravityChangeCount++;
+						removeDestinationMarks();
+						ClearClickableTiles();
 
-							GetComponent<Rigidbody>().useGravity = false;
-							tileGravityVector = World.getGravityVector( pawnTile.orientation );
-							
-							World.SetGravity( tile.orientation );
-							world.ChangeGravity ( tile.orientation );
-						}
-						else //for punishing gravity take the tile == null here
+						focusedTile = null;
+						
+						// If the player clicked a tile with different orientation
+						if ( tile.orientation != pawnTile.orientation )
 						{
-							hud.gravityChangeCount++;
-							pawnTile = null;
-							StartCoroutine( DelayedPawnFall ( tile.orientation ));
+							// If the pawn is on a glue tile
+							// We only consider the click if the gravity change
+							if ( isGlued && World.getGravityVector( tile.orientation ) != Physics.gravity.normalized )
+							{
+								hud.gravityChangeCount++;
+
+								GetComponent<Rigidbody>().useGravity = false;
+								tileGravityVector = World.getGravityVector( pawnTile.orientation );
+								
+								World.SetGravity( tile.orientation );
+								world.ChangeGravity ( tile.orientation );
+							}
+							else //for punishing gravity take the tile == null here
+							{
+								hud.gravityChangeCount++;
+								pawnTile = null;
+								StartCoroutine( DelayedPawnFall ( tile.orientation ));
+							}
 						}
-					}
-					else
-					{
-						clickedTile = tile;
-						path = AStarHelper.Calculate(pawnTile, clickedTile);
+						else
+						{
+							clickedTile = tile;
+							path = AStarHelper.Calculate(pawnTile, clickedTile);
+						}
 					}
 	            }
 	        }
@@ -1210,7 +1214,7 @@ public class Pawn : MonoBehaviour
     /// </summary>
     private Vector3 getGroundPosition()
 	{
-		float n = (transform.localScale.y * height) *.5f;
+		float n = (transform.localScale.y * height) * 0.5f;
 
 		switch (GetWorldGravity())
 		{

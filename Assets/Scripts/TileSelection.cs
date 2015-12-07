@@ -7,8 +7,6 @@ using System.Collections;
 public static class TileSelection
 {
     private static Tile currentTile;//currently selected platform
-	private static Camera camera;//camera for this scene
-	//private static GameObject cam;//camera for this scene
 
 	private static LayerMask tilesLayer = LayerMask.NameToLayer( "Tiles" );
 
@@ -19,12 +17,6 @@ public static class TileSelection
 		get { if ( player == null ) player = GameObject.Find( "Pawn" ); return player.transform.position; }
 	}
 
-    static TileSelection()
-    {
-		//cam = GameObject.FindGameObjectWithTag("MainCamera"); //initialize the camera
-		camera = Camera.main;
-	}
-	
 	/// <summary>
 	/// Is the platform of a Clickable Type ?
 	/// </summary>
@@ -36,19 +28,6 @@ public static class TileSelection
 		return false;
 	}
 
-	/*
-    /// <summary>
-    /// Highlights target platform
-    /// </summary>
-    public static void highlightTargetTile()
-    {
-        if (platform != null)
-            platform.unHighlight();
-
-        //platform = getTile();
-    }
-    */
-
     /// <summary>
     /// Gets the platform that is being targeted.
     /// </summary>
@@ -59,10 +38,7 @@ public static class TileSelection
 
         Tile tile = null;
 
-		if (camera == null)//if there isn't a camera associated with this script, get the main camera
-			camera = Camera.main;
-
-		Ray mouseRay = camera.ScreenPointToRay(Input.mousePosition);
+		Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit = new RaycastHit();
 
 		if (Physics.Raycast(mouseRay, out hit, float.MaxValue, (1 << tilesLayer))) // cast a raycast ignoring all but the layer for the tiles
