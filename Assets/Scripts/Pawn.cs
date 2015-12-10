@@ -43,8 +43,8 @@ public class Pawn : MonoBehaviour
 	[HideInInspector] public bool isLeavingGlueTile;
 	[HideInInspector] public Vector3 tileGravityVector;
 
-	[HideInInspector] public bool isJumping;
-	[HideInInspector] public bool isFalling;
+	[HideInInspector] public bool isJumping = false;
+	[HideInInspector] public bool isFalling = true;
 	[HideInInspector] public RigidbodyConstraints nextConstraint;
 	private RigidbodyConstraints transformConstraints;
 	
@@ -808,11 +808,12 @@ public class Pawn : MonoBehaviour
 					else
 						getOrientationSphere (orientation).transform.position = tile.transform.position - (World.getGravityVector (GetWorldGravity ()) * hud.dotSize * .5f );
 				}
-				else
-				{
-					//tile.isClickable = false;
-					getOrientationSphere(orientation).transform.position = Vector3.one * float.MaxValue; // dot is moved to infinity
-				}
+//				else
+//				{
+//					//tile.isClickable = false;
+//					//tile is already set to infinity in the removeDestinationMarks
+//					getOrientationSphere(orientation).transform.position = Vector3.one * float.MaxValue; // dot is moved to infinity
+//				}
 			}
 		}
 	}
@@ -966,14 +967,15 @@ public class Pawn : MonoBehaviour
 		float durationToSwitchToCameraMode = Math.Max(0.25f, 3.0f * Time.deltaTime);
 
 		// reset the click down duration if the button is up
-		if (InputManager.isClickUp())
+		if (!InputManager.isClickHeldDown())
 			clickCountdown = 0;
 
 		if( !isCameraMode )
 		{
 			if (isFalling || isJumping || (path != null && path.Count > 0))
 				return;
-			
+
+			// ask the tile now, cause it will highlight the clicked tile
 			Tile tile = getCursorTile();
 
 	        if (InputManager.isClickHeldDown())
@@ -984,6 +986,8 @@ public class Pawn : MonoBehaviour
 				{
 					isCameraMode = true;
 					StartCoroutine(SetCameraCursor());
+					if (tile != null)
+						tile.unHighlight();
 				}
 	        }
 
@@ -993,6 +997,8 @@ public class Pawn : MonoBehaviour
 				{
 					StartCoroutine(SetNormalCursor());
 					isCameraMode = false;
+					if (tile != null)
+						tile.unHighlight();
 				}
 				else
 				{

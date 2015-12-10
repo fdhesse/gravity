@@ -44,4 +44,14 @@ public class InputManager
 		                                    Input.touches[0].phase == TouchPhase.Canceled));
 		#endif
 	}
+
+	public static bool hasAnyInput()
+	{
+		#if (UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBPLAYER)
+		// on device with a mouse, we want to cast ray all the time
+		return true;
+		#else
+		return (Input.touchCount == 1);
+		#endif
+	}
 }

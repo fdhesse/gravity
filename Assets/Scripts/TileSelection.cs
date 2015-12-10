@@ -38,15 +38,19 @@ public static class TileSelection
 
         Tile tile = null;
 
-		Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit = new RaycastHit();
+		// check if we need to cast a ray if there's an input
+		if (InputManager.hasAnyInput())
+		{
+			Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+	        RaycastHit hit = new RaycastHit();
 
-		if (Physics.Raycast(mouseRay, out hit, float.MaxValue, (1 << tilesLayer))) // cast a raycast ignoring all but the layer for the tiles
-        {
-			tile = hit.collider.gameObject.GetComponent<Tile>();
+			if (Physics.Raycast(mouseRay, out hit, float.MaxValue, (1 << tilesLayer))) // cast a raycast ignoring all but the layer for the tiles
+	        {
+				tile = hit.collider.gameObject.GetComponent<Tile>();
 
-			if (tile != null && TileSelection.isClickableType( tile.type ) ) //if it is a tile
-				tile.highlight();
+				if (tile != null && TileSelection.isClickableType( tile.type ) ) //if it is a tile
+					tile.highlight();
+			}
 		}
 
 		currentTile = tile;
