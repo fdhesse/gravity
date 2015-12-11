@@ -770,23 +770,12 @@ public class Pawn : MonoBehaviour
         }
 	}
 
-	/// <summary>
-	/// Gets the game object of the sphere for a given TileOrientation
-	/// </summary>
-	private GameObject getOrientationSphere(TileOrientation orientation)
-	{
-		return orientationSpheres[(int)orientation - 1];
-	}
-
 	private void removeDestinationMarks()
 	{
-		foreach (TileOrientation orientation in Enum.GetValues(typeof(TileOrientation)))
+		foreach (GameObject sphere in orientationSpheres)
 		{
-			if ((int)orientation == 0)
-				continue;
-
-			//getOrientationSphere(orientation).transform.position = Vector3.one * float.MaxValue; //sphere is moved to infinity muhahahaha, tremble before my power
-			getOrientationSphere(orientation).SetActive(false);
+			//sphere.transform.position = Vector3.one * float.MaxValue; //sphere is moved to infinity muhahahaha, tremble before my power
+			sphere.SetActive(false);
 		}
 	}
 
@@ -795,19 +784,18 @@ public class Pawn : MonoBehaviour
 		if ( isWalking || isWalkingInStairs || isFalling || isJumping )
 			return;
 
-		removeDestinationMarks ();
+		removeDestinationMarks();
 
-		foreach (TileOrientation orientation in Enum.GetValues(typeof(TileOrientation)))
+		for (int i = 0 ; i < orientationSpheres.Length ; ++i)
 		{
-			if ( (int) orientation == 0 )
-				continue;
+			TileOrientation orientation = (TileOrientation)(i + 1);
 
 			RaycastHit hit = new RaycastHit ();
 
 			// Casting a ray towards 'orientation', SphereCast needed because of Pawn's capsule thickness and ignoring Pawn's collider
-			if (Physics.SphereCast (transform.position, width * 0.4f, World.getGravityVector (orientation).normalized, out hit, 10000, (1 << tilesLayer)))
+			if (Physics.SphereCast (transform.position, width * 0.4f, World.getGravityVector(orientation).normalized, out hit, 10000, (1 << tilesLayer)))
 			{
-				Tile tile = hit.collider.gameObject.GetComponent<Tile> ();
+				Tile tile = hit.collider.gameObject.GetComponent<Tile>();
 				
 				if ( tile != null && tile != pawnTile && TileSelection.isClickableType( tile.type ) )
 				{
@@ -818,13 +806,13 @@ public class Pawn : MonoBehaviour
 						clickableTiles.Add (tile);
 
 					// reactivate the sphere
-					getOrientationSphere(orientation).SetActive(true);
+					orientationSpheres[i].SetActive(true);
 
 					// and position it on the tile
 					if (hud.dotIsInside)
-						getOrientationSphere(orientation).transform.position = tile.transform.position;
+						orientationSpheres[i].transform.position = tile.transform.position;
 					else
-						getOrientationSphere(orientation).transform.position = tile.transform.position - (World.getGravityVector (GetWorldGravity ()) * hud.dotSize * .5f );
+						orientationSpheres[i].transform.position = tile.transform.position - (World.getGravityVector (GetWorldGravity ()) * hud.dotSize * .5f );
 				}
 			}
 		}
