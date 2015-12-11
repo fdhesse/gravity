@@ -126,11 +126,13 @@ public class Pawn : MonoBehaviour
 		width = capsuleCollider.radius * capsuleCollider.transform.localScale.x;
 
 		// Game cursor
-		Assets.SetMouseCursor ();
+		Assets.SetMouseCursor();
 
 		initSpawn();
         initHUD();
 		initOrientationSpheres();
+
+		world.GameStart();
 		checkUnderneath();
 	}
 
@@ -206,8 +208,6 @@ public class Pawn : MonoBehaviour
 		GameObject spawn = GameObject.FindGameObjectWithTag("Spawn");
 		spawnPosition = (spawn == null) ? transform.position : spawn.transform.position;
 		spawnRotation = (spawn == null) ? transform.rotation : spawn.transform.rotation;
-
-		world.GameStart();
 	}
 	
 	private void initHUD()
@@ -225,17 +225,23 @@ public class Pawn : MonoBehaviour
 
 		for ( int i = 0, l = orientationSpheres.Length; i < l; i++ )
 		{
+			// create a sphere primitive
 			GameObject orientationSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
 			orientationSphere.name = "dot " + i;
 			orientationSphere.layer = layer;
 			orientationSphere.transform.parent = dotsGroup.transform;
 			orientationSphere.transform.localScale = Vector3.one * hud.dotSize;
+			// set the renderer params
 			Renderer oRenderer = orientationSphere.GetComponent<Renderer>();
 			oRenderer.material = Assets.getSphereMat();
-			oRenderer.material.color = hud.dotColor;
 			oRenderer.receiveShadows = false;
 			oRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-			orientationSphere.GetComponent<Collider>().enabled = false;
+			// remove the collider, we don't need it
+			Collider collider = orientationSphere.GetComponent<Collider>();
+			collider.enabled = false;
+			Destroy(collider);
+			// disable the sphere at first
+			orientationSphere.SetActive(false);
 
 			orientationSpheres[i] = orientationSphere;
 		}
@@ -764,6 +770,14 @@ public class Pawn : MonoBehaviour
         }
 	}
 
+	/// <summary>
+	/// Gets the game object of the sphere for a given TileOrientation
+	/// </summary>
+	private GameObject getOrientationSphere(TileOrientation orientation)
+	{
+		return orientationSpheres[(int)orientation - 1];
+	}
+
 	private void removeDestinationMarks()
 	{
 		foreach (TileOrientation orientation in Enum.GetValues(typeof(TileOrientation)))
@@ -771,8 +785,8 @@ public class Pawn : MonoBehaviour
 			if ((int)orientation == 0)
 				continue;
 
-			getOrientationSphere (orientation).transform.position = Vector3.one * float.MaxValue; //sphere is moved to infinity muhahahaha, tremble before my power
-
+			//getOrientationSphere(orientation).transform.position = Vector3.one * float.MaxValue; //sphere is moved to infinity muhahahaha, tremble before my power
+			getOrientationSphere(orientation).SetActive(false);
 		}
 	}
 
@@ -803,17 +817,15 @@ public class Pawn : MonoBehaviour
 					if ( !clickableTiles.Contains (tile) )
 						clickableTiles.Add (tile);
 
+					// reactivate the sphere
+					getOrientationSphere(orientation).SetActive(true);
+
+					// and position it on the tile
 					if (hud.dotIsInside)
-						getOrientationSphere (orientation).transform.position = tile.transform.position;
+						getOrientationSphere(orientation).transform.position = tile.transform.position;
 					else
-						getOrientationSphere (orientation).transform.position = tile.transform.position - (World.getGravityVector (GetWorldGravity ()) * hud.dotSize * .5f );
+						getOrientationSphere(orientation).transform.position = tile.transform.position - (World.getGravityVector (GetWorldGravity ()) * hud.dotSize * .5f );
 				}
-//				else
-//				{
-//					//tile.isClickable = false;
-//					//tile is already set to infinity in the removeDestinationMarks
-//					getOrientationSphere(orientation).transform.position = Vector3.one * float.MaxValue; // dot is moved to infinity
-//				}
 			}
 		}
 	}
@@ -1258,13 +1270,6 @@ public class Pawn : MonoBehaviour
             return new Vector3(position.x, position.y, getGroundPosition().z);
 	}
 
-    /// <summary>
-    /// Gets the game object of the sphere for a given TileOrientation
-    /// </summary>
-    private GameObject getOrientationSphere(TileOrientation orientation)
-    {
-		return orientationSpheres [(int)orientation - 1];
-	}
 	/// <summary>
 	/// Is the Pawn out of bounds?
 	/// </summary>

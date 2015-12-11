@@ -5,5 +5,11 @@ using System.Collections;
 /// </summary>
 public enum TileOrientation
 {
-	None,Up,Down,Left,Right,Front,Back
+	None = 0,
+	Up,
+	Down,
+	Left,
+	Right,
+	Front,
+	Back
 }

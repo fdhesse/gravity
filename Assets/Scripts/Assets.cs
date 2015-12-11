@@ -216,7 +216,7 @@ public static class Assets
     internal static Material getSphereMat()
 	{
 		if ( sphereMat == null )
-			sphereMat = Resources.Load("Materials/sphere") as Material;
+			sphereMat = Resources.Load("Materials/GravityChangeMarker") as Material;
 		
 		return new Material( sphereMat );
     }
