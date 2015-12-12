@@ -224,11 +224,10 @@ public class Pawn : MonoBehaviour
 	
 	private void initOrientationSpheres()
 	{
-		GameObject dotsGroup = new GameObject();
+		GameObject dotsGroup = new GameObject("Orientation Dots");
 		dotsGroup.hideFlags = HideFlags.HideInHierarchy;
-		dotsGroup.name = "Orientation Dots";
 
-		LayerMask layer = LayerMask.NameToLayer ("Player");
+		int layer = LayerMask.NameToLayer ("Player");
 
 		for ( int i = 0, l = orientationSpheres.Length; i < l; i++ )
 		{
