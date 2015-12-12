@@ -6,6 +6,33 @@ using System.Collections;
 using System.Collections.Generic;
 
 /// <summary>
+/// <para>Enum used to identify and register Platform types.</para>
+/// <para>A Platform can be of type Valid, Invalid or Exit</para>
+/// </summary>
+public enum TileType
+{
+	Invalid = 0,
+	Valid,
+	Exit,
+	Spikes,
+	None
+}
+
+/// <summary>
+/// Enum that stores the types of orientations
+/// </summary>
+public enum TileOrientation
+{
+	None = 0,
+	Up,
+	Down,
+	Left,
+	Right,
+	Front,
+	Back
+}
+
+/// <summary>
 ///  Class Responsible for interaction with Tiles.
 ///  Each platform holds the directly accessible platforms, via the List connections.
 ///  For pathfinding purposes it inherits IPathNode.
@@ -146,17 +173,17 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		
 		if ( isGlueTile )
 		{
-			World.Pawn.isGlued = true;
-			World.Pawn.tileGravityVector = World.getGravityVector( orientation );
+			Pawn.Instance.isGlued = true;
+			Pawn.Instance.tileGravityVector = World.getGravityVector( orientation );
 		}
-		else if ( World.Pawn.isGlued && Physics.gravity.normalized != World.getGravityVector( orientation ) )
+		else if ( Pawn.Instance.isGlued && Physics.gravity.normalized != World.getGravityVector( orientation ) )
 		{
-			World.Pawn.isLeavingGlueTile = true;
+			Pawn.Instance.isLeavingGlueTile = true;
 		}
 		else
 		{
-			World.Pawn.isGlued = false;
-			World.Pawn.tileGravityVector = Physics.gravity.normalized;
+			Pawn.Instance.isGlued = false;
+			Pawn.Instance.tileGravityVector = Physics.gravity.normalized;
 		}
 	}
 

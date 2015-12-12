@@ -22,10 +22,7 @@ public static class TileSelection
 	/// </summary>
 	public static bool isClickableType( TileType type )
 	{
-		if ( type == TileType.Valid || type == TileType.Exit )
-			return true;
-		
-		return false;
+		return ( type == TileType.Valid || type == TileType.Exit );
 	}
 
     /// <summary>

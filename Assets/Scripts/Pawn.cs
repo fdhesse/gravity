@@ -19,7 +19,10 @@ public class Pawn : MonoBehaviour
 {
 	// #WORLD#
 	[HideInInspector] public World world;
-	
+
+	private static Pawn s_Instance = null;
+	public static Pawn Instance { get { return s_Instance; } }
+
 	// #PAWN#
 	public float speed = 30.0f;					// Speed of the pawn
 	public float maxTranslation = 2.5f;			// Max translation of the pawn
@@ -35,7 +38,8 @@ public class Pawn : MonoBehaviour
 	private bool isWalking;
 	private bool isWalkingInStairs;
 
-	private LayerMask tilesLayer;
+	private int tilesLayer;
+	private LayerMask tilesLayerMask;
 	private CapsuleCollider capsuleCollider;
 	
 	[HideInInspector] public TileOrientation orientation;
@@ -104,12 +108,14 @@ public class Pawn : MonoBehaviour
 
 	void Awake()
 	{
+		s_Instance = this;
+
 		orientation = TileOrientation.Up;
 
 		tilesLayer = LayerMask.NameToLayer ("Tiles");
+		tilesLayerMask = LayerMask.GetMask(new string[]{"Tiles"});
 
 		world = gameObject.AddComponent<World>() as World;
-		World.Init( this );
 	}
 
     void Start()
@@ -130,10 +136,11 @@ public class Pawn : MonoBehaviour
 
 		initSpawn();
         initHUD();
+		// the sphere need the hud to be initialized
 		initOrientationSpheres();
 
+		world.Init();
 		world.GameStart();
-		checkUnderneath();
 	}
 
 	void Update()
@@ -694,7 +701,7 @@ public class Pawn : MonoBehaviour
 		RaycastHit hit = new RaycastHit();
 
 		// casting a ray down, we need a sphereCast because the capsule has thickness, and we only need tiles layer
-		if (Physics.SphereCast (transform.position, width * 0.4f, down, out hit, height * 0.5f, (1 << tilesLayer)))
+		if (Physics.SphereCast (transform.position, width * 0.4f, down, out hit, height * 0.5f, tilesLayerMask))
 		{
 			GameObject hitTile = hit.collider.gameObject;
 
@@ -790,10 +797,10 @@ public class Pawn : MonoBehaviour
 		{
 			TileOrientation orientation = (TileOrientation)(i + 1);
 
-			RaycastHit hit = new RaycastHit ();
+			RaycastHit hit = new RaycastHit();
 
 			// Casting a ray towards 'orientation', SphereCast needed because of Pawn's capsule thickness and ignoring Pawn's collider
-			if (Physics.SphereCast (transform.position, width * 0.4f, World.getGravityVector(orientation).normalized, out hit, 10000, (1 << tilesLayer)))
+			if (Physics.SphereCast(transform.position, width * 0.4f, World.getGravityVector(orientation), out hit, 10000, tilesLayerMask))
 			{
 				Tile tile = hit.collider.gameObject.GetComponent<Tile>();
 				
@@ -1184,7 +1191,7 @@ public class Pawn : MonoBehaviour
 			if ( isGlued )
 				down = tileGravityVector;
 
-			return Physics.SphereCast( new Ray( transform.position, down ), width * 0.5f, height * 0.5f, (1 << tilesLayer) );
+			return Physics.SphereCast( new Ray( transform.position, down ), width * 0.5f, height * 0.5f, tilesLayerMask );
 		}
 		
 		return false; // if there isn't a tile beneath him, he isn't grounded

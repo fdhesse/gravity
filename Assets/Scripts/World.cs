@@ -13,13 +13,7 @@ public class World : MonoBehaviour {
 	private RotatingPlatform[] rotatingPlatforms;
 	private GoldTile[] goldTiles;
 	
-	private static Pawn playerPawn; // Player Pawn
-	public static Pawn Pawn
-	{
-		get { return playerPawn; }
-	}
-
-	void Awake()
+	public void Init()
 	{
 		fallingCubes = FindObjectsOfType<FallingCube>();
 		gravityPlatforms = FindObjectsOfType<GravityPlatform>();
@@ -27,16 +21,11 @@ public class World : MonoBehaviour {
 		goldTiles = FindObjectsOfType<GoldTile> ();
 	}
 	
-	public static void Init( Pawn player )
-	{
-		playerPawn = player;
-	}
-	
 	public void Restart(TileOrientation startingOrientation)
 	{
 		World.SetGravity( startingOrientation );
 
-		playerPawn.respawn( startingOrientation );
+		Pawn.Instance.respawn( startingOrientation );
 		
 		for (int i = 0; i < fallingCubes.Length; i++)
 			((FallingCube) fallingCubes[i]).Reset( startingOrientation );
@@ -89,7 +78,7 @@ public class World : MonoBehaviour {
 	{
 		switch (vec)
 		{
-		default:
+		case TileOrientation.Up:
 			return new Vector3(0, -1, 0);
 		case TileOrientation.Down:
 			return new Vector3(0, 1, 0);
@@ -101,6 +90,8 @@ public class World : MonoBehaviour {
 			return new Vector3(0, 0, 1);
 		case TileOrientation.Back:
 			return new Vector3(0, 0, -1);
+		default:
+			return new Vector3(0, -1, 0);
 		}
 	}
 	
@@ -123,8 +114,6 @@ public class World : MonoBehaviour {
 	{
 		switch (orientation)
 		{
-		default:
-			break;
 		case TileOrientation.Front:
 			Physics.gravity = new Vector3(0, 0, G);
 			break;
@@ -142,6 +131,8 @@ public class World : MonoBehaviour {
 			break;
 		case TileOrientation.Down:
 			Physics.gravity = new Vector3(0, G, 0);
+			break;
+		default:
 			break;
 		}
 	}
