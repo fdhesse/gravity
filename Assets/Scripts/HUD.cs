@@ -47,7 +47,7 @@ public class HUD : MonoBehaviour
 	private float lastSampledTimeForFPS = 0.0f;
 
 	// Camera reference
-	private CameraControl cameraControl;
+	private CameraControl cameraControl = null;
 	
 	private Texture greyStar;
 	private Texture goldStar;
@@ -85,13 +85,15 @@ public class HUD : MonoBehaviour
         {
 			GUI.Box(new Rect(0,0,Screen.width,Screen.height),GUIContent.none,skin.GetStyle("overlay"));
 			Time.timeScale = 0;
-			cameraControl.enabled = false;
+			if (cameraControl != null)
+				cameraControl.enabled = false;
 			//CameraController.Instance.enabled = false;
 		}
 		else
 		{
 			Time.timeScale = 1;
-			cameraControl.enabled = true;
+			if (cameraControl != null)
+				cameraControl.enabled = true;
 			//CameraController.Instance.enabled = true;
 		}
 
