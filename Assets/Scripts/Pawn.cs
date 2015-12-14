@@ -136,7 +136,6 @@ public class Pawn : MonoBehaviour
 
 		initSpawn();
         initHUD();
-		// the sphere need the hud to be initialized
 		initOrientationSpheres();
 
 		world.Init();
