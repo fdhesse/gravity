@@ -20,13 +20,13 @@ public static class Assets
 	private static Material flashingValidBlockMat;
 	private static Material flashingInvalidBlockMat;
 	private static Material flashingExitBlockMat;
-	private static Material sphereMat;
 
 	public static AudioClip invalidSound;
 	public static AudioClip bounce;
 	public static AudioClip bounce2;
 
 	public static GameObject mouseCursor;
+	private static GameObject gravityChangeMarkerPrefab;
 
     //public static Material upBlockMat;
     //public static Material downBlockMat;
@@ -213,11 +213,11 @@ public static class Assets
 	}
 #endif
 
-    internal static Material getSphereMat()
+	internal static GameObject getGravityChangeMarkerPrefab()
 	{
-		if ( sphereMat == null )
-			sphereMat = Resources.Load("Materials/GravityChangeMarker") as Material;
+		if ( gravityChangeMarkerPrefab == null )
+			gravityChangeMarkerPrefab = Resources.Load("PREFABS/GravityChangeMarker") as GameObject;
 		
-		return new Material( sphereMat );
+		return gravityChangeMarkerPrefab;
     }
 }

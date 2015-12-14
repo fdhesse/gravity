@@ -227,28 +227,15 @@ public class Pawn : MonoBehaviour
 		GameObject dotsGroup = new GameObject("Orientation Dots");
 		dotsGroup.hideFlags = HideFlags.HideInHierarchy;
 
-		int layer = LayerMask.NameToLayer ("Player");
-
 		for ( int i = 0, l = orientationSpheres.Length; i < l; i++ )
 		{
 			// create a sphere primitive
-			GameObject orientationSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+			GameObject orientationSphere = GameObject.Instantiate(Assets.getGravityChangeMarkerPrefab(), Vector3.zero, Quaternion.identity) as GameObject;
 			orientationSphere.name = "dot " + i;
-			orientationSphere.layer = layer;
 			orientationSphere.transform.parent = dotsGroup.transform;
-			orientationSphere.transform.localScale = Vector3.one * hud.dotSize;
-			// set the renderer params
-			Renderer oRenderer = orientationSphere.GetComponent<Renderer>();
-			oRenderer.material = Assets.getSphereMat();
-			oRenderer.receiveShadows = false;
-			oRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-			// remove the collider, we don't need it
-			Collider collider = orientationSphere.GetComponent<Collider>();
-			collider.enabled = false;
-			Destroy(collider);
 			// disable the sphere at first
 			orientationSphere.SetActive(false);
-
+			// and assign it in the array
 			orientationSpheres[i] = orientationSphere;
 		}
 	}
@@ -818,7 +805,7 @@ public class Pawn : MonoBehaviour
 					if (hud.dotIsInside)
 						orientationSpheres[i].transform.position = tile.transform.position;
 					else
-						orientationSpheres[i].transform.position = tile.transform.position - (World.getGravityVector (GetWorldGravity ()) * hud.dotSize * .5f );
+						orientationSpheres[i].transform.position = tile.transform.position - (World.getGravityVector (GetWorldGravity ()) * orientationSpheres[i].transform.localScale.y * .5f );
 				}
 			}
 		}

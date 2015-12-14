@@ -24,7 +24,6 @@ public class HUD : MonoBehaviour
     public bool isEndScreen = false; // is the end screen up ?
     public bool isPaused = false; // is the game pause screen up ?
 
-    public float dotSize = 2.0f;
     public bool dotIsInside = true;
 
     //values for positioning
