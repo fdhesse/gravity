@@ -34,6 +34,25 @@ public class GameplayCubeEditor : Editor
 			EditorUtility.SetDirty (target);
 		//	m_Instance.Refresh ();
 		}
+		
+		EditorGUI.BeginChangeCheck();
+		
+		// delete the mesh collider if any because this may interfere with the collision detection of the tile
+		// in case of the pawn collide with this mesh collider before colliding with the mesh collider of the tile
+		Collider[] colliders =  m_Instance.gameObject.GetComponents<Collider>();
+		foreach (Collider collider in colliders)
+			Component.DestroyImmediate(collider);
+
+		// delete also the mesh filter and mesh renderer
+		MeshRenderer[] renderers =  m_Instance.gameObject.GetComponents<MeshRenderer>();
+		foreach (MeshRenderer renderer in renderers)
+			Component.DestroyImmediate(renderer);
+
+		MeshFilter[] filters =  m_Instance.gameObject.GetComponents<MeshFilter>();
+		foreach (MeshFilter filter in filters)
+			Component.DestroyImmediate(filter);
+
+		EditorGUI.EndChangeCheck();
 
 		//serializedObject.ApplyModifiedProperties ();
 	}
