@@ -5,7 +5,7 @@ AnimationClip:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: level13_platform2
+  m_Name: allfeatures_platform
   serializedVersion: 6
   m_Legacy: 1
   m_Compressed: 0
@@ -17,25 +17,25 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - time: 0
-        value: {x: 0, y: 0, z: 10}
+        value: {x: -30, y: 0, z: -50}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
-        tangentMode: 191
+        tangentMode: 0
       - time: 1
-        value: {x: 0, y: 0, z: 10}
+        value: {x: -30, y: 0, z: -50}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
-        tangentMode: 1065353216
+        tangentMode: 0
       - time: 3
-        value: {x: 0, y: 0, z: 30}
+        value: {x: 0, y: 0, z: -50}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
       - time: 4
-        value: {x: 0, y: 0, z: 30}
+        value: {x: 0, y: 0, z: -50}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
-        tangentMode: 45
+        tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
     path: 
@@ -72,20 +72,20 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - time: 0
-        value: 0
+        value: -30
         inSlope: 0
         outSlope: 0
         tangentMode: 10
       - time: 1
-        value: 0
+        value: -30
         inSlope: 0
         outSlope: 0
-        tangentMode: 10
+        tangentMode: 0
       - time: 3
         value: 0
         inSlope: 0
         outSlope: 0
-        tangentMode: 10
+        tangentMode: 0
       - time: 4
         value: 0
         inSlope: 0
@@ -130,22 +130,22 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - time: 0
-        value: 10
+        value: -50
         inSlope: 0
         outSlope: 0
         tangentMode: 10
       - time: 1
-        value: 10
+        value: -50
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       - time: 3
-        value: 30
+        value: -50
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       - time: 4
-        value: 30
+        value: -50
         inSlope: 0
         outSlope: 0
         tangentMode: 10
