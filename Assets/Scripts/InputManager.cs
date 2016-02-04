@@ -45,6 +45,16 @@ public class InputManager
 		#endif
 	}
 
+	/// <summary>
+	/// Gets a zoom distance in world unit, based on the zoom input method correctly scaled
+	/// to fit a world unit distance. Negative value if the player zoom in, positive if he zoom out.
+	/// </summary>
+	/// <returns>A positive or negative zoom distance or 0 if the player didn't zoom.</returns>
+	public static float getZoomDistance()
+	{
+		return Input.GetAxis("Mouse ScrollWheel") * (-50.0f);
+	}
+
 	public static bool hasAnyInput()
 	{
 		#if (UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBPLAYER)

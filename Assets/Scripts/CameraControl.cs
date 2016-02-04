@@ -6,27 +6,29 @@ using System.Collections;
 /// </summary>
 public class CameraControl : MonoBehaviour
 {
+	[Tooltip("A game object in the scene that will be used as a target point for the camera to look at.")]
     public Transform target;      // the transform of the target GameObject (has position, rotation and scale values)
 
-	public float rotationTime = 0.1f;
-
+	[Tooltip("The starting distance to the target game object, when the level starts.")]
     public float distance = 5f; // distance to the target
+
+	[Tooltip("The minimum distance to the target game object. The camera won't go closer than that if you zoom in.")]
+	public float distanceMin = 600f; //minimum distance, changeable via zoom
+
+	[Tooltip("The maximum distance to the target game object. The camera won't go farer than that if you zoom out.")]
+	public float distanceMax = 1000f; //maximum distance, changeable via zoom
 
 	[Tooltip("The ratio that will be applied to the drag distance on the horizontal of the screen. A value of 1 will keep the original speed, a value less than 1 will slow down the camera rotation speed. A value greater than 1 will increase the rotation speed.")]
     public float xPivotingRatio = 1.0f; // x orbiting speed
 
 	[Tooltip("The ratio that will be applied to the drag distance on the vertical of the screen. A value of 1 will keep the original speed, a value less than 1 will slow down the camera rotation speed. A value greater than 1 will increase the rotation speed.")]
 	public float yPivotingRatio = 1.0f; // y orbiting speed
-	
-//	[EDIT]: commented 2 lines
-//    private float yMinLimit = -360f;
-//    private float yMaxLimit = 360f;
-    public float distanceMin = 600f; //minimum distance, changeable via zoom
-    public float distanceMax = 1000f; //maximum distance, changeable via zoom
-	
+
 	[HideInInspector] public float roll = 0.0f;
 	[HideInInspector] public float pan = 0.0f;
 	[HideInInspector] public float tilt = 0.0f;
+
+	private Vector3 lastMousePosition = Vector3.zero;
 
     void Start()
     {
@@ -40,22 +42,24 @@ public class CameraControl : MonoBehaviour
             GetComponent<Rigidbody>().freezeRotation = true;
     }
 
-	public Vector3 delta = Vector3.zero;
-	private Vector3 lastPos = Vector3.zero;
     void LateUpdate()
     {
+		Vector3 delta = Vector3.zero;
+
 		transform.LookAt(target);
 
+		// check that the target is not the pawn, because the pawn can move, or if the target
+		// is the pawn, then the pawn should be in camera mode (so probably won't move)
 		if (target && ( !target.GetComponent<Pawn>() || target.GetComponent<Pawn>().isCameraMode ))
         {
 			if ( InputManager.isClickDown() )
 			{
-				lastPos = Input.mousePosition;
+				lastMousePosition = Input.mousePosition;
 			}
 			else if ( InputManager.isClickHeldDown() )
 			{
 				// get the drag distance
-				delta = Input.mousePosition - lastPos;
+				delta = Input.mousePosition - lastMousePosition;
 
 				// scale the drag distance with the value set in the level
 				delta.x *= xPivotingRatio;
@@ -93,24 +97,16 @@ public class CameraControl : MonoBehaviour
 		else
 			rotation = Quaternion.Euler(tilt, pan, roll);
 
-		distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel") * 50, distanceMin, distanceMax);
+		distance = Mathf.Clamp(distance + InputManager.getZoomDistance(), distanceMin, distanceMax);
 
-		//camera collisions
-		//RaycastHit hit;
-		//if (Physics.Linecast(target.position, transform.position, out hit))
-		//{
-		//    distance -= hit.distance;
-		//}
 		Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
 		Vector3 position = rotation * negDistance + target.position;
 		
 		transform.rotation = rotation;
 		transform.position = position;
 		
-		// End do stuff
-		
-		lastPos = Input.mousePosition;
-
+		// save the last mouve position		
+		lastMousePosition = Input.mousePosition;
     }
 
     public static float ClampAngle(float angle, float min, float max)
