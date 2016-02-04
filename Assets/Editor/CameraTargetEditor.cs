@@ -76,18 +76,18 @@ public class CameraTargetEditor : Editor
 			drawFlatEllipse(SECTION_COUNT, 0, cylinderRadius, cylinderRadius, halfCylinderHeight);
 			Vector3[] bottomPoints = drawFlatEllipse(SECTION_COUNT, CYLINDER_EDGE_COUNT, cylinderRadius, cylinderRadius, -halfCylinderHeight);
 			// draw the side lines
-			Vector3 cylinderTranslation = new Vector3(0f, 0f, cylinderHeight);
+			Vector3 cylinderTranslation = new Vector3(0f, cylinderHeight, 0f);
 			for (int i = 0; i < bottomPoints.Length; ++i)
 				Gizmos.DrawLine(bottomPoints[i], bottomPoints[i] + cylinderTranslation);
 			break;
 		}
 	}
 
-	static Vector3[] drawFlatEllipse(int segments, int returnedPointCount, float xradius, float yradius, float z)
+	static Vector3[] drawFlatEllipse(int segments, int returnedPointCount, float xradius, float zradius, float y)
 	{
 		float x = 0f;
-		float y = 0f;
-		Vector3 previousPosition = new Vector3(0f, yradius, z);
+		float z = 0f;
+		Vector3 previousPosition = new Vector3(0f, y, zradius);
 		float angleIncrement = (360f / segments);
 		float angle = angleIncrement;
 
@@ -107,7 +107,7 @@ public class CameraTargetEditor : Editor
 
 			// compute the new position
 			x = Mathf.Sin (Mathf.Deg2Rad * angle) * xradius;
-			y = Mathf.Cos (Mathf.Deg2Rad * angle) * yradius;
+			z = Mathf.Cos (Mathf.Deg2Rad * angle) * zradius;
 
 			Vector3 newPosition = new Vector3(x, y, z);
 			Gizmos.DrawLine(previousPosition, newPosition);
@@ -118,15 +118,14 @@ public class CameraTargetEditor : Editor
 
 		return returnedPoints;
 	}
-
-
+	
 	static Vector3[] drawEllipse(int segments, int returnedPointCount, float xradius, float yradius, float distance)
 	{
 		float squaredDistance = distance*distance;
 		float x = 0f;
 		float y = 0f;
 		float z = 0f;
-		Vector3 previousPosition = new Vector3(0f, yradius, Mathf.Sqrt(distance*distance - (yradius*yradius)));
+		Vector3 previousPosition = new Vector3(0f, yradius, -Mathf.Sqrt(distance*distance - (yradius*yradius)));
 		float angleIncrement = (360f / segments);
 		float angle = angleIncrement;
 
@@ -151,7 +150,7 @@ public class CameraTargetEditor : Editor
 			// compute the z
 			float squareHypo = (x*x) + (y*y);
 			if (squareHypo < squaredDistance)
-				z = Mathf.Sqrt(squaredDistance - squareHypo);
+				z = -Mathf.Sqrt(squaredDistance - squareHypo);
 			else
 				z = 0f;
 
