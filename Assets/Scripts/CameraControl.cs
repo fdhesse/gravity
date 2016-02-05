@@ -24,8 +24,8 @@ public class CameraControl : MonoBehaviour
 	[Tooltip("The ratio that will be applied to the drag distance on the vertical of the screen. A value of 1 will keep the original speed, a value less than 1 will slow down the camera rotation speed. A value greater than 1 will increase the rotation speed.")]
 	public float yPivotingRatio = 1.0f;
 
-	[HideInInspector] public float pan = 0.0f;
-	[HideInInspector] public float tilt = 0.0f;
+	private float pan = 0.0f;
+	private float tilt = 0.0f;
 
 	private Vector3 lastMousePosition = Vector3.zero;
 
@@ -42,8 +42,6 @@ public class CameraControl : MonoBehaviour
 
     void LateUpdate()
     {
-//		transform.LookAt(target.transform);
-
 		// check that the target is not the pawn, because the pawn can move, or if the target
 		// is the pawn, then the pawn should be in camera mode (so probably won't move)
 		if (target && ( !target.GetComponent<Pawn>() || target.GetComponent<Pawn>().isCameraMode ))

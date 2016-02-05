@@ -37,44 +37,42 @@ public class CameraTarget : MonoBehaviour
 			break;
 		}
 
-		// now limit the angle if necessary
-		Vector3 angles = this.transform.rotation.eulerAngles;
-		if (angles.x > 180f)
-			angles.x -= 360f;
-		if (angles.y > 180f)
-			angles.y -= 360f;
-
-		Vector3 worldMinAngles = angles + new Vector3(-tiltLimitAngle, -panLimitAngle, 0f);
-		Vector3 worldMaxAngles = angles + new Vector3(tiltLimitAngle, panLimitAngle, 0f);
+		// compute the orientation in the local coordinate of that target
+		Quaternion rotation = Quaternion.Inverse(this.transform.rotation) * Quaternion.Euler(tilt, pan, 0f);
+		Vector3 localAngles = rotation.eulerAngles;
+		if (localAngles.x > 180f)
+			localAngles.x -= 360f;
+		if (localAngles.y > 180f)
+			localAngles.y -= 360f;
 
 		// now limit the angle if necessary in local coordinate
 		if (limitTilt)
-			tilt = Mathf.Clamp(tilt, worldMinAngles.x, worldMaxAngles.x);
-		
+			localAngles.x = Mathf.Clamp(localAngles.x, -tiltLimitAngle, tiltLimitAngle);
+
 		if (limitPan)
-			pan = Mathf.Clamp(pan, worldMinAngles.y, worldMaxAngles.y);
-	
+			localAngles.y = Mathf.Clamp(localAngles.y, -panLimitAngle, panLimitAngle);
 
-//		Quaternion rotation = Quaternion.Inverse(this.transform.rotation) * Quaternion.Euler(tilt, pan, 0f);
-//		Vector3 localAngles = rotation.eulerAngles;
-//		if (localAngles.x > 180f)
-//			localAngles.x -= 360f;
-//		if (localAngles.y > 180f)
-//			localAngles.y -= 360f;
-//				
-//		// now limit the angle if necessary in local coordinate
-//		if (limitTilt)
-//			localAngles.x = Mathf.Clamp(localAngles.x, -tiltLimitAngle, tiltLimitAngle);
-//
-//		if (limitPan)
-//			localAngles.y = Mathf.Clamp(localAngles.y, -panLimitAngle, panLimitAngle);
-//
-//		// recompute the world angle after clamp in local
-//		rotation = this.transform.rotation * Quaternion.Euler(localAngles.x, localAngles.y, 0f);
-//		Vector3 worldAngles = rotation.eulerAngles;
-//		tilt = worldAngles.x;
-//		pan =  worldAngles.y;
-//		roll = worldAngles.z;
+		// recompute the world angle after clamp in local
+		rotation = this.transform.rotation * Quaternion.Euler(localAngles.x, localAngles.y, localAngles.z);
+		Vector3 worldAngles = rotation.eulerAngles;
 
+		// because of the gimbal lock pb, the angles given in world angle may have been rotated and not like
+		// what they were before the limitation, so we rotate them back
+		Vector3 rotatedAngles = new Vector3(180f - worldAngles.x, worldAngles.y - 180f, worldAngles.z - 180f);
+
+		// then we take the angles with the minimum of difference (the normal one or the rotated ones)
+		float diffAngle = Mathf.Abs(Mathf.DeltaAngle(tilt, worldAngles.x)) + Mathf.Abs(Mathf.DeltaAngle(pan, worldAngles.y));
+		float diffRotatedAngle = Mathf.Abs(Mathf.DeltaAngle(tilt, rotatedAngles.x)) + Mathf.Abs(Mathf.DeltaAngle(pan, rotatedAngles.y));
+
+		if (diffAngle < diffRotatedAngle)
+		{
+			tilt = worldAngles.x;
+			pan =  worldAngles.y;
+		}
+		else
+		{
+			tilt = rotatedAngles.x;
+			pan =  rotatedAngles.y;
+		}
 	}
 }
