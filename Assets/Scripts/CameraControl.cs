@@ -42,9 +42,7 @@ public class CameraControl : MonoBehaviour
 
     void LateUpdate()
     {
-		// check that the target is not the pawn, because the pawn can move, or if the target
-		// is the pawn, then the pawn should be in camera mode (so probably won't move)
-		if (target && ( !target.GetComponent<Pawn>() || target.GetComponent<Pawn>().isCameraMode ))
+		if (target != null)
         {
 			if ( InputManager.isClickDown() )
 			{
@@ -62,19 +60,23 @@ public class CameraControl : MonoBehaviour
 				// ask the target to limit the angle if necessary
 				target.clampAngle(ref tilt, ref pan);
 			}
-        }
 
-		Quaternion rotation = Quaternion.Euler(tilt, pan, 0f);
+			Quaternion rotation = Quaternion.Euler(tilt, pan, 0f);
 
-		distance = Mathf.Clamp(distance + InputManager.getZoomDistance(), distanceMin, distanceMax);
+			distance = Mathf.Clamp(distance + InputManager.getZoomDistance(), distanceMin, distanceMax);
 
-		Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
-		Vector3 position = rotation * negDistance + target.transform.position;
-		
-		transform.rotation = rotation;
-		transform.position = position;
-		
-		// save the last mouve position		
-		lastMousePosition = Input.mousePosition;
-    }
+			Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
+			Vector3 position = rotation * negDistance + target.transform.position;
+			
+			transform.rotation = rotation;
+			transform.position = position;
+			
+			// save the last mouve position		
+			lastMousePosition = Input.mousePosition;
+		}
+		else if (InputManager.isClickDown())
+		{
+			Debug.LogError("This camera doesn't have a target. If you want to rotate it, add a worldtarget object in the scene and assign it in the Target property of the Camera Control script.");
+		}
+	}
 }
