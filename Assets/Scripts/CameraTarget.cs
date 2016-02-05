@@ -10,12 +10,13 @@ public class CameraTarget : MonoBehaviour
 		CYLINDER,
 	}
 
+	[Tooltip("The type of constraint for the camera rotation around this target.\nNONE=no constraint.\nCYLINDER=vertical constraint only.\nCONE=constraint on two axis.")]
 	public AngleConstraint angleContraintType = AngleConstraint.NONE;
 
-	[Range(0,90)]
+	[Range(0,90)][Tooltip("The maximum half angle limitation on the horizontal plane (xz) of the target game object.")]
 	public float panLimitAngle = 90f;
 
-	[Range(0,90)]
+	[Range(0,90)][Tooltip("The maximum half angle limitation on the vertical plane (yz) of the target game object.")]
 	public float tiltLimitAngle = 60f;
 	
 	public void clampAngle(ref float tilt, ref float pan)

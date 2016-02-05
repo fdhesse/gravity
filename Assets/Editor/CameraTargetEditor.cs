@@ -6,38 +6,38 @@ using System.Collections;
 public class CameraTargetEditor : Editor
 {
 	SerializedProperty constraintType;
+	SerializedProperty tiltLimitAngle;
+	SerializedProperty panLimitAngle;
 
 	public void OnEnable()
 	{
 		constraintType = serializedObject.FindProperty("angleContraintType");
+		tiltLimitAngle = serializedObject.FindProperty("tiltLimitAngle");
+		panLimitAngle = serializedObject.FindProperty("panLimitAngle");
 	}
 
 	public override void OnInspectorGUI()
 	{
 		this.serializedObject.Update();
-		this.DrawDefaultInspector();
+
+		//this.DrawDefaultInspector();
+		// draw the type of constraint first
+		EditorGUILayout.PropertyField(constraintType, true);
 
 		switch ((CameraTarget.AngleConstraint)(constraintType.enumValueIndex))
 		{
 		case CameraTarget.AngleConstraint.CONE:
-			displayConeParameters();
+			EditorGUILayout.PropertyField(tiltLimitAngle, true);
+			EditorGUILayout.PropertyField(panLimitAngle, true);
 			break;
 		case CameraTarget.AngleConstraint.CYLINDER:
-			displayCylinderParameters();
+			EditorGUILayout.PropertyField(tiltLimitAngle, true);
 			break;
 		}
 
 		this.serializedObject.ApplyModifiedProperties();
 	}
-
-	private void displayConeParameters()
-	{
-	}
-
-	private void displayCylinderParameters()
-	{
-	}
-
+	
 	[DrawGizmo (GizmoType.Selected | GizmoType.Active)]
 	static void DrawGizmoForCameraTarget(CameraTarget src, GizmoType gizmoType)
 	{
