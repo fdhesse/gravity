@@ -86,4 +86,19 @@ public class CameraControl : MonoBehaviour
 			Debug.LogError("This camera doesn't have a target. If you want to rotate it, add a worldtarget object in the scene and assign it in the Target property of the Camera Control script.");
 		}
 	}
+
+	public void SetCameraCursor()
+	{
+		// Only show the camera cursor if the camera is not frozen
+		if ((target != null) && (target.angleContraintType != CameraTarget.AngleConstraint.FREEZE))
+		{
+			Texture2D tex = (Texture2D)Resources.Load("HUD/cameraCursor", typeof(Texture2D));
+			Cursor.SetCursor(tex, Vector2.zero, CursorMode.Auto);
+		}
+	}
+	
+	public void SetNormalCursor()
+	{
+		Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+	}
 }
