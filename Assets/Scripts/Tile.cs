@@ -550,21 +550,15 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
     public List<Tile> AllAccessibleTiles()
     {
         List<Tile> platformsFound = new List<Tile>();
-        Queue<Tile> queue = new Queue<Tile>();
-        queue.Enqueue(this);
+		platformsFound.Add (this);
 
-        while (queue.Count != 0)
-        {
-            Tile platform = queue.Dequeue();
-            if (!platformsFound.Contains(platform))
-            {
-                platformsFound.Add(platform);
-                foreach (Tile brotherTile in platform.connections)
-                {
-                    queue.Enqueue(brotherTile);
-                }
-            }
-        }
+		for (int i = 0 ; i < platformsFound.Count; i++)
+		{
+			Tile platform = platformsFound[i];
+			foreach (Tile brotherTile in platform.connections)
+				if (!platformsFound.Contains(brotherTile))
+					platformsFound.Add(brotherTile);
+		}
 
         return platformsFound;
     }
@@ -577,22 +571,29 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
     /// <returns></returns>
     public static Tile Closest(List<Tile> inNodes, Vector3 toPoint)
     {
+		// get the first tile by default (so if all tiles are invalid we return the first one anyway)
         Tile closestNode = inNodes[0];
-        float minDist = float.MaxValue;
+		float minDistToPoint = float.MaxValue;
+		float minDistToPlayer = float.MaxValue;
+
+		// iterate on all tiles to check if the first one is invalid
         for (int i = 0; i < inNodes.Count; i++)
         {
             if (AStarHelper.Invalid(inNodes[i]))
                 continue;
 
-            float thisDist = Vector3.Distance(toPoint, inNodes[i].Position);
-
-            if (thisDist > minDist)
+			// compute and check if the distance of the current tile to the specified point is longer
+            float currentDistToPoint = Vector3.Distance(toPoint, inNodes[i].Position);
+            if (currentDistToPoint > minDistToPoint)
                 continue;
 
-			if ( Vector3.Distance( inNodes[i].Position, TileSelection.PlayerPosition ) > Vector3.Distance( closestNode.Position, TileSelection.PlayerPosition ) )
+			// compute and check if the distance of the current tile to the player is longer
+			float currentDistToPlayer = Vector3.Distance( inNodes[i].Position, TileSelection.PlayerPosition );
+			if ( currentDistToPlayer > minDistToPlayer )
 				continue;
 
-            minDist = thisDist;
+            minDistToPoint = currentDistToPoint;
+			minDistToPlayer = currentDistToPlayer;
 			closestNode = inNodes[i];
         }
 
@@ -613,7 +614,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
     
     public bool Invalid
     {
-		get { return (this == null || this.type.Equals(TileType.Invalid)); }
+		get { return this.type.Equals(TileType.Invalid); }
     }
 
     public Vector3 getTargetPoint()

@@ -200,9 +200,17 @@ public class GameplayCube : MonoBehaviour
 
 		face.transform.Translate(new Vector3(0, 0, -transform.localScale.x * 0.495f), Space.Self);
 
-		// Tag up with parent's tag
-		if (transform.parent != null && transform.parent.tag != null)
+		// First try to tag the face from this gameplay cube tag, and if it's null try to tag up with parent's tag
+		if (!this.gameObject.CompareTag("Untagged"))
+		{
+			face.tag = this.gameObject.tag;
+		}
+		else if (this.transform.parent != null && !this.transform.parent.CompareTag("Untagged"))
+		{
+			// if this gameobject tag is null but not it's parent, tag both this gameobject and the face
+			this.gameObject.tag = transform.parent.tag;
 			face.tag = transform.parent.tag;
+		}
 
 		// Case of a spike tile
 		if ( type == TileType.Spikes)
