@@ -35,6 +35,10 @@ public class CameraControl : MonoBehaviour
         pan = angles.y;
         tilt = angles.x;
 
+		// init the camera based on it's constraint (even if the player doesn't rotate the camera at first)
+		if (target != null)
+			target.clampAngle(ref tilt, ref pan);
+
         // Make the rigid body not change rotation
         if (GetComponent<Rigidbody>())
             GetComponent<Rigidbody>().freezeRotation = true;
@@ -44,21 +48,24 @@ public class CameraControl : MonoBehaviour
     {
 		if (target != null)
         {
-			if ( InputManager.isClickDown() )
+			if (target.angleContraintType != CameraTarget.AngleConstraint.FREEZE)
 			{
-				lastMousePosition = Input.mousePosition;
-			}
-			else if ( InputManager.isClickHeldDown() )
-			{
-				// get the drag distance
-				Vector3 delta = Input.mousePosition - lastMousePosition;
+				if ( InputManager.isClickDown() )
+				{
+					lastMousePosition = Input.mousePosition;
+				}
+				else if ( InputManager.isClickHeldDown() )
+				{
+					// get the drag distance
+					Vector3 delta = Input.mousePosition - lastMousePosition;
 
-				// scale the drag distance with the value set in the level
-				pan += delta.x * xPivotingRatio;
-				tilt += -delta.y * yPivotingRatio;
+					// scale the drag distance with the value set in the level
+					pan += delta.x * xPivotingRatio;
+					tilt += -delta.y * yPivotingRatio;
 
-				// ask the target to limit the angle if necessary
-				target.clampAngle(ref tilt, ref pan);
+					// ask the target to limit the angle if necessary
+					target.clampAngle(ref tilt, ref pan);
+				}
 			}
 
 			Quaternion rotation = Quaternion.Euler(tilt, pan, 0f);

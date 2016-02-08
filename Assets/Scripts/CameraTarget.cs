@@ -8,6 +8,7 @@ public class CameraTarget : MonoBehaviour
 		NONE = 0,
 		CONE,
 		CYLINDER,
+		FREEZE,
 	}
 
 	[Tooltip("The type of constraint for the camera rotation around this target.\nNONE=no constraint.\nCYLINDER=vertical constraint only.\nCONE=constraint on two axis.")]
@@ -28,6 +29,20 @@ public class CameraTarget : MonoBehaviour
 		{
 		case AngleConstraint.NONE:
 			// nothing to do
+			return;
+		case AngleConstraint.FREEZE:
+			// in freeze mode, juste return the angle of the target orientation
+			Vector3 targetAngles = this.transform.rotation.eulerAngles;
+			if (targetAngles.z == 180f)
+			{
+				tilt = 180f - targetAngles.x;
+				pan =  targetAngles.y - 180f;
+			}
+			else
+			{
+				tilt = targetAngles.x;
+				pan =  targetAngles.y;
+			}
 			return;
 		case AngleConstraint.CONE:
 			limitPan = true;

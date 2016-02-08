@@ -205,7 +205,7 @@ public class GameplayCube : MonoBehaviour
 		{
 			face.tag = this.gameObject.tag;
 		}
-		else if (this.transform.parent != null && !this.transform.parent.CompareTag("Untagged"))
+		else if (this.transform.parent != null)
 		{
 			// if this gameobject tag is null but not it's parent, tag both this gameobject and the face
 			this.gameObject.tag = transform.parent.tag;
