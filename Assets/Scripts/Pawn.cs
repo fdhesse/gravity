@@ -97,9 +97,9 @@ public class Pawn : MonoBehaviour
 		}
 		set
 		{
-			if ( GetWorldGravity() == TileOrientation.Down || GetWorldGravity() == TileOrientation.Up )
+			if ( GetFeltVerticality() == TileOrientation.Down || GetFeltVerticality() == TileOrientation.Up )
 				transform.position = new Vector3( value.x, transform.position.y, value.z );
-			else if ( GetWorldGravity() == TileOrientation.Right || GetWorldGravity() == TileOrientation.Left )
+			else if ( GetFeltVerticality() == TileOrientation.Right || GetFeltVerticality() == TileOrientation.Left )
 				transform.position = new Vector3( transform.position.x, value.y, value.z );
 			else
 				transform.position = new Vector3( value.x, value.y, transform.position.z );
@@ -486,7 +486,7 @@ public class Pawn : MonoBehaviour
 
 					path.Clear();
 
-					StartCoroutine( DelayedPawnFall ( GetWorldGravity() ));
+					StartCoroutine( DelayedPawnFall ( GetFeltVerticality() ));
 				}
 			}
 			
@@ -516,10 +516,7 @@ public class Pawn : MonoBehaviour
 				// The pawn is glued to a tile, not the gravity,
 				// so it can't jump on another tile, gravity
 				// would make it fall !
-				Vector3 down = Physics.gravity.normalized;
-				
-				if (isGlued)
-					down = tileGravityVector;
+				Vector3 down = getMyVerticality();
 
 				// nearest tile: the directly accessible tile from the tile bellow the Pawn, thats closest to the target tile
 				Tile nearest = Tile.Closest(pawnTile.AllAccessibleTiles(), clickedTile.transform.position);
@@ -585,10 +582,7 @@ public class Pawn : MonoBehaviour
 
 		Vector3 jumpPos = Vector3.zero;
 
-		Vector3 down = Physics.gravity.normalized;
-		
-		if (isGlued)
-			down = tileGravityVector;
+		Vector3 down = getMyVerticality();
 
 		while ( elapsedTime < jumpAnimationLength )
 		{
@@ -626,10 +620,7 @@ public class Pawn : MonoBehaviour
 
 	private IEnumerator LookAt( Vector3 point )
 	{
-		Vector3 down = Physics.gravity.normalized;
-		
-		if (isGlued)
-			down = tileGravityVector;
+		Vector3 down = getMyVerticality();
 
 		newTarget = false;
 		float elapsedTime = .0f;
@@ -683,10 +674,7 @@ public class Pawn : MonoBehaviour
 		if (isJumping || isFalling)
 			return;
 		
-		Vector3 down = Physics.gravity.normalized;
-		
-		if (isGlued)
-			down = tileGravityVector;
+		Vector3 down = getMyVerticality();
 
 		RaycastHit hit = new RaycastHit();
 
@@ -705,8 +693,7 @@ public class Pawn : MonoBehaviour
 				animState = 1;
 				isWalkingInStairs = true;
 			}
-
-			if (hitTile.tag == "MovingPlatform")
+			else if (hitTile.tag == "MovingPlatform")
 			{
 				// [TODO]
 				// It would be nice that pawn's speed would
@@ -717,13 +704,14 @@ public class Pawn : MonoBehaviour
 				Vector3 _vec = Vector3.zero;
 
 				// the gravity
-				Vector3 _g = Vector3.Scale (down, down);
+				Vector3 _g = Vector3.Scale(down, down);
 
-				if (path.Count > 0) {
+				if (path.Count > 0)
+				{
 					// the player asked the pawn to move
 
-					_vec = path[0].transform.position - getGroundPosition ();
-					_vec = _vec - Vector3.Scale (_g, _vec);
+					_vec = path[0].transform.position - getGroundPosition();
+					_vec = _vec - Vector3.Scale(_g, _vec);
 
 					if (_vec.x != 0)
 						_vec.x = 1;
@@ -757,12 +745,26 @@ public class Pawn : MonoBehaviour
 				// compute the new position
 				position = _vec + _ppos;
 			}
+			else if (isGlued && (hitTile.tag == "GravityPlatform"))
+			{
+				// try to get the grand parent of the tile
+				GameObject grandParent = hitTile.transform.parent.gameObject;
+				if (grandParent != null)
+					grandParent = grandParent.transform.parent.gameObject;
+
+				// try a rotating platform
+				RotatingPlatform rotatingPlatform = grandParent.GetComponent<RotatingPlatform>();
+				if ((rotatingPlatform != null) && (rotatingPlatform.IsRotating))
+					position = hitTile.transform.position;
+
+				// try a gravity platform
+				GravityPlatform gravityPlatform = grandParent.GetComponent<GravityPlatform>();
+				if ((gravityPlatform != null) && (!gravityPlatform.IsFrozen))
+					position = hitTile.transform.position;
+			}
 		}
-		else if ( !isGlued )
+		else
 		{
-			// [TODO]
-			// Of course, if the pawn is glued, we should still
-			// check if there is something under
 			pawnTile = null;
         }
 	}
@@ -809,7 +811,7 @@ public class Pawn : MonoBehaviour
 					if (hud.dotIsInside)
 						orientationSpheres[i].transform.position = tile.transform.position;
 					else
-						orientationSpheres[i].transform.position = tile.transform.position - (World.getGravityVector (GetWorldGravity ()) * orientationSpheres[i].transform.localScale.y * .5f );
+						orientationSpheres[i].transform.position = tile.transform.position - (World.getGravityVector (GetFeltVerticality ()) * orientationSpheres[i].transform.localScale.y * .5f );
 				}
 			}
 		}
@@ -1141,13 +1143,10 @@ public class Pawn : MonoBehaviour
 		}
 	}
 
-	public TileOrientation GetWorldGravity()
+	private TileOrientation GetFeltVerticality()
 	{
-		Vector3 down = Physics.gravity.normalized;
-		
-		if (isGlued)
-			down = tileGravityVector;
-		
+		Vector3 down = getMyVerticality();
+
 		if (down.x > 0)
 			return TileOrientation.Right;
 		if (down.x < 0)
@@ -1164,9 +1163,23 @@ public class Pawn : MonoBehaviour
 		return TileOrientation.Up;
 	}
 
-	/// ----- CHECKERS ----- ///
-	/// 
-	
+
+	// ----- CHECKERS ----- //
+	// 
+
+	/// <summary>
+	/// Gets my verticality, which equals to the gravity normally, but which can be different if the pawn is
+	/// glued on a wall.
+	/// </summary>
+	/// <returns>The my verticality for the pawn.</returns>
+	private Vector3 getMyVerticality()
+	{
+		if ( isGlued )
+			return tileGravityVector;
+		else
+			return Physics.gravity.normalized;
+	}
+
 	/// <summary>
 	/// Checks if the pawn is grounded.
 	/// Answers the question " is the player touching a tile "beneath" him?" where beneath relates to the current gravitational orientation.
@@ -1176,11 +1189,7 @@ public class Pawn : MonoBehaviour
 		//is there even a tile beneath the Pawn
 		if (pawnTile != null) 
 		{
-			Vector3 down = Physics.gravity.normalized;
-			
-			if ( isGlued )
-				down = tileGravityVector;
-
+			Vector3 down = getMyVerticality();
 			return Physics.SphereCast( new Ray( transform.position, down ), width * 0.5f, height * 0.5f, tilesLayerMask );
 		}
 		
@@ -1219,7 +1228,7 @@ public class Pawn : MonoBehaviour
 	{
 		float n = (transform.localScale.y * height) * 0.5f;
 
-		switch (GetWorldGravity())
+		switch (GetFeltVerticality())
 		{
 		default:
 			return new Vector3 (transform.position.x, transform.position.y - n, transform.position.z);

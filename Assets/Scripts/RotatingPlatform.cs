@@ -22,6 +22,13 @@ public class RotatingPlatform : MonoBehaviour
 
 	Vector3 lastGravity = -Vector3.up;
 
+	private bool isRotating = false;
+
+	public bool IsRotating
+	{
+		get { return isRotating; }
+	}
+
 	private float rotation
 	{
 		get {
@@ -177,11 +184,9 @@ public class RotatingPlatform : MonoBehaviour
 
 	private IEnumerator LookTowardsDirection( float toRotation )
 	{
-		// Disable the colliders
-		Collider[] colliders = GetComponentsInChildren<Collider> ();
-		foreach ( Collider collider in colliders )
-			collider.enabled = false;
-
+		// set the flag to tell that the platform is rotating
+		this.isRotating = true;
+		
 		float elapsedTime = 0;
 		Vector3 axis = Vector3.left;
 
@@ -277,19 +282,16 @@ public class RotatingPlatform : MonoBehaviour
 
 		RecomputePlatformTiles ();
 
-		// Re-enable the colliders
-		foreach ( Collider collider in colliders )
-			collider.enabled = true;
+		// clear the flag
+		this.isRotating = false;
 	}
 
 	private IEnumerator LookTowardsDirection( Quaternion toRotation )
 	{
 		// So effective !
 
-		// Disable the colliders
-		Collider[] colliders = GetComponentsInChildren<Collider> ();
-		foreach ( Collider collider in colliders )
-			collider.enabled = false;
+		// set the flag to tell that the platform is rotating
+		this.isRotating = true;
 
 		float elapsedTime = 0;
 
@@ -314,9 +316,8 @@ public class RotatingPlatform : MonoBehaviour
 		// Recompute the platform's tiles directions
 		RecomputePlatformTiles ();
 		
-		// Re-enable the colliders
-		foreach ( Collider collider in colliders )
-			collider.enabled = true;
+		// clear the flag
+		this.isRotating = false;
 	}
 
 	private void RecomputePlatformTiles()

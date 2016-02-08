@@ -63,13 +63,18 @@ public class GravityPlatform : MonoBehaviour {
 	public ConstraintAxis constrainedAxis;
 
 	private float startPos = 0;
-	private bool freezed = false;
+	private bool isFrozen = false;
 	
 	private GravityPlatformBody body;
 	public bool isFalling;
 	public bool isInit;
 
 	private Dictionary<Tile, TileType> obstructedTiles;
+
+	public bool IsFrozen
+	{
+		get { return isFrozen; }
+	}
 
 	private float Position
 	{
@@ -137,7 +142,7 @@ public class GravityPlatform : MonoBehaviour {
 	{
 		//transform.position = body.transform.position;
 
-		if ( !freezed && (Position < from || Position > to ) )
+		if ( !isFrozen && (Position < from || Position > to ) )
 			Freeze();
 	}
 
@@ -170,7 +175,7 @@ public class GravityPlatform : MonoBehaviour {
 		else if (Position < from)
 			Position = from + 0.001f;
 		
-		freezed = true;
+		isFrozen = true;
 		
 		Tile[] childrenPlatforms = GetComponentsInChildren<Tile> ();
 		
@@ -180,7 +185,7 @@ public class GravityPlatform : MonoBehaviour {
 
 	public void Unfreeze( TileOrientation orientation )
 	{
-		freezed = body.Unfreeze( orientation );
+		isFrozen = body.Unfreeze( orientation );
 	}
 	
 	void OnRigidbodyCollisionEnter(Collision collision)
