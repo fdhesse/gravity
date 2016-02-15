@@ -147,15 +147,11 @@ public class Pawn : MonoBehaviour
 		if (!(world.IsGameOver() || hud.isPaused)) // is the game active?, i.e. is the game not paused and not finished?
 		{
 			UpdateAnimation();
+			computeFocusedAndClickableTiles();
 			manageMouse();
 			movePawn();
 			checkUnderneath();
 		}
-	}
-
-	void FixedUpdate()
-	{
-		putDestinationMarks ();
 	}
 	
 	private void UpdateAnimation()
@@ -249,6 +245,7 @@ public class Pawn : MonoBehaviour
 		path = null;
 		pawnTile = null;
 		clickedTile = null;
+		focusedTile = null;
 
 		animState = 2;
 		isFalling = true;
@@ -365,9 +362,6 @@ public class Pawn : MonoBehaviour
 			pawnTile = collision.collider.gameObject.GetComponent<Tile>();
 
 			moveMe ( pawnTile.transform.position );
-
-			if ( path != null && path.Count == 0 )
-				putDestinationMarks();
 		}
 
 		if (collision.relativeVelocity.magnitude > 1 && GetComponent<AudioSource>().enabled)
@@ -494,7 +488,6 @@ public class Pawn : MonoBehaviour
 			{
 				animState = 0;
 				isWalking = false;
-				putDestinationMarks();
 
 				ResetDynamic ();
 			}
@@ -559,7 +552,6 @@ public class Pawn : MonoBehaviour
 							path = AStarHelper.Calculate(landing, clickedTile); //give me a path towards the clicked tile
 							clickedTile = null; // target reached, forget it
 							isJumping = false;
-							putDestinationMarks();
 						}
 					}
 					else
@@ -769,6 +761,7 @@ public class Pawn : MonoBehaviour
         }
 	}
 
+	#region focused tile, clickable tile, and destination marks
 	private void removeDestinationMarks()
 	{
 		foreach (GameObject sphere in orientationSpheres)
@@ -780,10 +773,10 @@ public class Pawn : MonoBehaviour
 
 	private void putDestinationMarks()
 	{
+		removeDestinationMarks();
+
 		if ( isWalking || isWalkingInStairs || isFalling || isJumping )
 			return;
-
-		removeDestinationMarks();
 
 		for (int i = 0 ; i < orientationSpheres.Length ; ++i)
 		{
@@ -798,11 +791,8 @@ public class Pawn : MonoBehaviour
 				
 				if ( tile != null && tile != pawnTile && TileSelection.isClickableType( tile.type ) )
 				{
-					//if ( TileSelection.isClickableType( tile.type ) && !clickableTiles.Contains (tile) )
-					tile.isClickable = true;
-
-					if ( !clickableTiles.Contains (tile) )
-						clickableTiles.Add (tile);
+					// make this tile clickable
+					this.AddClickableTileToList(tile);
 
 					// reactivate the sphere
 					orientationSpheres[i].SetActive(true);
@@ -818,143 +808,143 @@ public class Pawn : MonoBehaviour
 	}
 	
 	/// <summary>
-	/// Get the tile focused by cursor, if valid.
+	/// Compute and set the tile focused by cursor, if valid.
+	/// Also clear and refill the array of clickable tiles.
 	/// </summary>
-	private Tile getCursorTile()
+	private void computeFocusedAndClickableTiles()
 	{
-		Tile tile = TileSelection.getTile();
+		// first clear the list of clickable tiles
+		ClearClickableTiles();
 
-		// Cursor tile is null
-		if ( tile == null )
-			return null;
-		
-		// Cursor tile is unvalid type
-		if ( !TileSelection.isClickableType( tile.type ) )
-			return null;
-		
-		//  Pawn's tile is null or same as cursor's
-		if ( pawnTile == null || tile == pawnTile )
-			return null;
+		// get the tile currently pointed by the player's cursor
+		Tile pointedTile = TileSelection.getTile();
 
-		if ( focusedTile != null )
-		{
-			// The player tile is a moving platform, force a total recheck
-			if ( pawnTile.tag == "MovingPlatform" )
+		// the set the focused tile with the pointed one if it is not null and clickable
+		if ((pointedTile != null) && TileSelection.isClickableType(pointedTile.type))
+			focusedTile = pointedTile;
+		else
+			focusedTile = null;
+
+		// Now check if the focused tile is clickable or not.
+		// For that will we ask a valid AStar for normal walk navigation from the pawntile,
+		// or we will check if the tile is accessible by fall from pawntile.
+		if ((focusedTile != null) && (pawnTile != null))
+		{	
+			// first check if there's a path from the pawntile to the focused tile
+			List<Tile> accessibleTiles = AStarHelper.Calculate( pawnTile, focusedTile );
+
+			// check if the tile is accessible by walk (astar)
+			if ( accessibleTiles != null && accessibleTiles.Count > 0 )
 			{
-				focusedTile.isClickable = false;
-				focusedTile = null;
-			}
-			// The previous tile was a moving platform, force a recheck
-			else if ( focusedTile.tag == "MovingPlatform" )
+				foreach ( Tile accessibleTile in accessibleTiles )
+					this.AddClickableTileToList(accessibleTile);
+
+				this.AddClickableTileToList(focusedTile);
+			}		
+			// Check if the tile is accessible "by fall"
+			else if ( focusedTile.orientation == pawnTile.orientation )
 			{
-				focusedTile = null;
-				tile.isClickable = false;
-				pawnTile.isClickable = false;
+				bool isAccessibleByFall = !tileIsAbove( focusedTile );
 
-				return tile;
-			}
-			
-			// The focused tile didn't changed
-			else if ( tile == focusedTile )
-				return focusedTile;
-		}
-
-		//Debug.Log( "Ok, tile is accessible, valid type, etc. ! Let's work !" );
-
-		focusedTile = tile;
-
-		List<Tile> accessibleTiles = AStarHelper.Calculate( pawnTile, tile );
-		
-		if ( accessibleTiles != null && accessibleTiles.Count > 0 )
-		{
-			foreach ( Tile accessibleTile in accessibleTiles )
-			{
-				// Keep only valid types
-				if ( TileSelection.isClickableType( accessibleTile.type ) )
-					clickableTiles.Add( accessibleTile );
-			}
-			
-			tile.isClickable = true;
-			tile.highlight();
-		}
-		
-		// Check if the tile is accessible "by fall"
-		else if ( tile.orientation == pawnTile.orientation )
-		{
-			bool isAccessibleByFall = !tileIsAbove( tile );
-
-			// iff (if and only if)
-			if ( isAccessibleByFall && ( pawnTile.orientation == TileOrientation.Down || pawnTile.orientation == TileOrientation.Up ) )
-			{
-				float xDist = Mathf.Abs( pawnTile.transform.position.x - tile.transform.position.x );
-				float zDist = Mathf.Abs( pawnTile.transform.position.z - tile.transform.position.z );
-				bool xTest = xDist > .1f;
-				bool zTest = zDist > .1f;
-
-				if ( xTest && zTest )
-					isAccessibleByFall = false;
-				else if ( !xTest && !zTest )
-					isAccessibleByFall = false;
-
-				if ( xDist > 10.1f )
-					isAccessibleByFall = false;
-				if ( zDist > 10.1f )
-					isAccessibleByFall = false;
-			}
-			
-			if ( isAccessibleByFall && ( pawnTile.orientation == TileOrientation.Left || pawnTile.orientation == TileOrientation.Right ) )
-			{
-				float yDist = Mathf.Abs( pawnTile.transform.position.y - tile.transform.position.y );
-				float zDist = Mathf.Abs( pawnTile.transform.position.z - tile.transform.position.z );
-				bool yTest = yDist > .1f;
-				bool zTest = zDist > .1f;
-				
-				if ( yTest && zTest )
-					isAccessibleByFall = false;
-				else if ( !yTest && !zTest )
-					isAccessibleByFall = false;
-
-				if ( yDist > 10.1f )
-					isAccessibleByFall = false;
-				if ( zDist > 10.1f )
-					isAccessibleByFall = false;
-			}
-			
-			if ( isAccessibleByFall && ( pawnTile.orientation == TileOrientation.Front || pawnTile.orientation == TileOrientation.Back ) )
-			{
-				float xDist = Mathf.Abs( pawnTile.transform.position.x - tile.transform.position.x );
-				float yDist = Mathf.Abs( pawnTile.transform.position.y - tile.transform.position.y );
-				bool xTest = xDist > .1f && xDist < 10.1f;
-				bool yTest = yDist > .1f && yDist < 10.1f;
-				
-				if ( xTest && yTest )
-					isAccessibleByFall = false;
-				else if ( !xTest && !yTest )
-					isAccessibleByFall = false;
-				
-				if ( xDist > 10.1f )
-					isAccessibleByFall = false;
-				if ( yDist > 10.1f )
-					isAccessibleByFall = false;
-			}
-			
-			if ( isAccessibleByFall )
-			{
-				clickableTiles.Add( tile );
-				
-				if ( TileSelection.isClickableType( tile.type ) )
+				// iff (if and only if)
+				if ( isAccessibleByFall && ( pawnTile.orientation == TileOrientation.Down || pawnTile.orientation == TileOrientation.Up ) )
 				{
-					tile.isClickable = true;
-					tile.highlight();
+					float xDist = Mathf.Abs( pawnTile.transform.position.x - focusedTile.transform.position.x );
+					float zDist = Mathf.Abs( pawnTile.transform.position.z - focusedTile.transform.position.z );
+					bool xTest = xDist > .1f;
+					bool zTest = zDist > .1f;
+
+					if ( xTest && zTest )
+						isAccessibleByFall = false;
+					else if ( !xTest && !zTest )
+						isAccessibleByFall = false;
+
+					if ( xDist > 10.1f )
+						isAccessibleByFall = false;
+					if ( zDist > 10.1f )
+						isAccessibleByFall = false;
 				}
+				
+				if ( isAccessibleByFall && ( pawnTile.orientation == TileOrientation.Left || pawnTile.orientation == TileOrientation.Right ) )
+				{
+					float yDist = Mathf.Abs( pawnTile.transform.position.y - focusedTile.transform.position.y );
+					float zDist = Mathf.Abs( pawnTile.transform.position.z - focusedTile.transform.position.z );
+					bool yTest = yDist > .1f;
+					bool zTest = zDist > .1f;
+					
+					if ( yTest && zTest )
+						isAccessibleByFall = false;
+					else if ( !yTest && !zTest )
+						isAccessibleByFall = false;
+
+					if ( yDist > 10.1f )
+						isAccessibleByFall = false;
+					if ( zDist > 10.1f )
+						isAccessibleByFall = false;
+				}
+				
+				if ( isAccessibleByFall && ( pawnTile.orientation == TileOrientation.Front || pawnTile.orientation == TileOrientation.Back ) )
+				{
+					float xDist = Mathf.Abs( pawnTile.transform.position.x - focusedTile.transform.position.x );
+					float yDist = Mathf.Abs( pawnTile.transform.position.y - focusedTile.transform.position.y );
+					bool xTest = xDist > .1f && xDist < 10.1f;
+					bool yTest = yDist > .1f && yDist < 10.1f;
+					
+					if ( xTest && yTest )
+						isAccessibleByFall = false;
+					else if ( !xTest && !yTest )
+						isAccessibleByFall = false;
+					
+					if ( xDist > 10.1f )
+						isAccessibleByFall = false;
+					if ( yDist > 10.1f )
+						isAccessibleByFall = false;
+				}
+				
+				if ( isAccessibleByFall )
+					this.AddClickableTileToList(focusedTile);
 			}
 		}
 
-		// Pawn tile is never clickable
-		pawnTile.isClickable = false;
+		// now compute the destination marks for the gravity change.
+		// This function will also mark some tiles as clickable
+		putDestinationMarks();
 
-		return tile;
+		// now highlight the focused tile if it is clickable (may happen with AStar navigation, fall or gravity change)
+		if ((focusedTile != null) && focusedTile.isClickable)
+			focusedTile.highlight();
 	}
+
+	private void AddClickableTileToList(Tile tile)
+	{
+		// check that the tile is clickable
+		if (TileSelection.isClickableType(tile.type))
+		{
+			// set (or reset) the clickable flag
+			tile.isClickable = true;
+			
+			// add it to the list if not already in
+			if (!clickableTiles.Contains(tile))
+				clickableTiles.Add(tile);			
+		}
+	}
+	
+	private void RemoveClickableTilefromList(Tile tile)
+	{
+		tile.isClickable = false;
+		clickableTiles.Remove(tile);
+	}
+	
+	private void ClearClickableTiles()
+	{
+		// clear the "clickable tiles" flags
+		foreach (Tile tile in clickableTiles)
+			tile.isClickable = false;
+		
+		// empty the list
+		clickableTiles.Clear();
+	}
+	#endregion
 
     /// <summary>
     /// Manages the interaction with the mouse.
@@ -974,9 +964,6 @@ public class Pawn : MonoBehaviour
 			if (isFalling || isJumping || (path != null && path.Count > 0))
 				return;
 
-			// ask the tile now, cause it will highlight the clicked tile
-			Tile tile = getCursorTile();
-
 	        if (InputManager.isClickHeldDown())
 			{
 				clickCountdown += Time.deltaTime;
@@ -985,8 +972,8 @@ public class Pawn : MonoBehaviour
 				{
 					isCameraMode = true;
 					StartCoroutine(SetCameraCursor());
-					if (tile != null)
-						tile.unHighlight();
+					if (focusedTile != null)
+						focusedTile.unHighlight();
 				}
 	        }
 
@@ -996,46 +983,41 @@ public class Pawn : MonoBehaviour
 				{
 					StartCoroutine(SetNormalCursor());
 					isCameraMode = false;
-					if (tile != null)
-						tile.unHighlight();
+					if (focusedTile != null)
+						focusedTile.unHighlight();
 				}
 				else
 				{
-					if ( isWalking || isFalling || tile == null || world.FallingCubes() )
+					if ( isWalking || isFalling || focusedTile == null || world.FallingCubes() )
 						return;
 
-					if (tile.isClickable)
+					if (focusedTile.isClickable)
 					{
-						removeDestinationMarks();
-						ClearClickableTiles();
-
-						focusedTile = null;
-						
 						// If the player clicked a tile with different orientation
-						if ( tile.orientation != pawnTile.orientation )
+						if ( focusedTile.orientation != GetWorldVerticality() )
 						{
 							// If the pawn is on a glue tile
 							// We only consider the click if the gravity change
-							if ( isGlued && World.getGravityVector( tile.orientation ) != Physics.gravity.normalized )
+							if ( isGlued && World.getGravityVector( focusedTile.orientation ) != Physics.gravity.normalized )
 							{
 								hud.gravityChangeCount++;
 
 								GetComponent<Rigidbody>().useGravity = false;
 								tileGravityVector = World.getGravityVector( pawnTile.orientation );
 								
-								World.SetGravity( tile.orientation );
-								world.ChangeGravity ( tile.orientation );
+								World.SetGravity( focusedTile.orientation );
+								world.ChangeGravity ( focusedTile.orientation );
 							}
 							else //for punishing gravity take the tile == null here
 							{
 								hud.gravityChangeCount++;
 								pawnTile = null;
-								StartCoroutine( DelayedPawnFall ( tile.orientation ));
+								StartCoroutine( DelayedPawnFall ( focusedTile.orientation ));
 							}
 						}
 						else
 						{
-							clickedTile = tile;
+							clickedTile = focusedTile;
 							path = AStarHelper.Calculate(pawnTile, clickedTile);
 						}
 					}
@@ -1048,16 +1030,7 @@ public class Pawn : MonoBehaviour
 			isCameraMode = false;
 		}
 	}
-
-	private void ClearClickableTiles()
-	{
-		// clear the "clickable tiles"
-		for ( int i = 0, l = clickableTiles.Count; i < l; i++ )
-			clickableTiles[i].isClickable = false;
-
-		clickableTiles.Clear ();
-	}
-
+	
 	private IEnumerator DelayedPawnFall( TileOrientation orientation )
 	{
 		Vector3 desiredPosition = new Vector3( 0, height * 0.5f * fallInterval, 0 );
@@ -1145,8 +1118,16 @@ public class Pawn : MonoBehaviour
 
 	private TileOrientation GetFeltVerticality()
 	{
-		Vector3 down = getMyVerticality();
+		return getTileOrientationFromDownVector( getMyVerticality() );
+	}
 
+	private TileOrientation GetWorldVerticality()
+	{
+		return getTileOrientationFromDownVector( Physics.gravity.normalized );
+	}
+
+	private TileOrientation getTileOrientationFromDownVector(Vector3 down)
+	{
 		if (down.x > 0)
 			return TileOrientation.Right;
 		if (down.x < 0)
