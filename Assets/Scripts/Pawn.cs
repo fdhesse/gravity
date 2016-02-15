@@ -845,8 +845,27 @@ public class Pawn : MonoBehaviour
 			// check if the tile is accessible by walk (astar)
 			if ( accessibleTiles != null && accessibleTiles.Count > 0 )
 			{
-				// If there's a valid AStar to the focused tile, that means the focused tile is clickable
+				// we may have found a path from the pawntile to the focused tile,
+				// which means normally we should be able to click on that focused tile.
+				// But if the pawn tile is glued, and the destination focused tile is not glued,
+				// (actually if the whole path is not glued), then we cannot directly go there,
+				// as the pawn will fall while following the path. So the focussed tile destination 
+				// is not clickable in that case. Unless of course the gravity is currently in the
+				// direction of the glue tile, which is the only situation for WALKING outside 
+				// a glue tile to a non glueed tile.
+				// Let's assume it is a valid path first:
 				isFocusedTileClickable = true;
+				// and check the special case
+				if (isGlued && (focusedTile.orientation != GetWorldVerticality()))
+				{
+					foreach (Tile tile in accessibleTiles)
+						if (!tile.IsGlueTile)
+						{
+							// we found a non glue tile in the path, so we cannot click on destination
+							isFocusedTileClickable = false;
+							break;
+						}
+				}
 			}		
 			// Check if the tile is accessible "by fall"
 			else if ( focusedTile.orientation == pawnTile.orientation )
@@ -985,7 +1004,8 @@ public class Pawn : MonoBehaviour
 					if (focusedTile.IsHighlighted)
 					{
 						// If the player clicked a tile with different orientation
-						if ( focusedTile.orientation != GetWorldVerticality() )
+						if ( ( focusedTile.orientation != pawnTile.orientation ) || 
+						     ( isGlued && (focusedTile == pawnTile)) )
 						{
 							// player has changed the gravity, increase the counter
 							hud.gravityChangeCount++;
