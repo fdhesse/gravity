@@ -174,21 +174,9 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		//if (collision.collider.gameObject.tag != "Player" || orientation != World.Pawn.orientation )
 		if (collision.collider.gameObject.tag != "Player" )
 			return;
-		
-		if ( isGlueTile )
-		{
-			Pawn.Instance.isGlued = true;
-			Pawn.Instance.tileGravityVector = World.getGravityVector( orientation );
-		}
-		else if ( Pawn.Instance.isGlued && Physics.gravity.normalized != World.getGravityVector( orientation ) )
-		{
-			Pawn.Instance.isLeavingGlueTile = true;
-		}
-		else
-		{
-			Pawn.Instance.isGlued = false;
-			Pawn.Instance.tileGravityVector = Physics.gravity.normalized;
-		}
+
+		// warn the pawn that he enter on my tile
+		Pawn.Instance.onEnterTile(this);
 	}
 
     /// <summary>

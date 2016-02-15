@@ -43,9 +43,9 @@ public class Pawn : MonoBehaviour
 	private CapsuleCollider capsuleCollider;
 	
 	[HideInInspector] public TileOrientation orientation;
-	[HideInInspector] public bool isGlued;
-	[HideInInspector] public bool isLeavingGlueTile;
-	[HideInInspector] public Vector3 tileGravityVector;
+	[HideInInspector] private bool isGlued;
+	[HideInInspector] private bool isLeavingGlueTile;
+	[HideInInspector] private Vector3 tileGravityVector;
 
 	[HideInInspector] public bool isJumping = false;
 	[HideInInspector] public bool isFalling = true;
@@ -369,6 +369,30 @@ public class Pawn : MonoBehaviour
 		ResetDynamic();
 	}
 
+	public void onEnterTile(Tile tile)
+	{
+		// save the new pawntile
+		pawnTile = tile;
+
+		// and now check stuff related with glue
+		if ( tile.IsGlueTile )
+		{
+			isGlued = true;
+			tileGravityVector = World.getGravityVector( tile.orientation );
+			GetComponent<Rigidbody>().useGravity = false;
+		}
+		else if ( isGlued && tile.orientation != GetWorldVerticality() )
+		{
+			isLeavingGlueTile = true;
+		}
+		else
+		{
+			isGlued = false;
+			tileGravityVector = Physics.gravity.normalized;
+			GetComponent<Rigidbody>().useGravity = true;
+		}
+	}
+
     /// <summary>
     ///  ONGUI
     ///  THIS IS CALLED ONCE PER FRAME
@@ -473,6 +497,7 @@ public class Pawn : MonoBehaviour
 					isGlued = false;
 					isLeavingGlueTile = false;
 					tileGravityVector = Physics.gravity.normalized;
+					GetComponent<Rigidbody>().useGravity = true;
 
 					pawnTile = null;
 					clickedTile = null;
@@ -672,19 +697,25 @@ public class Pawn : MonoBehaviour
 		// casting a ray down, we need a sphereCast because the capsule has thickness, and we only need tiles layer
 		if (Physics.SphereCast (transform.position, width * 0.4f, down, out hit, height * 0.5f, tilesLayerMask))
 		{
-			GameObject hitTile = hit.collider.gameObject;
+			GameObject hitTileGameObject = hit.collider.gameObject;
+			Tile hitTile = hitTileGameObject.GetComponent<Tile>();
 
-			pawnTile = hitTile.GetComponent<Tile> ();
+			// if the pawn change the tile, call the notification
+			if (hitTile != pawnTile)
+				onEnterTile(hitTile);
+
+			// save the new pawn tile
+			pawnTile = hitTile;
 			orientation = pawnTile.orientation;
 
 			isWalkingInStairs = false;
 			
-			if (hitTile.tag == "Stairway")
+			if (hitTileGameObject.tag == "Stairway")
 			{
 				animState = 1;
 				isWalkingInStairs = true;
 			}
-			else if (hitTile.tag == "MovingPlatform")
+			else if (hitTileGameObject.tag == "MovingPlatform")
 			{
 				// [TODO]
 				// It would be nice that pawn's speed would
@@ -736,22 +767,22 @@ public class Pawn : MonoBehaviour
 				// compute the new position
 				position = _vec + _ppos;
 			}
-			else if (isGlued && (hitTile.tag == "GravityPlatform"))
+			else if (isGlued && (hitTileGameObject.tag == "GravityPlatform"))
 			{
 				// try to get the grand parent of the tile
-				GameObject grandParent = hitTile.transform.parent.gameObject;
+				GameObject grandParent = hitTileGameObject.transform.parent.gameObject;
 				if (grandParent != null)
 					grandParent = grandParent.transform.parent.gameObject;
 
 				// try a rotating platform
 				RotatingPlatform rotatingPlatform = grandParent.GetComponent<RotatingPlatform>();
 				if ((rotatingPlatform != null) && (rotatingPlatform.IsRotating))
-					position = hitTile.transform.position;
+					position = hitTileGameObject.transform.position;
 
 				// try a gravity platform
 				GravityPlatform gravityPlatform = grandParent.GetComponent<GravityPlatform>();
 				if ((gravityPlatform != null) && (!gravityPlatform.IsFrozen))
-					position = hitTile.transform.position;
+					position = hitTileGameObject.transform.position;
 			}
 		}
 		else
@@ -853,19 +884,21 @@ public class Pawn : MonoBehaviour
 				// is not clickable in that case. Unless of course the gravity is currently in the
 				// direction of the glue tile, which is the only situation for WALKING outside 
 				// a glue tile to a non glueed tile.
+				// Note that you can also authorise the player to move to a non glue tile, in that case,
+				// he will fall nicely, and the code support it with the isLeavingGlueTile flag
 				// Let's assume it is a valid path first:
 				isFocusedTileClickable = true;
 				// and check the special case
-				if (isGlued && (focusedTile.orientation != GetWorldVerticality()))
-				{
-					foreach (Tile tile in accessibleTiles)
-						if (!tile.IsGlueTile)
-						{
-							// we found a non glue tile in the path, so we cannot click on destination
-							isFocusedTileClickable = false;
-							break;
-						}
-				}
+//				if (isGlued && (focusedTile.orientation != GetWorldVerticality()))
+//				{
+//					foreach (Tile tile in accessibleTiles)
+//						if (!tile.IsGlueTile)
+//						{
+//							// we found a non glue tile in the path, so we cannot click on destination
+//							isFocusedTileClickable = false;
+//							break;
+//						}
+//				}
 			}		
 			// Check if the tile is accessible "by fall"
 			else if ( focusedTile.orientation == pawnTile.orientation )
@@ -1136,7 +1169,7 @@ public class Pawn : MonoBehaviour
 
 	private TileOrientation GetWorldVerticality()
 	{
-		return getTileOrientationFromDownVector( Physics.gravity.normalized );
+		return getTileOrientationFromDownVector( Physics.gravity );
 	}
 
 	private TileOrientation getTileOrientationFromDownVector(Vector3 down)
