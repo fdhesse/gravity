@@ -919,6 +919,12 @@ public class Pawn : MonoBehaviour
 		// update the clickable flag
 		isFocusedTileClickable = isFocusedTileClickable || canFocusedTileClhangeGravity;
 
+		// now check if the focused tile is the same as the pawn tile, we only authorize the click
+		// if the player is glued and the gravity is not under his feet,
+		// in order for the player to put back the gravity under his feet.
+		if ((focusedTile != null) && (focusedTile == pawnTile))
+			isFocusedTileClickable = isGlued && (focusedTile.orientation != GetWorldVerticality());
+
 		// now highlight the focused tile if it is clickable (may happen with AStar navigation, fall or gravity change)
 		if (focusedTile != null)
 		{
@@ -981,12 +987,12 @@ public class Pawn : MonoBehaviour
 						// If the player clicked a tile with different orientation
 						if ( focusedTile.orientation != GetWorldVerticality() )
 						{
-							// If the pawn is on a glue tile
-							// We only consider the click if the gravity change
-							if ( isGlued && World.getGravityVector( focusedTile.orientation ) != Physics.gravity.normalized )
-							{
-								hud.gravityChangeCount++;
+							// player has changed the gravity, increase the counter
+							hud.gravityChangeCount++;
 
+							// If the pawn is on a glue tile, the change of gravity is managed differently
+							if ( isGlued )
+							{
 								GetComponent<Rigidbody>().useGravity = false;
 								tileGravityVector = World.getGravityVector( pawnTile.orientation );
 								
@@ -995,15 +1001,17 @@ public class Pawn : MonoBehaviour
 							}
 							else //for punishing gravity take the tile == null here
 							{
-								hud.gravityChangeCount++;
 								pawnTile = null;
 								StartCoroutine( DelayedPawnFall ( focusedTile.orientation ));
 							}
 						}
 						else
 						{
+							// memorised the clicked tile
 							clickedTile = focusedTile;
-							path = AStarHelper.Calculate(pawnTile, clickedTile);
+							// ask a new path if we go to a different tile
+							if (pawnTile != clickedTile)
+								path = AStarHelper.Calculate(pawnTile, clickedTile);
 						}
 					}
 	            }
