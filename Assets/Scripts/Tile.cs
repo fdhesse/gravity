@@ -67,7 +67,6 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 
 	// #HIGHLIGHTING#
 
-	[HideInInspector] public bool isClickable = false; // wheter this platform can be clicked or not
     private bool isHighlighted = false;//whether this platform is highlighted
     private bool isFlashing = false;//wheter this platform is flashing
     private Ticker flash;//timer for platform flashing
@@ -75,6 +74,11 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	private TileType oldType;// auxilliary variable
 
 	[HideInInspector] public bool isQuad;
+
+	public bool IsHighlighted
+	{
+		get { return isHighlighted; }
+	}
 
 	/*
 	void OnValidate()
@@ -508,13 +512,9 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
     // this function is called whenever we want to highlight a platform, usually due to mousehover
     public void highlight()
     {
-		if ( isClickable )
-		{
-	        isHighlighted = true;
-			highlightTile();
-
-	        //applyTileMaterial();
-		}
+        isHighlighted = true;
+		highlightTile();
+        //applyTileMaterial();
     }
 
     // this function is called whenever we want to unhighlight a platform, usually right after a mousehover

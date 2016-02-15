@@ -73,8 +73,7 @@ public class Pawn : MonoBehaviour
 	private Tile pawnTile = null; // Tile beneath the Pawn
 	private Tile clickedTile = null; // Tile the player clicked
 	private Tile focusedTile = null; // Tile the cursor focus
-	private List<Tile> clickableTiles = new List<Tile> ();
-	
+
 	// #GUI#
 	public Texture fadeinoutTexture;
 	public float fadeSpeed = 1.5f;				// Speed that the screen fades to and from black.
@@ -771,12 +770,15 @@ public class Pawn : MonoBehaviour
 		}
 	}
 
-	private void putDestinationMarks()
+	private bool putDestinationMarks(Tile tileToCheck)
 	{
 		removeDestinationMarks();
 
 		if ( isWalking || isWalkingInStairs || isFalling || isJumping )
-			return;
+			return false;
+
+		bool result = false;
+		TileOrientation currentWorldOrientation = GetWorldVerticality();
 
 		for (int i = 0 ; i < orientationSpheres.Length ; ++i)
 		{
@@ -789,10 +791,12 @@ public class Pawn : MonoBehaviour
 			{
 				Tile tile = hit.collider.gameObject.GetComponent<Tile>();
 				
-				if ( tile != null && tile != pawnTile && TileSelection.isClickableType( tile.type ) )
+				if ( (tile != null) && (tile.orientation != currentWorldOrientation) &&
+				    TileSelection.isClickableType( tile.type ) )
 				{
-					// make this tile clickable
-					this.AddClickableTileToList(tile);
+					// check if the current tile equals the tile to check
+					if (tile == tileToCheck)
+						result = true;
 
 					// reactivate the sphere
 					orientationSpheres[i].SetActive(true);
@@ -805,6 +809,8 @@ public class Pawn : MonoBehaviour
 				}
 			}
 		}
+
+		return result;
 	}
 	
 	/// <summary>
@@ -813,8 +819,9 @@ public class Pawn : MonoBehaviour
 	/// </summary>
 	private void computeFocusedAndClickableTiles()
 	{
-		// first clear the list of clickable tiles
-		ClearClickableTiles();
+		// unhighlight the previous focused tile if not null
+		if (focusedTile != null)
+			focusedTile.unHighlight();
 
 		// get the tile currently pointed by the player's cursor
 		Tile pointedTile = TileSelection.getTile();
@@ -825,7 +832,9 @@ public class Pawn : MonoBehaviour
 		else
 			focusedTile = null;
 
-		// Now check if the focused tile is clickable or not.
+		// Now we will check if the focused tile is clickable or not.
+		bool isFocusedTileClickable = false;
+
 		// For that will we ask a valid AStar for normal walk navigation from the pawntile,
 		// or we will check if the tile is accessible by fall from pawntile.
 		if ((focusedTile != null) && (pawnTile != null))
@@ -836,10 +845,8 @@ public class Pawn : MonoBehaviour
 			// check if the tile is accessible by walk (astar)
 			if ( accessibleTiles != null && accessibleTiles.Count > 0 )
 			{
-				foreach ( Tile accessibleTile in accessibleTiles )
-					this.AddClickableTileToList(accessibleTile);
-
-				this.AddClickableTileToList(focusedTile);
+				// If there's a valid AStar to the focused tile, that means the focused tile is clickable
+				isFocusedTileClickable = true;
 			}		
 			// Check if the tile is accessible "by fall"
 			else if ( focusedTile.orientation == pawnTile.orientation )
@@ -900,49 +907,26 @@ public class Pawn : MonoBehaviour
 					if ( yDist > 10.1f )
 						isAccessibleByFall = false;
 				}
-				
-				if ( isAccessibleByFall )
-					this.AddClickableTileToList(focusedTile);
+
+				// now set the clickable flag if we can jump on it
+				isFocusedTileClickable = isAccessibleByFall;
 			}
 		}
 
 		// now compute the destination marks for the gravity change.
 		// This function will also mark some tiles as clickable
-		putDestinationMarks();
+		bool canFocusedTileClhangeGravity = putDestinationMarks(focusedTile);
+		// update the clickable flag
+		isFocusedTileClickable = isFocusedTileClickable || canFocusedTileClhangeGravity;
 
 		// now highlight the focused tile if it is clickable (may happen with AStar navigation, fall or gravity change)
-		if ((focusedTile != null) && focusedTile.isClickable)
-			focusedTile.highlight();
-	}
-
-	private void AddClickableTileToList(Tile tile)
-	{
-		// check that the tile is clickable
-		if (TileSelection.isClickableType(tile.type))
+		if (focusedTile != null)
 		{
-			// set (or reset) the clickable flag
-			tile.isClickable = true;
-			
-			// add it to the list if not already in
-			if (!clickableTiles.Contains(tile))
-				clickableTiles.Add(tile);			
+			if (isFocusedTileClickable)
+				focusedTile.highlight();
+			else
+				focusedTile.unHighlight();
 		}
-	}
-	
-	private void RemoveClickableTilefromList(Tile tile)
-	{
-		tile.isClickable = false;
-		clickableTiles.Remove(tile);
-	}
-	
-	private void ClearClickableTiles()
-	{
-		// clear the "clickable tiles" flags
-		foreach (Tile tile in clickableTiles)
-			tile.isClickable = false;
-		
-		// empty the list
-		clickableTiles.Clear();
 	}
 	#endregion
 
@@ -991,7 +975,8 @@ public class Pawn : MonoBehaviour
 					if ( isWalking || isFalling || focusedTile == null || world.FallingCubes() )
 						return;
 
-					if (focusedTile.isClickable)
+					// if the focussed tile is highlighted that means it is clickable
+					if (focusedTile.IsHighlighted)
 					{
 						// If the player clicked a tile with different orientation
 						if ( focusedTile.orientation != GetWorldVerticality() )
