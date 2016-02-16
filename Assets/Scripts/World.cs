@@ -11,6 +11,7 @@ public class World : MonoBehaviour {
 	private FallingCube[] fallingCubes;
 	private GravityPlatform[] gravityPlatforms;
 	private RotatingPlatform[] rotatingPlatforms;
+	private MovingPlatform[] movingPlatforms;
 	private GoldTile[] goldTiles;
 	
 	public void Init()
@@ -18,6 +19,7 @@ public class World : MonoBehaviour {
 		fallingCubes = FindObjectsOfType<FallingCube>();
 		gravityPlatforms = FindObjectsOfType<GravityPlatform>();
 		rotatingPlatforms = FindObjectsOfType<RotatingPlatform>();
+		movingPlatforms = FindObjectsOfType<MovingPlatform>();
 		goldTiles = FindObjectsOfType<GoldTile> ();
 	}
 	
@@ -35,6 +37,9 @@ public class World : MonoBehaviour {
 
 		for (int i = 0; i < rotatingPlatforms.Length; i++)
 			((RotatingPlatform) rotatingPlatforms[i]).Reset( startingOrientation );
+
+		for (int i = 0; i < movingPlatforms.Length; i++)
+			((MovingPlatform) movingPlatforms[i]).Reset( startingOrientation );
 
 		for (int i = 0; i < goldTiles.Length; i++)
 			((GoldTile)goldTiles[i]).Reset( startingOrientation );
