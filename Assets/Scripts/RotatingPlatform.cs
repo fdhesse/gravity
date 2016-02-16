@@ -90,7 +90,7 @@ public class RotatingPlatform : MonoBehaviour
 		else
 			rotation = GetDesiredAngle ();
 
-		RecomputePlatformTiles ();
+		RecomputePlatformTiles();
 	}
 	
 	private void ChangeGravity( TileOrientation orientation )
@@ -280,7 +280,7 @@ public class RotatingPlatform : MonoBehaviour
 				rotation = -360;
 		}
 
-		RecomputePlatformTiles ();
+		RecomputePlatformTiles();
 
 		// clear the flag
 		this.isRotating = false;
@@ -314,7 +314,7 @@ public class RotatingPlatform : MonoBehaviour
 		transform.rotation = toRotation;
 		
 		// Recompute the platform's tiles directions
-		RecomputePlatformTiles ();
+		RecomputePlatformTiles();
 		
 		// clear the flag
 		this.isRotating = false;
@@ -325,7 +325,12 @@ public class RotatingPlatform : MonoBehaviour
 		Tile[] tiles = gameObject.GetComponentsInChildren<Tile> ();
 
 		foreach (Tile tile in tiles)
-			tile.CheckTileOrientation ();
+		{
+			// update the orientation of the platform
+			tile.CheckTileOrientation();
+			// also ask to rescan the path
+			tile.rescanPath = true;
+		}
 	}
 	
 #if UNITY_EDITOR

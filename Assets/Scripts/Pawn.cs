@@ -44,7 +44,6 @@ public class Pawn : MonoBehaviour
 	
 	[HideInInspector] public TileOrientation orientation;
 	[HideInInspector] private bool isGlued;
-	[HideInInspector] private bool isLeavingGlueTile;
 	[HideInInspector] private Vector3 tileGravityVector;
 
 	[HideInInspector] public bool isJumping = false;
@@ -381,10 +380,6 @@ public class Pawn : MonoBehaviour
 			tileGravityVector = World.getGravityVector( tile.orientation );
 			GetComponent<Rigidbody>().useGravity = false;
 		}
-		else if ( isGlued && tile.orientation != GetWorldVerticality() )
-		{
-			isLeavingGlueTile = true;
-		}
 		else
 		{
 			isGlued = false;
@@ -490,22 +485,6 @@ public class Pawn : MonoBehaviour
 				position = nextTile.transform.position;
 
 				path.RemoveAt(0); // if we have reached this path point, delete it from the list so we can go to the next one next time
-
-				if ( isLeavingGlueTile )
-				{
-					// Remove the glue effect
-					isGlued = false;
-					isLeavingGlueTile = false;
-					tileGravityVector = Physics.gravity.normalized;
-					GetComponent<Rigidbody>().useGravity = true;
-
-					pawnTile = null;
-					clickedTile = null;
-
-					path.Clear();
-
-					StartCoroutine( DelayedPawnFall ( GetFeltVerticality() ));
-				}
 			}
 			
 			if ( path.Count == 0 )
@@ -883,9 +862,7 @@ public class Pawn : MonoBehaviour
 				// as the pawn will fall while following the path. So the focussed tile destination 
 				// is not clickable in that case. Unless of course the gravity is currently in the
 				// direction of the glue tile, which is the only situation for WALKING outside 
-				// a glue tile to a non glueed tile.
-				// Note that you can also authorise the player to move to a non glue tile, in that case,
-				// he will fall nicely, and the code support it with the isLeavingGlueTile flag
+				// a glue tile to a non glued tile.
 				// Let's assume it is a valid path first:
 				isFocusedTileClickable = true;
 				// and check the special case

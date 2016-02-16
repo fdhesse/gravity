@@ -612,6 +612,6 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 
 	public void CheckTileOrientation()
 	{
-		defineOrientation ();
+		defineOrientation();
 	}
 }
