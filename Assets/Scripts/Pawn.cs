@@ -889,16 +889,16 @@ public class Pawn : MonoBehaviour
 				// Let's assume it is a valid path first:
 				isFocusedTileClickable = true;
 				// and check the special case
-//				if (isGlued && (focusedTile.orientation != GetWorldVerticality()))
-//				{
-//					foreach (Tile tile in accessibleTiles)
-//						if (!tile.IsGlueTile)
-//						{
-//							// we found a non glue tile in the path, so we cannot click on destination
-//							isFocusedTileClickable = false;
-//							break;
-//						}
-//				}
+				if (isGlued && (focusedTile.orientation != GetWorldVerticality()))
+				{
+					foreach (Tile tile in accessibleTiles)
+						if (!tile.IsGlueTile)
+						{
+							// we found a non glue tile in the path, so we cannot click on destination
+							isFocusedTileClickable = false;
+							break;
+						}
+				}
 			}		
 			// Check if the tile is accessible "by fall"
 			else if ( focusedTile.orientation == pawnTile.orientation )
