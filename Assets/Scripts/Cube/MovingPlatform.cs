@@ -24,7 +24,7 @@ public class MovingStep
 	[Tooltip("The translation axis for a TRANSLATION step, or the rotation axis for a ROTATION step.")]
 	public Axis axis = Axis.X;
 
-	[Tooltip("The quantity of movement, so the distance in game unit for a TRANSLATION step, or angle in degree for a ROTATION step. You can use a negative value to move in the reverse direction as the world axis, or turn in the opposite direction.")]
+	[Tooltip("The quantity of movement, so the distance in game unit for a TRANSLATION step, or number of quarter of circle for a ROTATION step. You can use a negative value to move in the reverse direction as the world axis, or turn in the opposite direction.")]
 	public float moveValue = 10f;
 
 	[Tooltip("The translation speed in game unit/second for a TRANSLATION step, or in degree/second for a ROTATION step.")]
@@ -266,6 +266,12 @@ public class MovingPlatform : MonoBehaviour
 			break;
 		case PlayingMode.LOOP:
 			mCurrentStep = (mCurrentStep + 1) % steps.Count;
+			// special case in loop, if we restart from the beginning teleport the platform at the starting position
+			if (mCurrentStep == 0)
+			{
+				transform.position = mStartingPosition;
+				transform.rotation = mStartingOrientation;
+			}
 			break;
 		}
 	}
@@ -320,8 +326,28 @@ public class MovingPlatform : MonoBehaviour
 	{
 		if (mCurrentStepPhase == StepPhase.WAIT)
 		{
-//			transform.position = currentStep.stepPosition;
-//			transform.rotation = currentStep.stepOrientation;
+			// in wait, reset the position to the key frame position, however in pingpong mode
+			// when playing in reverse, you should use the position of the previous step
+			if (mPingPongDirection == -1)
+			{
+				// if it's the first step, use the starting position
+				if (mCurrentStep == 0)
+				{
+					transform.position = mStartingPosition;
+					transform.rotation = mStartingOrientation;
+				}
+				else
+				{
+					MovingStep previousStep = steps[mCurrentStep - 1];
+					transform.position = previousStep.stepPosition;
+					transform.rotation = previousStep.stepOrientation;
+				}
+			}
+			else
+			{
+				transform.position = currentStep.stepPosition;
+				transform.rotation = currentStep.stepOrientation;
+			}
 		}
 		else
 		{
