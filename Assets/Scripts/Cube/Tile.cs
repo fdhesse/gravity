@@ -610,6 +610,11 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
         return transform.position;
     }
 
+	public Vector3 getDownVector()	
+	{
+		return transform.forward;
+	}
+
 	public void CheckTileOrientation()
 	{
 		defineOrientation();

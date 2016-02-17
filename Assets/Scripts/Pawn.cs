@@ -44,7 +44,6 @@ public class Pawn : MonoBehaviour
 	
 	[HideInInspector] public TileOrientation orientation;
 	[HideInInspector] private bool isGlued;
-	[HideInInspector] private Vector3 tileGravityVector;
 
 	[HideInInspector] public bool isJumping = false;
 	[HideInInspector] public bool isFalling = true;
@@ -377,13 +376,11 @@ public class Pawn : MonoBehaviour
 		if ( tile.IsGlueTile )
 		{
 			isGlued = true;
-			tileGravityVector = World.getGravityVector( tile.orientation );
 			GetComponent<Rigidbody>().useGravity = false;
 		}
 		else
 		{
 			isGlued = false;
-			tileGravityVector = Physics.gravity.normalized;
 			GetComponent<Rigidbody>().useGravity = true;
 		}
 	}
@@ -981,8 +978,7 @@ public class Pawn : MonoBehaviour
 							if ( isGlued )
 							{
 								GetComponent<Rigidbody>().useGravity = false;
-								tileGravityVector = World.getGravityVector( pawnTile.orientation );
-								
+
 								World.SetGravity( focusedTile.orientation );
 								world.ChangeGravity ( focusedTile.orientation );
 							}
@@ -1108,17 +1104,17 @@ public class Pawn : MonoBehaviour
 
 	private TileOrientation getTileOrientationFromDownVector(Vector3 down)
 	{
-		if (down.x > 0)
+		if (down.x > 0.7f)
 			return TileOrientation.Right;
-		if (down.x < 0)
+		if (down.x < -0.7f)
 			return TileOrientation.Left;
-		if (down.y > 0)
+		if (down.y > 0.7f)
 			return TileOrientation.Down;
-		if (down.y < 0)
+		if (down.y < -0.7f)
 			return TileOrientation.Up;
-		if (down.z > 0)
+		if (down.z > 0.7f)
 			return TileOrientation.Front;
-		if (down.z < 0)
+		if (down.z < -0.7f)
 			return TileOrientation.Back;
 
 		return TileOrientation.Up;
@@ -1135,8 +1131,8 @@ public class Pawn : MonoBehaviour
 	/// <returns>The my verticality for the pawn.</returns>
 	private Vector3 getMyVerticality()
 	{
-		if ( isGlued )
-			return tileGravityVector;
+		if ( isGlued && (pawnTile != null))
+			return pawnTile.getDownVector();
 		else
 			return Physics.gravity.normalized;
 	}
