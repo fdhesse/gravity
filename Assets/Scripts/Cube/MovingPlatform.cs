@@ -39,6 +39,9 @@ public class MovingStep
 	[Range(0f, 600f)]
 	public float pauseTime = 2f;
 
+	[Tooltip("Set it to true if you want to be able to walk out of a translating platform, while the platform is still moving. As it is quite CPU intensive, and as this case don't happen often (if never), this flag is false by default.")]
+	public bool scanPathContinuously = false;
+
 	/// <summary>
 	/// Gets the move absolute distance for this step in game unit for a translation or
 	/// in degrees for a rotation
@@ -152,14 +155,21 @@ public class MovingPlatform : MonoBehaviour
 	private float[] mPhaseTime = new float[(int)StepPhase.WAIT + 1];
 	private int mPingPongDirection = 1;
 
+	// all the tiles that compose this platform
+	private Tile[] mTilesOnThatPlatform = null;
+
 	void Awake()
 	{
 		if (!isInit)
 		{
 			isInit = true;
 
+			// get the starting position
 			mStartingPosition = transform.position;
 			mStartingOrientation = transform.rotation;
+
+			// get all the tiles
+			mTilesOnThatPlatform = gameObject.GetComponentsInChildren<Tile>();
 
 			// init the internal values of the steps
 			Vector3 previousPosition = transform.position;
@@ -200,11 +210,17 @@ public class MovingPlatform : MonoBehaviour
 			// get the current step
 			MovingStep currentStep = steps[mCurrentStep];
 
+			// memorise the previous step phase before calling the method that may change it
+			StepPhase previousStepPhase = mCurrentStepPhase;
+
 			// adjust the speed inside the step
 			adjustSpeed(currentStep);
 
 			// and move the platform
 			move(currentStep);
+
+			// update my tile states (cause we may have rotate, or break path by moving)
+			updateTileStates(currentStep, previousStepPhase);
 		}
 	}
 
@@ -411,6 +427,30 @@ public class MovingPlatform : MonoBehaviour
 					break;
 				}
 				break;
+			}
+		}
+	}
+
+	private void updateTileStates(MovingStep currentStep, StepPhase previousStepPhase)
+	{
+		// no need to recompute anything when we are in the wait state
+		if (previousStepPhase != StepPhase.WAIT)
+		{
+			foreach (Tile tile in mTilesOnThatPlatform)
+			{
+				// update the orientation of the platform if the current step is a rotation
+				// and if we just start to wait (previous phase is not waiting and current is waiting)
+				if ((currentStep.stepType == MovingStep.MoveType.ROTATION) && 
+				    (mCurrentStepPhase == StepPhase.WAIT))
+					tile.CheckTileOrientation();
+
+				// also ask to rescan the path when moving or rotating
+				// as for the tile orientation, we search for new pathfinding when the platform
+				// arrive at destination, or if the flag is set to scan path continuously (cpu expensive)
+				// actually scan when deccelerating or accelerating (to give a chance to create/break path
+				// at the begining and end of the step)
+				if ((mCurrentStepPhase != StepPhase.CONSTANT_MOVE) || currentStep.scanPathContinuously)
+					tile.rescanPath = true;
 			}
 		}
 	}
