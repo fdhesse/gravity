@@ -95,13 +95,13 @@ public class MovingStep
 			switch(axis)
 			{
 			case Axis.X:
-				stepOrientation *= Quaternion.AngleAxis(angle, Vector3.right);
+				stepOrientation = Quaternion.AngleAxis(angle, Vector3.right) * stepOrientation;
 				break;
 			case Axis.Y:
-				stepOrientation *= Quaternion.AngleAxis(angle, Vector3.up);
+				stepOrientation = Quaternion.AngleAxis(angle, Vector3.up) * stepOrientation;
 				break;
 			case Axis.Z:
-				stepOrientation *= Quaternion.AngleAxis(angle, Vector3.forward);
+				stepOrientation = Quaternion.AngleAxis(angle, Vector3.forward) * stepOrientation;
 				break;
 			}
 			break;
@@ -391,17 +391,46 @@ public class MovingPlatform : MonoBehaviour
 				switch(currentStep.axis)
 				{
 				case MovingStep.Axis.X:
-					transform.rotation *= Quaternion.AngleAxis(deltaMove, Vector3.right);
+					transform.rotation = Quaternion.AngleAxis(deltaMove, Vector3.right) * transform.rotation;
 					break;
 				case MovingStep.Axis.Y:
-					transform.rotation *= Quaternion.AngleAxis(deltaMove, Vector3.up);
+					transform.rotation = Quaternion.AngleAxis(deltaMove, Vector3.up) * transform.rotation;
 					break;
 				case MovingStep.Axis.Z:
-					transform.rotation *= Quaternion.AngleAxis(deltaMove, Vector3.forward);
+					transform.rotation = Quaternion.AngleAxis(deltaMove, Vector3.forward) * transform.rotation;
 					break;
 				}
 				break;
 			}
 		}
 	}
+
+	#if UNITY_EDITOR
+	public void OnDrawGizmosSelected()
+	{
+		Vector3 dimension = new Vector3(10f, 10f, 10f);
+		Vector3 previousPosition = transform.position;
+		Quaternion previousRotation = transform.rotation;
+		foreach (MovingStep step in steps)
+		{
+			// recompute the step
+			step.init(previousPosition, previousRotation);
+			// draw the line and cube
+			if (step.stepType == MovingStep.MoveType.TRANSLATION)
+			{
+				Gizmos.color = Color.white;
+				Gizmos.DrawLine(previousPosition, step.stepPosition);
+				Gizmos.DrawWireCube(step.stepPosition, dimension);
+			}
+			else
+			{
+				Gizmos.color = Color.cyan;
+				Gizmos.DrawWireSphere(step.stepPosition, 4f);
+			}
+			// memorise the previous position
+			previousPosition = step.stepPosition;
+			previousRotation = step.stepOrientation;
+		}
+	}
+	#endif
 }
