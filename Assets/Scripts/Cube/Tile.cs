@@ -346,8 +346,8 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
     /// </summary>
     protected virtual void scanNearbyTiles()
 	{
-		if ( tag != "MovingPlatform" )
-			rescanPath = false;
+		// by default clear the flag since we rescan it
+		rescanPath = false;
 
 		HashSet<Tile> connectionSet = new HashSet<Tile>();
 

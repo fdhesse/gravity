@@ -241,7 +241,7 @@ public class Pawn : MonoBehaviour
 	public void respawn(TileOrientation startingOrientation)
 	{
 		path = null;
-		pawnTile = null;
+		setPawnTile(null);
 		clickedTile = null;
 		focusedTile = null;
 
@@ -357,9 +357,9 @@ public class Pawn : MonoBehaviour
 			isJumping = false;
 
 			// Snap to the tile
-			pawnTile = collision.collider.gameObject.GetComponent<Tile>();
+			setPawnTile(collision.collider.gameObject.GetComponent<Tile>());
 
-			moveMe ( pawnTile.transform.position );
+			moveTo( pawnTile.transform.position );
 		}
 
 		if (collision.relativeVelocity.magnitude > 1 && GetComponent<AudioSource>().enabled)
@@ -371,7 +371,7 @@ public class Pawn : MonoBehaviour
 	public void onEnterTile(Tile tile)
 	{
 		// save the new pawntile
-		pawnTile = tile;
+		setPawnTile(tile);
 
 		// and now check stuff related with glue
 		if ( tile.IsGlueTile )
@@ -477,9 +477,7 @@ public class Pawn : MonoBehaviour
 			}
 			
             // if there is, move the pawn towards the next point in that path
-			Vector3 vec = nextTile.transform.position - getGroundPosition();
-			
-            if (moveMe(vec))
+			if (moveTo(nextTile.transform.position))
 			{
 				newTarget = true;
 				position = nextTile.transform.position;
@@ -531,7 +529,8 @@ public class Pawn : MonoBehaviour
 					}
 
 					// calculate the vector from the Pawns position to the landing tile position at the same height
-	                Vector3 vec = getGroundHeightVector(landing.transform.position) - getGroundPosition();
+					Vector3 landingPositionAtGroundHeight = getGroundHeightPosition(landing.transform.position);
+					Vector3 vec = landingPositionAtGroundHeight - getGroundPosition();
 
 					// There is definitely a tile to fall, jump and go
 					if ( vec != Vector3.zero )
@@ -550,7 +549,7 @@ public class Pawn : MonoBehaviour
 							StartCoroutine( lookCoroutine );
 						}
 
-						if (moveMe(vec)) // move the pawn towards that vector
+						if (moveTo(landingPositionAtGroundHeight)) // move the pawn towards the landing tile
 						{
 							path = AStarHelper.Calculate(landing, clickedTile); //give me a path towards the clicked tile
 							clickedTile = null; // target reached, forget it
@@ -593,22 +592,27 @@ public class Pawn : MonoBehaviour
 	}
 
     /// <summary>
-    /// Moves the pawn in the direction of the vector.
+    /// Moves the pawn to the specified destination.
     /// Answers the question "am I there yet?"
     /// </summary>
-    /// <param name="vec">direction the player should be moved to</param>
+	/// <param name="destination">the destination where the player should be moved to in world coord</param>
     /// <returns>returns true if the vector is small, i.e. smaller than 1 of magnitude, in this case, the Pawn has reached his destination</returns>
-    private bool moveMe(Vector3 vec)
+    private bool moveTo(Vector3 destination)
 	{
-		if ( vec.magnitude > 1 )
+		// Convert the world destination into local space
+		Vector3 moveDirection = transform.worldToLocalMatrix.MultiplyPoint(destination);
+		// stay on the ground (in local coord of the pawn)
+		moveDirection.y += height * 0.5f;
+
+		if ( moveDirection.magnitude > 1 )
 		{
-			Vector3 translate = Vector3.ClampMagnitude ( ( vec.normalized * Time.deltaTime * speed ), maxTranslation );
-			transform.Translate( translate, Space.World );
+			Vector3 translate = Vector3.ClampMagnitude ( ( moveDirection.normalized * Time.deltaTime * speed ), maxTranslation );
+			transform.Translate( translate, Space.Self );
             return false;
         }
         else
 		{
-			transform.Translate( vec * Time.deltaTime * speed, Space.World );
+			transform.Translate( moveDirection * Time.deltaTime * speed, Space.Self );
             return true;
         }
 	}
@@ -684,7 +688,7 @@ public class Pawn : MonoBehaviour
 				onEnterTile(hitTile);
 
 			// save the new pawn tile
-			pawnTile = hitTile;
+			setPawnTile(hitTile);
 			orientation = pawnTile.orientation;
 
 			isWalkingInStairs = false;
@@ -694,80 +698,33 @@ public class Pawn : MonoBehaviour
 				animState = 1;
 				isWalkingInStairs = true;
 			}
-			else if (hitTileGameObject.tag == "MovingPlatform")
-			{
-				// [TODO]
-				// It would be nice that pawn's speed would
-				// be relative to the moving platforms'
-
-				// dirty snapping to a moving tile
-				// actually, a mask is used to mix up both player & tile positions
-				Vector3 _vec = Vector3.zero;
-
-				// the gravity
-				Vector3 _g = Vector3.Scale(down, down);
-
-				if (path.Count > 0)
-				{
-					// the player asked the pawn to move
-
-					_vec = path[0].transform.position - getGroundPosition();
-					_vec = _vec - Vector3.Scale(_g, _vec);
-
-					if (_vec.x != 0)
-						_vec.x = 1;
-					if (_vec.y != 0)
-						_vec.y = 1;
-					if (_vec.z != 0)
-						_vec.z = 1;
-				}
-
-				// _ppos: tile position 
-				Vector3 _ppos = pawnTile.transform.position - Vector3.Scale (_g, pawnTile.transform.position);
-
-				// first mask: actual gravity
-				Vector3 _mask = _g;
-
-				// second mask: playerPawn's movement
-				_mask = _mask - _vec;
-
-				// get absolute value
-				_mask = Vector3.Scale (_mask, _mask);
-
-				// mask the pawn's position
-				_vec = Vector3.Scale (_mask, transform.position);
-
-				// revert the mask
-				_mask = - (_mask - Vector3.one);
-				
-				// mask the tile's position
-				_ppos = Vector3.Scale (_mask, _ppos);
-
-				// compute the new position
-				position = _vec + _ppos;
-			}
-			else if (isGlued && (hitTileGameObject.tag == "GravityPlatform"))
-			{
-				// try to get the grand parent of the tile
-				GameObject grandParent = hitTileGameObject.transform.parent.gameObject;
-				if (grandParent != null)
-					grandParent = grandParent.transform.parent.gameObject;
-
-				// try a rotating platform
-				RotatingPlatform rotatingPlatform = grandParent.GetComponent<RotatingPlatform>();
-				if ((rotatingPlatform != null) && (rotatingPlatform.IsRotating))
-					position = hitTileGameObject.transform.position;
-
-				// try a gravity platform
-				GravityPlatform gravityPlatform = grandParent.GetComponent<GravityPlatform>();
-				if ((gravityPlatform != null) && (!gravityPlatform.IsFrozen))
-					position = hitTileGameObject.transform.position;
-			}
 		}
 		else
 		{
-			pawnTile = null;
+			setPawnTile(null);
         }
+	}
+
+	private void setPawnTile(Tile tile)
+	{
+		// set the pawn tile (can be null)
+		pawnTile = tile;
+
+		// if the tile is not null, check if we need to attach the pawn to the tile
+		bool shouldAttachToTile = false;
+		if (tile != null)
+		{
+			// attach the pawn to the platform if is a moving platform with the gravity in the right direction
+			// or if the pawn is glued to a moving or gravity platform
+			shouldAttachToTile = ( (tile.tag == "MovingPlatform" && (isGlued || tile.orientation == this.GetWorldVerticality())) ||
+			                      (tile.tag == "GravityPlatform" && isGlued) );
+		}
+
+		// attach or detach the parent of the pawn
+		if (shouldAttachToTile)
+			this.transform.parent = tile.transform;
+		else
+			this.transform.parent = null;
 	}
 
 	#region focused tile, clickable tile, and destination marks
@@ -1031,7 +988,7 @@ public class Pawn : MonoBehaviour
 							}
 							else //for punishing gravity take the tile == null here
 							{
-								pawnTile = null;
+								setPawnTile(null);
 								StartCoroutine( DelayedPawnFall ( focusedTile.orientation ));
 							}
 						}
@@ -1258,7 +1215,7 @@ public class Pawn : MonoBehaviour
     /// </summary>
     /// <param name="position">Position of something</param>
     /// <returns>The position of something at the same height as the Pawn</returns>
-    private Vector3 getGroundHeightVector(Vector3 position)
+    private Vector3 getGroundHeightPosition(Vector3 position)
 	{
 		if (pawnTile.orientation.Equals(TileOrientation.Up) || pawnTile.orientation.Equals(TileOrientation.Down))
             return new Vector3(position.x, getGroundPosition().y, position.z);
