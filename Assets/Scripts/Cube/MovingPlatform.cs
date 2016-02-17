@@ -111,6 +111,16 @@ public class MovingStep
 
 public class MovingPlatform : MonoBehaviour
 {
+	public enum DrawGizmoMode
+	{
+		ALWAYS = 0,
+		WHEN_SELECTED,
+		NEVER,
+	}
+
+	[Tooltip("Debug draw mode for drawing the gizmos.")]
+	public DrawGizmoMode drawGizmoMode = DrawGizmoMode.ALWAYS;
+
 	public enum PlayingMode
 	{
 		ONE_GO = 0,
@@ -406,7 +416,19 @@ public class MovingPlatform : MonoBehaviour
 	}
 
 	#if UNITY_EDITOR
+	public void OnDrawGizmos()
+	{
+		if (drawGizmoMode == DrawGizmoMode.ALWAYS)
+			drawGizmos();
+	}
+
 	public void OnDrawGizmosSelected()
+	{
+		if (drawGizmoMode == DrawGizmoMode.WHEN_SELECTED)
+			drawGizmos();
+	}
+
+	public void drawGizmos()
 	{
 		Vector3 dimension = new Vector3(10f, 10f, 10f);
 		Vector3 previousPosition = transform.position;
