@@ -28,16 +28,32 @@ public class MovingStep
 	public float moveValue = 10f;
 
 	[Tooltip("The translation speed in game unit/second for a TRANSLATION step, or in degree/second for a ROTATION step.")]
-	[Range(0f, 100f)]
+	[Range(0f, 1000f)]
 	public float speed = 10f;
 
 	[Tooltip("The acceleration used at the begining of the step which is also the decelleration used at the end of the step, in game unit/second² for a TRANSLATION step, or in degree/second² for a ROTATION step.")]
-	[Range(0f, 100f)]
+	[Range(0f, 1000f)]
 	public float acceleration = 10f;
 
 	[Tooltip("The time in second, the platform will wait without moving at the end of the step.")]
 	[Range(0f, 600f)]
 	public float pauseTime = 2f;
+
+	/// <summary>
+	/// Gets the move absolute distance for this step in game unit for a translation or
+	/// in degrees for a rotation
+	/// </summary>
+	/// <value>The absolute move distance.</value>
+	public float MoveAbsoluteDistance	
+	{
+		get
+		{
+			if (stepType == MoveType.TRANSLATION)
+				return Mathf.Abs(moveValue);
+			else
+				return Mathf.Abs(moveValue * 90f);
+		}
+	}
 
 	[HideInInspector]
 	public float moveDirection = 1f; // basically the sign of moveValue
@@ -75,16 +91,17 @@ public class MovingStep
 			break;
 			
 		case MovingStep.MoveType.ROTATION:
+			float angle = moveValue * 90f;
 			switch(axis)
 			{
 			case Axis.X:
-				stepOrientation *= Quaternion.AngleAxis(moveValue, Vector3.right);
+				stepOrientation *= Quaternion.AngleAxis(angle, Vector3.right);
 				break;
 			case Axis.Y:
-				stepOrientation *= Quaternion.AngleAxis(moveValue, Vector3.up);
+				stepOrientation *= Quaternion.AngleAxis(angle, Vector3.up);
 				break;
 			case Axis.Z:
-				stepOrientation *= Quaternion.AngleAxis(moveValue, Vector3.forward);
+				stepOrientation *= Quaternion.AngleAxis(angle, Vector3.forward);
 				break;
 			}
 			break;
@@ -279,7 +296,7 @@ public class MovingPlatform : MonoBehaviour
 	private void computePhaseTimeForStep(MovingStep currentStep)
 	{
 		// get the total distance moved during the step, by getting the absolute value of the move value
-		float totalMoveDistance = Mathf.Abs(currentStep.moveValue);
+		float totalMoveDistance = currentStep.MoveAbsoluteDistance;
 
 		// float the time for acceleration/decceleration, knowing the speed and acceleration is simply:
 		// a = v/t  so t = v/a
@@ -371,18 +388,18 @@ public class MovingPlatform : MonoBehaviour
 				break;
 				
 			case MovingStep.MoveType.ROTATION:
-//				switch(currentStep.axis)
-//				{
-//				case MovingStep.Axis.X:
-//					transform.rotation *= Quaternion.AngleAxis(currentStep.moveValue, Vector3.right);
-//					break;
-//				case MovingStep.Axis.Y:
-//					transform.rotation *= Quaternion.AngleAxis(currentStep.moveValue, Vector3.up);
-//					break;
-//				case MovingStep.Axis.Z:
-//					transform.rotation *= Quaternion.AngleAxis(currentStep.moveValue, Vector3.forward);
-//					break;
-//				}
+				switch(currentStep.axis)
+				{
+				case MovingStep.Axis.X:
+					transform.rotation *= Quaternion.AngleAxis(deltaMove, Vector3.right);
+					break;
+				case MovingStep.Axis.Y:
+					transform.rotation *= Quaternion.AngleAxis(deltaMove, Vector3.up);
+					break;
+				case MovingStep.Axis.Z:
+					transform.rotation *= Quaternion.AngleAxis(deltaMove, Vector3.forward);
+					break;
+				}
 				break;
 			}
 		}
