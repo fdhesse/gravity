@@ -350,8 +350,15 @@ public class MovingPlatform : MonoBehaviour
 			// lets redo the computation in reverse
 			distanceDuringConstantSpeed = 0f;
 			distanceDuringAccel = totalMoveDistance * 0.5f;
-			currentStep.acceleration = (currentStep.speed * currentStep.speed) / (2f * distanceDuringAccel);
-			accelTime = currentStep.speed / currentStep.acceleration;
+			if (distanceDuringAccel > 0f)
+			{
+				currentStep.acceleration = (currentStep.speed * currentStep.speed) / (2f * distanceDuringAccel);
+				accelTime = currentStep.speed / currentStep.acceleration;
+			}
+			else
+			{
+				accelTime = 0f;
+			}
 		}
 
 		// so now we can compute the time during the constant speed travel
