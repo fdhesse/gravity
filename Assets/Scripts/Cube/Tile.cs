@@ -422,7 +422,8 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 				// remove myself from the connection list of the old neighbors
 				// (sometime the sphere collision test is not reciprocal, 
 				// so this will converge, when both collision test can detect each other)
-				connectedTile.connections.Remove(this);
+				if (connectedTile.connections != null)
+					connectedTile.connections.Remove(this);
 				// and ask the neighboor to scan again to be sure that he cannot find me anymore
 				connectedTile.rescanPath = true;
 				areListsDifferents = true;
@@ -434,6 +435,8 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			{
 				// we found a tile that is in the new list, but was not in the old one
 				// add myself to the connection list of the new tile
+				if (connectedTile.connections == null)
+					connectedTile.connections = new List<Tile>(1);
 				connectedTile.connections.Add(this);
 				// and ask the neighboor to scan again to be sure that he can find me
 				// (sometime the sphere collision test is not reciprocal, 
