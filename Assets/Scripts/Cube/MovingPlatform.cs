@@ -39,9 +39,6 @@ public class MovingStep
 	[Range(0f, 600f)]
 	public float pauseTime = 2f;
 
-	[Tooltip("Set it to true if you want to be able to walk out of a translating platform, while the platform is still moving. As it is quite CPU intensive, and as this case don't happen often (if never), this flag is false by default.")]
-	public bool scanPathContinuously = false;
-
 	/// <summary>
 	/// Gets the move absolute distance for this step in game unit for a translation or
 	/// in degrees for a rotation
@@ -452,11 +449,18 @@ public class MovingPlatform : MonoBehaviour
 					tile.CheckTileOrientation();
 
 				// also ask to rescan the path when moving or rotating
-				// as for the tile orientation, we search for new pathfinding when the platform
-				// arrive at destination, or if the flag is set to scan path continuously (cpu expensive)
-				// actually scan when deccelerating or accelerating (to give a chance to create/break path
-				// at the begining and end of the step)
-				if ((mCurrentStepPhase != StepPhase.CONSTANT_MOVE) || currentStep.scanPathContinuously)
+				// The rescan path may be CPU intensive (use sphere collision), so we should do
+				// it only when necessary. Actually during a translation we need to do it all
+				// the time, and not just at the beginning or the end of the move, because the pawn
+				// can take off the platform even if it is still moving a bit. But we also need to
+				// check it during the constant move phase, because if a platform move along
+				// the static takeoff platform, the path is still valid during the constant move
+				// (which is generally not the case, when the moving platform come in contact to
+				// the static platform instead of sliding next to the static).
+				// For rotating platform, we actually only need to recompute the path when the rotation
+				// is complete or about to be complete, so not during the constant move.
+				if ( (currentStep.stepType == MovingStep.MoveType.TRANSLATION) ||
+					 (mCurrentStepPhase != StepPhase.CONSTANT_MOVE) )
 					tile.rescanPath = true;
 			}
 		}
@@ -480,6 +484,13 @@ public class MovingPlatform : MonoBehaviour
 		Vector3 dimension = new Vector3(10f, 10f, 10f);
 		Vector3 previousPosition = transform.position;
 		Quaternion previousRotation = transform.rotation;
+		// avoid the update of the path point when the animation is playing
+		if (Application.isPlaying)
+		{
+			previousPosition = mStartingPosition;
+			previousRotation = mStartingOrientation;
+		}
+
 		foreach (MovingStep step in steps)
 		{
 			// recompute the step

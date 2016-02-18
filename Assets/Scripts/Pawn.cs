@@ -503,14 +503,43 @@ public class Pawn : MonoBehaviour
 				position = nextTile.transform.position;
 
 				path.RemoveAt(0); // if we have reached this path point, delete it from the list so we can go to the next one next time
+
+				// check if the remaining path involve a move between a moving platform and an non moving platform
+				// because if some tile are moving and other not along the path, the path may become broken,
+				// so recompute the path everytime we move on the next tile
+				if ( path.Count > 0 )
+				{
+					bool isStaticFound = false;
+					bool isMovingFound = false;
+					foreach (Tile pathTile in path)
+					{
+						if (pathTile.tag == "MovingPlatform")
+							isMovingFound = true;
+						else
+							isStaticFound = true;
+						// if we found both, we can stop searching
+						if (isMovingFound && isStaticFound)
+							break;
+					}
+
+					// if we found a path with a passage between static and moving tile, recompute the path
+					if (isMovingFound && isStaticFound && (clickedTile != null))
+					{
+						path = AStarHelper.Calculate(path[0], clickedTile);
+						// if the path is broken, clear the click tile to avoid the pawn to try to jump on it
+						if (path == null)
+							clickedTile = null;
+					}
+				}
 			}
-			
-			if ( path.Count == 0 )
+
+			// path can be null because we may have recompute it if we are on a moving platform
+			if ((path == null) || (path.Count == 0))
 			{
 				animState = 0;
 				isWalking = false;
 
-				ResetDynamic ();
+				ResetDynamic();
 			}
 			
         }

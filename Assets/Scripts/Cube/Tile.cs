@@ -64,6 +64,9 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	protected HashSet<Tile> siblingConnection = null; //auxilliary hashset used for siblings detection
 
 	public bool rescanPath = true;// debug toggle used to force rescan of nearby platforms
+	#if UNITY_EDITOR
+	private bool isRescanPathDoneThisFrame = false;
+	#endif
 
 	// #HIGHLIGHTING#
 
@@ -349,6 +352,11 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		// by default clear the flag since we rescan it
 		rescanPath = false;
 
+		#if UNITY_EDITOR
+		// set the flag for debug draw
+		isRescanPathDoneThisFrame = true;
+		#endif
+
 		HashSet<Tile> connectionSet = new HashSet<Tile>();
 
 		if ( siblingConnection != null )
@@ -360,17 +368,14 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		}
 
 		Collider[] hits = Physics.OverlapSphere(transform.position, 5.5f);
-
-		Stack<Collider> hitList = new Stack<Collider> ();
-
-		foreach( Collider hit in hits )
-			hitList.Push (hit);
-
+		Stack<Collider> hitList = new Stack<Collider>(hits);
+		
 		while ( hitList.Count > 0 )
         {
 			Collider hit = hitList.Pop();
 
-			if ( hit.GetComponent<Collider>().transform != transform )
+			// check that I didn't collided with a tile of the same gameplay cube (same parent)
+			if ( hit.transform.parent != transform.parent )
             {
 				// Si il s'agit d'un escalier
 				Stairway stair = hit.gameObject.GetComponent<Stairway>();
@@ -414,6 +419,11 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			if (!connectionSet.Contains(connectedTile))
 			{
 				// we found a tile that was in the old list, but not in the new one
+				// remove myself from the connection list of the old neighbors
+				// (sometime the sphere collision test is not reciprocal, 
+				// so this will converge, when both collision test can detect each other)
+				connectedTile.connections.Remove(this);
+				// and ask the neighboor to scan again to be sure that he cannot find me anymore
 				connectedTile.rescanPath = true;
 				areListsDifferents = true;
 			}
@@ -423,6 +433,11 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			if (!connections.Contains(connectedTile))
 			{
 				// we found a tile that is in the new list, but was not in the old one
+				// add myself to the connection list of the new tile
+				connectedTile.connections.Add(this);
+				// and ask the neighboor to scan again to be sure that he can find me
+				// (sometime the sphere collision test is not reciprocal, 
+				// so this will converge, when both collision test can detect each other)
 				connectedTile.rescanPath = true;
 				areListsDifferents = true;
 			}
@@ -619,4 +634,15 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	{
 		defineOrientation();
 	}
+
+	#if UNITY_EDITOR
+	public void OnDrawGizmos()
+	{
+		if (Application.isPlaying && isRescanPathDoneThisFrame)
+		{
+			isRescanPathDoneThisFrame = false;
+			Gizmos.DrawWireSphere(transform.position, 6.0f);
+		}
+	}
+	#endif
 }
