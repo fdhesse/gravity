@@ -860,7 +860,10 @@ public class Pawn : MonoBehaviour
 			// Check if the tile is accessible "by fall"
 			else if ( focusedTile.orientation == pawnTile.orientation )
 			{
-				bool isAccessibleByFall = !tileIsAbove( focusedTile );
+				// the tile must be below the pawn tile and the gravity must be in the right direction
+				// so if the pawn is glued on the pawntile with a gravity in different direction,
+				// he cannot jump
+				bool isAccessibleByFall = isTileBelow(focusedTile) && (pawnTile.orientation == GetWorldVerticality());
 
 				// iff (if and only if)
 				if ( isAccessibleByFall && ( pawnTile.orientation == TileOrientation.Down || pawnTile.orientation == TileOrientation.Up ) )
@@ -1181,22 +1184,22 @@ public class Pawn : MonoBehaviour
 	/// <summary>
 	/// Is the target tile above the Pawn?
 	/// </summary>
-	private bool tileIsAbove(Tile target)
+	private bool isTileBelow(Tile target)
 	{
 		switch (pawnTile.orientation)
         {
             default:
-				return pawnTile.transform.position.y < target.transform.position.y;
-            case TileOrientation.Down:
 				return pawnTile.transform.position.y > target.transform.position.y;
+            case TileOrientation.Down:
+				return pawnTile.transform.position.y < target.transform.position.y;
 			case TileOrientation.Left:
-				return pawnTile.transform.position.x < target.transform.position.x;
-			case TileOrientation.Right:
 				return pawnTile.transform.position.x > target.transform.position.x;
+			case TileOrientation.Right:
+				return pawnTile.transform.position.x < target.transform.position.x;
             case TileOrientation.Front:
-				return pawnTile.transform.position.z > target.transform.position.z;
-            case TileOrientation.Back:
 				return pawnTile.transform.position.z < target.transform.position.z;
+            case TileOrientation.Back:
+				return pawnTile.transform.position.z > target.transform.position.z;
         }
 	}
 
