@@ -546,19 +546,14 @@ public class Pawn : MonoBehaviour
         else if (clickedTile != null) // Case where there is no path but a target tile, ie: target tile is not aligned to tile
 		{
 			if ( clickedTile == pawnTile )
+			{
 				clickedTile = null;
+			}
 			else
 			{
-	        	// tile is not accessible but in valid space, so:
-	        	// pawn will go towards the tile, then
-	        	//  (- he will land on a neighbourg tile) -- no more possible yet
-	        	//  - he will land on the tile
-	        	//  (- he will fall into the void) -- this case won't happen anymore
-				
-				// [TODO] It seems bad:
-				// The pawn is glued to a tile, not the gravity,
-				// so it can't jump on another tile, gravity
-				// would make it fall !
+	        	// tile is not accessible but in valid space, so that means the pawn will jump on the tile
+				// normally my verticality is the same as the world gravity, otherwise we won't have a clicked tile
+				Debug.Assert(GetFeltVerticality() == GetWorldVerticality());
 				Vector3 down = getMyVerticality();
 
 				// nearest tile: the directly accessible tile from the tile bellow the Pawn, thats closest to the target tile
@@ -570,7 +565,7 @@ public class Pawn : MonoBehaviour
 					Tile landing = Tile.Closest(clickedTile.AllAccessibleTiles(), nearest.transform.position);
 					
 	                // check if landing tile is not EXACTLY under the nearest tile
-					if ( Mathf.Abs( Vector3.Scale ( ( landing.transform.position - nearest.transform.position ), Vector3.Scale ( down, down ) - Vector3.one ).magnitude ) < .1f )
+					if ( Mathf.Abs( Vector3.Scale( ( landing.transform.position - nearest.transform.position ), Vector3.Scale ( down, down ) - Vector3.one ).magnitude ) < .1f )
 					{
 						landing = clickedTile;
 						
@@ -607,7 +602,6 @@ public class Pawn : MonoBehaviour
 					}
 					else
 					{
-						//path = AStarHelper.Calculate(nearest, clickedTile); //give me a path towards the clicked tile
 						clickedTile = null;
 					}
 	            }
@@ -622,17 +616,13 @@ public class Pawn : MonoBehaviour
 	private IEnumerator JumpToTile()
 	{
 		float elapsedTime = 0;
-
-		Vector3 jumpPos = Vector3.zero;
-
-		Vector3 down = getMyVerticality();
+		Vector3 up = new Vector3(0f, 0.25f, 0f);
 
 		while ( elapsedTime < jumpAnimationLength )
 		{
 			float t = elapsedTime / jumpAnimationLength;
 
-			jumpPos = transform.position - (down * Mathf.Cos( t ) * 0.75f );
-			transform.position = jumpPos;
+			transform.Translate( up * Mathf.Cos( t ), Space.Self );
 
 			elapsedTime += Time.deltaTime;
 
@@ -1210,24 +1200,24 @@ public class Pawn : MonoBehaviour
     /// </summary>
     private Vector3 getGroundPosition()
 	{
-		float n = (transform.localScale.y * height) * 0.5f;
+		float halfHeight = height * 0.5f;
 
 		switch (GetFeltVerticality())
 		{
 		default:
-			return new Vector3 (transform.position.x, transform.position.y - n, transform.position.z);
+			return new Vector3 (transform.position.x, transform.position.y - halfHeight, transform.position.z);
 		//case TileOrientation.Up:
 		//	return new Vector3 (transform.position.x, transform.position.y - n, transform.position.z);
 		case TileOrientation.Down:
-			return new Vector3 (transform.position.x, transform.position.y + n, transform.position.z);
+			return new Vector3 (transform.position.x, transform.position.y + halfHeight, transform.position.z);
 		case TileOrientation.Left:
-			return new Vector3 (transform.position.x - n, transform.position.y, transform.position.z);
+			return new Vector3 (transform.position.x - halfHeight, transform.position.y, transform.position.z);
 		case TileOrientation.Right:
-			return new Vector3 (transform.position.x + n, transform.position.y, transform.position.z);
+			return new Vector3 (transform.position.x + halfHeight, transform.position.y, transform.position.z);
 		case TileOrientation.Front:
-			return new Vector3 (transform.position.x, transform.position.y, transform.position.z + n);
+			return new Vector3 (transform.position.x, transform.position.y, transform.position.z + halfHeight);
 		case TileOrientation.Back:
-			return new Vector3 (transform.position.x, transform.position.y, transform.position.z - n);
+			return new Vector3 (transform.position.x, transform.position.y, transform.position.z - halfHeight);
 		}
     }
 
