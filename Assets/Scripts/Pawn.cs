@@ -551,64 +551,39 @@ public class Pawn : MonoBehaviour
 			}
 			else
 			{
-	        	// tile is not accessible but in valid space, so that means the pawn will jump on the tile
+				// tile is not accessible but in valid space, so that means the pawn will jump on the tile
 				// normally my verticality is the same as the world gravity, otherwise we won't have a clicked tile
 				Debug.Assert(GetFeltVerticality() == GetWorldVerticality());
-				Vector3 down = getMyVerticality();
 
-				// nearest tile: the directly accessible tile from the tile bellow the Pawn, thats closest to the target tile
-				Tile nearest = Tile.Closest(pawnTile.AllAccessibleTiles(), clickedTile.transform.position);
-
-				if (nearest.Equals(pawnTile)) //is the nearest the one bellow the Pawn?
+				// check if we didn't start jumping yet
+				if ( !isJumping )
 				{
-					// landing tile: the directly accessible tile from the target tile, thats closest to the nearest tile
-					Tile landing = Tile.Closest(clickedTile.AllAccessibleTiles(), nearest.transform.position);
+					animState = 2;
+					isJumping = true;
+					isFalling = true;
 					
-	                // check if landing tile is not EXACTLY under the nearest tile
-					if ( Mathf.Abs( Vector3.Scale( ( landing.transform.position - nearest.transform.position ), Vector3.Scale ( down, down ) - Vector3.one ).magnitude ) < .1f )
-					{
-						landing = clickedTile;
-						
-						//Debug.Log("landing: " + landing.transform.parent.name, landing.transform.parent );
-					}
+					// reset the pawn tile when starting to jump, because if you jump from
+					// a moving platform, you don't want to jump relative to the plateform
+					onEnterTile(null);
 
+					// the modification in height
+					StartCoroutine( JumpToTile());
+
+					// the modification in orientation
+					if( lookCoroutine != null )
+						StopCoroutine( lookCoroutine );					
+					lookCoroutine = LookAt ( clickedTile.transform.position );
+					StartCoroutine( lookCoroutine );
+
+				}
 					// calculate the vector from the Pawns position to the landing tile position at the same height
-					Vector3 landingPositionAtGroundHeight = getGroundHeightPosition(landing.transform.position);
-					Vector3 vec = landingPositionAtGroundHeight - getGroundPosition();
+				Vector3 landingPositionAtGroundHeight = getGroundHeightPosition(clickedTile.transform.position);
 
-					// There is definitely a tile to fall, jump and go
-					if ( vec != Vector3.zero )
-					{
-						if ( !isJumping )
-						{
-							animState = 2;
-							isJumping = true;
-							isFalling = true;
-							StartCoroutine( JumpToTile());
-							
-							if( lookCoroutine != null )
-								StopCoroutine( lookCoroutine );
-
-							lookCoroutine = LookAt ( landing.transform.position );
-							StartCoroutine( lookCoroutine );
-						}
-
-						if (moveTo(landingPositionAtGroundHeight)) // move the pawn towards the landing tile
-						{
-							path = AStarHelper.Calculate(landing, clickedTile); //give me a path towards the clicked tile
-							clickedTile = null; // target reached, forget it
-							isJumping = false;
-						}
-					}
-					else
-					{
-						clickedTile = null;
-					}
-	            }
-	            else
+				if (moveTo(landingPositionAtGroundHeight)) // move the pawn towards the landing tile
 				{
-					path = AStarHelper.Calculate(pawnTile, nearest); //give me a path towards the nearest tile
-	            }
+					clickedTile = null; // target reached, forget it
+					isJumping = false;
+				}
 			}
 	    }
     }
@@ -1207,7 +1182,7 @@ public class Pawn : MonoBehaviour
 		default:
 			return new Vector3 (transform.position.x, transform.position.y - halfHeight, transform.position.z);
 		//case TileOrientation.Up:
-		//	return new Vector3 (transform.position.x, transform.position.y - n, transform.position.z);
+		//	return new Vector3 (transform.position.x, transform.position.y - halfHeight, transform.position.z);
 		case TileOrientation.Down:
 			return new Vector3 (transform.position.x, transform.position.y + halfHeight, transform.position.z);
 		case TileOrientation.Left:
@@ -1221,8 +1196,6 @@ public class Pawn : MonoBehaviour
 		}
     }
 
-
-
     /// <summary>
     /// Gets the ground height vector for the target position.
     /// </summary>
@@ -1230,9 +1203,11 @@ public class Pawn : MonoBehaviour
     /// <returns>The position of something at the same height as the Pawn</returns>
     private Vector3 getGroundHeightPosition(Vector3 position)
 	{
-		if (pawnTile.orientation.Equals(TileOrientation.Up) || pawnTile.orientation.Equals(TileOrientation.Down))
+		TileOrientation pawnOrientation = GetFeltVerticality();
+
+		if (pawnOrientation == TileOrientation.Up || pawnOrientation == TileOrientation.Down)
             return new Vector3(position.x, getGroundPosition().y, position.z);
-		else if (pawnTile.orientation.Equals(TileOrientation.Left) || pawnTile.orientation.Equals(TileOrientation.Right))
+		else if (pawnOrientation == TileOrientation.Left || pawnOrientation == TileOrientation.Right)
             return new Vector3(getGroundPosition().x, position.y, position.z);
         else
             return new Vector3(position.x, position.y, getGroundPosition().z);
