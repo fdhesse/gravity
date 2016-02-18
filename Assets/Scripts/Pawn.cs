@@ -42,7 +42,6 @@ public class Pawn : MonoBehaviour
 	private LayerMask tilesLayerMask;
 	private CapsuleCollider capsuleCollider;
 	
-	[HideInInspector] public TileOrientation orientation;
 	[HideInInspector] private bool isGlued;
 
 	[HideInInspector] public bool isJumping = false;
@@ -106,8 +105,6 @@ public class Pawn : MonoBehaviour
 	void Awake()
 	{
 		s_Instance = this;
-
-		orientation = TileOrientation.Up;
 
 		tilesLayer = LayerMask.NameToLayer ("Tiles");
 		tilesLayerMask = LayerMask.GetMask(new string[]{"Tiles"});
@@ -240,7 +237,7 @@ public class Pawn : MonoBehaviour
 	public void respawn(TileOrientation startingOrientation)
 	{
 		path = null;
-		setPawnTile(null);
+		onEnterTile(null);
 		clickedTile = null;
 		focusedTile = null;
 
@@ -252,7 +249,6 @@ public class Pawn : MonoBehaviour
 		transform.position = spawnPosition;
 		transform.rotation = spawnRotation;
 
-		orientation = startingOrientation;
 		ResetDynamic();
 		
 		GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
@@ -356,7 +352,7 @@ public class Pawn : MonoBehaviour
 			isJumping = false;
 
 			// Snap to the tile
-			setPawnTile(collision.collider.gameObject.GetComponent<Tile>());
+			onEnterTile(collision.collider.gameObject.GetComponent<Tile>());
 
 			moveTo( pawnTile.transform.position );
 		}
@@ -367,13 +363,21 @@ public class Pawn : MonoBehaviour
 		ResetDynamic();
 	}
 
+	/// <summary>
+	/// Call this notification every time the pawn enter on a new tile, or leave any tile
+	/// meaning he has no tile under his feet. In such case call this notification specifying null
+	/// as parameter. This method will set the pawnTile parameter. Please not not set the pawnTile
+	/// directly, call this function instead, as other parameters need to be sync when the pawnTile
+	/// changes or becomes null
+	/// </summary>
+	/// <param name="tile">The new tile the pawn has under his feet. CAN be null.</param>
 	public void onEnterTile(Tile tile)
 	{
-		// save the new pawntile
-		setPawnTile(tile);
+		// save the new pawntile (can be null)
+		pawnTile = tile;
 
-		// and now check stuff related with glue
-		if ( tile.IsGlueTile )
+		// and now check stuff related with glue, and set the glue flag
+		if ((tile != null) && tile.IsGlueTile)
 		{
 			isGlued = true;
 			GetComponent<Rigidbody>().useGravity = false;
@@ -383,6 +387,25 @@ public class Pawn : MonoBehaviour
 			isGlued = false;
 			GetComponent<Rigidbody>().useGravity = true;
 		}
+
+		// if the tile is not null, check if we need to attach the pawn to the tile
+		// after setting the glue flag!
+		bool shouldAttachToTile = false;
+		if (tile != null)
+		{
+			bool isWorldGravityLikePawnTile = (tile.orientation == this.GetWorldVerticality());
+
+			// attach the pawn to the platform if is a moving platform with the gravity in the right direction
+			// or if the pawn is glued to a moving or gravity platform
+			shouldAttachToTile = ( (tile.tag == "MovingPlatform" && (isGlued || isWorldGravityLikePawnTile)) ||
+			                      (tile.tag == "GravityPlatform" && isGlued) );
+		}
+		
+		// attach or detach the parent of the pawn
+		if (shouldAttachToTile)
+			this.transform.parent = tile.transform;
+		else
+			this.transform.parent = null;
 	}
 
     /// <summary>
@@ -684,12 +707,8 @@ public class Pawn : MonoBehaviour
 			if (hitTile != pawnTile)
 				onEnterTile(hitTile);
 
-			// save the new pawn tile
-			setPawnTile(hitTile);
-			orientation = pawnTile.orientation;
-
+			// check if we are on the stairs
 			isWalkingInStairs = false;
-			
 			if (hitTileGameObject.tag == "Stairway")
 			{
 				animState = 1;
@@ -698,32 +717,10 @@ public class Pawn : MonoBehaviour
 		}
 		else
 		{
-			setPawnTile(null);
+			onEnterTile(null);
         }
 	}
-
-	private void setPawnTile(Tile tile)
-	{
-		// set the pawn tile (can be null)
-		pawnTile = tile;
-
-		// if the tile is not null, check if we need to attach the pawn to the tile
-		bool shouldAttachToTile = false;
-		if (tile != null)
-		{
-			// attach the pawn to the platform if is a moving platform with the gravity in the right direction
-			// or if the pawn is glued to a moving or gravity platform
-			shouldAttachToTile = ( (tile.tag == "MovingPlatform" && (isGlued || tile.orientation == this.GetWorldVerticality())) ||
-			                      (tile.tag == "GravityPlatform" && isGlued) );
-		}
-
-		// attach or detach the parent of the pawn
-		if (shouldAttachToTile)
-			this.transform.parent = tile.transform;
-		else
-			this.transform.parent = null;
-	}
-
+	
 	#region focused tile, clickable tile, and destination marks
 	private void removeDestinationMarks()
 	{
@@ -977,14 +974,12 @@ public class Pawn : MonoBehaviour
 							// If the pawn is on a glue tile, the change of gravity is managed differently
 							if ( isGlued )
 							{
-								GetComponent<Rigidbody>().useGravity = false;
-
 								World.SetGravity( focusedTile.orientation );
 								world.ChangeGravity ( focusedTile.orientation );
 							}
 							else //for punishing gravity take the tile == null here
 							{
-								setPawnTile(null);
+								onEnterTile(null);
 								StartCoroutine( DelayedPawnFall ( focusedTile.orientation ));
 							}
 						}
@@ -1131,7 +1126,7 @@ public class Pawn : MonoBehaviour
 	/// <returns>The my verticality for the pawn.</returns>
 	private Vector3 getMyVerticality()
 	{
-		if ( isGlued && (pawnTile != null))
+		if (isGlued && (pawnTile != null))
 			return pawnTile.getDownVector();
 		else
 			return Physics.gravity.normalized;
