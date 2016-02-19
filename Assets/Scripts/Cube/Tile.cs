@@ -362,7 +362,8 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		if ( siblingConnection != null )
 		{
 			foreach ( Tile sibling in siblingConnection )
-				connectionSet.Add( sibling );
+				if (sibling != null)
+					connectionSet.Add( sibling );
 
 			siblingConnection = null;
 		}
@@ -418,14 +419,17 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		foreach( Tile connectedTile in connections )
 			if (!connectionSet.Contains(connectedTile))
 			{
-				// we found a tile that was in the old list, but not in the new one
-				// remove myself from the connection list of the old neighbors
-				// (sometime the sphere collision test is not reciprocal, 
-				// so this will converge, when both collision test can detect each other)
-				if (connectedTile.connections != null)
-					connectedTile.connections.Remove(this);
-				// and ask the neighboor to scan again to be sure that he cannot find me anymore
-				connectedTile.rescanPath = true;
+				if (connectedTile != null)
+				{
+					// we found a tile that was in the old list, but not in the new one
+					// remove myself from the connection list of the old neighbors
+					// (sometime the sphere collision test is not reciprocal, 
+					// so this will converge, when both collision test can detect each other)
+					if (connectedTile.connections != null)
+						connectedTile.connections.Remove(this);
+					// and ask the neighboor to scan again to be sure that he cannot find me anymore
+					connectedTile.rescanPath = true;
+				}
 				areListsDifferents = true;
 			}
 

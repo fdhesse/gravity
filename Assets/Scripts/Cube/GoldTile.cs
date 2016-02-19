@@ -23,7 +23,7 @@ public class GoldTile : MonoBehaviour
 		ChangeGravity(startingOrientation);
 	}
 
-	private void ChangeGravity( TileOrientation gravityOrientation )
+	public void ChangeGravity( TileOrientation gravityOrientation )
 	{
 		if ( gravityOrientation == orientation )
 			GetComponent<MeshRenderer>().material = activeMaterial;
@@ -47,5 +47,18 @@ public class GoldTile : MonoBehaviour
 			orientation = TileOrientation.Front;
 		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Back) ), 0 ) )
 			orientation = TileOrientation.Back;
+	}
+
+	/// <summary>
+	/// Updates the orientation of the golden tile. This function should be called if the golden tile is rotated
+	/// for example when the golden tile is attached to a moving platform performing a rotation, or a rotating
+	/// platform, after a change of gravity.
+	/// </summary>
+	public void UpdateOrientation(TileOrientation gravityOrientation)
+	{
+		// redefine its orientation
+		DefineOrientation();
+		// and update its material
+		ChangeGravity( gravityOrientation );
 	}
 }

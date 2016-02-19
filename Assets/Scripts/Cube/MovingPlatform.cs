@@ -436,17 +436,24 @@ public class MovingPlatform : MonoBehaviour
 	}
 
 	private void updateTileStates(MovingStep currentStep, StepPhase previousStepPhase)
-	{
+	{		
 		// no need to recompute anything when we are in the wait state
 		if (previousStepPhase != StepPhase.WAIT)
 		{
+			bool shouldUpdateGoldenTiles = (mCurrentStepPhase == StepPhase.WAIT);
+
 			foreach (Tile tile in mTilesOnThatPlatform)
 			{
 				// update the orientation of the platform if the current step is a rotation
 				// and if we just start to wait (previous phase is not waiting and current is waiting)
-				if ((currentStep.stepType == MovingStep.MoveType.ROTATION) && 
-				    (mCurrentStepPhase == StepPhase.WAIT))
-					tile.CheckTileOrientation();
+				// And during the rotation, we clear the orientation to None, as it is an unknown orientation
+				if (currentStep.stepType == MovingStep.MoveType.ROTATION)
+				{ 
+					if (mCurrentStepPhase == StepPhase.WAIT)
+						tile.CheckTileOrientation();
+					else
+						tile.orientation = TileOrientation.None;
+				}
 
 				// also ask to rescan the path when moving or rotating
 				// The rescan path may be CPU intensive (use sphere collision), so we should do
@@ -463,6 +470,10 @@ public class MovingPlatform : MonoBehaviour
 					 (mCurrentStepPhase != StepPhase.CONSTANT_MOVE) )
 					tile.rescanPath = true;
 			}
+
+			// check if we need to update also the golden tile material
+			if (shouldUpdateGoldenTiles)
+				Pawn.Instance.world.UpdateGoldTileOrientation();
 		}
 	}
 

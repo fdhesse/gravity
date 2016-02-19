@@ -746,8 +746,8 @@ public class Pawn : MonoBehaviour
 			{
 				Tile tile = hit.collider.gameObject.GetComponent<Tile>();
 				
-				if ( (tile != null) && (tile.orientation != currentWorldOrientation) &&
-				    TileSelection.isClickableType( tile.type ) )
+				if ( (tile != null) && (tile.orientation != TileOrientation.None) && 
+				    (tile.orientation != currentWorldOrientation) && TileSelection.isClickableType( tile.type ) )
 				{
 					// check if the current tile equals the tile to check
 					if (tile == tileToCheck)
@@ -900,7 +900,7 @@ public class Pawn : MonoBehaviour
 		// if the player is glued and the gravity is not under his feet,
 		// in order for the player to put back the gravity under his feet.
 		if ((focusedTile != null) && (focusedTile == pawnTile))
-			isFocusedTileClickable = isGlued && (focusedTile.orientation != GetWorldVerticality());
+			isFocusedTileClickable = isGlued && (focusedTile.orientation != TileOrientation.None) && (focusedTile.orientation != GetWorldVerticality());
 
 		// now highlight the focused tile if it is clickable (may happen with AStar navigation, fall or gravity change)
 		if (focusedTile != null)
@@ -971,8 +971,7 @@ public class Pawn : MonoBehaviour
 							// If the pawn is on a glue tile, the change of gravity is managed differently
 							if ( isGlued )
 							{
-								World.SetGravity( focusedTile.orientation );
-								world.ChangeGravity ( focusedTile.orientation );
+								world.SetGravity( focusedTile.orientation );
 							}
 							else //for punishing gravity take the tile == null here
 							{
@@ -1049,8 +1048,7 @@ public class Pawn : MonoBehaviour
 		GetComponent<Rigidbody>().constraints = nextConstraint;
 		GetComponent<Rigidbody>().useGravity = true;
 
-		World.SetGravity( orientation );
-		world.ChangeGravity ( orientation );
+		world.SetGravity( orientation );
 	}
 
 	private void SetPawnOrientation(TileOrientation orientation)

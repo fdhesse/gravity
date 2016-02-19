@@ -93,7 +93,7 @@ public class RotatingPlatform : MonoBehaviour
 		RecomputePlatformTiles();
 	}
 	
-	private void ChangeGravity( TileOrientation orientation )
+	public void ChangeGravity( TileOrientation orientation )
 	{
 		if ( constrainedAxis == ConstraintAxis.X )
 		{
@@ -331,6 +331,9 @@ public class RotatingPlatform : MonoBehaviour
 			// also ask to rescan the path
 			tile.rescanPath = true;
 		}
+
+		// update also the golden tile material
+		Pawn.Instance.world.UpdateGoldTileOrientation();
 	}
 	
 #if UNITY_EDITOR

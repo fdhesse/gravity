@@ -13,7 +13,8 @@ public class World : MonoBehaviour {
 	private RotatingPlatform[] rotatingPlatforms;
 	private MovingPlatform[] movingPlatforms;
 	private GoldTile[] goldTiles;
-	
+	private TileOrientation currentGravityOrientation = TileOrientation.Up;
+
 	public void Init()
 	{
 		fallingCubes = FindObjectsOfType<FallingCube>();
@@ -25,8 +26,6 @@ public class World : MonoBehaviour {
 	
 	public void Restart(TileOrientation startingOrientation)
 	{
-		World.SetGravity( startingOrientation );
-
 		Pawn.Instance.respawn( startingOrientation );
 		
 		for (int i = 0; i < fallingCubes.Length; i++)
@@ -43,6 +42,8 @@ public class World : MonoBehaviour {
 
 		for (int i = 0; i < goldTiles.Length; i++)
 			((GoldTile)goldTiles[i]).Reset( startingOrientation );
+
+		SetGravity( startingOrientation );
 	}
 	
 	public bool IsGameOver()
@@ -100,23 +101,15 @@ public class World : MonoBehaviour {
 		}
 	}
 	
-	public void ChangeGravity( TileOrientation orientation )
-	{
-		for (int i = 0; i < gravityPlatforms.Length; i++)
-			((GravityPlatform) gravityPlatforms[i]).Unfreeze( orientation );
-		
-		for (int i = 0; i < rotatingPlatforms.Length; i++)
-			((RotatingPlatform) rotatingPlatforms[i]).SendMessage( "ChangeGravity", orientation );
-		
-		for (int i = 0; i < goldTiles.Length; i++)
-			((GoldTile) goldTiles[i]).SendMessage( "ChangeGravity", orientation );
-	}
-	
 	/// <summary>
-	/// Sets the gravitational orientation vector.
+	/// Sets the gravitational orientation.
 	/// </summary>
-	public static void SetGravity(TileOrientation orientation)
+	public void SetGravity(TileOrientation orientation)
 	{
+		// save the new gravity orientaiton
+		currentGravityOrientation = orientation;
+
+		// change the gravity vector
 		switch (orientation)
 		{
 		case TileOrientation.Front:
@@ -140,5 +133,22 @@ public class World : MonoBehaviour {
 		default:
 			break;
 		}
+
+		// inform all the platforms of the gravity change
+		for (int i = 0; i < gravityPlatforms.Length; i++)
+			gravityPlatforms[i].Unfreeze( orientation );
+		
+		for (int i = 0; i < rotatingPlatforms.Length; i++)
+			rotatingPlatforms[i].ChangeGravity( orientation );
+		
+		for (int i = 0; i < goldTiles.Length; i++)
+			goldTiles[i].ChangeGravity( orientation );
+	}
+
+	public void UpdateGoldTileOrientation()
+	{
+		for (int i = 0; i < goldTiles.Length; i++)
+			if (!goldTiles[i].gameObject.isStatic)
+				goldTiles[i].UpdateOrientation( currentGravityOrientation );
 	}
 }
