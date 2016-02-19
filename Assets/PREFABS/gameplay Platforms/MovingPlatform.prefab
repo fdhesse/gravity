@@ -253,6 +253,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95673b96c3e0eab4cbff281d8c5ec53d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  drawGizmoMode: 0
   playingMode: 1
   steps:
   - stepType: 0
@@ -261,6 +262,9 @@ MonoBehaviour:
     speed: 10
     acceleration: 10
     pauseTime: 2
+    moveDirection: 1
+    stepPosition: {x: 0, y: 0, z: 0}
+    stepOrientation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &11424378
 MonoBehaviour:
   m_ObjectHideFlags: 1
