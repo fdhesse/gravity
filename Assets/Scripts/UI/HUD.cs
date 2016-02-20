@@ -174,6 +174,11 @@ public class HUD : MonoBehaviour
 			{
 				Application.LoadLevel("main");
             }
+
+			if (GUI.Button(new Rect(560, 300, 100, 20), "Next Level"))
+			{
+				Application.LoadLevel(Application.loadedLevel + 1);
+			}
         }
 
     }
