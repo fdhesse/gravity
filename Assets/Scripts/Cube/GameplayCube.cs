@@ -95,52 +95,22 @@ public class GameplayCube : MonoBehaviour
 		Transform back = transform.FindChild ("back");
 
 		if ( up != null )
-		{
-			if (isUp)
-				up.GetComponent<Tile> ().IsGlueTile = true;
-			else
-				up.GetComponent<Tile> ().IsGlueTile = false;
-		}
-		
+			up.GetComponent<Tile> ().IsGlueTile = isUp;
+
 		if ( down != null )
-		{
-			if (isDown)
-				down.GetComponent<Tile> ().IsGlueTile = true;
-			else
-				down.GetComponent<Tile> ().IsGlueTile = false;
-		}
-		
+			down.GetComponent<Tile> ().IsGlueTile = isDown;
+
 		if ( right != null )
-		{
-			if (isRight)
-				right.GetComponent<Tile> ().IsGlueTile = true;
-			else
-				right.GetComponent<Tile> ().IsGlueTile = false;
-		}
-		
+			right.GetComponent<Tile> ().IsGlueTile = isRight;
+
 		if ( left != null )
-		{
-			if (isLeft)
-				left.GetComponent<Tile> ().IsGlueTile = true;
-			else
-				left.GetComponent<Tile> ().IsGlueTile = false;
-		}
-		
+			left.GetComponent<Tile> ().IsGlueTile = isLeft;
+
 		if ( front != null )
-		{
-			if (isFront)
-				front.GetComponent<Tile> ().IsGlueTile = true;
-			else
-				front.GetComponent<Tile> ().IsGlueTile = false;
-		}
-		
+			front.GetComponent<Tile> ().IsGlueTile = isFront;
+
 		if ( back != null )
-		{
-			if (isBack)
-				back.GetComponent<Tile> ().IsGlueTile = true;
-			else
-				back.GetComponent<Tile> ().IsGlueTile = false;
-		}
+			back.GetComponent<Tile> ().IsGlueTile = isBack;
 	}
 
 	public void SetFace( string faceName, TileType type )

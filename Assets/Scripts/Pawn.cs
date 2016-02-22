@@ -237,7 +237,6 @@ public class Pawn : MonoBehaviour
 	public void respawn(TileOrientation startingOrientation)
 	{
 		path = null;
-		onEnterTile(null);
 		clickedTile = null;
 		focusedTile = null;
 
@@ -245,9 +244,13 @@ public class Pawn : MonoBehaviour
 		isFalling = true;
 		isJumping = false;
 		isWalking = false;
-		
+
+		// teleport the pawn at the spawn position
 		transform.position = spawnPosition;
 		transform.rotation = spawnRotation;
+
+		// please teleport the pawn first before reseting the pawn tile
+		onEnterTile(null);
 
 		ResetDynamic();
 		

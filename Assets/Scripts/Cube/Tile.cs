@@ -44,6 +44,11 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 {
 	public TileType type = TileType.Valid;
 
+	/// <summary>
+	/// Tell if this tile is glued. This field must be serialized, because it is set by the editor during
+	/// the edition (when changing the glue side of the gameplay cube), but it must be loaded in game.
+	/// </summary>
+	[SerializeField]
 	private bool isGlueTile = false;
 	public bool IsGlueTile
 	{
