@@ -6,10 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(Tile))]
-//[RequireComponent(typeof(BoxCollider))]
 [RequireComponent(typeof(MeshCollider))]
-[RequireComponent(typeof(MeshFilter))]
-[RequireComponent(typeof(MeshRenderer))]
 #if UNITY_EDITOR
 [InitializeOnLoad]
 [ExecuteInEditMode]
@@ -192,21 +189,26 @@ public class Stairway : MonoBehaviour {
 		gameObject.layer = LayerMask.NameToLayer ("Tiles");
 		gameObject.tag = "Stairway";
 		
-		GameObject go = GameObject.CreatePrimitive(PrimitiveType.Quad);
-		go.transform.localScale = new Vector3(Mathf.Sqrt(2), 1.0f, 1.0f);
-
-		GetComponent<MeshFilter> ().sharedMesh = go.GetComponent<MeshFilter>().sharedMesh;
-		DestroyImmediate (go);
-
-		MeshCollider meshCollider = GetComponent<MeshCollider> ();
-
+		// If the stairways doesn't have a mesh collider (a quad), create it
+		MeshCollider meshCollider = GetComponent<MeshCollider>();
 		if ( meshCollider == null )
 		{
+			// destroy eventually a box collider
 			DestroyImmediate (GetComponent<BoxCollider> ());
-			meshCollider = gameObject.AddComponent<MeshCollider>();
-		}
 
-		meshCollider.sharedMesh = GetComponent<MeshFilter> ().sharedMesh;
+			// add the missing mesh collider
+			meshCollider = gameObject.AddComponent<MeshCollider>();
+
+			// create a quad to get it's shared mesh
+			GameObject go = GameObject.CreatePrimitive(PrimitiveType.Quad);
+			go.transform.localScale = new Vector3(Mathf.Sqrt(2), 1.0f, 1.0f);
+
+			// set the shared quad mesh to the mesh collider
+			meshCollider.sharedMesh = go.GetComponent<MeshFilter>().sharedMesh;
+
+			// destroy the temp quad
+			DestroyImmediate (go);
+		}
 
 		// add a rigid body if not existing
 		Rigidbody rb = GetComponent<Rigidbody>();

@@ -11,7 +11,7 @@ GameObject:
   - 33: {fileID: 3354020}
   - 23: {fileID: 2387768}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65,7 +65,7 @@ GameObject:
   m_TagString: MovingPlatform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &164610
 GameObject:
@@ -263,8 +263,8 @@ MonoBehaviour:
     acceleration: 10
     pauseTime: 2
     moveDirection: 1
-    stepPosition: {x: 0, y: 0, z: 0}
-    stepOrientation: {x: 0, y: 0, z: 0, w: 0}
+    stepPosition: {x: 10, y: 0, z: -50}
+    stepOrientation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!114 &11424378
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -277,10 +277,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
+  isGlueTile: 1
   orientation: 1
-  connections:
-  - {fileID: 0}
-  rescanPath: 1
+  connections: []
+  rescanPath: 0
   isQuad: 1
 --- !u!114 &11480504
 MonoBehaviour:

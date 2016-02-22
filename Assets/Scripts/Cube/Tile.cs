@@ -156,9 +156,6 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			Destroy( transform.GetChild( 0 ).gameObject );
 		}
 #endif
-
-		if ( gameObject.GetComponent<Stairway>() != null )
-			gameObject.GetComponent<Renderer>().enabled = false;
     }
 
     // Update is called once per frame
