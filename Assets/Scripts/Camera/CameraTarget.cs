@@ -9,6 +9,7 @@ public class CameraTarget : MonoBehaviour
 		CONE,
 		CYLINDER,
 		FREEZE,
+		FRUSTRUM,
 	}
 
 	[Tooltip("The type of constraint for the camera rotation around this target.\nNONE=no constraint.\nCYLINDER=vertical constraint only.\nCONE=constraint on two axis.")]
@@ -19,40 +20,47 @@ public class CameraTarget : MonoBehaviour
 
 	[Range(0,90)][Tooltip("The maximum half angle limitation on the vertical plane (yz) of the target game object.")]
 	public float tiltLimitAngle = 60f;
-	
+
 	public void clampAngle(ref float tilt, ref float pan)
 	{
-		bool limitPan = false;
-		bool limitTilt = false;
-
 		switch (angleContraintType)
 		{
 		case AngleConstraint.NONE:
 			// nothing to do
-			return;
+			break;
 		case AngleConstraint.FREEZE:
-			// in freeze mode, juste return the angle of the target orientation
-			Vector3 targetAngles = this.transform.rotation.eulerAngles;
-			if (targetAngles.z == 180f)
-			{
-				tilt = 180f - targetAngles.x;
-				pan =  targetAngles.y - 180f;
-			}
-			else
-			{
-				tilt = targetAngles.x;
-				pan =  targetAngles.y;
-			}
-			return;
+			clampFreeze(ref tilt, ref pan);
+			break;
 		case AngleConstraint.CONE:
-			limitPan = true;
-			limitTilt = true;
+			clampConeAndCylinder(ref tilt, ref pan, true);
 			break;
 		case AngleConstraint.CYLINDER:
-			limitTilt = true;
+			clampConeAndCylinder(ref tilt, ref pan, false);
+			break;
+		case AngleConstraint.FRUSTRUM:
+			clampFrustrum(ref tilt, ref pan);
 			break;
 		}
+	}
 
+	private void clampFreeze(ref float tilt, ref float pan)
+	{
+		// in freeze mode, juste return the angle of the target orientation
+		Vector3 targetAngles = this.transform.rotation.eulerAngles;
+		if (targetAngles.z == 180f)
+		{
+			tilt = 180f - targetAngles.x;
+			pan =  targetAngles.y - 180f;
+		}
+		else
+		{
+			tilt = targetAngles.x;
+			pan =  targetAngles.y;
+		}
+	}
+
+	private void clampConeAndCylinder(ref float tilt, ref float pan, bool limitPan)
+	{
 		// compute the orientation in the local coordinate of that target
 		Quaternion rotation = Quaternion.Inverse(this.transform.rotation) * Quaternion.Euler(tilt, pan, 0f);
 		Vector3 localAngles = rotation.eulerAngles;
@@ -62,8 +70,7 @@ public class CameraTarget : MonoBehaviour
 			localAngles.y -= 360f;
 
 		// now limit the angle if necessary in local coordinate
-		if (limitTilt)
-			localAngles.x = Mathf.Clamp(localAngles.x, -tiltLimitAngle, tiltLimitAngle);
+		localAngles.x = Mathf.Clamp(localAngles.x, -tiltLimitAngle, tiltLimitAngle);
 
 		if (limitPan)
 			localAngles.y = Mathf.Clamp(localAngles.y, -panLimitAngle, panLimitAngle);
@@ -90,5 +97,15 @@ public class CameraTarget : MonoBehaviour
 			tilt = rotatedAngles.x;
 			pan =  rotatedAngles.y;
 		}
+	}
+
+	private void clampFrustrum(ref float tilt, ref float pan)
+	{
+		// get the angle of this current target
+		Vector3 target = this.transform.rotation.eulerAngles;
+		
+		// limit the angle in world coordinate
+		tilt = Mathf.Clamp(tilt, -tiltLimitAngle + target.x, tiltLimitAngle + target.x);
+		pan = Mathf.Clamp(pan, -panLimitAngle + target.y, panLimitAngle + target.y);
 	}
 }

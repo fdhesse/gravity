@@ -27,6 +27,7 @@ public class CameraTargetEditor : Editor
 		switch ((CameraTarget.AngleConstraint)(constraintType.enumValueIndex))
 		{
 		case CameraTarget.AngleConstraint.CONE:
+		case CameraTarget.AngleConstraint.FRUSTRUM:
 			EditorGUILayout.PropertyField(tiltLimitAngle, true);
 			EditorGUILayout.PropertyField(panLimitAngle, true);
 			break;
@@ -78,6 +79,35 @@ public class CameraTargetEditor : Editor
 			drawCircleArc(SECTION_COUNT/2, 180f - src.tiltLimitAngle, 180f + src.tiltLimitAngle, size, 0f, 0);
 			drawCircleArc(SECTION_COUNT/2, 90f - src.tiltLimitAngle, 90f + src.tiltLimitAngle, size, 0f, 2);
 			drawCircleArc(SECTION_COUNT/2, 270f - src.tiltLimitAngle, 270f + src.tiltLimitAngle, size, 0f, 2);
+			break;
+
+		case CameraTarget.AngleConstraint.FRUSTRUM:
+			// compute the x and y radius of the base of the cone, depending on the target limit angle
+			float frustrumWidth = size * Mathf.Sin(src.panLimitAngle * Mathf.Deg2Rad);
+			float frustrumHeight = size * Mathf.Sin(src.tiltLimitAngle * Mathf.Deg2Rad);
+			float frustrumWidthDepth = -size * Mathf.Cos(src.panLimitAngle * Mathf.Deg2Rad);
+			float frustrumHeightDepth = -size * Mathf.Cos(src.tiltLimitAngle * Mathf.Deg2Rad);
+			float minDepth = Mathf.Min(frustrumWidthDepth, frustrumHeightDepth);
+			// set the matrix in the center of the object
+			Gizmos.matrix = Matrix4x4.TRS(position, rotation, Vector3.one);
+			Vector3[] sectionPosition = new Vector3[] { 
+				new Vector3(-frustrumWidth, 0f, frustrumWidthDepth),
+				new Vector3(-frustrumWidth, -frustrumHeight, minDepth), 
+				new Vector3(0f, -frustrumHeight, frustrumHeightDepth),
+				new Vector3(frustrumWidth, -frustrumHeight, minDepth),
+				new Vector3(frustrumWidth, 0f, frustrumWidthDepth),
+				new Vector3(frustrumWidth, frustrumHeight, minDepth), 
+				new Vector3(0f, frustrumHeight, frustrumHeightDepth),
+				new Vector3(-frustrumWidth, frustrumHeight, minDepth),
+			};
+			// draw the frustrum
+			for (int i = 0; i < sectionPosition.Length; ++i)
+			{
+				// draw the lines from center to section
+				Gizmos.DrawLine(Vector3.zero, sectionPosition[i]);
+				// and draw the edge
+				Gizmos.DrawLine(sectionPosition[i], sectionPosition[(i+1) % sectionPosition.Length]);
+			}
 			break;
 		}
 	}
