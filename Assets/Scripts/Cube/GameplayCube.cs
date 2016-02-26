@@ -123,12 +123,11 @@ public class GameplayCube : MonoBehaviour
 		if ( type == TileType.None )
 			return;
 
-		Tile tile;
 		GameObject face = GameObject.CreatePrimitive(PrimitiveType.Quad);
 
-		// Destroy the MeshCollider to avoid tensor errors
-		//DestroyImmediate(face.GetComponent<MeshCollider> ());
-		//face.AddComponent<BoxCollider>();
+		// Destroy the MeshRenderer and MeshFilter
+		DestroyImmediate(face.GetComponent<MeshRenderer>());
+		DestroyImmediate(face.GetComponent<MeshFilter>());
 
 		// add a rigid body and make it kinetic (also freeze in rotation)
 		Rigidbody rb = face.AddComponent<Rigidbody>();
@@ -139,10 +138,6 @@ public class GameplayCube : MonoBehaviour
 		face.transform.parent = transform;
 		face.transform.position = transform.position;
 		face.transform.localScale = new Vector3(0.99f, 0.99f, 0.99f);
-		
-		tile = face.AddComponent<Tile>();
-		tile.gameObject.layer = LayerMask.NameToLayer( "Tiles" );
-		tile.type = type;
 
 		switch( faceName )
 		{
@@ -165,10 +160,14 @@ public class GameplayCube : MonoBehaviour
 			face.transform.rotation = Quaternion.LookRotation( Vector3.left, Vector3.up );
 			break;
 		}
-
-		tile.CheckTileOrientation();
-
+		
 		face.transform.Translate(new Vector3(0, 0, -transform.localScale.x * 0.495f), Space.Self);
+
+		// Add the Tile component (that will add the tile mesh)
+		Tile tile = face.AddComponent<Tile>();
+		tile.gameObject.layer = LayerMask.NameToLayer( "Tiles" );
+		tile.setType(type, true);
+		tile.CheckTileOrientation();
 
 		// First try to tag the face from this gameplay cube tag, and if it's null try to tag up with parent's tag
 		if (!this.gameObject.CompareTag("Untagged"))
@@ -180,22 +179,6 @@ public class GameplayCube : MonoBehaviour
 			// if this gameobject tag is null but not it's parent, tag both this gameobject and the face
 			this.gameObject.tag = transform.parent.tag;
 			face.tag = transform.parent.tag;
-		}
-
-		// Case of a spike tile
-		if ( type == TileType.Spikes)
-		{
-			//face.AddComponent<Spikes>();
-			
-			//GameObject child = GameObject.Instantiate( Resources.LoadAssetAtPath("Assets/Resources/PREFABS/spikes.prefab", typeof(GameObject)) ) as GameObject;
-			GameObject child = (GameObject) GameObject.Instantiate( Resources.Load( "PREFABS/spikes" ) );
-
-			child.name = "spikes";
-			child.transform.parent = tile.transform;
-			child.transform.position = new Vector3( 0, 0, 0 );
-			child.transform.localPosition = new Vector3( 0.5f, -0.5f, 0 );
-			//child.transform.GetChild(0).transform.position = new Vector3( 0, 0, 0 );
-			//child.transform.GetChild(0).transform.localPosition = new Vector3( 0, 0, 0 );
 		}
 	}
 

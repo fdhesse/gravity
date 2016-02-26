@@ -45,7 +45,7 @@ public static class TileSelection
 	        {
 				tile = hit.collider.gameObject.GetComponent<Tile>();
 
-				if (tile != null && TileSelection.isClickableType( tile.type ) ) //if it is a tile
+				if (tile != null && TileSelection.isClickableType( tile.Type ) ) //if it is a tile
 					tile.highlight();
 			}
 		}

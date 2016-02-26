@@ -42,7 +42,21 @@ public enum TileOrientation
 #endif
 public class Tile : MonoBehaviour, IPathNode<Tile>
 {
-	public TileType type = TileType.Valid;
+	[SerializeField]
+	private TileType type = TileType.Valid;
+	public TileType Type
+	{
+		get { return type; }
+		set	{ setType(value, true); }
+	}
+
+	public void setType(TileType newType, bool changeMesh)
+	{
+		this.type = newType;
+		if (changeMesh)
+			createTileMesh(newType);
+	}
+
 
 	/// <summary>
 	/// Tell if this tile is glued. This field must be serialized, because it is set by the editor during
@@ -88,38 +102,6 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		get { return isHighlighted; }
 	}
 
-	/*
-	void OnValidate()
-	{
-		if (isGlueTile)
-			AddGlueBehaviour ();
-		else
-			AddGlueBehaviour ();
-	}
-	
-	private void AddGlueBehaviour()
-	{
-		// Check if the behaviour already exist
-		//if (collisionDelegate != null)
-		//	return;
-	}
-	
-	private void RemoveGlueBehaviour()
-	{
-		// Check if the behaviour doesn't exist
-		//if (collisionDelegate == null)
-		//	return;
-	}
-	
-	void OnCollisionExit( Collision collision )
-	{
-		if ( isGlueTile && collision.collider.gameObject.tag == "Player" )
-		{
-			World.Pawn.isGlued = false;
-		}
-	}
-	*/
-
     // Use this for initialization
     void Awake()
 	{
@@ -138,24 +120,11 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			isQuad = true;
 
         defineOrientation();
-		applyTileMaterial();
 
-#if UNITY_EDITOR
-		// If we are playing in the editor, just disable the graphics face.
-		// but if we are in the editor (if UNITY_EDITOR) and we are not playing (!Application.isPlaying)
-		// then just enable the graphics faces
-		if ( transform.childCount > 0 )
-			transform.GetChild( 0 ).gameObject.SetActive( !Application.isPlaying );
-#else
-		// remove the debug graphics faces for all the other player which are not the unity editor
-		if ( transform.childCount > 0 )
-		{
-			// deactivate the graphics debug tile
-			// transform.GetChild( 0 ).gameObject.SetActive( false );
-			// or we can simply destory them, it's better optimized
-			Destroy( transform.GetChild( 0 ).gameObject );
-		}
-#endif
+		// Temp code, destroy the old "graphics" child object
+		Transform graphics = transform.FindChild("graphics");
+		if ( graphics != null )
+			DestroyImmediate( graphics.gameObject );	
     }
 
     // Update is called once per frame
@@ -202,149 +171,80 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		
 		Vector3 tileDirection = transform.rotation * -Vector3.up;
 
-#if UNITY_EDITOR
-		GameObject graphics;
-		Transform t = transform.FindChild ("graphics");
-
-		if ( t != null )
-		{
-			graphics = t.gameObject;
-			graphics.hideFlags = HideFlags.NotEditable;
-
-			if ( !isQuad )
-			{
-				BoxCollider boxCollider = GetComponent<BoxCollider>();
-				
-				if ( boxCollider != null )
-					DestroyImmediate( boxCollider );
-				
-				GameObject tmpQuad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-				Mesh mesh = tmpQuad.GetComponent<MeshFilter>().sharedMesh;
-				
-				MeshFilter meshFilter = GetComponent<MeshFilter> ();
-				if ( meshFilter == null )
-					meshFilter = gameObject.AddComponent<MeshFilter> ();
-				
-				MeshCollider meshCollider = GetComponent<MeshCollider> ();
-				if ( meshCollider == null )
-					meshCollider = gameObject.AddComponent<MeshCollider> ();
-
-				MeshFilter graphicsMeshFilter = graphics.GetComponent<MeshFilter>();
-				if ( graphicsMeshFilter == null )
-					graphicsMeshFilter = gameObject.AddComponent<MeshFilter> ();
-				
-				graphicsMeshFilter.sharedMesh = meshFilter.sharedMesh = meshCollider.sharedMesh = mesh;
-				
-				graphics.transform.localRotation = Quaternion.identity;
-				graphics.transform.localScale = Vector3.one;
-				graphics.transform.localPosition = Vector3.zero;
-				//transform.localRotation = Quaternion.identity;
-				transform.Rotate( new Vector3( 90, 0, 0 ) );
-				transform.localScale = Vector3.one;
-
-				graphics.transform.localPosition = Vector3.zero;
-				graphics.transform.Translate( Vector3.forward * -4f / graphics.transform.lossyScale.x, Space.Self );
-				
-				DestroyImmediate( tmpQuad );
-			}
-		}
-		else
-		{
-			graphics = new GameObject( "graphics" );
-			graphics.hideFlags = HideFlags.NotEditable;
-			graphics.transform.parent = transform;
-
-			MeshFilter meshFilter = graphics.AddComponent<MeshFilter>();
-			graphics.AddComponent<MeshRenderer>();
-
-			//graphics.transform.localPosition = graphics.transform.forward * -0.2f;
-			
-			Mesh mesh = gameObject.GetComponent<MeshCollider>().sharedMesh;
-			meshFilter.sharedMesh = mesh;
-
-			graphics.transform.localRotation = Quaternion.identity;
-			graphics.transform.localScale = Vector3.one;
-			graphics.transform.localPosition = Vector3.zero;
-			graphics.transform.Translate( Vector3.forward * -4f / graphics.transform.lossyScale.x, Space.Self );
-
-			MeshFilter _mFilter = gameObject.GetComponent<MeshFilter>();
-			MeshRenderer _mRenderer = gameObject.GetComponent<MeshRenderer>();
-			
-			if ( _mFilter )
-				GameObject.DestroyImmediate( _mFilter );
-			if ( _mRenderer )
-				GameObject.DestroyImmediate( _mRenderer );
-		}
-
-		Material[] materials = new Material[] {
-			new Material(Shader.Find("Transparent/Diffuse")),
-			graphics.GetComponent<Renderer>().sharedMaterials[0]
-		};
-#endif
-		
 		if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Up) ), 0 ) )
 		{
 			orientation = TileOrientation.Up;
-#if UNITY_EDITOR
-			materials[1] = Assets.getUpBlockMat();
-#endif
 		}
 		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Down) ), 0 ) )
 		{
 			orientation = TileOrientation.Down;
-#if UNITY_EDITOR
-			materials[1] = Assets.getDownBlockMat();
-#endif
 		}
 		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Right) ), 0 ) )
 		{
 			orientation = TileOrientation.Right;
-#if UNITY_EDITOR
-			materials[1] = Assets.getRightBlockMat();
-#endif
 		}
 		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Left) ), 0 ) )
 		{
 			orientation = TileOrientation.Left;
-#if UNITY_EDITOR
-			materials[1] = Assets.getLeftBlockMat();
-#endif
 		}
 		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Front) ), 0 ) )
 		{
 			orientation = TileOrientation.Front;
-#if UNITY_EDITOR
-			materials[1] = Assets.getFrontBlockMat();
-#endif
 		}
 		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Back) ), 0 ) )
 		{
 			orientation = TileOrientation.Back;
-#if UNITY_EDITOR
-			materials[1] = Assets.getBackBlockMat();
-#endif
 		}
 
 		transform.Rotate( new Vector3( 90, 0, 0 ) );
 
-#if UNITY_EDITOR
-		materials[1].SetFloat( "_Mode", 2 );
-		materials[1].SetInt( "_SrcBlend", (int) UnityEngine.Rendering.BlendMode.SrcAlpha );
-		materials[1].SetInt( "_DstBlend", (int) UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha );
-		materials[1].DisableKeyword( "_ALPHATEST_ON" );
-		materials[1].EnableKeyword( "_ALPHABLEND_ON" );
-		materials[1].DisableKeyword( "_ALPHAPREMULTIPLY_ON" );
-		materials[1].renderQueue = 3000;
-
-		Mesh sharedMesh = graphics.GetComponent<MeshFilter> ().sharedMesh;
-		sharedMesh.subMeshCount = 2;
-		int[] tri = sharedMesh.GetTriangles (0);
-		sharedMesh.SetTriangles (tri, 0);
-		sharedMesh.SetTriangles (tri, 1);
-		
-		graphics.GetComponent<Renderer>().materials = materials;
-#endif
+		// apply the right material (when in editor mode) once the orientation is define
+		applyTileMaterial();
     }
+
+	/// <summary>
+	/// Creates the tile mesh corresponding to the specified tile type and using some prefabs for each types.
+	/// </summary>
+	/// <param name="type">The type of tile.</param>
+	private void createTileMesh(TileType type)
+	{
+		// first check if an existing mesh is already present
+		Transform previousMeshTransform = transform.FindChild("mesh");
+		if (previousMeshTransform != null)
+			#if UNITY_EDITOR
+			DestroyImmediate(previousMeshTransform.gameObject);
+			#else
+			Destroy(previousMeshTransform.gameObject);
+			#endif
+
+		// instantiate the correct prefab
+		GameObject mesh = null;
+		switch (type)
+		{
+		case TileType.Valid:
+			if (isGlueTile)
+				mesh = (GameObject) GameObject.Instantiate( Resources.Load( "PREFABS/tile_walk" ) );
+			else
+				mesh = (GameObject) GameObject.Instantiate( Resources.Load( "PREFABS/tile_glue" ) );
+			break;
+		case TileType.Spikes:
+			mesh = (GameObject) GameObject.Instantiate( Resources.Load( "PREFABS/tile_spikes" ) );
+			break;
+		default:
+			// for all other types, there's no mesh, just early exit
+			return;
+		}
+		
+		// set the name of the child mesh game object, and make it uneditable
+		mesh.name = "mesh";
+		mesh.hideFlags = HideFlags.NotEditable;
+
+		// attach the mesh to that tile
+		mesh.transform.parent = this.transform;
+		// set the local position and rotation
+		mesh.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+		mesh.transform.localPosition = new Vector3( 0.5f, -0.5f, 0 );
+	}
 
     /// <summary>
     /// scans nearby platforms and puts them in the connections list, to later be used to calculates paths and so on.
@@ -455,7 +355,6 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			connections = new List<Tile>(connectionSet);
     }
 
-	
 	/// <summary>
 	/// <para>Changes the platform material according to the characteristics of the platform.</para>
 	/// <para>Although you can change the patforms materials in the editor this script will change all that.</para>
@@ -463,6 +362,8 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	/// </summary>
 	private void applyTileMaterial()
 	{
+		//TODO banban
+		return;
 #if UNITY_EDITOR
 		GameObject graphics;
 		Transform t = transform.FindChild ("graphics");
@@ -473,6 +374,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			return;
 
 		//for some reason Unity doesn't let us change a single material, we have to change the material array
+		//TODO banban Material[] materials = graphics.GetComponent<Renderer>().materials;
 		Material[] materials = graphics.GetComponent<Renderer>().sharedMaterials;
 		switch (type)
 		{

@@ -101,8 +101,8 @@ public class FallingCube : MonoBehaviour
 					if ( obstructedTiles.ContainsKey( tile ) )
 						continue;
 					
-					obstructedTiles.Add( tile, tile.type );
-					tile.type = TileType.Invalid;
+					obstructedTiles.Add( tile, tile.Type );
+					tile.setType(TileType.Invalid, false);
 					tile.rescanPath = true;
 				}
 			}
@@ -125,7 +125,7 @@ public class FallingCube : MonoBehaviour
 		foreach ( KeyValuePair<Tile, TileType > entry in obstructedTiles )
 		{
 			Tile tile = entry.Key;
-			tile.type = entry.Value;
+			tile.setType(entry.Value, false);
 			tile.rescanPath = true;
 		}
 		

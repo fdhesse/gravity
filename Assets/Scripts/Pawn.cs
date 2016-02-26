@@ -421,7 +421,7 @@ public class Pawn : MonoBehaviour
     {
 		if (world.IsGameOver()) //is the game over? 
         {
-			if (pawnTile != null && pawnTile.type.Equals(TileType.Exit)) //Has the player reached an exit Tile?
+			if (pawnTile != null && pawnTile.Type.Equals(TileType.Exit)) //Has the player reached an exit Tile?
                 hud.isEndScreen = true; //activate the endscreen
 		}
 		
@@ -465,7 +465,7 @@ public class Pawn : MonoBehaviour
 	{
 		if (isGrounded() ) // is the player touching a tile "beneath" him?
 		{
-			if( pawnTile.type.Equals(TileType.Exit) ) //if this tile is an exit tile, make the game end
+			if( pawnTile.Type.Equals(TileType.Exit) ) //if this tile is an exit tile, make the game end
 				world.GameOver();
 				
             moveAlongPath(); //otherwise, move along the path to the player selected tile
@@ -750,7 +750,7 @@ public class Pawn : MonoBehaviour
 				Tile tile = hit.collider.gameObject.GetComponent<Tile>();
 				
 				if ( (tile != null) && (tile.orientation != TileOrientation.None) && 
-				    (tile.orientation != currentWorldOrientation) && TileSelection.isClickableType( tile.type ) )
+				    (tile.orientation != currentWorldOrientation) && TileSelection.isClickableType( tile.Type ) )
 				{
 					// check if the current tile equals the tile to check
 					if (tile == tileToCheck)
@@ -785,7 +785,7 @@ public class Pawn : MonoBehaviour
 		Tile pointedTile = TileSelection.getTile();
 
 		// the set the focused tile with the pointed one if it is not null and clickable
-		if ((pointedTile != null) && TileSelection.isClickableType(pointedTile.type))
+		if ((pointedTile != null) && TileSelection.isClickableType(pointedTile.Type))
 			focusedTile = pointedTile;
 		else
 			focusedTile = null;
