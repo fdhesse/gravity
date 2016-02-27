@@ -80,37 +80,49 @@ public class GameplayCube : MonoBehaviour
 	
 	void OnValidate()
 	{
-		bool isUp = (GluedSides & GlueSides.Up) != GlueSides.None;
-		bool isDown = (GluedSides & GlueSides.Down) != GlueSides.None;
-		bool isRight = (GluedSides & GlueSides.Right) != GlueSides.None;
-		bool isLeft = (GluedSides & GlueSides.Left) != GlueSides.None;
-		bool isFront = (GluedSides & GlueSides.Front) != GlueSides.None;
-		bool isBack = (GluedSides & GlueSides.Back) != GlueSides.None;
-		
-		Transform up = transform.FindChild ("up");
-		Transform down = transform.FindChild ("down");
-		Transform right = transform.FindChild ("right");
-		Transform left = transform.FindChild ("left");
-		Transform front = transform.FindChild ("front");
-		Transform back = transform.FindChild ("back");
-
+		Transform up = transform.FindChild("up");
 		if ( up != null )
-			up.GetComponent<Tile> ().IsGlueTile = isUp;
+			up.GetComponent<Tile>().IsGlueTile = (GluedSides & GlueSides.Up) != GlueSides.None;
 
+		Transform down = transform.FindChild("down");
 		if ( down != null )
-			down.GetComponent<Tile> ().IsGlueTile = isDown;
+			down.GetComponent<Tile>().IsGlueTile = (GluedSides & GlueSides.Down) != GlueSides.None;
 
+		Transform right = transform.FindChild("right");
 		if ( right != null )
-			right.GetComponent<Tile> ().IsGlueTile = isRight;
+			right.GetComponent<Tile>().IsGlueTile = (GluedSides & GlueSides.Right) != GlueSides.None;
 
+		Transform left = transform.FindChild("left");
 		if ( left != null )
-			left.GetComponent<Tile> ().IsGlueTile = isLeft;
+			left.GetComponent<Tile>().IsGlueTile = (GluedSides & GlueSides.Left) != GlueSides.None;
 
+		Transform front = transform.FindChild("front");
 		if ( front != null )
-			front.GetComponent<Tile> ().IsGlueTile = isFront;
+			front.GetComponent<Tile>().IsGlueTile = (GluedSides & GlueSides.Front) != GlueSides.None;
 
+		Transform back = transform.FindChild("back");
 		if ( back != null )
-			back.GetComponent<Tile> ().IsGlueTile = isBack;
+			back.GetComponent<Tile>().IsGlueTile = (GluedSides & GlueSides.Back) != GlueSides.None;
+	}
+
+	private bool IsFaceGlued(string faceName)
+	{
+		switch( faceName )
+		{
+		case "front":
+			return (GluedSides & GlueSides.Front) != GlueSides.None;
+		case "back":
+			return (GluedSides & GlueSides.Back) != GlueSides.None;
+		case "up":
+			return (GluedSides & GlueSides.Up) != GlueSides.None;
+		case "down":
+			return (GluedSides & GlueSides.Down) != GlueSides.None;
+		case "right":
+			return (GluedSides & GlueSides.Right) != GlueSides.None;
+		case "left":
+			return (GluedSides & GlueSides.Left) != GlueSides.None;
+		}
+		return false;
 	}
 
 	public void SetFace( string faceName, TileType type )
@@ -166,7 +178,8 @@ public class GameplayCube : MonoBehaviour
 		// Add the Tile component (that will add the tile mesh)
 		Tile tile = face.AddComponent<Tile>();
 		tile.gameObject.layer = LayerMask.NameToLayer( "Tiles" );
-		tile.setType(type, true);
+		tile.IsGlueTile = IsFaceGlued(faceName);
+		tile.Type = type;
 		tile.CheckTileOrientation();
 
 		// First try to tag the face from this gameplay cube tag, and if it's null try to tag up with parent's tag
@@ -183,6 +196,15 @@ public class GameplayCube : MonoBehaviour
 	}
 
 #if UNITY_EDITOR
+	public void updateTileMesh()
+	{
+		for (int i = 0; i < this.transform.childCount; ++i)
+		{
+			Transform child = this.transform.GetChild(i);
+			child.GetComponent<Tile>().updateTileMesh();
+		}
+	}
+
 	void OnDrawGizmosSelected()
 	{
 		Gizmos.color = Color.red;

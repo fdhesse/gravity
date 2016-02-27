@@ -46,17 +46,9 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	private TileType type = TileType.Valid;
 	public TileType Type
 	{
-		get { return type; }
-		set	{ setType(value, true); }
+		get { return this.type; }
+		set	{ this.type = value; }
 	}
-
-	public void setType(TileType newType, bool changeMesh)
-	{
-		this.type = newType;
-		if (changeMesh)
-			createTileMesh(newType);
-	}
-
 
 	/// <summary>
 	/// Tell if this tile is glued. This field must be serialized, because it is set by the editor during
@@ -167,9 +159,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			return;
 		}
 
-		transform.Rotate( new Vector3( -90, 0, 0 ) );
-		
-		Vector3 tileDirection = transform.rotation * -Vector3.up;
+		Vector3 tileDirection = transform.rotation * Quaternion.Euler( -90f, 0, 0 ) * -Vector3.up;
 
 		if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Up) ), 0 ) )
 		{
@@ -196,55 +186,9 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			orientation = TileOrientation.Back;
 		}
 
-		transform.Rotate( new Vector3( 90, 0, 0 ) );
-
 		// apply the right material (when in editor mode) once the orientation is define
 		applyTileMaterial();
     }
-
-	/// <summary>
-	/// Creates the tile mesh corresponding to the specified tile type and using some prefabs for each types.
-	/// </summary>
-	/// <param name="type">The type of tile.</param>
-	private void createTileMesh(TileType type)
-	{
-		// first check if an existing mesh is already present
-		Transform previousMeshTransform = transform.FindChild("mesh");
-		if (previousMeshTransform != null)
-			#if UNITY_EDITOR
-			DestroyImmediate(previousMeshTransform.gameObject);
-			#else
-			Destroy(previousMeshTransform.gameObject);
-			#endif
-
-		// instantiate the correct prefab
-		GameObject mesh = null;
-		switch (type)
-		{
-		case TileType.Valid:
-			if (isGlueTile)
-				mesh = (GameObject) GameObject.Instantiate( Resources.Load( "PREFABS/tile_walk" ) );
-			else
-				mesh = (GameObject) GameObject.Instantiate( Resources.Load( "PREFABS/tile_glue" ) );
-			break;
-		case TileType.Spikes:
-			mesh = (GameObject) GameObject.Instantiate( Resources.Load( "PREFABS/tile_spikes" ) );
-			break;
-		default:
-			// for all other types, there's no mesh, just early exit
-			return;
-		}
-		
-		// set the name of the child mesh game object, and make it uneditable
-		mesh.name = "mesh";
-		mesh.hideFlags = HideFlags.NotEditable;
-
-		// attach the mesh to that tile
-		mesh.transform.parent = this.transform;
-		// set the local position and rotation
-		mesh.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
-		mesh.transform.localPosition = new Vector3( 0.5f, -0.5f, 0 );
-	}
 
     /// <summary>
     /// scans nearby platforms and puts them in the connections list, to later be used to calculates paths and so on.
@@ -362,40 +306,41 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	/// </summary>
 	private void applyTileMaterial()
 	{
-		//TODO banban
-		return;
 #if UNITY_EDITOR
-		GameObject graphics;
-		Transform t = transform.FindChild ("graphics");
-
-		if ( t != null )
-			graphics = t.gameObject;
+		GameObject mesh = null;
+		Transform meshTransform = transform.FindChild("tile_walk/tile_magnet");
+		if ( meshTransform != null )
+			mesh = meshTransform.gameObject;
 		else
 			return;
 
 		//for some reason Unity doesn't let us change a single material, we have to change the material array
-		//TODO banban Material[] materials = graphics.GetComponent<Renderer>().materials;
-		Material[] materials = graphics.GetComponent<Renderer>().sharedMaterials;
-		switch (type)
+		Material[] materials = mesh.GetComponent<Renderer>().sharedMaterials;
+
+		switch (this.orientation)
 		{
-		case TileType.Valid:
-			materials[0] = isHighlighted ? Assets.getHighlightedValidBlockMat() : Assets.getValidBlockMat();
-			materials[0] = isFlashing ? Assets.getFlashingValidBlockMat() : materials[0];
+		case TileOrientation.Up:
+			materials[0] = Assets.getUpBlockMat();
 			break;
-		case TileType.Invalid:
-			materials[0] = isHighlighted ? Assets.getHighlightedInvalidBlockMat() : Assets.getInvalidBlockMat();
-			materials[0] = isFlashing ? Assets.getFlashingInvalidBlockMat() : materials[0];
+		case TileOrientation.Down:
+			materials[0] = Assets.getDownBlockMat();
 			break;
-		case TileType.Exit:
-			materials[0] = isHighlighted ? Assets.getHighlightedExitBlockMat() : Assets.getExitBlockMat();
-			materials[0] = isFlashing ? Assets.getFlashingExitBlockMat() : materials[0];
+		case TileOrientation.Left:
+			materials[0] = Assets.getLeftBlockMat();
+			break;
+		case TileOrientation.Right:
+			materials[0] = Assets.getRightBlockMat();
+			break;
+		case TileOrientation.Front:
+			materials[0] = Assets.getFrontBlockMat();
+			break;
+		case TileOrientation.Back:
+			materials[0] = Assets.getBackBlockMat();
 			break;
 		}
 
-		if ( isGlueTile )
-			materials[0].color = Color.green;
-
-		graphics.GetComponent<Renderer>().materials = materials;
+		mesh.GetComponent<Renderer>().materials = materials;
+		
 		oldType = type;
 
 #endif
@@ -428,7 +373,6 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
     {
         isHighlighted = true;
 		highlightTile();
-        //applyTileMaterial();
     }
 
     // this function is called whenever we want to unhighlight a platform, usually right after a mousehover
@@ -547,6 +491,62 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	}
 
 	#if UNITY_EDITOR
+	/// <summary>
+	/// Creates the tile mesh corresponding to the specified tile type and using some prefabs for each types.
+	/// </summary>
+	/// <param name="type">The type of tile.</param>
+	public void updateTileMesh()
+	{
+		// get the prefab name of the correct prefab to spawn
+		string new_mesh_name = string.Empty;
+		switch (this.type)
+		{
+		case TileType.Valid:
+			if (isGlueTile)
+				new_mesh_name = "tile_glue";
+			else
+				new_mesh_name = "tile_walk";
+			break;
+		case TileType.Spikes:
+			new_mesh_name = "tile_spikes";
+			break;
+		default:
+			// for all other types, leave the empty sting, 
+			// but continue to delete the eventual old mesh
+			break;
+		}
+	
+		// first check if an existing mesh is already present, that we may need to destroy
+		if (transform.childCount > 0)
+		{
+			// if the existing mesh is different, delete it to create the new mesh, otherwise early exit
+			Transform previousMeshTransform = transform.GetChild(0);
+			if (previousMeshTransform.name != new_mesh_name)
+				DestroyImmediate(previousMeshTransform.gameObject);
+			else
+				return;
+		}
+
+		// Now check if we need to create a new mesh, otherwise early exit
+		if (new_mesh_name == string.Empty)
+			return;
+
+		// instanttiate the new mesh and set its name
+		GameObject mesh = (GameObject) GameObject.Instantiate( Resources.Load( "PREFABS/" + new_mesh_name ) );
+		mesh.name = new_mesh_name;
+
+		// make the mesh uneditable
+		mesh.hideFlags = HideFlags.NotEditable;
+		for (int i = 0; i < mesh.transform.childCount; ++i)
+			mesh.transform.GetChild(i).hideFlags = HideFlags.NotEditable;
+		
+		// attach the mesh to that tile
+		mesh.transform.parent = this.transform;
+		// set the local position and rotation
+		mesh.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+		mesh.transform.localPosition = new Vector3( 0.5f, -0.5f, 0 );
+	}
+
 	public void OnDrawGizmos()
 	{
 		if (Application.isPlaying && isRescanPathDoneThisFrame)

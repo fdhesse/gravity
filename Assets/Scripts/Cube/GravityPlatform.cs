@@ -211,7 +211,7 @@ public class GravityPlatform : MonoBehaviour {
 						continue;
 					
 					obstructedTiles.Add( tile, tile.Type );
-					tile.setType(TileType.Invalid, false);
+					tile.Type = TileType.Invalid;
 					tile.rescanPath = true;
 				}
 			}
@@ -226,7 +226,7 @@ public class GravityPlatform : MonoBehaviour {
 		foreach ( KeyValuePair<Tile, TileType > entry in obstructedTiles )
 		{
 			Tile tile = entry.Key;
-			tile.setType(entry.Value, false);
+			tile.Type = entry.Value;
 			tile.rescanPath = true;
 		}
 		

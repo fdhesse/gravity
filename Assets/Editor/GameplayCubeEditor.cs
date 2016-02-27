@@ -52,6 +52,9 @@ public class GameplayCubeEditor : Editor
 		foreach (MeshFilter filter in filters)
 			Component.DestroyImmediate(filter);
 
+		// update the tile mesh (if type or glue flags are changed)
+		m_Instance.updateTileMesh();
+
 		EditorGUI.EndChangeCheck();
 
 		//serializedObject.ApplyModifiedProperties ();
