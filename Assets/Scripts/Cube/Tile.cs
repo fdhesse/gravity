@@ -58,15 +58,8 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	private bool isGlueTile = false;
 	public bool IsGlueTile
 	{
-		get
-		{
-			return isGlueTile;
-		}
-		set
-		{
-			isGlueTile = value;
-			applyTileMaterial();
-		}
+		get	{ return isGlueTile; }
+		set	{ isGlueTile = value; }
 	}
 
 	[HideInInspector] public TileOrientation orientation;
@@ -84,8 +77,6 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
     private bool isHighlighted = false;//whether this platform is highlighted
     private bool isFlashing = false;//wheter this platform is flashing
     private Ticker flash;//timer for platform flashing
-
-	private TileType oldType;// auxilliary variable
 
 	[HideInInspector] public bool isQuad;
 
@@ -126,10 +117,6 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		if (rescanPath)
 			scanNearbyTiles();
 
-		// if the type was changed in scene mode, reapply the material
-        if (!oldType.Equals(type))
-            applyTileMaterial();
-		
 		/// handles the flashing of the platform
 		if (isFlashing && flash.isOver())
 			unFlashMe();
@@ -185,9 +172,6 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		{
 			orientation = TileOrientation.Back;
 		}
-
-		// apply the right material (when in editor mode) once the orientation is define
-		applyTileMaterial();
     }
 
     /// <summary>
@@ -300,53 +284,6 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
     }
 
 	/// <summary>
-	/// <para>Changes the platform material according to the characteristics of the platform.</para>
-	/// <para>Although you can change the patforms materials in the editor this script will change all that.</para>
-	/// <para>This is responsible for flashing, highlighting, which is also a change in materials.</para>
-	/// </summary>
-	private void applyTileMaterial()
-	{
-#if UNITY_EDITOR
-		GameObject mesh = null;
-		Transform meshTransform = transform.FindChild("tile_walk/tile_magnet");
-		if ( meshTransform != null )
-			mesh = meshTransform.gameObject;
-		else
-			return;
-
-		//for some reason Unity doesn't let us change a single material, we have to change the material array
-		Material[] materials = mesh.GetComponent<Renderer>().sharedMaterials;
-
-		switch (this.orientation)
-		{
-		case TileOrientation.Up:
-			materials[0] = Assets.getUpBlockMat();
-			break;
-		case TileOrientation.Down:
-			materials[0] = Assets.getDownBlockMat();
-			break;
-		case TileOrientation.Left:
-			materials[0] = Assets.getLeftBlockMat();
-			break;
-		case TileOrientation.Right:
-			materials[0] = Assets.getRightBlockMat();
-			break;
-		case TileOrientation.Front:
-			materials[0] = Assets.getFrontBlockMat();
-			break;
-		case TileOrientation.Back:
-			materials[0] = Assets.getBackBlockMat();
-			break;
-		}
-
-		mesh.GetComponent<Renderer>().materials = materials;
-		
-		oldType = type;
-
-#endif
-	}
-
-	/// <summary>
 	/// <para>Highlight the targeted material, using the "MouseCursor" prefab.</para>
 	/// </summary>
 	private void highlightTile()
@@ -364,8 +301,6 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		
 		Assets.mouseCursor.transform.Translate (new Vector3 (0, 0.5f, 0));
 		Assets.mouseCursor.transform.parent = transform;
-
-		oldType = type;
 	}
 
     // this function is called whenever we want to highlight a platform, usually due to mousehover
@@ -487,7 +422,30 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 
 	public void CheckTileOrientation()
 	{
+		// define the orientation of this tile
 		defineOrientation();
+
+		// update also the orientation of my children mesh tile
+		if ((Pawn.Instance != null) && (Pawn.Instance.world != null))
+			updateMeshTileOrientation(Pawn.Instance.world.CurrentGravityOrientation);
+	}
+
+	private void updateMeshTileOrientation(TileOrientation worldGravityOrientation)
+	{
+		// get the mesh child (if already created)
+		if (this.transform.childCount > 0)
+		{
+			Transform meshGameObject = this.transform.GetChild(0);
+
+			// recheck the orientation of the mesh tiles
+			for (int i = 0; i < meshGameObject.transform.childCount; ++i)
+			{
+				// get the gold tile component in the children which has it
+				GoldTile goldTileChild = meshGameObject.transform.GetChild(i).GetComponent<GoldTile>();
+				if (goldTileChild != null)
+					goldTileChild.UpdateOrientation(worldGravityOrientation);
+			}
+		}
 	}
 
 	#if UNITY_EDITOR
@@ -545,6 +503,10 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		// set the local position and rotation
 		mesh.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
 		mesh.transform.localPosition = new Vector3( 0.5f, -0.5f, 0 );
+
+		// after setting the new mesh, update the orientation of the mesh tile, giving any kind
+		// of orientation, it doesn't matter, cause we are in edit mode, it's just to set the editor material
+		updateMeshTileOrientation(TileOrientation.Up);
 	}
 
 	public void setStaticFlag(bool isStatic)

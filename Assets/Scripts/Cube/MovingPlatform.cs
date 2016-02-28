@@ -440,8 +440,6 @@ public class MovingPlatform : MonoBehaviour
 		// no need to recompute anything when we are in the wait state
 		if (previousStepPhase != StepPhase.WAIT)
 		{
-			bool shouldUpdateGoldenTiles = (mCurrentStepPhase == StepPhase.WAIT);
-
 			foreach (Tile tile in mTilesOnThatPlatform)
 			{
 				// update the orientation of the platform if the current step is a rotation
@@ -470,10 +468,6 @@ public class MovingPlatform : MonoBehaviour
 					 (mCurrentStepPhase != StepPhase.CONSTANT_MOVE) )
 					tile.rescanPath = true;
 			}
-
-			// check if we need to update also the golden tile material
-			if (shouldUpdateGoldenTiles)
-				Pawn.Instance.world.UpdateGoldTileOrientation();
 		}
 	}
 

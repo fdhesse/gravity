@@ -15,6 +15,11 @@ public class World : MonoBehaviour {
 	private GoldTile[] goldTiles;
 	private TileOrientation currentGravityOrientation = TileOrientation.Up;
 
+	public TileOrientation CurrentGravityOrientation
+	{
+		get { return currentGravityOrientation; }
+	}
+
 	public void Init()
 	{
 		fallingCubes = FindObjectsOfType<FallingCube>();
@@ -143,12 +148,5 @@ public class World : MonoBehaviour {
 		
 		for (int i = 0; i < goldTiles.Length; i++)
 			goldTiles[i].ChangeGravity( orientation );
-	}
-
-	public void UpdateGoldTileOrientation()
-	{
-		for (int i = 0; i < goldTiles.Length; i++)
-			if (!goldTiles[i].gameObject.isStatic)
-				goldTiles[i].UpdateOrientation( currentGravityOrientation );
 	}
 }

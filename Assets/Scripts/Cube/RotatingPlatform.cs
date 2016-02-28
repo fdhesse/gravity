@@ -331,9 +331,6 @@ public class RotatingPlatform : MonoBehaviour
 			// also ask to rescan the path
 			tile.rescanPath = true;
 		}
-
-		// update also the golden tile material
-		Pawn.Instance.world.UpdateGoldTileOrientation();
 	}
 	
 #if UNITY_EDITOR
