@@ -26,7 +26,6 @@ public static class Assets
 	public static AudioClip bounce2;
 
 	public static GameObject mouseCursor;
-	private static GameObject gravityChangeMarkerPrefab;
 
     //public static Material upBlockMat;
     //public static Material downBlockMat;
@@ -212,12 +211,4 @@ public static class Assets
 		return getBlankBlockMat();
 	}
 #endif
-
-	internal static GameObject getGravityChangeMarkerPrefab()
-	{
-		if ( gravityChangeMarkerPrefab == null )
-			gravityChangeMarkerPrefab = Resources.Load("PREFABS/GravityChangeMarker") as GameObject;
-		
-		return gravityChangeMarkerPrefab;
-    }
 }

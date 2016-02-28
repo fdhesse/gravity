@@ -10,6 +10,24 @@ public class GoldTile : MonoBehaviour
 
 	private TileOrientation orientation;
 
+	private bool isClickableToChangeGravity = false;
+	public bool IsClickableToChangeGravity
+	{
+		get	{ return isClickableToChangeGravity; }
+		set 
+		{
+			isClickableToChangeGravity = value;
+
+			// get the world gravity if any
+			TileOrientation worldGravityOrientation = TileOrientation.Up;
+			if ((Pawn.Instance != null) && (Pawn.Instance.world != null))
+				worldGravityOrientation = Pawn.Instance.world.CurrentGravityOrientation;
+
+			// and change the material
+			DefineMaterial(worldGravityOrientation);
+		}
+	}
+
 	// Use this for initialization
 	void Awake()
 	{
@@ -70,33 +88,38 @@ public class GoldTile : MonoBehaviour
 	/// <param name="gravityOrientation">The current orientation of the gravity.</param>
 	private void DefineMaterial( TileOrientation gravityOrientation )
 	{
-		if ( gravityOrientation == orientation )
+		if (isClickableToChangeGravity)
+			GetComponent<MeshRenderer>().material = changeGravityMaterial;
+		else if ( gravityOrientation == orientation )
 			GetComponent<MeshRenderer>().material = activeMaterial;
 		else
 			GetComponent<MeshRenderer>().material = inactiveMaterial;
 
 		// in editor mode we display the material to show the orientation of the tile
 		#if UNITY_EDITOR
-		switch (this.orientation)
+		if (!Application.isPlaying)
 		{
-		case TileOrientation.Up:
-			GetComponent<MeshRenderer>().material = Assets.getUpBlockMat();
-			break;
-		case TileOrientation.Down:
-			GetComponent<MeshRenderer>().material = Assets.getDownBlockMat();
-			break;
-		case TileOrientation.Left:
-			GetComponent<MeshRenderer>().material = Assets.getLeftBlockMat();
-			break;
-		case TileOrientation.Right:
-			GetComponent<MeshRenderer>().material = Assets.getRightBlockMat();
-			break;
-		case TileOrientation.Front:
-			GetComponent<MeshRenderer>().material = Assets.getFrontBlockMat();
-			break;
-		case TileOrientation.Back:
-			GetComponent<MeshRenderer>().material = Assets.getBackBlockMat();
-			break;
+			switch (this.orientation)
+			{
+			case TileOrientation.Up:
+				GetComponent<MeshRenderer>().material = Assets.getUpBlockMat();
+				break;
+			case TileOrientation.Down:
+				GetComponent<MeshRenderer>().material = Assets.getDownBlockMat();
+				break;
+			case TileOrientation.Left:
+				GetComponent<MeshRenderer>().material = Assets.getLeftBlockMat();
+				break;
+			case TileOrientation.Right:
+				GetComponent<MeshRenderer>().material = Assets.getRightBlockMat();
+				break;
+			case TileOrientation.Front:
+				GetComponent<MeshRenderer>().material = Assets.getFrontBlockMat();
+				break;
+			case TileOrientation.Back:
+				GetComponent<MeshRenderer>().material = Assets.getBackBlockMat();
+				break;
+			}
 		}
 		#endif
 	}

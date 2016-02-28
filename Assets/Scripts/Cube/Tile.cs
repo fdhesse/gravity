@@ -62,6 +62,32 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		set	{ isGlueTile = value; }
 	}
 
+	private bool isClickableToChangeGravity = false;
+	public bool IsClickableToChangeGravity
+	{
+		get	{ return isClickableToChangeGravity; }
+		set
+		{
+			// set the flag to myself
+			isClickableToChangeGravity = value;
+
+			// set the flag to all the mesh tile children
+			if (this.transform.childCount > 0)
+			{
+				Transform meshGameObject = this.transform.GetChild(0);
+				
+				// recheck the orientation of the mesh tiles
+				for (int i = 0; i < meshGameObject.transform.childCount; ++i)
+				{
+					// get the gold tile component in the children which has it
+					GoldTile goldTileChild = meshGameObject.transform.GetChild(i).GetComponent<GoldTile>();
+					if (goldTileChild != null)
+						goldTileChild.IsClickableToChangeGravity = value;
+				}
+			}
+		}
+	}
+
 	[HideInInspector] public TileOrientation orientation;
 	
 	public List<Tile> connections = null; //list of directly accessible platforms

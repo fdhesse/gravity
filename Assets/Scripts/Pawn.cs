@@ -83,7 +83,7 @@ public class Pawn : MonoBehaviour
 	private float clickCountdown = 0.0f;
 
 	// #SPHERES#
-    private GameObject[] orientationSpheres = new GameObject[6];
+	private List<Tile> clickableTilesToChangeGravity = new List<Tile>(6);
 
 	private Vector3 position
 	{
@@ -130,7 +130,6 @@ public class Pawn : MonoBehaviour
 
 		initSpawn();
         initHUD();
-		initOrientationSpheres();
 
 		world.Init();
 		world.GameStart();
@@ -215,25 +214,7 @@ public class Pawn : MonoBehaviour
 	{
 		hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
 	}
-	
-	private void initOrientationSpheres()
-	{
-		GameObject dotsGroup = new GameObject("Orientation Dots");
-		dotsGroup.hideFlags = HideFlags.HideInHierarchy;
 
-		for ( int i = 0, l = orientationSpheres.Length; i < l; i++ )
-		{
-			// create a sphere primitive
-			GameObject orientationSphere = GameObject.Instantiate(Assets.getGravityChangeMarkerPrefab(), Vector3.zero, Quaternion.identity) as GameObject;
-			orientationSphere.name = "dot " + i;
-			orientationSphere.transform.parent = dotsGroup.transform;
-			// disable the sphere at first
-			orientationSphere.SetActive(false);
-			// and assign it in the array
-			orientationSpheres[i] = orientationSphere;
-		}
-	}
-	
 	public void respawn(TileOrientation startingOrientation)
 	{
 		path = null;
@@ -721,11 +702,12 @@ public class Pawn : MonoBehaviour
 	#region focused tile, clickable tile, and destination marks
 	private void removeDestinationMarks()
 	{
-		foreach (GameObject sphere in orientationSpheres)
-		{
-			//sphere.transform.position = Vector3.one * float.MaxValue; //sphere is moved to infinity muhahahaha, tremble before my power
-			sphere.SetActive(false);
-		}
+		// clear the flag on all the tiles
+		foreach (Tile tile in clickableTilesToChangeGravity)
+			tile.IsClickableToChangeGravity = false;
+
+		// and clear the list
+		clickableTilesToChangeGravity.Clear();
 	}
 
 	private bool putDestinationMarks(Tile tileToCheck)
@@ -738,7 +720,8 @@ public class Pawn : MonoBehaviour
 		bool result = false;
 		TileOrientation currentWorldOrientation = GetWorldVerticality();
 
-		for (int i = 0 ; i < orientationSpheres.Length ; ++i)
+		// ray cast in the 6 direction of the world from the pawn position
+		for (int i = 0 ; i < 6 ; ++i)
 		{
 			TileOrientation orientation = (TileOrientation)(i + 1);
 
@@ -756,14 +739,9 @@ public class Pawn : MonoBehaviour
 					if (tile == tileToCheck)
 						result = true;
 
-					// reactivate the sphere
-					orientationSpheres[i].SetActive(true);
-
-					// and position it on the tile
-					if (hud.dotIsInside)
-						orientationSpheres[i].transform.position = tile.transform.position;
-					else
-						orientationSpheres[i].transform.position = tile.transform.position - (World.getGravityVector (GetFeltVerticality ()) * orientationSpheres[i].transform.localScale.y * .5f );
+					// make the tile clickable, and add it to the list
+					tile.IsClickableToChangeGravity = true;
+					clickableTilesToChangeGravity.Add(tile);
 				}
 			}
 		}
