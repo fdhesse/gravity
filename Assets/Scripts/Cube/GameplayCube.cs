@@ -226,5 +226,18 @@ public class GameplayCube : MonoBehaviour
 		Gizmos.color = Color.red;
 		Gizmos.DrawWireCube (transform.position, transform.localScale);
 	}
+
+	void OnDrawGizmos()
+	{
+		// continue to draw the cube if all the faces of the cube are tiles of type None
+		// (which is a bug obviously), to make it visible that it is a bug
+		if ((m_left == TileType.None) && (m_right == TileType.None) &&
+			(m_up == TileType.None) && (m_down == TileType.None) &&
+			(m_front == TileType.None) && (m_back == TileType.None))
+		{
+			Gizmos.color = Color.red;
+			Gizmos.DrawWireCube (transform.position, transform.localScale);
+		}
+	}
 	#endif
 }

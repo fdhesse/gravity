@@ -27,25 +27,11 @@ public static class Assets
 
 	public static GameObject mouseCursor;
 
-    //public static Material upBlockMat;
-    //public static Material downBlockMat;
-    //public static Material leftBlockMat;
-    //public static Material rightBlockMat;
-    //public static Material frontBlockMat;
-    //public static Material backBlockMat;
 	static Assets()
 	{
 		invalidSound = Resources.Load("Sounds/invalidSound") as AudioClip;
 		bounce = Resources.Load("Sounds/bounce") as AudioClip;
 		bounce2 = Resources.Load("Sounds/bounce2") as AudioClip;
-
-        // -- ORIENTATION MATERIALS
-        //upBlockMat = new Material(Resources.Load("Resources/Materials/orientations/up") as Material);
-        //downBlockMat = new Material(Resources.Load("Resources/Materials/orientations/down") as Material);
-        //leftBlockMat = new Material(Resources.Load("Resources/Materials/orientations/left") as Material);
-        //rightBlockMat = new Material(Resources.Load("Resources/Materials/orientations/right") as Material);
-        //frontBlockMat = new Material(Resources.Load("Resources/Materials/orientations/front") as Material);
-        //backBlockMat = new Material(Resources.Load("Resources/Materials/orientations/back") as Material);
     }
 
 	public static void SetMouseCursor()
@@ -70,32 +56,6 @@ public static class Assets
 	private static Material rightBlockMat;
 	private static Material frontBlockMat;
 	private static Material backBlockMat;
-	
-	private static Material validBlockMat;
-	private static Material invalidBlockMat;
-	private static Material exitBlockMat;
-
-    public static Material getValidBlockMat()
-	{
-		if ( validBlockMat == null )
-			validBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Editor/Materials/blocks/valid.mat", typeof(Material)) as Material;
-		
-		return new Material( validBlockMat );
-	}
-	public static Material getInvalidBlockMat()
-	{
-		if ( invalidBlockMat == null )
-			invalidBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Editor/Materials/blocks/invalid.mat", typeof(Material)) as Material;
-		
-		return new Material( invalidBlockMat );
-	}
-	public static Material getExitBlockMat()
-	{
-		if ( exitBlockMat == null )
-			exitBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Editor/Materials/blocks/exit.mat", typeof(Material)) as Material;
-		
-		return new Material( exitBlockMat );
-	}
 	
 	public static Material getUpBlockMat()
 	{
@@ -186,29 +146,6 @@ public static class Assets
 			flashingExitBlockMat = AssetDatabase.LoadAssetAtPath ("Assets/Editor/Materials/blocks/flashing/exitFlashing.mat", typeof(Material)) as Material;
 		
 		return new Material( flashingExitBlockMat );
-	}
-#elif UNITY_STANDALONE
-
-	private static Material blankBlockMat;
-
-	public static Material getBlankBlockMat()
-	{
-		if ( blankBlockMat == null )
-			blankBlockMat = Resources.Load("Materials/blocks/blank") as Material;
-		
-		return new Material( blankBlockMat );
-	}
-	public static Material getValidBlockMat()
-	{
-		return getBlankBlockMat();
-	}
-	public static Material getInvalidBlockMat()
-	{
-		return getBlankBlockMat();
-	}
-	public static Material getExitBlockMat()
-	{
-		return getBlankBlockMat();
 	}
 #endif
 }

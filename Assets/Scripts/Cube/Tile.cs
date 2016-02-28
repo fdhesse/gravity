@@ -555,10 +555,31 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 
 	public void OnDrawGizmos()
 	{
-		if (Application.isPlaying && isRescanPathDoneThisFrame)
+		if (Application.isPlaying)
 		{
-			isRescanPathDoneThisFrame = false;
-			Gizmos.DrawWireSphere(transform.position, 6.0f);
+			// draw the path scanning while playing
+			if (isRescanPathDoneThisFrame)
+			{
+				isRescanPathDoneThisFrame = false;
+				Gizmos.DrawWireSphere(transform.position, 6.0f);
+			}
+		}
+		else
+		{
+			Vector3 scale = this.transform.rotation * new Vector3(10f, 10f, 0.1f);
+
+			// if not playing draw some faces, for the invisible meshes
+			switch (this.type)
+			{
+			case TileType.Invalid:
+				Gizmos.color = new Color(1, 0, 0, 0.7f);
+				Gizmos.DrawCube(this.transform.position, scale);
+				break;
+			case TileType.Exit:
+				Gizmos.color = new Color(1, 0, 1, 0.5f);
+				Gizmos.DrawCube(this.transform.position, scale);
+				break;
+			}
 		}
 	}
 	#endif
