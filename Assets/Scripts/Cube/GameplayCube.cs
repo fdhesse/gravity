@@ -77,33 +77,6 @@ public class GameplayCube : MonoBehaviour
 	[Header("Glue")]
 	[BitMask(typeof(GlueSides))]
 	public GlueSides GluedSides;
-	
-	void OnValidate()
-	{
-		Transform up = transform.FindChild("up");
-		if ( up != null )
-			up.GetComponent<Tile>().IsGlueTile = (GluedSides & GlueSides.Up) != GlueSides.None;
-
-		Transform down = transform.FindChild("down");
-		if ( down != null )
-			down.GetComponent<Tile>().IsGlueTile = (GluedSides & GlueSides.Down) != GlueSides.None;
-
-		Transform right = transform.FindChild("right");
-		if ( right != null )
-			right.GetComponent<Tile>().IsGlueTile = (GluedSides & GlueSides.Right) != GlueSides.None;
-
-		Transform left = transform.FindChild("left");
-		if ( left != null )
-			left.GetComponent<Tile>().IsGlueTile = (GluedSides & GlueSides.Left) != GlueSides.None;
-
-		Transform front = transform.FindChild("front");
-		if ( front != null )
-			front.GetComponent<Tile>().IsGlueTile = (GluedSides & GlueSides.Front) != GlueSides.None;
-
-		Transform back = transform.FindChild("back");
-		if ( back != null )
-			back.GetComponent<Tile>().IsGlueTile = (GluedSides & GlueSides.Back) != GlueSides.None;
-	}
 
 	private bool IsFaceGlued(string faceName)
 	{
@@ -175,33 +148,76 @@ public class GameplayCube : MonoBehaviour
 		
 		face.transform.Translate(new Vector3(0, 0, -transform.localScale.x * 0.495f), Space.Self);
 
+		// propagate my tag to the face
+		setTileTag(face);
+
 		// Add the Tile component (that will add the tile mesh)
 		Tile tile = face.AddComponent<Tile>();
 		tile.gameObject.layer = LayerMask.NameToLayer( "Tiles" );
 		tile.IsGlueTile = IsFaceGlued(faceName);
 		tile.Type = type;
 		tile.CheckTileOrientation();
+		// set the static flag (after fixing the tag of this gameplay cube)
+		tile.setStaticFlag(shouldTileMeshBeStatic());
+	}
 
-		// First try to tag the face from this gameplay cube tag, and if it's null try to tag up with parent's tag
-		if (!this.gameObject.CompareTag("Untagged"))
-		{
-			face.tag = this.gameObject.tag;
-		}
-		else if (this.transform.parent != null)
-		{
-			// if this gameobject tag is null but not it's parent, tag both this gameobject and the face
+	private bool shouldTileMeshBeStatic()
+	{
+		// by default the mesh tile are static unless it's a moving platform
+		return (!this.gameObject.CompareTag("MovingPlatform") && !this.gameObject.CompareTag("GravityPlatform"));
+	}
+
+	private void setTileTag(GameObject childTile)
+	{
+		// First check if this gameplay cube has an empty tag, but has a parent, that
+		// may means that this gameplay cube is part of a moving platform grouping several
+		// gameplay platform, so get that tag from the parent
+		if ((this.transform.parent != null) && !this.gameObject.CompareTag(transform.parent.tag) &&
+		    (transform.parent.CompareTag("MovingPlatform") || transform.parent.CompareTag("GravityPlatform")))
 			this.gameObject.tag = transform.parent.tag;
-			face.tag = transform.parent.tag;
+
+		// after fixing the tag to be like my potential parent, fix the tag of my tile children
+		childTile.tag = this.gameObject.tag;
+	}
+
+	#if UNITY_EDITOR
+	void OnValidate()
+	{
+		bool isStatic = shouldTileMeshBeStatic();
+
+		// set the glue and static flags for all tiles
+		for (int i = 0; i < this.transform.childCount; ++i)
+		{
+			Tile childTile = this.transform.GetChild(i).GetComponent<Tile>();
+			if (childTile != null)
+			{
+				// reset the tag of the tile like the tag of this gameobject,
+				// so that if the level designer change this gameplay cube to a moving platform,
+				// the tag is correctly propagated to to the children tiles, without the need to
+				// recreate the faces
+				setTileTag(childTile.gameObject);
+
+				// set the glue state of the tile
+				childTile.IsGlueTile = IsFaceGlued(childTile.name);
+
+				// set the static state of the tile
+				childTile.setStaticFlag(isStatic);
+			}
 		}
 	}
 
-#if UNITY_EDITOR
 	public void updateTileMesh()
 	{
+		bool isStatic = shouldTileMeshBeStatic();
+
 		for (int i = 0; i < this.transform.childCount; ++i)
 		{
-			Transform child = this.transform.GetChild(i);
-			child.GetComponent<Tile>().updateTileMesh();
+			Tile childTile = this.transform.GetChild(i).GetComponent<Tile>();
+			if (childTile != null)
+			{
+				childTile.updateTileMesh();
+				childTile.setStaticFlag(isStatic);
+			}
 		}
 	}
 
@@ -210,5 +226,5 @@ public class GameplayCube : MonoBehaviour
 		Gizmos.color = Color.red;
 		Gizmos.DrawWireCube (transform.position, transform.localScale);
 	}
-#endif
+	#endif
 }

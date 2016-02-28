@@ -538,13 +538,31 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		// make the mesh uneditable
 		mesh.hideFlags = HideFlags.NotEditable;
 		for (int i = 0; i < mesh.transform.childCount; ++i)
-			mesh.transform.GetChild(i).hideFlags = HideFlags.NotEditable;
+			mesh.transform.GetChild(i).gameObject.hideFlags = HideFlags.NotEditable;
 		
 		// attach the mesh to that tile
 		mesh.transform.parent = this.transform;
 		// set the local position and rotation
 		mesh.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
 		mesh.transform.localPosition = new Vector3( 0.5f, -0.5f, 0 );
+	}
+
+	public void setStaticFlag(bool isStatic)
+	{
+		// set the static flag for the tile gameobject
+		// (it's not really necessary, it's more important for the mesh tile, but it's for the beauty of uniformity)
+		this.gameObject.isStatic = isStatic;
+
+		// now more important, set the static flag for all the children mesh objects
+		for (int i = 0; i < this.transform.childCount; ++i)
+		{
+			// set it for the top mesh gameobject
+			Transform child = this.transform.GetChild(i);
+			child.gameObject.isStatic = isStatic;
+			// and also more important for the grandchildren
+			for (int j = 0; j < child.transform.childCount; ++j)
+				child.transform.GetChild(j).gameObject.isStatic = isStatic;
+		}
 	}
 
 	public void OnDrawGizmos()
