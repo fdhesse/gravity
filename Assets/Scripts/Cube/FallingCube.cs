@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(GameplayCube))]
+[RequireComponent(typeof(AudioSource))]
 public class FallingCube : MonoBehaviour
 {
 	public bool isInit;
@@ -36,13 +37,26 @@ public class FallingCube : MonoBehaviour
 		obstructedTiles = new Dictionary<Tile, TileType> ();
 
 		GameplayCube cube = GetComponent<GameplayCube>();
+
+		// make sure we have a face on all the six faces of the cube,
+		// so if the type is none transform it into invalid
+		if (cube.Left == TileType.None)
+			cube.Left = TileType.Invalid;
 		
-		cube.Left = TileType.Valid;
-		cube.Right = TileType.Valid;
-		cube.Up = TileType.Valid;
-		cube.Down = TileType.Valid;
-		cube.Front = TileType.Valid;
-		cube.Back = TileType.Valid;
+		if (cube.Right == TileType.None)
+			cube.Right = TileType.Invalid;
+
+		if (cube.Up == TileType.None)
+			cube.Up = TileType.Invalid;
+
+		if (cube.Down == TileType.None)
+			cube.Down = TileType.Invalid;
+
+		if (cube.Front == TileType.None)
+			cube.Front = TileType.Invalid;
+
+		if (cube.Back == TileType.None)
+			cube.Back = TileType.Invalid;
 		
 		// Change the Colliders in order to make boxColliders;
 		GameObject[] faces = new GameObject[6];

@@ -486,13 +486,26 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		switch (this.type)
 		{
 		case TileType.Valid:
-			if (isGlueTile)
-				new_mesh_name = "tile_glue";
+			if (this.gameObject.CompareTag("FallingCube"))
+			{
+				if (isGlueTile)
+					new_mesh_name = "tile_glue_falling_cube";
+				else
+					new_mesh_name = "tile_walk_falling_cube";
+			}
 			else
-				new_mesh_name = "tile_walk";
+			{
+				if (isGlueTile)
+					new_mesh_name = "tile_glue";
+				else
+					new_mesh_name = "tile_walk";
+			}
 			break;
 		case TileType.Spikes:
 			new_mesh_name = "tile_spikes";
+			break;
+		case TileType.Exit:
+			new_mesh_name = "tile_exit";
 			break;
 		default:
 			// for all other types, leave the empty sting, 
@@ -573,10 +586,6 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			{
 			case TileType.Invalid:
 				Gizmos.color = new Color(1, 0, 0, 0.7f);
-				Gizmos.DrawCube(this.transform.position, scale);
-				break;
-			case TileType.Exit:
-				Gizmos.color = new Color(1, 0, 1, 0.5f);
 				Gizmos.DrawCube(this.transform.position, scale);
 				break;
 			}

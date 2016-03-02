@@ -88,12 +88,23 @@ public class GoldTile : MonoBehaviour
 	/// <param name="gravityOrientation">The current orientation of the gravity.</param>
 	private void DefineMaterial( TileOrientation gravityOrientation )
 	{
+		MeshRenderer mesh = GetComponent<MeshRenderer>();
+			
 		if (isClickableToChangeGravity)
-			GetComponent<MeshRenderer>().material = changeGravityMaterial;
+		{
+			mesh.material = changeGravityMaterial;
+			mesh.enabled = (changeGravityMaterial != null);
+		}
 		else if ( gravityOrientation == orientation )
-			GetComponent<MeshRenderer>().material = activeMaterial;
+		{
+			mesh.material = activeMaterial;
+			mesh.enabled = (activeMaterial != null);
+		}
 		else
-			GetComponent<MeshRenderer>().material = inactiveMaterial;
+		{
+			mesh.material = inactiveMaterial;
+			mesh.enabled = (inactiveMaterial != null);
+		}
 
 		// in editor mode we display the material to show the orientation of the tile
 		#if UNITY_EDITOR
@@ -102,22 +113,22 @@ public class GoldTile : MonoBehaviour
 			switch (this.orientation)
 			{
 			case TileOrientation.Up:
-				GetComponent<MeshRenderer>().material = Assets.getUpBlockMat();
+				mesh.material = Assets.getUpBlockMat();
 				break;
 			case TileOrientation.Down:
-				GetComponent<MeshRenderer>().material = Assets.getDownBlockMat();
+				mesh.material = Assets.getDownBlockMat();
 				break;
 			case TileOrientation.Left:
-				GetComponent<MeshRenderer>().material = Assets.getLeftBlockMat();
+				mesh.material = Assets.getLeftBlockMat();
 				break;
 			case TileOrientation.Right:
-				GetComponent<MeshRenderer>().material = Assets.getRightBlockMat();
+				mesh.material = Assets.getRightBlockMat();
 				break;
 			case TileOrientation.Front:
-				GetComponent<MeshRenderer>().material = Assets.getFrontBlockMat();
+				mesh.material = Assets.getFrontBlockMat();
 				break;
 			case TileOrientation.Back:
-				GetComponent<MeshRenderer>().material = Assets.getBackBlockMat();
+				mesh.material = Assets.getBackBlockMat();
 				break;
 			}
 		}
