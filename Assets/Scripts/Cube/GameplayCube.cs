@@ -164,7 +164,9 @@ public class GameplayCube : MonoBehaviour
 	private bool shouldTileMeshBeStatic()
 	{
 		// by default the mesh tile are static unless it's a moving platform
-		return (!this.gameObject.CompareTag("MovingPlatform") && !this.gameObject.CompareTag("GravityPlatform"));
+		return (!this.gameObject.CompareTag("MovingPlatform") &&
+				!this.gameObject.CompareTag("GravityPlatform") &&
+				!this.gameObject.CompareTag("FallingCube"));
 	}
 
 	private void setTileTag(GameObject childTile)
@@ -173,7 +175,8 @@ public class GameplayCube : MonoBehaviour
 		// may means that this gameplay cube is part of a moving platform grouping several
 		// gameplay platform, so get that tag from the parent
 		if ((this.transform.parent != null) && !this.gameObject.CompareTag(transform.parent.tag) &&
-		    (transform.parent.CompareTag("MovingPlatform") || transform.parent.CompareTag("GravityPlatform")))
+		    (transform.parent.CompareTag("MovingPlatform") || transform.parent.CompareTag("GravityPlatform") ||
+			 transform.parent.CompareTag("FallingCube")))
 			this.gameObject.tag = transform.parent.tag;
 
 		// after fixing the tag to be like my potential parent, fix the tag of my tile children
