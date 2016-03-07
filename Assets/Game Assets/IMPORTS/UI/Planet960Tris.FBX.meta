@@ -1,45 +1,15 @@
 fileFormatVersion: 2
-guid: 6ecc6d44be56541cea76b935e8d1b05f
-timeCreated: 1455348261
+guid: 6e05a53accfb2a741a4bb34c4d7e4874
+timeCreated: 1457328029
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
-    100002: cave
-    100004: lake
-    100006: front1
-    100008: right
-    100010: up
-    100012: waterfall
     400000: //RootNode
-    400002: cave
-    400004: lake
-    400006: front1
-    400008: right
-    400010: up
-    400012: waterfall
     2300000: //RootNode
-    2300002: cave
-    2300004: lake
-    2300006: front1
-    2300008: right
-    2300010: up
-    2300012: waterfall
     3300000: //RootNode
-    3300002: cave
-    3300004: lake
-    3300006: front1
-    3300008: right
-    3300010: up
-    3300012: waterfall
-    4300000: cave
-    4300002: lake
-    4300004: up
-    4300006: front1
-    4300008: right
-    4300010: waterfall
-    9500000: //RootNode
+    4300000: Earth960tris
   materials:
     importMaterials: 1
     materialName: 0
@@ -64,12 +34,12 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 10
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
@@ -80,9 +50,9 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 0
-    normalImportMode: 1
-    tangentImportMode: 4
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
@@ -98,7 +68,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
