@@ -8,7 +8,6 @@ using System.Collections.Generic;
 /// <para>Since it is a monobehaviour, its supposed to be attached to a gameobject.</para>
 /// <para>It has Pawn Movement, pathfinding, interactions and also some gamelogic.</para>
 /// </summary>
-[RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CapsuleCollider))]
 //[RequireComponent(typeof(Animator))]
@@ -243,12 +242,9 @@ public class Pawn : MonoBehaviour
 	
 	private IEnumerator DelayedReset()
 	{
-		GetComponent<AudioSource>().enabled = false;
-
 		yield return new WaitForSeconds(0.1f);
 
 		GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation & ~RigidbodyConstraints.FreezePositionY;
-		GetComponent<AudioSource>().enabled = true;
 	}
 	
 	private void ResetDynamic()
@@ -340,9 +336,6 @@ public class Pawn : MonoBehaviour
 
 			moveTo( pawnTile.transform.position );
 		}
-
-		if (collision.relativeVelocity.magnitude > 1 && GetComponent<AudioSource>().enabled)
-			GetComponent<AudioSource>().Play();
 
 		ResetDynamic();
 	}

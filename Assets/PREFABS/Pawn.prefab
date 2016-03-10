@@ -9,7 +9,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 400054}
   - 54: {fileID: 5400000}
-  - 82: {fileID: 8200000}
   - 114: {fileID: 11400000}
   - 136: {fileID: 13610078}
   m_Layer: 0
@@ -509,6 +508,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 439478}
   - 95: {fileID: 9504452}
+  - 82: {fileID: 8276060}
+  - 114: {fileID: 11491008}
   m_Layer: 0
   m_Name: OldGuy
   m_TagString: Untagged
@@ -1903,12 +1904,12 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!82 &8200000
+--- !u!82 &8276060
 AudioSource:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100054}
+  m_GameObject: {fileID: 147078}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
@@ -2018,6 +2019,25 @@ MonoBehaviour:
   fadeinoutTexture: {fileID: 2800000, guid: 05efee2a74d3eb54797f6e4769543df7, type: 3}
   fadeSpeed: 1.5
   isCameraMode: 0
+--- !u!114 &11491008
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 147078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f6cbfaa930ddcb4c99370fe334f8078, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stepSound:
+    minPitch: 0.8
+    maxPitch: 1.2
+    randomSound:
+    - {fileID: 8300000, guid: b73abc374cfb6934db8b7f4ca542b10a, type: 3}
+    - {fileID: 8300000, guid: 71bff9d84faf3094185b2ee72a4972f2, type: 3}
+    minDelayBetweenSound: 0.2
+  LandSound: {fileID: 8300000, guid: 2d49b490a49b2ec468b46f9b4152094b, type: 3}
 --- !u!136 &13610078
 CapsuleCollider:
   m_ObjectHideFlags: 1
