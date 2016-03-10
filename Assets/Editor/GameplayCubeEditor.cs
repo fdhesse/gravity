@@ -22,17 +22,24 @@ public class GameplayCubeEditor : Editor
 		if ( m_Instance == null )
 			return;
 
-		this.DrawDefaultInspector();
-		
-		EditorGUILayout.Space ();
-		EditorGUILayout.LabelField("Faces", EditorStyles.boldLabel);
+		bool isEditingThePrefab = (PrefabUtility.GetPrefabType(m_Instance) == PrefabType.Prefab);
 
-		ExposeProperties.Expose( m_fields );
+		if (isEditingThePrefab)
+		{
+			EditorGUILayout.HelpBox("Gameplay cube prefab cannot be edited directly. Please add the prefab in the scene, modify it, then apply the modifications.", MessageType.Info);
+		}
+		else
+		{
+			this.DrawDefaultInspector();
+		
+			EditorGUILayout.Space ();
+			EditorGUILayout.LabelField("Faces", EditorStyles.boldLabel);
+			ExposeProperties.Expose( m_fields );
+		}
 
 		if (GUI.changed)
 		{
-			EditorUtility.SetDirty (target);
-		//	m_Instance.Refresh ();
+			EditorUtility.SetDirty(target);
 		}
 		
 		EditorGUI.BeginChangeCheck();
@@ -52,8 +59,9 @@ public class GameplayCubeEditor : Editor
 		foreach (MeshFilter filter in filters)
 			Component.DestroyImmediate(filter);
 
-		// update the tile mesh (if type or glue flags are changed)
-		m_Instance.updateTileMesh();
+		// update the tile mesh (if type or glue flags are changed) unless it is the prefab
+		if (!isEditingThePrefab)
+			m_Instance.updateTileMesh();
 
 		EditorGUI.EndChangeCheck();
 
