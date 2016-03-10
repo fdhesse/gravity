@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 /// <summary>
@@ -63,7 +64,7 @@ public class MainGUI : MonoBehaviour
                 if (GUILayout.Button(text))
                 {
                     //foreach button load the correct scene
-                    Application.LoadLevel("level" + lvl);
+					SceneManager.LoadScene("level" + lvl);
                 }
             }
             GUILayout.EndHorizontal();

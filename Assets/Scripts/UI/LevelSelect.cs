@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class LevelSelect : MonoBehaviour {
@@ -30,7 +31,7 @@ public class LevelSelect : MonoBehaviour {
 			//targetHit.transform.localScale = Vector3.one * 1.2f;
 
 			if ( InputManager.isClickUp() )
-				Application.LoadLevel(targetHit.name);
+				SceneManager.LoadScene(targetHit.name);
 		}
 
 	}

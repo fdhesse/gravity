@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 /// <summary>
@@ -165,17 +166,17 @@ public class HUD : MonoBehaviour
 
             if (GUI.Button(new Rect(280, 300, 100, 60), "Restart"))
             {
-                Application.LoadLevel(Application.loadedLevel);
+				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
 
             if (GUI.Button(new Rect(420, 300, 100, 60), "Exit"))
 			{
-				Application.LoadLevel("main");
+				SceneManager.LoadScene("main");
             }
 
 			if (GUI.Button(new Rect(560, 300, 100, 60), "Next Level"))
 			{
-				Application.LoadLevel(Application.loadedLevel + 1);
+				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 			}
         }
 
@@ -188,7 +189,7 @@ public class HUD : MonoBehaviour
 			
 			if (GUI.Button(new Rect(25, 100, 100, 60), "Restart"))
 			{
-				Application.LoadLevel(Application.loadedLevel);
+				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 				Time.timeScale = 1;
 			}
 
@@ -199,7 +200,7 @@ public class HUD : MonoBehaviour
 
             if (GUI.Button(new Rect(275, 100, 100, 60), "Exit"))
             {
-                Application.LoadLevel("main");
+				SceneManager.LoadScene("main");
             }
         }
 

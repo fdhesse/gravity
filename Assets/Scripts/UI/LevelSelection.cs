@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class LevelSelection : MonoBehaviour 
 {
 	public void ChangeScene(string sceneName)
 	{
-		Application.LoadLevel(sceneName);
+		SceneManager.LoadScene(sceneName);
 	}
 }
