@@ -12,7 +12,7 @@ public class NarrativeTrigger : MonoBehaviour {
 			return;
 
 		//GameObject.
-		((HUD)GameObject.Find ("HUD").GetComponent<HUD>()).DisplayNarrativeText (TextPages);
+		((HUD)GameObject.FindWithTag("HUD").GetComponent<HUD>()).DisplayNarrativeText(TextPages);
 
 		Destroy( gameObject );
 	}

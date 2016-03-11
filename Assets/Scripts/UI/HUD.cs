@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using System.Collections;
 
 /// <summary>
@@ -14,29 +15,28 @@ public class HUD : MonoBehaviour
 		public int two;
 	}
 
-    private GUISkin skin;// skin we are using, should be assigned via editor
-
-    public float ClickDelay = 0.1f;
-	public int minGravityChange = 0;// minimum gravity change for this level
+	[Tooltip("The change gravity counts for having two or three stars")]
 	public Stars stars;
-    public int gravityChangeCount = 0;// times that the gravity has been changed
 
-	public bool isTextScreen = false; // is a text screen up ?
-    public bool isEndScreen = false; // is the end screen up ?
-    public bool isPaused = false; // is the game pause screen up ?
+	// for hud
+	private UnityEngine.UI.Text mGravityCounterText = null;
+	private int mGravityChangeCount = 0;// times that the gravity has been changed
 
-    //values for positioning
-    static private int resultWindowWidth = 800;
-    static private int resultWindowHeight = 400;
-    static private int pauseWindowWidth = 400;
-	static private int pauseWindowHeight = 200;
-	static private int textWindowWidth = 400;
-	static private int textWindowHeight = 200;
-	private Rect pauseWindowRect = new Rect(Screen.width *.5f - pauseWindowWidth *.5f, Screen.height *.5f - pauseWindowHeight *.25f, pauseWindowWidth, pauseWindowHeight);
-	private Rect textWindowRect = new Rect(Screen.width *.5f - textWindowWidth *.5f, Screen.height *.5f - textWindowWidth *.25f, textWindowWidth, textWindowHeight);
-	private Rect resultWindowRect = new Rect(Screen.width *.5f - resultWindowWidth *.5f, Screen.height *.5f - resultWindowHeight *.25f, resultWindowWidth, resultWindowHeight);
-    private Rect pauseRect = new Rect(10, 10, 50, 50);
+	// for result page
+	private GameObject mResultPage = null;
+	private UnityEngine.UI.Button mStar1 = null;
+	private UnityEngine.UI.Button mStar2 = null;
+	private UnityEngine.UI.Button mStar3 = null;
+	private UnityEngine.UI.Text mMinimumGravityChangeText = null;
+	private UnityEngine.UI.Text mCurrentGravityChangeText = null;
 
+	// for pause page
+	private bool mIsPaused = false; // is the game pause screen up ?
+	private GameObject mPausePage = null;
+
+	// for tutorial pages
+	private GameObject mTutorialPage = null;
+	private UnityEngine.UI.Text mTutorialText = null;
 	private string[] textPages;
 	private int pageId;
 
@@ -47,18 +47,53 @@ public class HUD : MonoBehaviour
 
 	// Camera reference
 	private CameraControl cameraControl = null;
-	
-	private Texture greyStar;
-	private Texture goldStar;
+
+	public bool IsPaused
+	{
+		get { return mIsPaused; }
+	}
+
+	public int GravityChangeCount
+	{
+		get { return mGravityChangeCount; }
+		set
+		{
+			mGravityChangeCount = value;
+			mGravityCounterText.text = value.ToString();
+		}
+	}
+
+	void Awake()
+	{
+		// hud
+		mGravityCounterText = this.transform.FindChild("HUD/CounterText").GetComponent<UnityEngine.UI.Text>();
+		this.GravityChangeCount = 0;
+
+		// result
+		mResultPage = this.transform.FindChild("ResultPage").gameObject;
+		mStar1 = mResultPage.transform.FindChild("Stars/Star1").GetComponent<UnityEngine.UI.Button>();
+		mStar2 = mResultPage.transform.FindChild("Stars/Star2").GetComponent<UnityEngine.UI.Button>();
+		mStar3 = mResultPage.transform.FindChild("Stars/Star3").GetComponent<UnityEngine.UI.Button>();
+		mMinimumGravityChangeText = mResultPage.transform.FindChild("MinimumChange").GetComponent<UnityEngine.UI.Text>();
+		mCurrentGravityChangeText = mResultPage.transform.FindChild("GravityChange").GetComponent<UnityEngine.UI.Text>();
+			
+		// pause
+		mPausePage = this.transform.FindChild("PauseMenu").gameObject;
+
+		// tutorial
+		mTutorialPage = this.transform.FindChild("TutorialPage").gameObject;
+		mTutorialText = mTutorialPage.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
+	}
 
     // Use this for initialization
     void Start()
 	{
-        skin = Resources.Load("HUD/skin") as GUISkin;
-		cameraControl = Camera.main.GetComponent<CameraControl> ();
+		cameraControl = Camera.main.GetComponent<CameraControl>();
 		
-		goldStar = Resources.Load ("HUD/goldstar") as Texture;
-		greyStar = Resources.Load ("HUD/greyStar") as Texture;
+		// activate of deactivate the HUD pages
+		showResultPage(false);
+		showPauseMenu(false);
+		showNarrativePage(false);
     }
 	
 	// Update is called once per frame
@@ -77,49 +112,25 @@ public class HUD : MonoBehaviour
 		}
 	}
 
-    // Update is called once per frame
-    void OnGUI()
-    {
-		if (isEndScreen || isPaused || isTextScreen)
-        {
-			GUI.Box(new Rect(0,0,Screen.width,Screen.height),GUIContent.none,skin.GetStyle("overlay"));
+	private void freezeGameTime(bool shouldPause)
+	{
+		if (shouldPause)
+		{
 			Time.timeScale = 0;
 			if (cameraControl != null)
 				cameraControl.enabled = false;
-			//CameraController.Instance.enabled = false;
 		}
 		else
 		{
 			Time.timeScale = 1;
 			if (cameraControl != null)
 				cameraControl.enabled = true;
-			//CameraController.Instance.enabled = true;
 		}
+	}
 
-        if (isEndScreen)
-        {
-            resultWindowRect = GUI.Window(0, resultWindowRect, resultWindow, "Result", skin.GetStyle("window"));
-        }
-        else
-        {
-            GUIStyle buttonStyle = isPaused ? skin.GetStyle("pauseOn") : skin.GetStyle("pauseOff");
-            if (GUI.Button(pauseRect, "", buttonStyle))
-			{
-                isPaused = !isPaused;
-            }
-            GUI.Label(new Rect(Screen.width - 80, 10, 70, 50), gravityChangeCount + "", skin.GetStyle("gravityCounter"));
-        }
-
-		if (isTextScreen)
-		{
-			textWindowRect = GUI.Window(0, textWindowRect, textWindow, "Text", skin.GetStyle("window"));
-		}
-
-        if (isPaused)
-        {
-            pauseWindowRect = GUI.Window(0, pauseWindowRect, pauseWindow, "Pause", skin.GetStyle("window"));
-        }
-
+    // Update is called once per frame
+    void OnGUI()
+    {
 		// debug print the fps
 		if (drawFPS)
 		{
@@ -130,119 +141,144 @@ public class HUD : MonoBehaviour
 		}
     }
 
+	#region HUD
+	public void onPauseButtonPressed()
+	{
+		showPauseMenu(true);
+	}
+	#endregion
 
-    void resultWindow(int windowID)
-    {
+	#region Result Page
+	public void showResultPage()
+	{
+		this.showResultPage(true);
+	}
 
-        if (isEndScreen)
+	private void showResultPage(bool shouldShow)
+	{
+		// freeze the game if we show the page
+		this.freezeGameTime(shouldShow);
+
+		// set the state of the 3 stars
+		if ( mGravityChangeCount <= stars.three )
 		{
-			if ( gravityChangeCount <= stars.three )
+			// Three gold stars
+			mStar1.interactable = true;
+			mStar2.interactable = true;
+			mStar3.interactable = true;
+		}
+		else
+		{
+			if ( mGravityChangeCount <= stars.two )
 			{
-					// Three gold stars
-					GUI.DrawTexture(new Rect(275, 50, 50, 50), goldStar);
-					GUI.DrawTexture(new Rect(375, 50, 50, 50), goldStar);
-					GUI.DrawTexture(new Rect(475, 50, 50, 50), goldStar);
+				// Two gold stars
+				mStar1.interactable = true;
+				mStar2.interactable = true;
+				mStar3.interactable = false;
 			}
 			else
 			{
-				if ( gravityChangeCount <= stars.two )
-				{
-					// Two gold stars
-					GUI.DrawTexture(new Rect(275, 50, 50, 50), goldStar);
-					GUI.DrawTexture(new Rect(375, 50, 50, 50), goldStar);
-					GUI.DrawTexture(new Rect(475, 50, 50, 50), greyStar);
-				}
-				else
-				{
-					// One gold star
-					GUI.DrawTexture(new Rect(275, 50, 50, 50), goldStar);
-					GUI.DrawTexture(new Rect(375, 50, 50, 50), greyStar);
-					GUI.DrawTexture(new Rect(475, 50, 50, 50), greyStar);
-				}
-			}
-
-            GUI.Label(new Rect(100, 150, 150, 50), "Minimum changes: " + minGravityChange, skin.GetStyle("centeredLabel"));
-			GUI.Label(new Rect( resultWindowWidth - 300, 150, 200, 50), "Gravity changes: " + gravityChangeCount, skin.GetStyle("centeredLabel"));
-
-            if (GUI.Button(new Rect(280, 300, 100, 60), "Restart"))
-            {
-				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            }
-
-            if (GUI.Button(new Rect(420, 300, 100, 60), "Exit"))
-			{
-				SceneManager.LoadScene("main");
-            }
-
-			if (GUI.Button(new Rect(560, 300, 100, 60), "Next Level"))
-			{
-				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-			}
-        }
-
-    }
-
-    void pauseWindow(int windowID)
-    {
-        if (isPaused)
-		{
-			
-			if (GUI.Button(new Rect(25, 100, 100, 60), "Restart"))
-			{
-				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-				Time.timeScale = 1;
-			}
-
-            if (GUI.Button(new Rect(150, 100, 100, 60), "Resume"))
-            {
-                isPaused = false;
-            }
-
-            if (GUI.Button(new Rect(275, 100, 100, 60), "Exit"))
-            {
-				SceneManager.LoadScene("main");
-            }
-        }
-
-	}
-	
-	void textWindow(int windowID)
-	{
-		if (isTextScreen)
-		{
-			GUI.Label(new Rect( 0, 0, 250, 100), textPages[ pageId ], skin.GetStyle("gravityCounter"));
-			
-			if ( pageId < ( textPages.Length - 1 ) )
-			{
-				if (GUI.Button(new Rect(275, 100, 100, 20), "Next"))
-				{
-					pageId++;
-				}
-			}
-			if ( pageId > 0 )
-			{
-				if (GUI.Button(new Rect(275, 130, 100, 20), "Previous"))
-				{
-					pageId--;
-				}
-			}
-
-			GUIStyle buttonStyle = skin.GetStyle("close");
-
-			if (GUI.Button(new Rect(375, 5, 20, 20), "", buttonStyle))
-			{
-				isTextScreen = false;
+				// One gold star
+				mStar1.interactable = true;
+				mStar2.interactable = false;
+				mStar3.interactable = false;
 			}
 		}
-		
+
+		mMinimumGravityChangeText.text = "Minimum changes: " + stars.three.ToString();
+		mCurrentGravityChangeText.text = "Gravity changes: " + mGravityChangeCount.ToString();
+
+		// then display or hide the narrative page
+		mResultPage.SetActive(shouldShow);
+	}
+
+	public void onResultPageRestart()
+	{
+		this.freezeGameTime(false);
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+	}
+
+	public void onResultPageExit()
+	{
+		this.freezeGameTime(false);
+		SceneManager.LoadScene("main");
+	}
+
+	public void onResultPageNextLevel()
+	{
+		this.freezeGameTime(false);
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+	}
+	#endregion
+
+	#region Pause Page
+	private void showPauseMenu(bool shouldShow)
+	{
+		// set  the pause flag
+		this.mIsPaused = shouldShow;
+
+		// freeze the game if we show the page
+		this.freezeGameTime(shouldShow);
+
+		// then display or hide the narrative page
+		mPausePage.SetActive(shouldShow);
+	}
+
+	public void onPauseMenuRestart()
+	{
+		this.freezeGameTime(false);
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+	}
+
+	public void onPauseMenuResume()
+	{
+		this.freezeGameTime(false);
+		showPauseMenu(false);
+	}
+
+	public void onPauseMenuExit()
+	{
+		this.freezeGameTime(false);
+		SceneManager.LoadScene("main");
+	}
+	#endregion
+
+	#region Narrative Page
+	private void showNarrativePage(bool shouldShow)
+	{
+		// freeze the game if we show the page
+		this.freezeGameTime(shouldShow);
+
+		// then display or hide the narrative page
+		mTutorialPage.SetActive(shouldShow);
+	}
+
+	public void onNarrativeTextButtonNext()
+	{
+		if (pageId < ( textPages.Length - 1 ) )
+		{
+			pageId++;
+			mTutorialText.text = textPages[ pageId ];
+		}
+		else
+		{
+			showNarrativePage(false);
+		}
 	}
 
 	public void DisplayNarrativeText( string[] pages )
 	{
-		pageId = 0;
-		textPages = pages;
-
-		if ( textPages.Length > 0 )
-			isTextScreen = true;
+		// display the narrative page if there's something to display
+		if ( pages.Length > 0 )
+		{
+			// memorise the pages and reset the page id
+			pageId = 0;
+			textPages = pages;
+			mTutorialText.text = textPages[0];
+			// display the narrative page
+			showNarrativePage(true);
+		}
 	}
+
+	#endregion
 }

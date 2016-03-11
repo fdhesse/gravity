@@ -136,7 +136,7 @@ public class Pawn : MonoBehaviour
 
 	void Update()
 	{
-		if (!(world.IsGameOver() || hud.isPaused)) // is the game active?, i.e. is the game not paused and not finished?
+		if (!(world.IsGameOver() || hud.IsPaused)) // is the game active?, i.e. is the game not paused and not finished?
 		{
 			UpdateAnimation();
 			computeFocusedAndClickableTiles();
@@ -396,7 +396,7 @@ public class Pawn : MonoBehaviour
 		if (world.IsGameOver()) //is the game over? 
         {
 			if (pawnTile != null && pawnTile.Type.Equals(TileType.Exit)) //Has the player reached an exit Tile?
-                hud.isEndScreen = true; //activate the endscreen
+				hud.showResultPage(); //activate the endscreen
 		}
 		
 		// #FADEINOUT_TEXTURE#
@@ -946,7 +946,7 @@ public class Pawn : MonoBehaviour
 						     ( isGlued && (focusedTile == pawnTile)) )
 						{
 							// player has changed the gravity, increase the counter
-							hud.gravityChangeCount++;
+							hud.GravityChangeCount = hud.GravityChangeCount + 1;
 
 							// play the gravity change sound)
 							sound.playSound(Camera2DSound.SoundId.GRAVITY_CHANGE);
