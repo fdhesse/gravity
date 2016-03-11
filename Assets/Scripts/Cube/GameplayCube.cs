@@ -100,6 +100,8 @@ public class GameplayCube : MonoBehaviour
 
 	public void SetFace( string faceName, TileType type )
 	{
+		#if UNITY_EDITOR
+
 		// Delete existing tile
 		foreach (Transform child in transform)
 			if (child.gameObject.name == faceName)
@@ -159,6 +161,8 @@ public class GameplayCube : MonoBehaviour
 		tile.CheckTileOrientation();
 		// set the static flag (after fixing the tag of this gameplay cube)
 		tile.setStaticFlag(shouldTileMeshBeStatic());
+
+		#endif
 	}
 
 	private bool shouldTileMeshBeStatic()
