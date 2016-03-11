@@ -935,6 +935,12 @@ public class Pawn : MonoBehaviour
 					// if the focussed tile is highlighted that means it is clickable
 					if (focusedTile.IsHighlighted)
 					{
+						// get the camera sound to play a 2D UI sound when clicking
+						Camera2DSound sound = Camera.main.GetComponent<Camera2DSound>();
+
+						// play the click sound, as the player clicked a tile
+						sound.playSound(Camera2DSound.SoundId.CLICK_TILE);
+							
 						// If the player clicked a tile with different orientation
 						if ( ( focusedTile.orientation != pawnTile.orientation ) || 
 						     ( isGlued && (focusedTile == pawnTile)) )
@@ -942,6 +948,9 @@ public class Pawn : MonoBehaviour
 							// player has changed the gravity, increase the counter
 							hud.gravityChangeCount++;
 
+							// play the gravity change sound)
+							sound.playSound(Camera2DSound.SoundId.GRAVITY_CHANGE);
+								
 							// If the pawn is on a glue tile, the change of gravity is managed differently
 							if ( isGlued )
 							{
