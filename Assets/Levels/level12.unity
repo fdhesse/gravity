@@ -9355,15 +9355,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
       propertyPath: m_LocalRotation.x
@@ -9387,7 +9387,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
       propertyPath: stars.three
@@ -10572,8 +10572,9 @@ MonoBehaviour:
   type: 1
   isGlueTile: 0
   orientation: 6
-  connections: []
-  rescanPath: 1
+  connections:
+  - {fileID: 1390631245}
+  rescanPath: 0
   isQuad: 1
 --- !u!54 &803685030
 Rigidbody:
@@ -19986,6 +19987,7 @@ MonoBehaviour:
   orientation: 6
   connections:
   - {fileID: 716668009}
+  - {fileID: 803685029}
   - {fileID: 1610811245}
   rescanPath: 0
   isQuad: 1
@@ -22395,8 +22397,8 @@ MonoBehaviour:
   orientation: 6
   connections:
   - {fileID: 1954264691}
-  - {fileID: 716668009}
   - {fileID: 1390631245}
+  - {fileID: 716668009}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &1610811246
@@ -23596,69 +23598,6 @@ Material:
         first:
           name: _EmissionColorUI
         second: {r: 1, g: 1, b: 1, a: 1}
---- !u!1 &1695015275 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 100000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
-  m_PrefabInternal: {fileID: 572825528}
---- !u!114 &1695015276
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1695015275}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9191284b058eef549b7108b5f04e1117, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  intensityMultiplier: 0.52
-  generalIntensity: 0.47
-  blackIntensity: 1
-  whiteIntensity: 1
-  midGrey: 0.2
-  dx11Grain: 0
-  softness: 0.18
-  monochrome: 0
-  intensities: {x: 1, y: 1, z: 1}
-  tiling: {x: 64, y: 64, z: 64}
-  monochromeTiling: 64
-  filterMode: 1
-  noiseTexture: {fileID: 2800000, guid: 7a632f967e8ad42f5bd275898151ab6a, type: 3}
-  noiseShader: {fileID: 4800000, guid: b0249d8c935344451aa4de6db76f0688, type: 3}
-  dx11NoiseShader: {fileID: 4800000, guid: 8b30686bb4322ab42ad5eb50a0210b58, type: 3}
---- !u!114 &1695015283
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1695015275}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f19108706fdce9469603d07980eb8ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  blendMode: 2
-  intensity: 1
-  texture: {fileID: 2800000, guid: c1920a3fb7665a342b031ad26e3811e8, type: 3}
-  overlayShader: {fileID: 4800000, guid: 8c81db0e527d24acc9bcec04e87781bd, type: 3}
---- !u!114 &1695015284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1695015275}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76b5ec6153a1d55438228df10fe66844, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  distanceFog: 0
-  useRadialDistance: 0
-  heightFog: 1
-  height: -300
-  heightDensity: 0.03
-  startDistance: 300
-  fogShader: {fileID: 4800000, guid: 70d8568987ac0499f952b54c7c13e265, type: 3}
 --- !u!1 &1696662208
 GameObject:
   m_ObjectHideFlags: 8
