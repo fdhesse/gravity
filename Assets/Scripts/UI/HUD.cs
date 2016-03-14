@@ -186,7 +186,7 @@ public class HUD : MonoBehaviour
 		}
 
 		mMinimumGravityChangeText.text = "Minimum changes: " + stars.three.ToString();
-		mCurrentGravityChangeText.text = "Gravity changes: " + mGravityChangeCount.ToString();
+		mCurrentGravityChangeText.text = "Magnetic changes: " + mGravityChangeCount.ToString();
 
 		// then display or hide the narrative page
 		mResultPage.SetActive(shouldShow);

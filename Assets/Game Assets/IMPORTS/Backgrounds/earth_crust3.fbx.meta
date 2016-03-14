@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 00085827ae40ae340a9b622c405a2bae
-timeCreated: 1430928421
+guid: cd043946fa20c02478eed393957572d9
+timeCreated: 1457968920
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: box_1x1x3
+    4300000: crust
   materials:
     importMaterials: 1
     materialName: 0
@@ -34,7 +34,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 10
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
@@ -52,8 +52,8 @@ ModelImporter:
   tangentSpace:
     normalSmoothAngle: 0
     normalImportMode: 1
-    tangentImportMode: 4
-  importAnimation: 0
+    tangentImportMode: 3
+  importAnimation: 1
   copyAvatar: 0
   humanDescription:
     human: []

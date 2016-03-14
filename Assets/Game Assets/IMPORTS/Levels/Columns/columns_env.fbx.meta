@@ -6,10 +6,30 @@ ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
+    100002: background_env
+    100004: center_env
+    100006: columns
+    100008: ground
     400000: //RootNode
+    400002: background_env
+    400004: center_env
+    400006: columns
+    400008: ground
     2300000: //RootNode
+    2300002: background_env
+    2300004: center_env
+    2300006: columns
+    2300008: ground
     3300000: //RootNode
+    3300002: background_env
+    3300004: center_env
+    3300006: columns
+    3300008: ground
     4300000: column_env
+    4300002: center_env
+    4300004: background_env
+    4300006: columns
+    4300008: ground
   materials:
     importMaterials: 1
     materialName: 0
@@ -41,7 +61,7 @@ ModelImporter:
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
+    optimizeMeshForGPU: 0
     keepQuads: 0
     weldVertices: 1
     secondaryUVAngleDistortion: 8
