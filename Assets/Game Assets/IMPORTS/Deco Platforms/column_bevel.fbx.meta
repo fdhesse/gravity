@@ -1,44 +1,15 @@
 fileFormatVersion: 2
-guid: 3f76b0ec520004d57a9e1cf13ce97682
-timeCreated: 1448977945
+guid: f3872bba5a440ee408c0652b26901c3e
+timeCreated: 1457840005
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
-    100002: back
-    100004: env
-    100006: left1
-    100008: up
-    100010: left
     400000: //RootNode
-    400002: back
-    400004: env
-    400006: left1
-    400008: up
-    400010: left
     2300000: //RootNode
-    2300002: back
-    2300004: env
-    2300006: left1
-    2300008: up
-    2300010: left
     3300000: //RootNode
-    3300002: back
-    3300004: env
-    3300006: left1
-    3300008: up
-    3300010: left
-    4300000: background
-    4300002: india_column11
-    4300004: india_column12
-    4300006: up
-    4300008: left1
-    4300010: back
-    4300012: env
-    4300014: left
-    4300016: carved_temple_env
-    9500000: //RootNode
+    4300000: pCube1
   materials:
     importMaterials: 1
     materialName: 0
@@ -68,7 +39,7 @@ ModelImporter:
     addColliders: 0
     importBlendShapes: 1
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
@@ -79,9 +50,9 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 0
-    normalImportMode: 1
-    tangentImportMode: 4
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
@@ -97,7 +68,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

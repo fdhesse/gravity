@@ -196,11 +196,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1079035833}
-  - {fileID: 1535350699}
   - {fileID: 143499084}
-  - {fileID: 1421606023}
-  - {fileID: 616281342}
+  - {fileID: 1079035833}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &11283447
@@ -682,11 +679,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 645596747}
-  - {fileID: 1159234060}
-  - {fileID: 609140685}
-  - {fileID: 1625694495}
   - {fileID: 909456356}
+  - {fileID: 609140685}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &124224726
@@ -853,8 +847,6 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1421606023}
-  - {fileID: 616281342}
   - {fileID: 11283446}
   rescanPath: 0
   isQuad: 1
@@ -1730,8 +1722,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 292626689}
   - {fileID: 2124915120}
+  - {fileID: 292626689}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &290636623
@@ -1807,8 +1799,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 849558407}
   - {fileID: 290636622}
+  - {fileID: 849558407}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &292626690
@@ -1932,11 +1924,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 860369736}
-  - {fileID: 1024984499}
-  - {fileID: 1159234060}
-  - {fileID: 1401356367}
   - {fileID: 609140685}
+  - {fileID: 1024984499}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &317016589
@@ -2012,8 +2001,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1438019875}
   - {fileID: 1178106322}
+  - {fileID: 1438019875}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &343079697
@@ -2193,8 +2182,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 2051226310}
   - {fileID: 1690346017}
+  - {fileID: 2051226310}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &387606434
@@ -2270,8 +2259,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 570856939}
   - {fileID: 2051226310}
+  - {fileID: 570856939}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &398807594
@@ -4248,10 +4237,7 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 645596747}
   - {fileID: 124224725}
-  - {fileID: 1159234060}
-  - {fileID: 1401356367}
   - {fileID: 317016588}
   rescanPath: 0
   isQuad: 1
@@ -4328,9 +4314,7 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 143499084}
   - {fileID: 1421606023}
-  - {fileID: 11283446}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &616281343
@@ -4468,11 +4452,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 124224725}
-  - {fileID: 1159234060}
-  - {fileID: 609140685}
   - {fileID: 1625694495}
-  - {fileID: 909456356}
+  - {fileID: 1159234060}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &645596748
@@ -5092,60 +5073,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 712260968}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1001 &722767028
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -50
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
-      propertyPath: minGravityChange
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
-      propertyPath: m_RootOrder
-      value: 43
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
-      propertyPath: stars.three
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
-      propertyPath: stars.two
-      value: 3
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &726603420
 GameObject:
   m_ObjectHideFlags: 0
@@ -6057,11 +5984,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 2127697552}
-  - {fileID: 1062076259}
-  - {fileID: 1024984499}
   - {fileID: 1401356367}
-  - {fileID: 317016588}
+  - {fileID: 2127697552}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &860369737
@@ -6527,11 +6451,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 645596747}
-  - {fileID: 124224725}
-  - {fileID: 1079035833}
-  - {fileID: 1625694495}
   - {fileID: 1535350699}
+  - {fileID: 124224725}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &909456357
@@ -7355,11 +7276,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 860369736}
-  - {fileID: 2127697552}
-  - {fileID: 1062076259}
-  - {fileID: 1401356367}
   - {fileID: 317016588}
+  - {fileID: 1062076259}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &1024984500
@@ -7590,8 +7508,6 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 860369736}
-  - {fileID: 2127697552}
   - {fileID: 1024984499}
   rescanPath: 0
   isQuad: 1
@@ -7831,11 +7747,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1625694495}
-  - {fileID: 909456356}
-  - {fileID: 1535350699}
-  - {fileID: 1421606023}
   - {fileID: 11283446}
+  - {fileID: 1625694495}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &1079035834
@@ -8109,7 +8022,7 @@ Transform:
   - {fileID: 490857998}
   - {fileID: 1621086939}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!1 &1159234059
 GameObject:
   m_ObjectHideFlags: 8
@@ -8144,10 +8057,7 @@ MonoBehaviour:
   orientation: 1
   connections:
   - {fileID: 645596747}
-  - {fileID: 124224725}
   - {fileID: 1401356367}
-  - {fileID: 317016588}
-  - {fileID: 609140685}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &1159234061
@@ -9150,8 +9060,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1690346017}
   - {fileID: 527760954}
+  - {fileID: 1690346017}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &1396311512
@@ -9228,10 +9138,7 @@ MonoBehaviour:
   orientation: 1
   connections:
   - {fileID: 860369736}
-  - {fileID: 1024984499}
   - {fileID: 1159234060}
-  - {fileID: 317016588}
-  - {fileID: 609140685}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &1401356368
@@ -9563,11 +9470,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1079035833}
-  - {fileID: 1535350699}
-  - {fileID: 143499084}
   - {fileID: 616281342}
-  - {fileID: 11283446}
+  - {fileID: 1535350699}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &1421606024
@@ -9881,7 +9785,7 @@ Transform:
   m_Children:
   - {fileID: 1443574565}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
 --- !u!1 &1502392131
 GameObject:
   m_ObjectHideFlags: 8
@@ -10103,11 +10007,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1079035833}
-  - {fileID: 1625694495}
   - {fileID: 909456356}
   - {fileID: 1421606023}
-  - {fileID: 11283446}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &1535350700
@@ -10614,10 +10515,7 @@ MonoBehaviour:
   orientation: 1
   connections:
   - {fileID: 645596747}
-  - {fileID: 124224725}
   - {fileID: 1079035833}
-  - {fileID: 909456356}
-  - {fileID: 1535350699}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &1625694496
@@ -10786,6 +10684,48 @@ MonoBehaviour:
   m_front: 4
   m_back: 4
   GluedSides: 0
+--- !u!1001 &1653844042
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: ba508f3033b55014a8dbdd05475d55b0, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1653996026
 GameObject:
   m_ObjectHideFlags: 8
@@ -11214,7 +11154,7 @@ Transform:
   m_LocalScale: {x: 2, y: 1, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
 --- !u!21 &1729390347
 Material:
   serializedVersion: 6
@@ -12430,8 +12370,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 2124915120}
   - {fileID: 470587578}
+  - {fileID: 2124915120}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &1907780762
@@ -13248,8 +13188,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 398807593}
   - {fileID: 387606433}
+  - {fileID: 398807593}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &2051226311
@@ -13653,8 +13593,6 @@ MonoBehaviour:
   orientation: 1
   connections:
   - {fileID: 860369736}
-  - {fileID: 1062076259}
-  - {fileID: 1024984499}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &2127697553
