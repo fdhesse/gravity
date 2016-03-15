@@ -4024,7 +4024,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 10800002, guid: 12bb866a5a2be474987cfa8f1fa60225, type: 2}
       propertyPath: m_Intensity
-      value: 0.69
+      value: 0.57
       objectReference: {fileID: 0}
     - target: {fileID: 100004, guid: 12bb866a5a2be474987cfa8f1fa60225, type: 2}
       propertyPath: m_IsActive
@@ -5247,6 +5247,10 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f57403db64531483b9d98b8a5b9ebee4, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &964303140 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 400000, guid: 12bb866a5a2be474987cfa8f1fa60225, type: 2}
+  m_PrefabInternal: {fileID: 762298346}
 --- !u!1 &968572833
 GameObject:
   m_ObjectHideFlags: 8
@@ -6412,6 +6416,68 @@ Transform:
   - {fileID: 490857998}
   m_Father: {fileID: 0}
   m_RootOrder: 8
+--- !u!1 &1118476176
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 134190, guid: 12bb866a5a2be474987cfa8f1fa60225, type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1118476177}
+  - 108: {fileID: 1118476178}
+  m_Layer: 0
+  m_Name: gold statue light
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1118476177
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 425428, guid: 12bb866a5a2be474987cfa8f1fa60225, type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1118476176}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -30, y: 20, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 964303140}
+  m_RootOrder: 3
+--- !u!108 &1118476178
+Light:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 10894984, guid: 12bb866a5a2be474987cfa8f1fa60225,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1118476176}
+  m_Enabled: 1
+  serializedVersion: 6
+  m_Type: 2
+  m_Color: {r: 0.918102, g: 0.9632353, b: 0.4957829, a: 1}
+  m_Intensity: 0.8
+  m_Range: 20
+  m_SpotAngle: 30
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_Lightmapping: 1
+  m_BounceIntensity: 1
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+  m_AreaSize: {x: 1, y: 1}
 --- !u!1 &1127026860
 GameObject:
   m_ObjectHideFlags: 8
