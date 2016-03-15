@@ -15,7 +15,7 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 6
   m_Fog: 0
-  m_FogColor: {r: 1, g: 1, b: 0.47843137, a: 0}
+  m_FogColor: {r: 0.71323526, g: 0.71323526, b: 0.67652464, a: 0}
   m_FogMode: 2
   m_FogDensity: 0.01
   m_LinearFogStart: 0
@@ -4015,6 +4015,28 @@ Transform:
   - {fileID: 1327001236}
   m_Father: {fileID: 1748804956}
   m_RootOrder: 0
+--- !u!1 &323256094 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
+  m_PrefabInternal: {fileID: 572825528}
+--- !u!114 &323256095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 323256094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76b5ec6153a1d55438228df10fe66844, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distanceFog: 1
+  useRadialDistance: 1
+  heightFog: 0
+  height: 1
+  heightDensity: 2
+  startDistance: 400
+  fogShader: {fileID: 4800000, guid: 70d8568987ac0499f952b54c7c13e265, type: 3}
 --- !u!1001 &328422075
 Prefab:
   m_ObjectHideFlags: 0
@@ -20629,7 +20651,7 @@ Prefab:
     - target: {fileID: 2300000, guid: e5c09eb2c53d19e4e858a3d33fac969c, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: a51380a290753ff4e9e19e78b4ad8bd1, type: 2}
+      objectReference: {fileID: 2100000, guid: 6138540678cb741f58f3ed901d3af81d, type: 2}
     - target: {fileID: 2300000, guid: e5c09eb2c53d19e4e858a3d33fac969c, type: 3}
       propertyPath: m_CastShadows
       value: 0
