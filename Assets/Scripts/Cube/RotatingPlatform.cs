@@ -96,9 +96,9 @@ public class RotatingPlatform : MonoBehaviour
 			}
 		}
 		
-		if ( clockwiseConstraint == ClockwiseConstraint.None )
-			transform.rotation = GetDesiredRotation(orientation);
-		else
+//		if ( clockwiseConstraint == ClockwiseConstraint.None )
+//			transform.rotation = GetDesiredRotation(orientation);
+//		else
 			rotation = GetDesiredAngle(orientation);
 
 		RecomputePlatformTiles();
@@ -122,9 +122,9 @@ public class RotatingPlatform : MonoBehaviour
 				return;
 		}
 
-		if ( clockwiseConstraint == ClockwiseConstraint.None )
-			StartCoroutine (LookTowardsDirection ( GetDesiredRotation(orientation) ));
-		else
+//		if ( clockwiseConstraint == ClockwiseConstraint.None )
+//			StartCoroutine (LookTowardsDirection ( GetDesiredRotation(orientation) ));
+//		else
 			StartCoroutine (LookTowardsDirection ( GetDesiredAngle(orientation) ));
 	}
 	
@@ -138,7 +138,7 @@ public class RotatingPlatform : MonoBehaviour
 		Vector3 axis = Vector3.up;
 		Quaternion tRotation = transform.rotation;
 
-		Vector3 targetPosition = transform.position + World.getGravityVector(orientation);
+		Vector3 targetPosition = transform.position - World.getGravityVector(orientation);
 		
 		if (constrainedAxis == ConstraintAxis.X)
 			axis = Vector3.left;
