@@ -59,36 +59,47 @@ public class RotatingPlatform : MonoBehaviour
 
 	public void Reset(TileOrientation startingOrientation)
 	{
-		lastGravity = -Vector3.up;
-
 		transform.position = startPosition;
 		transform.rotation = startRotation;
 
-		ChangeGravityImmediate( startingOrientation );
+		SetInitialRotation( startingOrientation );
 	}
 	
-	private void ChangeGravityImmediate( TileOrientation orientation )
+	private void SetInitialRotation( TileOrientation orientation )
 	{
+		// by default, init the last gravity is the one of the specified orientation
+		lastGravity = World.getGravityVector(orientation);
+
+		// but if the orientation is parallel to the rotation axis, then we init the last gravity like my current orientation
 		if ( constrainedAxis == ConstraintAxis.X )
 		{
 			if ( orientation == TileOrientation.Right || orientation == TileOrientation.Left )
+			{
+				lastGravity = -transform.up;
 				return;
+			}
 		}
 		else if ( constrainedAxis == ConstraintAxis.Y )
 		{
 			if ( orientation == TileOrientation.Up || orientation == TileOrientation.Down )
+			{
+				lastGravity = -transform.forward;
 				return;
+			}
 		}
 		else if ( constrainedAxis == ConstraintAxis.Z )
 		{
 			if ( orientation == TileOrientation.Front || orientation == TileOrientation.Back )
+			{
+				lastGravity = -transform.right;
 				return;
+			}
 		}
 		
 		if ( clockwiseConstraint == ClockwiseConstraint.None )
-			transform.rotation = GetDesiredRotation ();
+			transform.rotation = GetDesiredRotation(orientation);
 		else
-			rotation = GetDesiredAngle ();
+			rotation = GetDesiredAngle(orientation);
 
 		RecomputePlatformTiles();
 	}
@@ -112,22 +123,22 @@ public class RotatingPlatform : MonoBehaviour
 		}
 
 		if ( clockwiseConstraint == ClockwiseConstraint.None )
-			StartCoroutine (LookTowardsDirection ( GetDesiredRotation() ));
+			StartCoroutine (LookTowardsDirection ( GetDesiredRotation(orientation) ));
 		else
-			StartCoroutine (LookTowardsDirection ( GetDesiredAngle() ));
+			StartCoroutine (LookTowardsDirection ( GetDesiredAngle(orientation) ));
 	}
 	
 	//<summary>
 	// Returns a Quaternion pointing in the desired rotation
 	//</summary
-	private Quaternion GetDesiredRotation()
+	private Quaternion GetDesiredRotation( TileOrientation orientation )
 	{
 		// Works very well with Quaternions
 		float angle;
 		Vector3 axis = Vector3.up;
 		Quaternion tRotation = transform.rotation;
 
-		Vector3 targetPosition = transform.position + Physics.gravity;
+		Vector3 targetPosition = transform.position + World.getGravityVector(orientation);
 		
 		if (constrainedAxis == ConstraintAxis.X)
 			axis = Vector3.left;
@@ -146,12 +157,12 @@ public class RotatingPlatform : MonoBehaviour
 	//<summary>
 	// Returns rotation's angle
 	//</summary
-	private float GetDesiredAngle()
+	private float GetDesiredAngle(TileOrientation orientation)
 	{
 		float angleA, angleB;
 
 		Vector3 forwardA = lastGravity;
-		Vector3 forwardB = Physics.gravity;
+		Vector3 forwardB = World.getGravityVector(orientation);
 
 		lastGravity = forwardB;
 
@@ -173,11 +184,14 @@ public class RotatingPlatform : MonoBehaviour
 		}
 
 		float angleDiff = Mathf.DeltaAngle( angleA, angleB );
-		
-		// If anti-clockwise, the angle is reversed
-		// expect if it equals 180 degrees
-		if (clockwiseConstraint == ClockwiseConstraint.AntiClockwise && angleDiff != 180)
-			angleDiff = -angleDiff;
+
+		// The DeltaAngle function above, always give the shortest angle between the two,
+		// so make sure the angle has the correct sign. If we should rotate clowise, the angle
+		// should be positive, and if anti-clockwise the angle should be negative.
+		if ((clockwiseConstraint == ClockwiseConstraint.Clockwise) && (angleDiff < 0))
+			angleDiff = 360 + angleDiff;
+		else if ((clockwiseConstraint == ClockwiseConstraint.AntiClockwise) && (angleDiff > 0))
+			angleDiff = angleDiff - 360;
 
 		return angleDiff;
 	}
@@ -186,16 +200,9 @@ public class RotatingPlatform : MonoBehaviour
 	{
 		// set the flag to tell that the platform is rotating
 		this.isRotating = true;
-		
-		float elapsedTime = 0;
-		Vector3 axis = Vector3.left;
-
-		bool wideRotation = false;
-		
-		if (toRotation < 0)
-			wideRotation = true;
 
 		// Each constraint axis
+		Vector3 axis = Vector3.left;
 		if (constrainedAxis == ConstraintAxis.X)
 			axis = Vector3.left;
 		else if (constrainedAxis == ConstraintAxis.Y)
@@ -203,16 +210,11 @@ public class RotatingPlatform : MonoBehaviour
 		else if (constrainedAxis == ConstraintAxis.Z)
 			axis = Vector3.back;
 
-		// Invert the angle and axis for the anti-clockwise rotation
-		if (clockwiseConstraint != ClockwiseConstraint.Clockwise)
-		{
-			toRotation = 360 + toRotation;
-			axis = -axis;
+		// wide rotation if it is more than 180 degrees (half turn).
+		// In such case, we need to split the rotation in two, otherwise, the lerp rotation will take the shortest path
+		bool wideRotation = Mathf.Abs(toRotation) > 200f;
 
-			if ( wideRotation )
-				toRotation = toRotation - 360;
-		}
-
+		float elapsedTime = 0;
 		while ( elapsedTime < delay )
 		{
 			elapsedTime += Time.deltaTime;
@@ -227,21 +229,27 @@ public class RotatingPlatform : MonoBehaviour
 			{
 				// Regular case
 				float angle = Mathf.LerpAngle( 0, toRotation, Time.deltaTime / delay );
-				transform.Rotate( axis, angle );
+				// special case for anti clockwise half turn (otherwise it always rotate clockwise, even with -180)
+				if ((clockwiseConstraint == ClockwiseConstraint.AntiClockwise) && (toRotation < -100f))
+					transform.Rotate( -axis, angle );
+				else
+					transform.Rotate( axis, angle );
 			}
 			else
 			{
-				// Special case of a wide rotation, the
-				// rotation is discomposed in two parts
+				// get the sign of the rotation
+				float sign = (clockwiseConstraint == ClockwiseConstraint.Clockwise) ? 1f : -1f;
+
+				// Special case of a wide rotation, the rotation is discomposed in two parts
 				if ( elapsedTime < ( 2 * delay / 3 ) )
 				{
 					float angle = Mathf.LerpAngle( 0, 180, 3 * Time.deltaTime / delay );
 					angle /= 2;
-					transform.Rotate( axis, angle );
+					transform.Rotate( sign*axis, angle );
 				}
 				else
 				{
-					float angle = Mathf.LerpAngle( 0, 90, 3 * Time.deltaTime / delay );
+					float angle = Mathf.LerpAngle( 0, sign*90, 3 * Time.deltaTime / delay );
 					transform.Rotate( axis, angle );
 				}
 			}

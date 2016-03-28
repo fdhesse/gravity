@@ -115,29 +115,7 @@ public class World : MonoBehaviour {
 		currentGravityOrientation = orientation;
 
 		// change the gravity vector
-		switch (orientation)
-		{
-		case TileOrientation.Front:
-			Physics.gravity = new Vector3(0, 0, G);
-			break;
-		case TileOrientation.Back:
-			Physics.gravity = new Vector3(0, 0, -G);
-			break;
-		case TileOrientation.Right:
-			Physics.gravity = new Vector3(G, 0, 0);
-			break;
-		case TileOrientation.Left:
-			Physics.gravity = new Vector3(-G, 0, 0);
-			break;
-		case TileOrientation.Up:
-			Physics.gravity = new Vector3(0, -G, 0);
-			break;
-		case TileOrientation.Down:
-			Physics.gravity = new Vector3(0, G, 0);
-			break;
-		default:
-			break;
-		}
+		Physics.gravity = getGravityVector(orientation) * G;
 
 		// inform all the platforms of the gravity change
 		for (int i = 0; i < gravityPlatforms.Length; i++)
