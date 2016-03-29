@@ -6,6 +6,7 @@ using System.Collections;
 /// </summary>
 public class CameraControl : MonoBehaviour
 {
+	[Header("-- Target and Distance --")]
 	[Tooltip("A game object in the scene that will be used as a target point for the camera to look at.")]
     public CameraTarget target;
 
@@ -18,14 +19,28 @@ public class CameraControl : MonoBehaviour
 	[Tooltip("The maximum distance to the target game object. The camera won't go farer than that if you zoom out.")]
 	public float distanceMax = 1000f;
 
+	[Header("-- Speed --")]
 	[Tooltip("The ratio that will be applied to the drag distance on the horizontal of the screen. A value of 1 will keep the original speed, a value less than 1 will slow down the camera rotation speed. A value greater than 1 will increase the rotation speed.")]
     public float xPivotingRatio = 1.0f;
 
 	[Tooltip("The ratio that will be applied to the drag distance on the vertical of the screen. A value of 1 will keep the original speed, a value less than 1 will slow down the camera rotation speed. A value greater than 1 will increase the rotation speed.")]
 	public float yPivotingRatio = 1.0f;
 
+	[Header("-- Snapping --")]
+	[Tooltip("If true, the camera will snap to the world axis when it is closed to them.")]
+	public bool snapToAxis = true;
+
+	[Tooltip("If the Snap To Axis is true, the camera will snap if its angle is less than this specified value.")]
+	public float snapAngleInDegree = 10f;
+
+	[Tooltip("If the Snap To Axis is true, the time that the camera will take to snap.")]
+	public float snapTimeInSecond = 0.3f;
+
 	private float pan = 0.0f;
 	private float tilt = 0.0f;
+
+	private float tiltSnapVelocity = 0f;
+	private float panSnapVelocity = 0f;
 
 	private Vector3 lastMousePosition = Vector3.zero;
 
@@ -66,6 +81,11 @@ public class CameraControl : MonoBehaviour
 					// ask the target to limit the angle if necessary
 					target.clampAngle(ref tilt, ref pan);
 				}
+				else if (snapToAxis)
+				{
+					// we do not try to snap when the user move the cam, only when he release the cam
+					snapAngleToAxis(ref tilt, ref pan);
+				}
 			}
 
 			Quaternion rotation = Quaternion.Euler(tilt, pan, 0f);
@@ -85,6 +105,43 @@ public class CameraControl : MonoBehaviour
 		{
 			Debug.LogError("This camera doesn't have a target. If you want to rotate it, add a worldtarget object in the scene and assign it in the Target property of the Camera Control script.");
 		}
+	}
+
+	private void snapAngleToAxis(ref float tilt, ref float pan)
+	{
+		// first normalize the two angles
+		tilt = normalizeAngle(tilt);
+		pan = normalizeAngle(pan);
+
+		// then search if any angle is near a cardinal point
+		float[] targetAngles = { 0f, 90f, 180f, 270f, 360f };
+		float targetTilt = -1f;
+		float targetPan = -1f;
+
+		foreach (float target in targetAngles)
+		{
+			if ((tilt > target - snapAngleInDegree) && (tilt < target + snapAngleInDegree))
+				targetTilt = target;
+
+			if ((pan > target - snapAngleInDegree) && (pan < target + snapAngleInDegree))
+				targetPan = target;
+		}
+
+		// check if both target was found, that means we are on a cardinal point
+		if ((targetTilt != -1f) && (targetPan != -1f))
+		{
+			tilt = Mathf.SmoothDampAngle(tilt, targetTilt, ref tiltSnapVelocity, snapTimeInSecond);
+			pan = Mathf.SmoothDampAngle(pan, targetPan, ref panSnapVelocity, snapTimeInSecond);
+		}
+	}
+	
+	private float normalizeAngle(float angle)
+	{
+		while (angle > 360f)
+			angle -= 360f;
+		while (angle < 0f)
+			angle += 360f;
+		return angle;
 	}
 
 	public void SetCameraCursor()
