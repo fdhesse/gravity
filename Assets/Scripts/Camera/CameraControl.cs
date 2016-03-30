@@ -154,7 +154,10 @@ public class CameraControl : MonoBehaviour
 
 			// if the targets have been reached, that means the snapping is finished, and we can change the cam state
 			if ((Mathf.Abs(tilt - targetTilt) < 0.5f) && (!shouldSmoothPan || Mathf.Abs(pan - targetPan) < 0.5f))
-				mCameraComponent.orthographic = true;				
+			{
+				mCameraComponent.orthographicSize = 0.5f * this.distance * Mathf.Tan(mCameraComponent.fieldOfView * Mathf.Deg2Rad);
+				mCameraComponent.orthographic = true;
+			}
 		}
 	}
 	
