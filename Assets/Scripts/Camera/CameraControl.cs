@@ -121,26 +121,39 @@ public class CameraControl : MonoBehaviour
 
 		// then search if any angle is near a cardinal point
 		float[] targetAngles = { 0f, 90f, 180f, 270f, 360f };
+		// the flag to tell if we found a target, and the target values
+		bool shouldSmoothTilt = false;
+		bool shouldSmoothPan = false;
 		float targetTilt = -1f;
 		float targetPan = -1f;
 
 		foreach (float target in targetAngles)
 		{
 			if ((tilt > target - snapAngleInDegree) && (tilt < target + snapAngleInDegree))
+			{
+				shouldSmoothTilt = true;
 				targetTilt = target;
+			}
 
 			if ((pan > target - snapAngleInDegree) && (pan < target + snapAngleInDegree))
+			{
+				shouldSmoothPan = true;
 				targetPan = target;
+			}
 		}
 
 		// check if both target was found, that means we are on a cardinal point
-		if ((targetTilt != -1f) && (targetPan != -1f))
+		// or if we need to smooth the tilt vertically upward or downward, then we don't care about the pan
+		if (shouldSmoothTilt && (shouldSmoothPan || (targetTilt == 90f) || (targetTilt == 270f)))
 		{
+			// smooth the tilt
 			tilt = Mathf.SmoothDampAngle(tilt, targetTilt, ref tiltSnapVelocity, snapTimeInSecond);
-			pan = Mathf.SmoothDampAngle(pan, targetPan, ref panSnapVelocity, snapTimeInSecond);
+			// smooth the pan if needed
+			if (shouldSmoothPan)
+				pan = Mathf.SmoothDampAngle(pan, targetPan, ref panSnapVelocity, snapTimeInSecond);
 
-			// if the speed is null, that means the snapping is finished, and we can change the cam state
-			if ((Mathf.Abs(tilt - targetTilt) < 0.5f) && (Mathf.Abs(pan - targetPan) < 0.5f))
+			// if the targets have been reached, that means the snapping is finished, and we can change the cam state
+			if ((Mathf.Abs(tilt - targetTilt) < 0.5f) && (!shouldSmoothPan || Mathf.Abs(pan - targetPan) < 0.5f))
 				mCameraComponent.orthographic = true;				
 		}
 	}
