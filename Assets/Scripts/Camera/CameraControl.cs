@@ -4,6 +4,7 @@ using System.Collections;
 /// <summary>
 /// Script responsible camera movement and control.
 /// </summary>
+[RequireComponent(typeof(Camera))]
 public class CameraControl : MonoBehaviour
 {
 	[Header("-- Target and Distance --")]
@@ -43,9 +44,12 @@ public class CameraControl : MonoBehaviour
 	private float panSnapVelocity = 0f;
 
 	private Vector3 lastMousePosition = Vector3.zero;
+	private Camera mCameraComponent = null;
 
     void Start()
     {
+		mCameraComponent = GetComponent<Camera>();
+
         Vector3 angles = transform.eulerAngles;
         pan = angles.y;
         tilt = angles.x;
@@ -71,6 +75,8 @@ public class CameraControl : MonoBehaviour
 				}
 				else if ( InputManager.isClickHeldDown() && InputManager.hasClickDownMoved() )
 				{
+					mCameraComponent.orthographic = false;
+
 					// get the drag distance
 					Vector3 delta = Input.mousePosition - lastMousePosition;
 
@@ -132,6 +138,10 @@ public class CameraControl : MonoBehaviour
 		{
 			tilt = Mathf.SmoothDampAngle(tilt, targetTilt, ref tiltSnapVelocity, snapTimeInSecond);
 			pan = Mathf.SmoothDampAngle(pan, targetPan, ref panSnapVelocity, snapTimeInSecond);
+
+			// if the speed is null, that means the snapping is finished, and we can change the cam state
+			if ((Mathf.Abs(tilt - targetTilt) < 0.5f) && (Mathf.Abs(pan - targetPan) < 0.5f))
+				mCameraComponent.orthographic = true;				
 		}
 	}
 	
