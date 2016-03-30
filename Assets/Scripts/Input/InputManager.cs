@@ -3,6 +3,10 @@ using System.Collections;
 
 public class InputManager
 {
+	#if (UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBPLAYER)
+	private static Vector3 mousePreviousPosition;
+	#endif
+
 	/// <summary>
 	/// Cross platform encapsulation of the click/tap down on screen.
 	/// </summary>
@@ -42,6 +46,22 @@ public class InputManager
 		#else
 		return ((Input.touchCount == 1) && (Input.touches[0].phase == TouchPhase.Ended || 
 		                                    Input.touches[0].phase == TouchPhase.Canceled));
+		#endif
+	}
+
+	/// <summary>
+	/// Cross platform implementation telling if the mouse has moved, or if the player moved his finger
+	/// </summary>
+	/// <returns><c>true</c>, if the player moved the mouse or his finger, <c>false</c> otherwise.</returns>
+	public static bool hasClickDownMoved()
+	{
+		#if (UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBPLAYER)
+		// compute the difference between previous call
+		bool hasMoved = (Input.mousePosition - mousePreviousPosition).sqrMagnitude != 0f;
+		mousePreviousPosition = Input.mousePosition;
+		return hasMoved;
+		#else
+		return ((Input.touchCount == 1) && (Input.touches[0].deltaPosition.sqrMagnitude != 0f));
 		#endif
 	}
 

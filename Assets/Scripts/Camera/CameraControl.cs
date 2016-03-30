@@ -69,7 +69,7 @@ public class CameraControl : MonoBehaviour
 				{
 					lastMousePosition = Input.mousePosition;
 				}
-				else if ( InputManager.isClickHeldDown() )
+				else if ( InputManager.isClickHeldDown() && InputManager.hasClickDownMoved() )
 				{
 					// get the drag distance
 					Vector3 delta = Input.mousePosition - lastMousePosition;
