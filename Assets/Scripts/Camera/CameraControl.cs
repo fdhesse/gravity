@@ -11,7 +11,7 @@ public class CameraControl : MonoBehaviour
 	{
 		NONE,
 		ORTHOGRAPHIC,
-		ZOOM_AND_FOV,
+		ORTHOGRAPHIC_SMOOTH,
 	}
 
 	[Header("-- Target and Distance --")]
@@ -47,11 +47,15 @@ public class CameraControl : MonoBehaviour
 	[Tooltip("The type of camera deformation that will be apply to the camera after the snapping is complete.")]
 	public DeformationMode deformationAfterSnap = DeformationMode.NONE;
 
+	[Tooltip("The time the camera will use to become orthographic.")]
+	public float switchToOrthoTimeInSecond = 0.3f;
+
 	private float pan = 0.0f;
 	private float tilt = 0.0f;
 
 	private float tiltSnapVelocity = 0f;
 	private float panSnapVelocity = 0f;
+	private Matrix4x4 projectionMatrixVelocity = Matrix4x4.zero;
 
 	private Vector3 lastMousePosition = Vector3.zero;
 	private Camera mCameraComponent = null;
@@ -82,6 +86,7 @@ public class CameraControl : MonoBehaviour
 				if ( InputManager.isClickDown() )
 				{
 					lastMousePosition = Input.mousePosition;
+					projectionMatrixVelocity = Matrix4x4.zero;
 				}
 				else if ( InputManager.isClickHeldDown() && InputManager.hasClickDownMoved() )
 				{
@@ -168,6 +173,10 @@ public class CameraControl : MonoBehaviour
 				(Mathf.Abs(tilt - targetTilt) < 0.5f) && (!shouldSmoothPan || Mathf.Abs(pan - targetPan) < 0.5f))
 				applyCameraDeformation();
 		}
+		else
+		{
+			unapplyCameraDeformation();
+		}
 	}
 	
 	private float normalizeAngle(float angle)
@@ -179,16 +188,40 @@ public class CameraControl : MonoBehaviour
 		return angle;
 	}
 
+	private void lerpCameraProjectionMatrix(Matrix4x4 targetMatrix)
+	{
+		// create a new matrix for computing the result
+		Matrix4x4 lerpCameraMatrix = Matrix4x4.identity;
+
+		// smooth damp all the values of the matrix
+		for (int i = 0; i < 4; ++i)
+			for (int j = 0; j < 4; ++j)
+			{
+				float velocity = projectionMatrixVelocity[i,j];
+				lerpCameraMatrix[i,j] = Mathf.SmoothDamp(mCameraComponent.projectionMatrix[i,j], targetMatrix[i,j],
+					ref velocity, switchToOrthoTimeInSecond);
+				projectionMatrixVelocity[i,j] = velocity;
+			}
+		
+		// set the result matrix
+		mCameraComponent.projectionMatrix = lerpCameraMatrix;
+	}
+
 	private void applyCameraDeformation()
 	{
+		float orthoSize = this.distance * Mathf.Tan(mCameraComponent.fieldOfView * 0.5f * Mathf.Deg2Rad);
+
 		switch (deformationAfterSnap)
 		{
 		case DeformationMode.ORTHOGRAPHIC:
-			mCameraComponent.orthographicSize = 0.5f * this.distance * Mathf.Tan(mCameraComponent.fieldOfView * Mathf.Deg2Rad);
+			mCameraComponent.orthographicSize = orthoSize;
 			mCameraComponent.orthographic = true;
 			break;
 
-		case DeformationMode.ZOOM_AND_FOV:
+		case DeformationMode.ORTHOGRAPHIC_SMOOTH:
+			float halfWidth = orthoSize * mCameraComponent.aspect;
+			lerpCameraProjectionMatrix( Matrix4x4.Ortho(-halfWidth, halfWidth, -orthoSize, orthoSize,
+				mCameraComponent.nearClipPlane, mCameraComponent.farClipPlane) );
 			break;
 		}
 	}
@@ -201,7 +234,9 @@ public class CameraControl : MonoBehaviour
 			mCameraComponent.orthographic = false;
 			break;
 
-		case DeformationMode.ZOOM_AND_FOV:
+		case DeformationMode.ORTHOGRAPHIC_SMOOTH:
+			lerpCameraProjectionMatrix( Matrix4x4.Perspective(mCameraComponent.fieldOfView,
+				mCameraComponent.aspect, mCameraComponent.nearClipPlane, mCameraComponent.farClipPlane) );
 			break;
 		}
 	}
