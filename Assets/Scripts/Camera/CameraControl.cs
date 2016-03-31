@@ -7,6 +7,13 @@ using System.Collections;
 [RequireComponent(typeof(Camera))]
 public class CameraControl : MonoBehaviour
 {
+	public enum DeformationMode
+	{
+		NONE,
+		ORTHOGRAPHIC,
+		ZOOM_AND_FOV,
+	}
+
 	[Header("-- Target and Distance --")]
 	[Tooltip("A game object in the scene that will be used as a target point for the camera to look at.")]
     public CameraTarget target;
@@ -36,6 +43,9 @@ public class CameraControl : MonoBehaviour
 
 	[Tooltip("If the Snap To Axis is true, the time that the camera will take to snap.")]
 	public float snapTimeInSecond = 0.3f;
+
+	[Tooltip("The type of camera deformation that will be apply to the camera after the snapping is complete.")]
+	public DeformationMode deformationAfterSnap = DeformationMode.NONE;
 
 	private float pan = 0.0f;
 	private float tilt = 0.0f;
@@ -75,7 +85,8 @@ public class CameraControl : MonoBehaviour
 				}
 				else if ( InputManager.isClickHeldDown() && InputManager.hasClickDownMoved() )
 				{
-					mCameraComponent.orthographic = false;
+					if (deformationAfterSnap != DeformationMode.NONE)
+						unapplyCameraDeformation();
 
 					// get the drag distance
 					Vector3 delta = Input.mousePosition - lastMousePosition;
@@ -153,11 +164,9 @@ public class CameraControl : MonoBehaviour
 				pan = Mathf.SmoothDampAngle(pan, targetPan, ref panSnapVelocity, snapTimeInSecond);
 
 			// if the targets have been reached, that means the snapping is finished, and we can change the cam state
-			if ((Mathf.Abs(tilt - targetTilt) < 0.5f) && (!shouldSmoothPan || Mathf.Abs(pan - targetPan) < 0.5f))
-			{
-				mCameraComponent.orthographicSize = 0.5f * this.distance * Mathf.Tan(mCameraComponent.fieldOfView * Mathf.Deg2Rad);
-				mCameraComponent.orthographic = true;
-			}
+			if ((deformationAfterSnap != DeformationMode.NONE) && 
+				(Mathf.Abs(tilt - targetTilt) < 0.5f) && (!shouldSmoothPan || Mathf.Abs(pan - targetPan) < 0.5f))
+				applyCameraDeformation();
 		}
 	}
 	
@@ -168,6 +177,33 @@ public class CameraControl : MonoBehaviour
 		while (angle < -360f)
 			angle += 360f;
 		return angle;
+	}
+
+	private void applyCameraDeformation()
+	{
+		switch (deformationAfterSnap)
+		{
+		case DeformationMode.ORTHOGRAPHIC:
+			mCameraComponent.orthographicSize = 0.5f * this.distance * Mathf.Tan(mCameraComponent.fieldOfView * Mathf.Deg2Rad);
+			mCameraComponent.orthographic = true;
+			break;
+
+		case DeformationMode.ZOOM_AND_FOV:
+			break;
+		}
+	}
+
+	private void unapplyCameraDeformation()
+	{
+		switch (deformationAfterSnap)
+		{
+		case DeformationMode.ORTHOGRAPHIC:
+			mCameraComponent.orthographic = false;
+			break;
+
+		case DeformationMode.ZOOM_AND_FOV:
+			break;
+		}
 	}
 
 	public void SetCameraCursor()
