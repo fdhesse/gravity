@@ -120,7 +120,7 @@ public class CameraControl : MonoBehaviour
 		pan = normalizeAngle(pan);
 
 		// then search if any angle is near a cardinal point
-		float[] targetAngles = { 0f, 90f, 180f, 270f, 360f };
+		float[] targetAngles = { -360f, -270f, -180f, -90f, 0f, 90f, 180f, 270f, 360f };
 		// the flag to tell if we found a target, and the target values
 		bool shouldSmoothTilt = false;
 		bool shouldSmoothPan = false;
@@ -144,7 +144,7 @@ public class CameraControl : MonoBehaviour
 
 		// check if both target was found, that means we are on a cardinal point
 		// or if we need to smooth the tilt vertically upward or downward, then we don't care about the pan
-		if (shouldSmoothTilt && (shouldSmoothPan || (targetTilt == 90f) || (targetTilt == 270f)))
+		if (shouldSmoothTilt && (shouldSmoothPan || (targetTilt == 90f) || (targetTilt == -90f) || (targetTilt == 270f) || (targetTilt == -270f)))
 		{
 			// smooth the tilt
 			tilt = Mathf.SmoothDampAngle(tilt, targetTilt, ref tiltSnapVelocity, snapTimeInSecond);
@@ -165,7 +165,7 @@ public class CameraControl : MonoBehaviour
 	{
 		while (angle > 360f)
 			angle -= 360f;
-		while (angle < 0f)
+		while (angle < -360f)
 			angle += 360f;
 		return angle;
 	}
