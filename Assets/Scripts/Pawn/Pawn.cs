@@ -41,13 +41,16 @@ public class Pawn : MonoBehaviour
 	private LayerMask tilesLayerMask;
 	private CapsuleCollider capsuleCollider;
 	
-	[HideInInspector] private bool isGlued;
+	private bool isGlued;
 
 	[HideInInspector] public bool isJumping = false;
 	[HideInInspector] public bool isFalling = true;
 	[HideInInspector] public RigidbodyConstraints nextConstraint;
 	private RigidbodyConstraints transformConstraints;
-	
+
+	// #VFX#
+	public ParticleSystem fallingVFX = null;
+
 	// #ANIMATIONS#
 	// animState
 	// 0 = idle
@@ -330,6 +333,11 @@ public class Pawn : MonoBehaviour
 			animState = 3;
 			isFalling = false;
 			isJumping = false;
+
+			// stop the vfx if any
+			// if there's some falling sfx, start them
+			if (fallingVFX != null)
+				fallingVFX.Stop();			
 
 			// Snap to the tile
 			onEnterTile(collision.collider.gameObject.GetComponent<Tile>());
@@ -987,6 +995,10 @@ public class Pawn : MonoBehaviour
 
 		// Block the "manageMouse" loop
 		isFalling = true;
+
+		// if there's some falling sfx, start them
+		if (fallingVFX != null)
+			fallingVFX.Play();
 
 //		collider.gameObject.layer = 12;
 		nextConstraint = GetComponent<Rigidbody>().constraints;
