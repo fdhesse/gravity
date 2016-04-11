@@ -964,8 +964,11 @@ public class Pawn : MonoBehaviour
 							{
 								world.SetGravity( focusedTile.orientation );
 							}
-							else //for punishing gravity take the tile == null here
+							else
 							{
+								// asked the clicked tile to play it's attraction VFX
+								focusedTile.playActivationVFX();
+								//for punishing gravity take the tile == null here
 								onEnterTile(null);
 								StartCoroutine( DelayedPawnFall ( focusedTile.orientation ));
 							}

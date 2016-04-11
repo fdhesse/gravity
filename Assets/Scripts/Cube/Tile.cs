@@ -343,6 +343,26 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		highlightTile();
     }
 
+	/// <summary>
+	/// Call this function if you want to play the VFX for when the tile is activated
+	/// </summary>
+	public void playActivationVFX()
+	{
+		if (this.transform.childCount > 0)
+		{
+			Transform meshGameObject = this.transform.GetChild(0);
+
+			// recheck the orientation of the mesh tiles
+			for (int i = 0; i < meshGameObject.transform.childCount; ++i)
+			{
+				// get the gold tile component in the children which has it
+				GoldTile goldTileChild = meshGameObject.transform.GetChild(i).GetComponent<GoldTile>();
+				if (goldTileChild != null)
+					goldTileChild.playActivationVFX();
+			}
+		}
+	}
+
     /// <summary>
     /// starts the flash for this platform
     /// </summary>

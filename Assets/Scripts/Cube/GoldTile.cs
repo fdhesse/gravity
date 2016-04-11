@@ -8,6 +8,12 @@ public class GoldTile : MonoBehaviour
 	public Material inactiveMaterial;
 	public Material changeGravityMaterial;
 
+	[Tooltip("The VFX to play once when the tile is activated and under the pawn")]
+	public ParticleSystem activationVFX = null;
+
+	[Tooltip("The VFX to play in loop when the tile is active")]
+	public ParticleSystem activeVFX = null;
+
 	private TileOrientation orientation;
 
 	private bool isClickableToChangeGravity = false;
@@ -89,21 +95,36 @@ public class GoldTile : MonoBehaviour
 	private void DefineMaterial( TileOrientation gravityOrientation )
 	{
 		MeshRenderer mesh = GetComponent<MeshRenderer>();
-			
+
+		// a flag to tell if the active VFX should be played or stopped
+		bool playActiveVFX = false;
+
 		if (isClickableToChangeGravity)
 		{
 			mesh.material = changeGravityMaterial;
 			mesh.enabled = (changeGravityMaterial != null);
+			playActiveVFX = true;
 		}
 		else if ( gravityOrientation == orientation )
 		{
 			mesh.material = activeMaterial;
 			mesh.enabled = (activeMaterial != null);
+			playActiveVFX = true;
 		}
 		else
 		{
 			mesh.material = inactiveMaterial;
 			mesh.enabled = (inactiveMaterial != null);
+			playActiveVFX = false;
+		}
+
+		// also play/stop the active VFX if any
+		if (activeVFX != null)
+		{
+			if (playActiveVFX)
+				activeVFX.Play();
+			else
+				activeVFX.Stop();
 		}
 
 		// in editor mode we display the material to show the orientation of the tile
@@ -133,5 +154,14 @@ public class GoldTile : MonoBehaviour
 			}
 		}
 		#endif
+	}
+
+	/// <summary>
+	/// Call this function if you want to play the VFX for when the tile is activated
+	/// </summary>
+	public void playActivationVFX()
+	{
+		if (activationVFX != null)
+			activationVFX.Play();
 	}
 }
