@@ -498,8 +498,8 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	/// <summary>
 	/// Creates the tile mesh corresponding to the specified tile type and using some prefabs for each types.
 	/// </summary>
-	/// <param name="type">The type of tile.</param>
-	public void updateTileMesh()
+	/// <param name="forceUpdate">If true, the update will be forced, even if the tile type didn't changed.</param>
+	public void updateTileMesh(bool forceUpdate)
 	{
 		// get the prefab name of the correct prefab to spawn
 		string new_mesh_name = string.Empty;
@@ -538,7 +538,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		{
 			// if the existing mesh is different, delete it to create the new mesh, otherwise early exit
 			Transform previousMeshTransform = transform.GetChild(0);
-			if (previousMeshTransform.name != new_mesh_name)
+			if (forceUpdate || (previousMeshTransform.name != new_mesh_name))
 				DestroyImmediate(previousMeshTransform.gameObject);
 			else
 				return;

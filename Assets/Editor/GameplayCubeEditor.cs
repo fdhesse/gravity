@@ -61,7 +61,7 @@ public class GameplayCubeEditor : Editor
 
 		// update the tile mesh (if type or glue flags are changed) unless it is the prefab
 		if (!isEditingThePrefab)
-			m_Instance.updateTileMesh();
+			m_Instance.updateTileMesh(false);
 
 		EditorGUI.EndChangeCheck();
 

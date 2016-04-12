@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System.Collections;
 
 [SelectionBase]
@@ -212,8 +213,8 @@ public class GameplayCube : MonoBehaviour
 			}
 		}
 	}
-
-	public void updateTileMesh()
+		
+	public void updateTileMesh(bool forceUpdate)
 	{
 		bool isStatic = shouldTileMeshBeStatic();
 
@@ -222,10 +223,25 @@ public class GameplayCube : MonoBehaviour
 			Tile childTile = this.transform.GetChild(i).GetComponent<Tile>();
 			if (childTile != null)
 			{
-				childTile.updateTileMesh();
+				childTile.updateTileMesh(forceUpdate);
 				childTile.setStaticFlag(isStatic);
 			}
 		}
+	}
+
+	// add a menu items to update all the tile meshes of all the gameplay cubes in the scene
+	[MenuItem("Mu/Update all Tile Meshes")]
+	static void UpdateTileMeshes()
+	{
+		// get all the gameplay cubes
+		GameplayCube[] allGameCubes = FindObjectsOfType<GameplayCube>();
+		// and update their meshes
+		foreach (GameplayCube cube in allGameCubes)
+			cube.updateTileMesh(true);
+
+		// mark the current scene as dirty (cause Unity will not detect the change of the mesh and wont prompt for saving)
+		if (allGameCubes.Length > 0)
+			UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
 	}
 
 	void OnDrawGizmosSelected()
