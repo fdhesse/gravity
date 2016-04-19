@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 using System.Collections;
 
 /// <summary>
@@ -10,8 +11,8 @@ public class CameraControl : MonoBehaviour
 	public enum DeformationMode
 	{
 		NONE,
+		TINY_FOV,
 		ORTHOGRAPHIC,
-		ORTHOGRAPHIC_SMOOTH,
 	}
 
 	[Header("-- Target and Distance --")]
@@ -19,7 +20,7 @@ public class CameraControl : MonoBehaviour
     public CameraTarget target;
 
 	[Tooltip("The starting distance to the target game object, when the level starts.")]
-    public float distance = 5f;
+    public float distance = 100f;
 
 	[Tooltip("The minimum distance to the target game object. The camera won't go closer than that if you zoom in.")]
 	public float distanceMin = 600f;
@@ -44,11 +45,19 @@ public class CameraControl : MonoBehaviour
 	[Tooltip("If the Snap To Axis is true, the time that the camera will take to snap.")]
 	public float snapTimeInSecond = 0.3f;
 
+	[Header("-- Deformation after Snapping --")]
 	[Tooltip("The type of camera deformation that will be apply to the camera after the snapping is complete.")]
 	public DeformationMode deformationAfterSnap = DeformationMode.NONE;
 
-	[Tooltip("The time the camera will use to become orthographic.")]
-	public float switchToOrthoTimeInSecond = 0.3f;
+	[Tooltip("The time the camera will use to fully complete the deformation.")]
+	[FormerlySerializedAs("switchToOrthoTimeInSecond")]
+	public float deformationTimeInSecond = 0.3f;
+
+	[Tooltip("If you choose the FOV deformation, the new FOV to use while in deformation mode.")]
+	public float deformationFOV = 10f;
+
+	[Tooltip("If you choose the FOV deformation, the distance to use while in deformation mode.")]
+	public float deformationDistance = 800f;
 
 	private float pan = 0.0f;
 	private float tilt = 0.0f;
@@ -56,6 +65,13 @@ public class CameraControl : MonoBehaviour
 	private float tiltSnapVelocity = 0f;
 	private float panSnapVelocity = 0f;
 	private Matrix4x4 projectionMatrixVelocity = Matrix4x4.zero;
+	private float deformationFovVelocity = 0f;
+	private float deformationDistanceVelocity = 0f;
+
+	private float undeformedFOV = 0f;
+	private float undeformedDistance = 0f;
+
+	private float playerAdjustedDistance = 0f;
 
 	private Vector3 lastMousePosition = Vector3.zero;
 	private Camera mCameraComponent = null;
@@ -63,6 +79,9 @@ public class CameraControl : MonoBehaviour
     void Start()
     {
 		mCameraComponent = GetComponent<Camera>();
+
+		undeformedFOV = mCameraComponent.fieldOfView;
+		undeformedDistance = this.distance;
 
         Vector3 angles = transform.eulerAngles;
         pan = angles.y;
@@ -112,9 +131,9 @@ public class CameraControl : MonoBehaviour
 
 			Quaternion rotation = Quaternion.Euler(tilt, pan, 0f);
 
-			distance = Mathf.Clamp(distance + InputManager.getZoomDistance(), distanceMin, distanceMax);
+			playerAdjustedDistance += InputManager.getZoomDistance();
 
-			Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
+			Vector3 negDistance = new Vector3(0.0f, 0.0f, -getCurrentDistanceToTarget());
 			Vector3 position = rotation * negDistance + target.transform.position;
 			
 			transform.rotation = rotation;
@@ -127,6 +146,11 @@ public class CameraControl : MonoBehaviour
 		{
 			Debug.LogError("This camera doesn't have a target. If you want to rotate it, add a worldtarget object in the scene and assign it in the Target property of the Camera Control script.");
 		}
+	}
+
+	private float getCurrentDistanceToTarget()
+	{
+		return Mathf.Clamp(distance + playerAdjustedDistance, distanceMin, distanceMax);
 	}
 
 	private void snapAngleToAxis(ref float tilt, ref float pan)
@@ -199,7 +223,7 @@ public class CameraControl : MonoBehaviour
 			{
 				float velocity = projectionMatrixVelocity[i,j];
 				lerpCameraMatrix[i,j] = Mathf.SmoothDamp(mCameraComponent.projectionMatrix[i,j], targetMatrix[i,j],
-					ref velocity, switchToOrthoTimeInSecond);
+					ref velocity, deformationTimeInSecond);
 				projectionMatrixVelocity[i,j] = velocity;
 			}
 		
@@ -209,16 +233,15 @@ public class CameraControl : MonoBehaviour
 
 	private void applyCameraDeformation()
 	{
-		float orthoSize = this.distance * Mathf.Tan(mCameraComponent.fieldOfView * 0.5f * Mathf.Deg2Rad);
-
 		switch (deformationAfterSnap)
 		{
-		case DeformationMode.ORTHOGRAPHIC:
-			mCameraComponent.orthographicSize = orthoSize;
-			mCameraComponent.orthographic = true;
+		case DeformationMode.TINY_FOV:
+			mCameraComponent.fieldOfView = Mathf.SmoothDamp(mCameraComponent.fieldOfView, this.deformationFOV, ref deformationFovVelocity, deformationTimeInSecond);
+			this.distance = Mathf.SmoothDamp(this.distance, this.deformationDistance, ref deformationDistanceVelocity, deformationTimeInSecond);
 			break;
 
-		case DeformationMode.ORTHOGRAPHIC_SMOOTH:
+		case DeformationMode.ORTHOGRAPHIC:
+			float orthoSize = getCurrentDistanceToTarget() * Mathf.Tan(mCameraComponent.fieldOfView * 0.5f * Mathf.Deg2Rad);
 			float halfWidth = orthoSize * mCameraComponent.aspect;
 			lerpCameraProjectionMatrix( Matrix4x4.Ortho(-halfWidth, halfWidth, -orthoSize, orthoSize,
 				mCameraComponent.nearClipPlane, mCameraComponent.farClipPlane) );
@@ -230,11 +253,12 @@ public class CameraControl : MonoBehaviour
 	{
 		switch (deformationAfterSnap)
 		{
-		case DeformationMode.ORTHOGRAPHIC:
-			mCameraComponent.orthographic = false;
+		case DeformationMode.TINY_FOV:
+			mCameraComponent.fieldOfView = Mathf.SmoothDamp(mCameraComponent.fieldOfView, this.undeformedFOV, ref deformationFovVelocity, deformationTimeInSecond);
+			this.distance = Mathf.SmoothDamp(this.distance, this.undeformedDistance, ref deformationDistanceVelocity, deformationTimeInSecond);
 			break;
 
-		case DeformationMode.ORTHOGRAPHIC_SMOOTH:
+		case DeformationMode.ORTHOGRAPHIC:
 			lerpCameraProjectionMatrix( Matrix4x4.Perspective(mCameraComponent.fieldOfView,
 				mCameraComponent.aspect, mCameraComponent.nearClipPlane, mCameraComponent.farClipPlane) );
 			break;
