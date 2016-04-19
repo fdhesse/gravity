@@ -56,8 +56,8 @@ public class CameraControl : MonoBehaviour
 	[Tooltip("If you choose the FOV deformation, the new FOV to use while in deformation mode.")]
 	public float deformationFOV = 10f;
 
-	[Tooltip("If you choose the FOV deformation, the distance to use while in deformation mode.")]
-	public float deformationDistance = 800f;
+	//[Tooltip("If you choose the FOV deformation, the distance to use while in deformation mode.")]
+	private float deformationDistance = 800f;
 
 	private float pan = 0.0f;
 	private float tilt = 0.0f;
@@ -66,7 +66,6 @@ public class CameraControl : MonoBehaviour
 	private float panSnapVelocity = 0f;
 	private Matrix4x4 projectionMatrixVelocity = Matrix4x4.zero;
 	private float deformationFovVelocity = 0f;
-	private float deformationDistanceVelocity = 0f;
 
 	private float undeformedFOV = 0f;
 	private float undeformedDistance = 0f;
@@ -82,6 +81,8 @@ public class CameraControl : MonoBehaviour
 
 		undeformedFOV = mCameraComponent.fieldOfView;
 		undeformedDistance = this.distance;
+
+		deformationDistance = this.distance * mCameraComponent.fieldOfView / deformationFOV;
 
         Vector3 angles = transform.eulerAngles;
         pan = angles.y;
@@ -131,7 +132,7 @@ public class CameraControl : MonoBehaviour
 
 			Quaternion rotation = Quaternion.Euler(tilt, pan, 0f);
 
-			playerAdjustedDistance += InputManager.getZoomDistance();
+			playerAdjustedDistance = Mathf.Clamp(playerAdjustedDistance + InputManager.getZoomDistance(), distanceMin - this.distance, distanceMax - this.distance);
 
 			Vector3 negDistance = new Vector3(0.0f, 0.0f, -getCurrentDistanceToTarget());
 			Vector3 position = rotation * negDistance + target.transform.position;
@@ -150,7 +151,7 @@ public class CameraControl : MonoBehaviour
 
 	private float getCurrentDistanceToTarget()
 	{
-		return Mathf.Clamp(distance + playerAdjustedDistance, distanceMin, distanceMax);
+		return Mathf.Clamp(this.distance + playerAdjustedDistance, distanceMin, distanceMax);
 	}
 
 	private void snapAngleToAxis(ref float tilt, ref float pan)
@@ -212,6 +213,14 @@ public class CameraControl : MonoBehaviour
 		return angle;
 	}
 
+	private void lerpFOVandDistance(float startFOV, float targetFOV, float startDistance)
+	{
+		// lerp the fov
+		mCameraComponent.fieldOfView = Mathf.SmoothDamp(mCameraComponent.fieldOfView, targetFOV, ref deformationFovVelocity, deformationTimeInSecond);
+		// compute the distance according to the current FOV
+		this.distance = startDistance * startFOV / mCameraComponent.fieldOfView;
+	}
+
 	private void lerpCameraProjectionMatrix(Matrix4x4 targetMatrix)
 	{
 		// create a new matrix for computing the result
@@ -236,8 +245,7 @@ public class CameraControl : MonoBehaviour
 		switch (deformationAfterSnap)
 		{
 		case DeformationMode.TINY_FOV:
-			mCameraComponent.fieldOfView = Mathf.SmoothDamp(mCameraComponent.fieldOfView, this.deformationFOV, ref deformationFovVelocity, deformationTimeInSecond);
-			this.distance = Mathf.SmoothDamp(this.distance, this.deformationDistance, ref deformationDistanceVelocity, deformationTimeInSecond);
+			lerpFOVandDistance(this.undeformedFOV, this.deformationFOV, this.undeformedDistance);
 			break;
 
 		case DeformationMode.ORTHOGRAPHIC:
@@ -254,8 +262,7 @@ public class CameraControl : MonoBehaviour
 		switch (deformationAfterSnap)
 		{
 		case DeformationMode.TINY_FOV:
-			mCameraComponent.fieldOfView = Mathf.SmoothDamp(mCameraComponent.fieldOfView, this.undeformedFOV, ref deformationFovVelocity, deformationTimeInSecond);
-			this.distance = Mathf.SmoothDamp(this.distance, this.undeformedDistance, ref deformationDistanceVelocity, deformationTimeInSecond);
+			lerpFOVandDistance(this.deformationFOV, this.undeformedFOV, this.deformationDistance);
 			break;
 
 		case DeformationMode.ORTHOGRAPHIC:
