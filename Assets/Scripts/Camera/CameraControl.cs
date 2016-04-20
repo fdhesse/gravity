@@ -21,6 +21,8 @@ public class CameraControl : MonoBehaviour
 
 	[Tooltip("The starting distance to the target game object, when the level starts.")]
     public float distance = 100f;
+	[ReadOnly]
+	public float distanceWithZoom = 0f;
 
 	[Tooltip("The minimum distance to the target game object. The camera won't go closer than that if you zoom in.")]
 	public float distanceMin = 600f;
@@ -133,8 +135,9 @@ public class CameraControl : MonoBehaviour
 			Quaternion rotation = Quaternion.Euler(tilt, pan, 0f);
 
 			playerAdjustedDistance = Mathf.Clamp(playerAdjustedDistance + InputManager.getZoomDistance(), distanceMin - this.distance, distanceMax - this.distance);
-
-			Vector3 negDistance = new Vector3(0.0f, 0.0f, -getCurrentDistanceToTarget());
+			distanceWithZoom = getCurrentDistanceToTarget();
+				
+			Vector3 negDistance = new Vector3(0.0f, 0.0f, -distanceWithZoom);
 			Vector3 position = rotation * negDistance + target.transform.position;
 			
 			transform.rotation = rotation;
