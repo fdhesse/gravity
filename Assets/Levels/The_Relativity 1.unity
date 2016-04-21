@@ -4023,11 +4023,23 @@ Prefab:
       objectReference: {fileID: 760793650}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: distanceMin
-      value: 700
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: distanceMax
       value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 2000000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
+      propertyPath: field of view
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
+      propertyPath: distance
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
+      propertyPath: deformationAfterSnap
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
