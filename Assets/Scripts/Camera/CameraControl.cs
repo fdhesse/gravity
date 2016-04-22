@@ -134,7 +134,7 @@ public class CameraControl : MonoBehaviour
 
 			Quaternion rotation = Quaternion.Euler(tilt, pan, 0f);
 
-			playerAdjustedDistance = Mathf.Clamp(playerAdjustedDistance + InputManager.getZoomDistance(), distanceMin - this.distance, distanceMax - this.distance);
+			playerAdjustedDistance = Mathf.Clamp(playerAdjustedDistance + InputManager.getZoomDistance(), distanceMin - this.undeformedDistance, distanceMax - this.undeformedDistance);
 			distanceWithZoom = getCurrentDistanceToTarget();
 				
 			Vector3 negDistance = new Vector3(0.0f, 0.0f, -distanceWithZoom);
@@ -154,7 +154,7 @@ public class CameraControl : MonoBehaviour
 
 	private float getCurrentDistanceToTarget()
 	{
-		return Mathf.Clamp(this.distance + playerAdjustedDistance, distanceMin, distanceMax);
+		return (this.distance + playerAdjustedDistance);
 	}
 
 	private void snapAngleToAxis(ref float tilt, ref float pan)
