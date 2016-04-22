@@ -1514,7 +1514,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 289887162}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071067}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 15, y: 20, z: 30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1534,7 +1534,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   constrainedAxis: 1
-  clockwiseConstraint: 2
+  clockwiseConstraint: 0
   delay: 1
   interpolation: 1
 --- !u!1 &302231523
@@ -4167,7 +4167,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   isGlueTile: 0
-  orientation: 6
+  orientation: 4
   connections: []
   rescanPath: 0
   isQuad: 1
@@ -5978,7 +5978,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1024760887}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071067}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 20, z: 85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -5998,7 +5998,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   constrainedAxis: 1
-  clockwiseConstraint: 2
+  clockwiseConstraint: 0
   delay: 1
   interpolation: 1
 --- !u!21 &1033700704
@@ -6536,6 +6536,7 @@ MonoBehaviour:
   orientation: 4
   connections:
   - {fileID: 1942911291}
+  - {fileID: 1808689852}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &1113864810
@@ -9218,7 +9219,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   isGlueTile: 0
-  orientation: 6
+  orientation: 3
   connections: []
   rescanPath: 0
   isQuad: 1
@@ -10379,8 +10380,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   isGlueTile: 0
-  orientation: 6
-  connections: []
+  orientation: 4
+  connections:
+  - {fileID: 1113864809}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &1808689853
@@ -11160,7 +11162,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1982350075}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071067}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: -0.00000016292068}
   m_LocalPosition: {x: 0, y: 20, z: 55}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -11180,7 +11182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   constrainedAxis: 1
-  clockwiseConstraint: 2
+  clockwiseConstraint: 0
   delay: 1
   interpolation: 1
 --- !u!21 &1987237309
