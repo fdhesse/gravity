@@ -3712,6 +3712,10 @@ Prefab:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 117334, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11433416, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
     - {fileID: 4500000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
@@ -12720,6 +12724,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distanceFog: 0
+  excludeFarPixels: 1
   useRadialDistance: 0
   heightFog: 1
   height: 30.14
