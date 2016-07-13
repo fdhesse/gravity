@@ -130,8 +130,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &8574906
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -460,8 +458,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &76773761
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -721,8 +717,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &143943891
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -756,6 +750,68 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 143943888}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &160041933
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 400000, guid: e5c09eb2c53d19e4e858a3d33fac969c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: e5c09eb2c53d19e4e858a3d33fac969c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: e5c09eb2c53d19e4e858a3d33fac969c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: e5c09eb2c53d19e4e858a3d33fac969c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: e5c09eb2c53d19e4e858a3d33fac969c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: e5c09eb2c53d19e4e858a3d33fac969c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: e5c09eb2c53d19e4e858a3d33fac969c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: e5c09eb2c53d19e4e858a3d33fac969c, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: e5c09eb2c53d19e4e858a3d33fac969c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: e5c09eb2c53d19e4e858a3d33fac969c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: e5c09eb2c53d19e4e858a3d33fac969c, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: e5c09eb2c53d19e4e858a3d33fac969c, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: e5c09eb2c53d19e4e858a3d33fac969c, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: e5c09eb2c53d19e4e858a3d33fac969c, type: 3}
+  m_IsPrefabParent: 0
 --- !u!1 &161660557
 GameObject:
   m_ObjectHideFlags: 8
@@ -1045,8 +1101,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &213133242
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -1431,8 +1485,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &238467367
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -2661,8 +2713,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &401144850
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -3695,7 +3745,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: b5f4fe0c6efdc439aac7b690388eccc1, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: b5f4fe0c6efdc439aac7b690388eccc1, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -3732,7 +3782,7 @@ Prefab:
     - target: {fileID: 2300004, guid: b5f4fe0c6efdc439aac7b690388eccc1, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: d8f82e40a75727c47a2f6f0e4e9de8c7, type: 2}
+      objectReference: {fileID: 2100000, guid: 31a66a5daf2d0490091e0a5f3e1445ce, type: 2}
     - target: {fileID: 2300002, guid: b5f4fe0c6efdc439aac7b690388eccc1, type: 3}
       propertyPath: m_ReceiveShadows
       value: 0
@@ -3745,10 +3795,6 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 6138540678cb741f58f3ed901d3af81d, type: 2}
-    - target: {fileID: 100002, guid: b5f4fe0c6efdc439aac7b690388eccc1, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b5f4fe0c6efdc439aac7b690388eccc1, type: 3}
   m_IsPrefabParent: 0
@@ -3943,35 +3989,35 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 350
+      value: 87
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 500
+      value: 123
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 350
+      value: 87
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_LocalRotation.x
-      value: -0.14644678
+      value: -.146446779
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0.85355324
+      value: .853553236
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_LocalRotation.z
-      value: -0.35355335
+      value: -.353553355
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_LocalRotation.w
-      value: -0.35355377
+      value: -.353553772
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: distance
-      value: 0
+      value: 175
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: target
@@ -3979,19 +4025,19 @@ Prefab:
       objectReference: {fileID: 760793650}
     - target: {fileID: 2000000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_BackGroundColor.r
-      value: 0.91154695
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2000000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_BackGroundColor.g
-      value: 0.9852941
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2000000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_BackGroundColor.b
-      value: 0.7244809
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2000000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: far clip plane
@@ -4015,11 +4061,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: distanceMin
-      value: 700
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: distanceMax
-      value: 900
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 12400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_Enabled
@@ -4027,7 +4073,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 2000000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: field of view
-      value: 10
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 2000000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_ClearFlags
@@ -4056,22 +4102,6 @@ Prefab:
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: snapAngleInDegree
       value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 117334, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11444454, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
-      propertyPath: useRadialDistance
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11444454, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
-      propertyPath: heightFog
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11448332, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
-      propertyPath: intensity
-      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11433416, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
@@ -4171,8 +4201,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &591496728
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -4732,8 +4760,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &663936642
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -5143,8 +5169,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &696579801
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -5223,8 +5247,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &697103723
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -5607,8 +5629,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &727622475
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -5749,8 +5769,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &738464469
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -5829,8 +5847,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &746371427
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -6226,8 +6242,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &785817047
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -6306,8 +6320,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &789889836
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -6648,8 +6660,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &839245582
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -7589,8 +7599,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &969329615
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -7959,8 +7967,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &1022507373
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -8039,8 +8045,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &1028354417
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -8378,7 +8382,7 @@ Transform:
   - {fileID: 490857998}
   - {fileID: 1559349978}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 7
 --- !u!1 &1112865541
 GameObject:
   m_ObjectHideFlags: 8
@@ -8501,8 +8505,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &1129905631
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -8863,8 +8865,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &1162183091
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -9237,8 +9237,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &1232407396
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -9809,8 +9807,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &1384254352
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -10010,8 +10006,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &1405035486
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -10367,8 +10361,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &1442581244
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -10475,9 +10467,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1933356464}
   - {fileID: 1856974976}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
 --- !u!1 &1488339824
 GameObject:
   m_ObjectHideFlags: 0
@@ -11445,8 +11438,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &1648359019
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -11770,8 +11761,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &1683348825
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -11815,16 +11804,15 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1695015275}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76b5ec6153a1d55438228df10fe66844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   distanceFog: 1
-  excludeFarPixels: 1
   useRadialDistance: 0
   heightFog: 0
-  height: 0.5
+  height: 1
   heightDensity: 10
   startDistance: 550
   fogShader: {fileID: 4800000, guid: 70d8568987ac0499f952b54c7c13e265, type: 3}
@@ -12191,8 +12179,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &1760006849
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -12409,8 +12395,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &1778638444
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -12489,8 +12473,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &1781472365
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -13277,6 +13259,10 @@ Material:
         first:
           name: _EmissionColorUI
         second: {r: 1, g: 1, b: 1, a: 1}
+--- !u!4 &1933356464 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 400000, guid: 8f6230aa26a4646a1842de3378937c94, type: 3}
+  m_PrefabInternal: {fileID: 2004999690}
 --- !u!1 &1936606388
 GameObject:
   m_ObjectHideFlags: 8
@@ -14073,8 +14059,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &2001911888
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -14108,6 +14092,81 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2001911885}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &2004999690
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1481023581}
+    m_Modifications:
+    - target: {fileID: 400000, guid: 8f6230aa26a4646a1842de3378937c94, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 8f6230aa26a4646a1842de3378937c94, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -366
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 8f6230aa26a4646a1842de3378937c94, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 8f6230aa26a4646a1842de3378937c94, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 8f6230aa26a4646a1842de3378937c94, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 8f6230aa26a4646a1842de3378937c94, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 8f6230aa26a4646a1842de3378937c94, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 8f6230aa26a4646a1842de3378937c94, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 8f6230aa26a4646a1842de3378937c94, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 8f6230aa26a4646a1842de3378937c94, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 8f6230aa26a4646a1842de3378937c94, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 8f6230aa26a4646a1842de3378937c94, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 32b58cf9f3009436fa36b431e1d91cc9, type: 2}
+    - target: {fileID: 2300000, guid: 8f6230aa26a4646a1842de3378937c94, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 8f6230aa26a4646a1842de3378937c94, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 8f6230aa26a4646a1842de3378937c94, type: 3}
+      propertyPath: m_UseLightProbes
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 8f6230aa26a4646a1842de3378937c94, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 9500000, guid: 8f6230aa26a4646a1842de3378937c94, type: 3}
+  m_ParentPrefab: {fileID: 100100000, guid: 8f6230aa26a4646a1842de3378937c94, type: 3}
+  m_IsPrefabParent: 0
 --- !u!21 &2005618620
 Material:
   serializedVersion: 6
@@ -14449,8 +14508,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &2030189585
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -14558,8 +14615,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &2043381905
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -14638,8 +14693,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &2053819518
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -14718,8 +14771,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &2057890026
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -14922,8 +14973,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &2089540278
 MeshRenderer:
   m_ObjectHideFlags: 8
@@ -15390,8 +15439,6 @@ MonoBehaviour:
   inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
   changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
     type: 2}
-  activationVFX: {fileID: 0}
-  activeVFX: {fileID: 0}
 --- !u!23 &2143622619
 MeshRenderer:
   m_ObjectHideFlags: 8

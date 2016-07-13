@@ -2,20 +2,29 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 3
+  serializedVersion: 6
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: ToonLitOutline
-  m_Shader: {fileID: 4800000, guid: 054a31a99d11e49d110086ba44295342, type: 3}
-  m_ShaderKeywords: []
+  m_Name: ToonLit The Cube
+  m_Shader: {fileID: 4800000, guid: 48dca5b99d113b8d11006bab44295342, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
   m_CustomRenderQueue: -1
+  stringTagMap: {}
   m_SavedProperties:
     serializedVersion: 2
     m_TexEnvs:
       data:
         first:
           name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: fcf2483a542a74d45b7c483b7c50acb9, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _BumpMap
         second:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
@@ -38,24 +47,32 @@ Material:
       data:
         first:
           name: _Shininess
-        second: .699999988
+        second: 0.7
       data:
         first:
           name: _Outline
-        second: .00701492419
+        second: 0.008075472
     m_Colors:
       data:
         first:
           name: _Color
-        second: {r: .50251013, g: .50251013, b: .50251013, a: 1}
+        second: {r: 0.50251013, g: 0.50251013, b: 0.50251013, a: 1}
+      data:
+        first:
+          name: _SpecColor
+        second: {r: 1, g: 1, b: 1, a: 1}
+      data:
+        first:
+          name: _MainTex_ST
+        second: {r: 1, g: 1, b: 0, a: 0}
       data:
         first:
           name: _Emission
         second: {r: 0, g: 0, b: 0, a: 0}
       data:
         first:
-          name: _SpecColor
-        second: {r: 1, g: 1, b: 1, a: 1}
+          name: _ToonShade_ST
+        second: {r: 1, g: 1, b: 0, a: 0}
       data:
         first:
           name: _OutlineColor
