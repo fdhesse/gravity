@@ -4102,7 +4102,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 074830e1d71ad4c48a57e9851ee67f9a, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -15
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 074830e1d71ad4c48a57e9851ee67f9a, type: 2}
       propertyPath: m_LocalPosition.z
@@ -4126,11 +4126,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 074830e1d71ad4c48a57e9851ee67f9a, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 11473456, guid: 074830e1d71ad4c48a57e9851ee67f9a, type: 2}
       propertyPath: angleContraintType
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11473456, guid: 074830e1d71ad4c48a57e9851ee67f9a, type: 2}
       propertyPath: tiltLimitAngle
@@ -73879,19 +73879,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 2000000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: field of view
-      value: 40
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: distance
-      value: 200
+      value: 760
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: distanceMin
-      value: 0
+      value: 760
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: distanceMax
-      value: 200
+      value: 760
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: xPivotingRatio

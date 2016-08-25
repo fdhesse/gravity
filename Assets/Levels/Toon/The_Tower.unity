@@ -5193,11 +5193,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: xPivotingRatio
-      value: .600000024
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: yPivotingRatio
-      value: .600000024
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 117334, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_IsActive
@@ -5206,6 +5206,10 @@ Prefab:
     - target: {fileID: 11448332, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
+      propertyPath: snapAngleInDegree
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11433416, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}

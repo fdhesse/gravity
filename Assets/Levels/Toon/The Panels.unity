@@ -3202,7 +3202,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: distance
-      value: 200
+      value: 700
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: target
@@ -3246,11 +3246,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: distanceMin
-      value: 0
+      value: 700
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: distanceMax
-      value: 200
+      value: 700
       objectReference: {fileID: 0}
     - target: {fileID: 12400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_Enabled
@@ -3258,7 +3258,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 2000000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: field of view
-      value: 40
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2000000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_ClearFlags
@@ -3283,6 +3283,18 @@ Prefab:
     - target: {fileID: 11448332, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: intensity
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
+      propertyPath: xPivotingRatio
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
+      propertyPath: yPivotingRatio
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
+      propertyPath: snapAngleInDegree
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11433416, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}

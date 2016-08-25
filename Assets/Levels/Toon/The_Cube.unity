@@ -29832,7 +29832,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: distance
-      value: 175
+      value: 750
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: target
@@ -29876,11 +29876,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: distanceMin
-      value: 150
+      value: 750
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: distanceMax
-      value: 200
+      value: 750
       objectReference: {fileID: 0}
     - target: {fileID: 12400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_Enabled
@@ -29888,7 +29888,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 2000000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: field of view
-      value: 40
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2000000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_ClearFlags
@@ -85461,8 +85461,8 @@ MonoBehaviour:
   orientation: 1
   connections:
   - {fileID: 217431622}
-  - {fileID: 1199925812}
   - {fileID: 939282267}
+  - {fileID: 1199925812}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &1476170308
@@ -96416,7 +96416,7 @@ MonoBehaviour:
   heightFog: 0
   height: 1
   heightDensity: 10
-  startDistance: 550
+  startDistance: 760
   fogShader: {fileID: 4800000, guid: 70d8568987ac0499f952b54c7c13e265, type: 3}
 --- !u!1 &1708262447
 GameObject:
@@ -103500,8 +103500,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 989002891}
   - {fileID: 552589743}
+  - {fileID: 989002891}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &1835739596
@@ -108373,8 +108373,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 812859967}
   - {fileID: 217431622}
+  - {fileID: 812859967}
   - {fileID: 1199925812}
   rescanPath: 0
   isQuad: 1

@@ -17664,7 +17664,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: distance
-      value: 160
+      value: 650
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: target
@@ -17716,11 +17716,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: distanceMin
-      value: 160
+      value: 650
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: distanceMax
-      value: 160
+      value: 650
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: xPivotingRatio
@@ -17732,7 +17732,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 2000000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: field of view
-      value: 40
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 117334, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_IsActive
@@ -17741,6 +17741,10 @@ Prefab:
     - target: {fileID: 11448332, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: intensity
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
+      propertyPath: snapAngleInDegree
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11433416, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
@@ -23856,7 +23860,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 074830e1d71ad4c48a57e9851ee67f9a, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 21
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 074830e1d71ad4c48a57e9851ee67f9a, type: 2}
       propertyPath: m_LocalPosition.z
@@ -23880,7 +23884,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 074830e1d71ad4c48a57e9851ee67f9a, type: 2}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 074830e1d71ad4c48a57e9851ee67f9a, type: 2}

@@ -20532,11 +20532,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: xPivotingRatio
-      value: .200000003
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: yPivotingRatio
-      value: .200000003
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 117334, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_IsActive
@@ -20545,6 +20545,10 @@ Prefab:
     - target: {fileID: 11448332, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: intensity
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
+      propertyPath: snapAngleInDegree
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
@@ -36161,8 +36165,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 292108002}
   - {fileID: 260983696}
+  - {fileID: 292108002}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &1289429553
@@ -41792,8 +41796,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 5
   connections:
-  - {fileID: 1211971813}
   - {fileID: 533209481}
+  - {fileID: 1211971813}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &1520300010
