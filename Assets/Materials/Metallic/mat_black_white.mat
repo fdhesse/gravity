@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: mat_bright
+  m_Name: mat_black_white
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 1
@@ -48,7 +48,7 @@ Material:
     - first:
         name: _MainTex
       second:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 1db2deed749b20e4e9dc823e495990dd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
@@ -65,6 +65,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     - first:
         name: _ParallaxMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _SpecGlossMap
       second:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -87,7 +93,7 @@ Material:
       second: 1
     - first:
         name: _Glossiness
-      second: 0.472
+      second: 0.5
     - first:
         name: _GlossyReflections
       second: 1
@@ -121,7 +127,10 @@ Material:
     m_Colors:
     - first:
         name: _Color
-      second: {r: 0.9411765, g: 0.88132685, b: 0.5467128, a: 1}
+      second: {r: 0.1102941, g: 0.10313506, b: 0.08434255, a: 1}
     - first:
         name: _EmissionColor
-      second: {r: 0.21507351, g: 0.5065163, b: 0.75, a: 1}
+      second: {r: 0.08088237, g: 0.07596053, b: 0.009515572, a: 1}
+    - first:
+        name: _SpecColor
+      second: {r: 0.2, g: 0.2, b: 0.2, a: 1}
