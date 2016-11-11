@@ -1,0 +1,190 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: cave_foggy_dome
+  m_Shader: {fileID: 4800000, guid: e9e093e639ab34f05bb1e9c0ecee6d38, type: 3}
+  m_ShaderKeywords: USE_FOG_DISTANSE
+  m_LightmapFlags: 5
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+    - first:
+        name: _BumpMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _DetailAlbedoMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _DetailMask
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _DetailNormalMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _EmissionMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _LayoutTexture
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _MainTex
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _MetallicGlossMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _OcclusionMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _ParallaxMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - first:
+        name: _AmbientPower
+      second: 0
+    - first:
+        name: _BumpScale
+      second: 1
+    - first:
+        name: _Cutoff
+      second: 0.5
+    - first:
+        name: _DetailNormalMapScale
+      second: 1
+    - first:
+        name: _DstBlend
+      second: 0
+    - first:
+        name: _FogAnimationFreq
+      second: 0.1
+    - first:
+        name: _FogAnimationHeight
+      second: 0.1
+    - first:
+        name: _FogDensity
+      second: 0.07
+    - first:
+        name: _FogEnd
+      second: 37.8
+    - first:
+        name: _FogHeight
+      second: 6.5
+    - first:
+        name: _FogStart
+      second: -15.39
+    - first:
+        name: _FogYStartPos
+      second: -20.7
+    - first:
+        name: _FrontLight
+      second: 0.9
+    - first:
+        name: _Glossiness
+      second: 0.5
+    - first:
+        name: _LayoutTexturePower
+      second: 0
+    - first:
+        name: _LightmapPower
+      second: 0.4
+    - first:
+        name: _Metallic
+      second: 0
+    - first:
+        name: _Mode
+      second: 0
+    - first:
+        name: _OcclusionStrength
+      second: 1
+    - first:
+        name: _Parallax
+      second: 0.02
+    - first:
+        name: _RightLight
+      second: 2.13
+    - first:
+        name: _ShadowPower
+      second: 0.25
+    - first:
+        name: _SrcBlend
+      second: 1
+    - first:
+        name: _TopLight
+      second: 0.99
+    - first:
+        name: _UVSec
+      second: 0
+    - first:
+        name: _UseFogDistance
+      second: 0
+    - first:
+        name: _UseLightMap
+      second: 0
+    - first:
+        name: _UseRealtimeShadow
+      second: 0
+    - first:
+        name: _UseShadow
+      second: 0
+    - first:
+        name: _ZWrite
+      second: 1
+    m_Colors:
+    - first:
+        name: _AmbientColor
+      second: {r: 0.9705882, g: 0, b: 0.26105496, a: 0}
+    - first:
+        name: _Color
+      second: {r: 1, g: 1, b: 1, a: 1}
+    - first:
+        name: _EmissionColor
+      second: {r: 0, g: 0, b: 0, a: 1}
+    - first:
+        name: _FogColor
+      second: {r: 0.79517066, g: 0.9338235, b: 0.7690311, a: 0.019607844}
+    - first:
+        name: _LightTint
+      second: {r: 1, g: 1, b: 1, a: 0}
+    - first:
+        name: _LightmapColor
+      second: {r: 0, g: 0.8014706, b: 0.03869175, a: 0}
+    - first:
+        name: _MainColor
+      second: {r: 0.27508652, g: 0.3897059, b: 0.3280486, a: 0}

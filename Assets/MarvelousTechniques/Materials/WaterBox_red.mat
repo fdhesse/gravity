@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: WaterBox_red
+  m_Shader: {fileID: 4800000, guid: 527cc91a1babb41bbb5ab5a940c3da89, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+    - first:
+        name: _MainTex
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - first:
+        name: _AmbientPower
+      second: 0.74
+    - first:
+        name: _Density
+      second: 0.4
+    - first:
+        name: _Frequency
+      second: 25
+    - first:
+        name: _InvWavelength
+      second: 17
+    - first:
+        name: _Magnitude
+      second: 3.97
+    - first:
+        name: _Opacity
+      second: 0.53
+    - first:
+        name: _ShadowPower
+      second: 1
+    - first:
+        name: _Transparency
+      second: 0.14
+    - first:
+        name: _UseLightMap
+      second: 1
+    - first:
+        name: _Wavelength
+      second: 3.42
+    m_Colors:
+    - first:
+        name: _AmbientColor
+      second: {r: 0.3240701, g: 0.8161765, b: 0.7160132, a: 0}
+    - first:
+        name: _FogColour
+      second: {r: 1, g: 1, b: 1, a: 1}
+    - first:
+        name: _FrontColor
+      second: {r: 0.89705884, g: 0.12532441, b: 0.5885052, a: 0.758}
+    - first:
+        name: _LightTint
+      second: {r: 1, g: 1, b: 1, a: 0}
+    - first:
+        name: _Plane
+      second: {r: 0, g: -1, b: 0, a: 5.25}
+    - first:
+        name: _RightColor
+      second: {r: 0.8602941, g: 0.5440095, b: 0.7325636, a: 0}
+    - first:
+        name: _RimColor
+      second: {r: 0.9485294, g: 0.9485294, b: 0.9485294, a: 0}
+    - first:
+        name: _ShadowColor
+      second: {r: 0, g: 0, b: 0, a: 0}
+    - first:
+        name: _TopColor
+      second: {r: 0.9044118, g: 0.14630188, b: 0.5982516, a: 0}
+    - first:
+        name: _frontColor
+      second: {r: 0, g: 0.31861064, b: 0.44852942, a: 0}
+    - first:
+        name: _rightColor
+      second: {r: 0.37954152, g: 0.7210416, b: 0.8602941, a: 0}
+    - first:
+        name: _topColor
+      second: {r: 0.4468534, g: 0.62563014, b: 0.6985294, a: 0}

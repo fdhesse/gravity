@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Flower
+  m_Shader: {fileID: 4800000, guid: 53ea1b22d69bb472f8180bdc090977a8, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+    - first:
+        name: _MainTex
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - first:
+        name: _AmbientPower
+      second: 0.16
+    - first:
+        name: _Density
+      second: 0
+    - first:
+        name: _Power
+      second: 0.91
+    - first:
+        name: _PowerX
+      second: -3.93
+    - first:
+        name: _PowerY
+      second: -1.89
+    - first:
+        name: _PowerZ
+      second: 3.88
+    - first:
+        name: _ShadowPower
+      second: 0.88
+    - first:
+        name: _UseLightMap
+      second: 0
+    m_Colors:
+    - first:
+        name: _AmbientColor
+      second: {r: 0.99264705, g: 0.99264705, b: 0.99264705, a: 0}
+    - first:
+        name: _Color1
+      second: {r: 0.32914928, g: 0.7647059, b: 0.15743946, a: 1}
+    - first:
+        name: _Color2
+      second: {r: 0.17403765, g: 0.6397059, b: 0.29286325, a: 1}
+    - first:
+        name: _FogColour
+      second: {r: 1, g: 0.9026369, b: 0.64705884, a: 1}
+    - first:
+        name: _LightTint
+      second: {r: 0.75735295, g: 0.5513084, b: 0.5513084, a: 0}
+    - first:
+        name: _Plane
+      second: {r: 0, g: -1, b: 0, a: 0}
+    - first:
+        name: _RimColor
+      second: {r: 1, g: 1, b: 1, a: 0}
+    - first:
+        name: _ShadowColor
+      second: {r: 0, g: 0, b: 0, a: 0}
+    - first:
+        name: _frontColor
+      second: {r: 1, g: 0.85294116, b: 0.870041, a: 0}
+    - first:
+        name: _rightColor
+      second: {r: 0.8161765, g: 0.14403114, b: 0.22266644, a: 0}
+    - first:
+        name: _topColor
+      second: {r: 1, g: 0.8088235, b: 0.8311896, a: 0}

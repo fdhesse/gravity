@@ -1,0 +1,118 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Ocean
+  m_Shader: {fileID: 4800000, guid: a2030631636bc45f79f7c9818e835cc2, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+    - first:
+        name: _ColorMap
+      second:
+        m_Texture: {fileID: 2800000, guid: 121b892ae828749339af86491076f621, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _ColourRamp0
+      second:
+        m_Texture: {fileID: 2800000, guid: e3365fed1a2f04c07a3606796b99b03b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _DepthTex
+      second:
+        m_Texture: {fileID: 2800000, guid: 9a07b9f6514354cf2ac8c596d34d5136, type: 3}
+        m_Scale: {x: 1, y: 0.94}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _FoamMap
+      second:
+        m_Texture: {fileID: 2800000, guid: 6caf05b4e13574ce086f393fdf527ffa, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _MainTex
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - first:
+        name: _AmbientPower
+      second: 0
+    - first:
+        name: _Density
+      second: 0.1
+    - first:
+        name: _FoamLevel
+      second: -0.51
+    - first:
+        name: _FoamPower
+      second: 0.9
+    - first:
+        name: _FoamSpeed
+      second: 0.2
+    - first:
+        name: _FoamThreshold
+      second: 205.5
+    - first:
+        name: _Frequency
+      second: 2.52
+    - first:
+        name: _InvWavelength
+      second: 3.42
+    - first:
+        name: _Magnitude
+      second: 1.39
+    - first:
+        name: _Speed
+      second: 1.49
+    - first:
+        name: _WaveHeight
+      second: 0.46
+    m_Colors:
+    - first:
+        name: _AmbientColor
+      second: {r: 0.5, g: 0.1, b: 0.2, a: 0}
+    - first:
+        name: _FoamColor
+      second: {r: 1, g: 1, b: 1, a: 1}
+    - first:
+        name: _FoamColour
+      second: {r: 0.9558824, g: 0.82936853, b: 0.89262545, a: 0}
+    - first:
+        name: _FoamPower
+      second: {r: 1, g: 1, b: 1, a: 0}
+    - first:
+        name: _FogColour
+      second: {r: 1, g: 1, b: 1, a: 1}
+    - first:
+        name: _LightDir
+      second: {r: 1.32, g: 0.11, b: 2.94, a: 87.21}
+    - first:
+        name: _LightTint
+      second: {r: 1, g: 1, b: 1, a: 0}
+    - first:
+        name: _Plane
+      second: {r: 0, g: 1, b: 0, a: 0}
+    - first:
+        name: _RimColor
+      second: {r: 0, g: 0, b: 0, a: 0}
+    - first:
+        name: _frontColor
+      second: {r: 1, g: 0.73, b: 0.117, a: 0}
+    - first:
+        name: _rightColor
+      second: {r: 0, g: 0, b: 0, a: 0}
+    - first:
+        name: _topColor
+      second: {r: 0.05, g: 0.275, b: 0.275, a: 0}
