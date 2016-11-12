@@ -6,10 +6,10 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Material_2
+  m_Name: test
   m_Shader: {fileID: 4800000, guid: 8e1bdfc809e384f0ea56f59ec32eb660, type: 3}
-  m_ShaderKeywords: LIGHTMAP USE_SHADOW
-  m_LightmapFlags: 5
+  m_ShaderKeywords: _EMISSION
+  m_LightmapFlags: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
   m_SavedProperties:
@@ -54,7 +54,7 @@ Material:
     - first:
         name: _MainTex
       second:
-        m_Texture: {fileID: 2800000, guid: b8a6a75285d8a46958a84b728365f047, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
@@ -78,7 +78,7 @@ Material:
     m_Floats:
     - first:
         name: _AmbientPower
-      second: 0.57
+      second: 0
     - first:
         name: _BumpScale
       second: 1
@@ -92,17 +92,20 @@ Material:
         name: _DstBlend
       second: 0
     - first:
-        name: _FrontLight
+        name: _GlossMapScale
       second: 1
     - first:
         name: _Glossiness
       second: 0.5
     - first:
-        name: _LayoutTexturePower
+        name: _GlossyReflections
       second: 1
     - first:
+        name: _LayoutTexturePower
+      second: 0
+    - first:
         name: _LightmapPower
-      second: 0.9
+      second: 1
     - first:
         name: _Metallic
       second: 0
@@ -116,20 +119,20 @@ Material:
         name: _Parallax
       second: 0.02
     - first:
-        name: _RightLight
-      second: 1.22
-    - first:
         name: _RimPower
       second: 0
     - first:
         name: _ShadowPower
-      second: 0.52
+      second: 0
+    - first:
+        name: _SmoothnessTextureChannel
+      second: 0
+    - first:
+        name: _SpecularHighlights
+      second: 1
     - first:
         name: _SrcBlend
       second: 1
-    - first:
-        name: _TopLight
-      second: 1.57
     - first:
         name: _UVSec
       second: 0
@@ -138,17 +141,14 @@ Material:
       second: 0
     - first:
         name: _UseLightMap
-      second: 1
-    - first:
-        name: _UseShadow
-      second: 1
+      second: 0
     - first:
         name: _ZWrite
       second: 1
     m_Colors:
     - first:
         name: _AmbientColor
-      second: {r: 1, g: 1, b: 1, a: 0}
+      second: {r: 0.5, g: 0.1, b: 0.2, a: 0}
     - first:
         name: _Color
       second: {r: 1, g: 1, b: 1, a: 1}
@@ -157,7 +157,7 @@ Material:
       second: {r: 0, g: 0, b: 0, a: 1}
     - first:
         name: _FrontColor
-      second: {r: 0.49264705, g: 0.36114126, b: 0.2897924, a: 0}
+      second: {r: 0.7, g: 0.7, b: 0.7, a: 0}
     - first:
         name: _LightDirF
       second: {r: 0, g: 0, b: -1, a: 1}
@@ -172,13 +172,10 @@ Material:
       second: {r: 1, g: 1, b: 1, a: 0}
     - first:
         name: _LightmapColor
-      second: {r: 0.019031161, g: 0.64705884, b: 0.15329911, a: 0}
-    - first:
-        name: _MainColor
-      second: {r: 1, g: 1, b: 1, a: 0}
+      second: {r: 0, g: 0, b: 0, a: 0}
     - first:
         name: _RightColor
-      second: {r: 0.52205884, g: 0.52205884, b: 0.52205884, a: 0}
+      second: {r: 0.9, g: 0.9, b: 0.9, a: 0}
     - first:
         name: _RimColor
       second: {r: 0, g: 0, b: 0, a: 0}

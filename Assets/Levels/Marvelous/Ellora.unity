@@ -32615,15 +32615,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 2000000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_BackGroundColor.r
-      value: 0.24705882
+      value: 0.54901963
       objectReference: {fileID: 0}
     - target: {fileID: 2000000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_BackGroundColor.g
-      value: 0.32156864
+      value: 0.41568628
       objectReference: {fileID: 0}
     - target: {fileID: 2000000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_BackGroundColor.b
-      value: 0.16862746
+      value: 0.5882353
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: snapAngleInDegree
@@ -32651,7 +32651,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11448332, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2000000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_BackGroundColor.a
@@ -32665,7 +32665,12 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -45
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 11444454, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 11444454, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &584280175
@@ -57258,8 +57263,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 2022254366}
   - {fileID: 1607964065}
+  - {fileID: 2022254366}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &1118329397
@@ -64519,8 +64524,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 5
   connections:
-  - {fileID: 854505217}
   - {fileID: 807547928}
+  - {fileID: 854505217}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &1378495316
@@ -74549,6 +74554,17 @@ MonoBehaviour:
   vignetteMaxValue: 0.2
   gradientTexture: {fileID: 0}
   material: {fileID: 0}
+--- !u!114 &1564462523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1564462511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8f94d4bbffbb45f688c032f8db6d450, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1567380229
 GameObject:
   m_ObjectHideFlags: 0
@@ -74876,8 +74892,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1281890954}
   - {fileID: 1118329396}
+  - {fileID: 1281890954}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &1607964066
@@ -78664,8 +78680,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1337246232}
   - {fileID: 1281890954}
+  - {fileID: 1337246232}
   rescanPath: 0
   isQuad: 1
 --- !u!54 &1839075296
