@@ -1,0 +1,250 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: earth_core_mat
+  m_Shader: {fileID: 4800000, guid: 42a744b811ee94b9a9619d9b4836b7fc, type: 3}
+  m_ShaderKeywords: _EMISSION
+  m_LightmapFlags: 1
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+    - first:
+        name: _BumpMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _DetailAlbedoMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _DetailMask
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _DetailNormalMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _EmissionMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _Gradient
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _LayoutTexture
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _MainTex
+      second:
+        m_Texture: {fileID: 2800000, guid: c38ce9ad32ff7d743968488be9acd411, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _MetallicGlossMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _OcclusionMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _ParallaxMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - first:
+        name: _AmbientPower
+      second: 0
+    - first:
+        name: _B1
+      second: 0
+    - first:
+        name: _B2
+      second: 0
+    - first:
+        name: _B3
+      second: 0
+    - first:
+        name: _B4
+      second: 0
+    - first:
+        name: _BlendMode
+      second: 0
+    - first:
+        name: _BumpScale
+      second: 1
+    - first:
+        name: _Cutoff
+      second: 0.5
+    - first:
+        name: _DetailNormalMapScale
+      second: 1
+    - first:
+        name: _DstBlend
+      second: 0
+    - first:
+        name: _FogAnimationFreq
+      second: 0.1
+    - first:
+        name: _FogAnimationHeight
+      second: 0.1
+    - first:
+        name: _FogDensity
+      second: 1
+    - first:
+        name: _FogEnd
+      second: 50
+    - first:
+        name: _FogHeight
+      second: 13.58
+    - first:
+        name: _FogStart
+      second: 0
+    - first:
+        name: _FogYStartPos
+      second: -16.43
+    - first:
+        name: _FrontLight
+      second: 0.97
+    - first:
+        name: _GlossMapScale
+      second: 1
+    - first:
+        name: _Glossiness
+      second: 0.5
+    - first:
+        name: _GlossyReflections
+      second: 1
+    - first:
+        name: _LayoutTexturePower
+      second: 1
+    - first:
+        name: _LightmapPower
+      second: 1
+    - first:
+        name: _Metallic
+      second: 0
+    - first:
+        name: _Mode
+      second: 0
+    - first:
+        name: _OcclusionStrength
+      second: 1
+    - first:
+        name: _Parallax
+      second: 0.02
+    - first:
+        name: _Ratio
+      second: 0.598
+    - first:
+        name: _RightLight
+      second: 1.03
+    - first:
+        name: _RimPower
+      second: 1.22
+    - first:
+        name: _ShadowPower
+      second: 1
+    - first:
+        name: _SmoothnessTextureChannel
+      second: 0
+    - first:
+        name: _SpecularHighlights
+      second: 1
+    - first:
+        name: _SrcBlend
+      second: 1
+    - first:
+        name: _TopLight
+      second: 1.13
+    - first:
+        name: _UVSec
+      second: 0
+    - first:
+        name: _UseDirLight
+      second: 0
+    - first:
+        name: _UseFogDistance
+      second: 0
+    - first:
+        name: _UseLightMap
+      second: 0
+    - first:
+        name: _ZWrite
+      second: 1
+    m_Colors:
+    - first:
+        name: _AmbientColor
+      second: {r: 0.49264705, g: 0.097804934, b: 0.19651547, a: 0}
+    - first:
+        name: _BottomColor
+      second: {r: 0.3602941, g: 0.07152898, b: 0.07152898, a: 0}
+    - first:
+        name: _Color
+      second: {r: 1, g: 1, b: 1, a: 1}
+    - first:
+        name: _EmissionColor
+      second: {r: 0, g: 0, b: 0, a: 1}
+    - first:
+        name: _FogColor
+      second: {r: 0.60402244, g: 0.83823526, b: 0.68317026, a: 1}
+    - first:
+        name: _FrontColor
+      second: {r: 1, g: 0.73, b: 0.117, a: 0}
+    - first:
+        name: _LightDirF
+      second: {r: 0, g: 0, b: -1, a: 1}
+    - first:
+        name: _LightDirR
+      second: {r: 1, g: 0, b: 0, a: 1}
+    - first:
+        name: _LightDirT
+      second: {r: 0, g: 1, b: 0, a: 1}
+    - first:
+        name: _LightTint
+      second: {r: 1, g: 1, b: 1, a: 0}
+    - first:
+        name: _LightmapColor
+      second: {r: 0, g: 0, b: 0, a: 0}
+    - first:
+        name: _MainColor
+      second: {r: 1, g: 0.9044118, b: 0.9044118, a: 0}
+    - first:
+        name: _RightColor
+      second: {r: 0, g: 0, b: 0, a: 0}
+    - first:
+        name: _RimColor
+      second: {r: 0.8308824, g: 0.44598833, b: 0.44598833, a: 0}
+    - first:
+        name: _TopColor
+      second: {r: 0.7003676, g: 0.9338235, b: 0.9338235, a: 0}
