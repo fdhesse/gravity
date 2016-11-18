@@ -346,6 +346,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	/// <summary>
 	/// Call this function if you want to play the VFX for when the tile is activated
 	/// </summary>
+	
 	public void playActivationVFX()
 	{
 		if (this.transform.childCount > 0)
@@ -362,7 +363,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			}
 		}
 	}
-
+	
     /// <summary>
     /// starts the flash for this platform
     /// </summary>

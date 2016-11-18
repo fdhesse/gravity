@@ -12,6 +12,7 @@ ModelImporter:
     100008: R_arm
     100010: R_leg
     100012: torso
+    100014: hat_ring
     400000: head
     400002: L_arm
     400004: L_leg
@@ -19,24 +20,28 @@ ModelImporter:
     400008: R_arm
     400010: R_leg
     400012: torso
+    400014: hat_ring
     2300000: head
     2300002: L_arm
     2300004: L_leg
     2300006: R_arm
     2300008: R_leg
     2300010: torso
+    2300012: hat_ring
     3300000: head
     3300002: L_arm
     3300004: L_leg
     3300006: R_arm
     3300008: R_leg
     3300010: torso
+    3300012: hat_ring
     4300000: torso
     4300002: head
     4300004: L_arm
     4300006: R_arm
     4300008: L_leg
     4300010: R_leg
+    4300012: hat_ring
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -78,8 +83,8 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
-    normalImportMode: 0
+    normalSmoothAngle: 0
+    normalImportMode: 1
     tangentImportMode: 3
   importAnimation: 1
   copyAvatar: 0
