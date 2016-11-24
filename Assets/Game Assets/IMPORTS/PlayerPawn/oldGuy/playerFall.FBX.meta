@@ -1,9 +1,9 @@
 fileFormatVersion: 2
-guid: 36eaefa3437decb469f05f068b12ef0f
-timeCreated: 1428242283
+guid: b839656fffc918247867d7b2775015ba
+timeCreated: 1479984147
 licenseType: Free
 ModelImporter:
-  serializedVersion: 18
+  serializedVersion: 19
   fileIDToRecycleName:
     100000: Backpack
     100002: bag01
@@ -57,9 +57,9 @@ ModelImporter:
     100098: L_Hand03
     100100: L_leg01
     100102: L_leg02
-    100104: pelvis
-    100106: Player
-    100108: //RootNode
+    100104: //RootNode
+    100106: pelvis
+    100108: Player
     100110: R_Arm01
     100112: R_Arm02
     100114: R_foot01
@@ -123,9 +123,9 @@ ModelImporter:
     400098: L_Hand03
     400100: L_leg01
     400102: L_leg02
-    400104: pelvis
-    400106: Player
-    400108: //RootNode
+    400104: //RootNode
+    400106: pelvis
+    400108: Player
     400110: R_Arm01
     400112: R_Arm02
     400114: R_foot01
@@ -138,7 +138,7 @@ ModelImporter:
     400128: R_leg02
     400130: torso
     4300000: Player
-    7400000: Fall
+    7400000: newFall
     9500000: //RootNode
     13700000: Player
   materials:
@@ -148,25 +148,31 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
+    resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
     animationCompression: 1
-    animationRotationError: .5
-    animationPositionError: .5
-    animationScaleError: .5
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: Fall
+      name: newFall
       takeName: Take 001
-      firstFrame: 0
-      lastFrame: 100
+      firstFrame: 1
+      lastFrame: 80
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -315,6 +321,7 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -335,24 +342,25 @@ ModelImporter:
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    splitTangentsAcrossUV: 1
     normalImportMode: 0
-    tangentImportMode: 1
+    tangentImportMode: 3
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
     human: []
     skeleton: []
-    armTwist: .5
-    foreArmTwist: .5
-    upperLegTwist: .5
-    legTwist: .5
-    armStretch: .0500000007
-    legStretch: .0500000007
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
+    hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
+  humanoidOversampling: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
