@@ -54,7 +54,7 @@ Material:
     - first:
         name: _MainTex
       second:
-        m_Texture: {fileID: 2800000, guid: aa28926dba99f0b4cadfe9e18c35f610, type: 3}
+        m_Texture: {fileID: 2800000, guid: 101302c3ea2cad04f9fd9488268eafac, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
@@ -93,7 +93,7 @@ Material:
       second: 0
     - first:
         name: _FrontLight
-      second: 0.81
+      second: 0.99
     - first:
         name: _GlossMapScale
       second: 1
@@ -123,10 +123,10 @@ Material:
       second: 0.02
     - first:
         name: _RightLight
-      second: 0.67
+      second: 1.82
     - first:
         name: _RimPower
-      second: 0.58
+      second: 0.45
     - first:
         name: _ShadowPower
       second: 2.61
@@ -141,7 +141,7 @@ Material:
       second: 1
     - first:
         name: _TopLight
-      second: 0.46
+      second: 1.15
     - first:
         name: _UVSec
       second: 0
@@ -184,4 +184,4 @@ Material:
       second: {r: 1, g: 1, b: 1, a: 1}
     - first:
         name: _RimColor
-      second: {r: 0.9098039, g: 0.25490198, b: 0.10980392, a: 1}
+      second: {r: 0.47058824, g: 1, b: 0.6039216, a: 1}
