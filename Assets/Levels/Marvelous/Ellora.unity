@@ -15,7 +15,7 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 7
   m_Fog: 0
-  m_FogColor: {r: 0.42745098, g: 0.99215686, b: 0.47843137, a: 0}
+  m_FogColor: {r: 0.54901963, g: 0.41568628, b: 0.5882353, a: 1}
   m_FogMode: 2
   m_FogDensity: 0.01
   m_LinearFogStart: 0
@@ -63400,6 +63400,26 @@ MonoBehaviour:
   vignetteMaxValue: 0.2
   gradientTexture: {fileID: 0}
   material: {fileID: 0}
+--- !u!114 &1564462522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1564462511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0923359e9e352a4b9b11c7b7161ad67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Radius: 0.868
+  m_SampleCount: 1
+  m_OcclusionIntensity: 0.5
+  m_Blur: 3
+  m_Downsampling: 2
+  m_OcclusionAttenuation: 1.05
+  m_MinZ: 0.01
+  m_SSAOShader: {fileID: 4800000, guid: 43ca18288c424f645aaa1e9e07f04c50, type: 3}
+  m_RandomTexture: {fileID: 2800000, guid: a181ca8e3c62f3e4b8f183f6c586b032, type: 3}
 --- !u!114 &1564462523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63411,6 +63431,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8f94d4bbffbb45f688c032f8db6d450, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1564462524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1564462511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76b5ec6153a1d55438228df10fe66844, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distanceFog: 1
+  excludeFarPixels: 1
+  useRadialDistance: 1
+  heightFog: 1
+  height: -11.69
+  heightDensity: 2
+  startDistance: 1000
+  fogShader: {fileID: 4800000, guid: 70d8568987ac0499f952b54c7c13e265, type: 3}
 --- !u!1 &1567380229
 GameObject:
   m_ObjectHideFlags: 0

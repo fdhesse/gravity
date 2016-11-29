@@ -6,12 +6,13 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Ellora_tentacles
-  m_Shader: {fileID: 4800000, guid: 42a744b811ee94b9a9619d9b4836b7fc, type: 3}
-  m_ShaderKeywords: _EMISSION
-  m_LightmapFlags: 1
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_Name: ground_texture
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON
+  m_LightmapFlags: 5
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    RenderType: Transparent
   m_SavedProperties:
     serializedVersion: 2
     m_TexEnvs:
@@ -46,15 +47,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
-        name: _LayoutTexture
-      second:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - first:
         name: _MainTex
       second:
-        m_Texture: {fileID: 2800000, guid: 457630e40ca983648b2a20902e435200, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7689e57ad7a486348aae6ab0c46cbe4f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
@@ -77,9 +72,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - first:
-        name: _AmbientPower
-      second: 2.09
-    - first:
         name: _BumpScale
       second: 1
     - first:
@@ -90,10 +82,7 @@ Material:
       second: 1
     - first:
         name: _DstBlend
-      second: 0
-    - first:
-        name: _FrontLight
-      second: -3.66
+      second: 10
     - first:
         name: _GlossMapScale
       second: 1
@@ -104,32 +93,17 @@ Material:
         name: _GlossyReflections
       second: 1
     - first:
-        name: _LayoutTexturePower
-      second: 0
-    - first:
-        name: _LightmapPower
-      second: 1
-    - first:
         name: _Metallic
       second: 0
     - first:
         name: _Mode
-      second: 0
+      second: 3
     - first:
         name: _OcclusionStrength
       second: 1
     - first:
         name: _Parallax
       second: 0.02
-    - first:
-        name: _RightLight
-      second: 1.18
-    - first:
-        name: _RimPower
-      second: 6.37
-    - first:
-        name: _ShadowPower
-      second: 0
     - first:
         name: _SmoothnessTextureChannel
       second: 0
@@ -140,57 +114,15 @@ Material:
         name: _SrcBlend
       second: 1
     - first:
-        name: _TopLight
-      second: 1.68
-    - first:
         name: _UVSec
       second: 0
     - first:
-        name: _UseDirLight
-      second: 0
-    - first:
-        name: _UseLightMap
-      second: 0
-    - first:
         name: _ZWrite
-      second: 1
+      second: 0
     m_Colors:
-    - first:
-        name: _AmbientColor
-      second: {r: 0.50735295, g: 0.50735295, b: 0.50735295, a: 1}
     - first:
         name: _Color
       second: {r: 1, g: 1, b: 1, a: 1}
     - first:
         name: _EmissionColor
       second: {r: 0, g: 0, b: 0, a: 1}
-    - first:
-        name: _FrontColor
-      second: {r: 0.7, g: 0.7, b: 0.7, a: 0}
-    - first:
-        name: _LightDirF
-      second: {r: 0, g: 0, b: -1, a: 1}
-    - first:
-        name: _LightDirR
-      second: {r: 1, g: 0, b: 0, a: 1}
-    - first:
-        name: _LightDirT
-      second: {r: 0, g: 1, b: 0, a: 1}
-    - first:
-        name: _LightTint
-      second: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    - first:
-        name: _LightmapColor
-      second: {r: 0, g: 0, b: 0, a: 0}
-    - first:
-        name: _MainColor
-      second: {r: 0.99705887, g: 0.78676474, b: 1, a: 1}
-    - first:
-        name: _RightColor
-      second: {r: 0.9, g: 0.9, b: 0.9, a: 0}
-    - first:
-        name: _RimColor
-      second: {r: 0.7095005, g: 0.75735295, b: 0.26173225, a: 0}
-    - first:
-        name: _TopColor
-      second: {r: 1, g: 1, b: 1, a: 0}
