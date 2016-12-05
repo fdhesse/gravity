@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: c27baf8f529265a4cbd1b9a838d9e676
-timeCreated: 1461127473
+guid: 27f4ebcb8422d0244986c57e196f2ff9
+timeCreated: 1480930157
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Up_Down_env
+    4300000: down_up_env
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -18,7 +18,7 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleRotations: 1
+    resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 
@@ -51,8 +51,8 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
-    normalImportMode: 0
+    normalSmoothAngle: 0
+    normalImportMode: 1
     tangentImportMode: 3
   importAnimation: 1
   copyAvatar: 0
