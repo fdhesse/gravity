@@ -6,13 +6,12 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: mat_water
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _EMISSION _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+  m_Name: cobalt
+  m_Shader: {fileID: 4800000, guid: 42a744b811ee94b9a9619d9b4836b7fc, type: 3}
+  m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 1
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   m_SavedProperties:
     serializedVersion: 2
     m_TexEnvs:
@@ -47,9 +46,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
-        name: _MainTex
+        name: _LayoutTexture
       second:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _MainTex
+      second:
+        m_Texture: {fileID: 2800000, guid: ab10d74f4b5ab174ea5dcabbd14b5f3a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
@@ -70,13 +75,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _SpecGlossMap
-      second:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     m_Floats:
+    - first:
+        name: _AmbientPower
+      second: 0
     - first:
         name: _BumpScale
       second: 1
@@ -88,10 +90,13 @@ Material:
       second: 1
     - first:
         name: _DstBlend
-      second: 10
+      second: 0
+    - first:
+        name: _FrontLight
+      second: 1.56
     - first:
         name: _GlossMapScale
-      second: 0.373
+      second: 1
     - first:
         name: _Glossiness
       second: 0.5
@@ -99,11 +104,17 @@ Material:
         name: _GlossyReflections
       second: 1
     - first:
+        name: _LayoutTexturePower
+      second: 1
+    - first:
+        name: _LightmapPower
+      second: 10.91
+    - first:
         name: _Metallic
-      second: 0.398
+      second: 0
     - first:
         name: _Mode
-      second: 3
+      second: 0
     - first:
         name: _OcclusionStrength
       second: 1
@@ -111,8 +122,17 @@ Material:
         name: _Parallax
       second: 0.02
     - first:
+        name: _RightLight
+      second: 0.66
+    - first:
+        name: _RimPower
+      second: 0.35
+    - first:
+        name: _ShadowPower
+      second: 2.61
+    - first:
         name: _SmoothnessTextureChannel
-      second: 1
+      second: 0
     - first:
         name: _SpecularHighlights
       second: 1
@@ -120,18 +140,48 @@ Material:
         name: _SrcBlend
       second: 1
     - first:
+        name: _TopLight
+      second: 0.97
+    - first:
         name: _UVSec
       second: 0
     - first:
-        name: _ZWrite
+        name: _UseDirLight
       second: 0
+    - first:
+        name: _UseLightMap
+      second: 0
+    - first:
+        name: _ZWrite
+      second: 1
     m_Colors:
     - first:
+        name: _AmbientColor
+      second: {r: 1, g: 1, b: 1, a: 0}
+    - first:
         name: _Color
-      second: {r: 0.27450982, g: 0.69803923, b: 0.47058824, a: 0.278}
+      second: {r: 1, g: 1, b: 1, a: 1}
     - first:
         name: _EmissionColor
-      second: {r: 0.15441176, g: 0.17555779, b: 0.17647058, a: 1}
+      second: {r: 0, g: 0, b: 0, a: 1}
     - first:
-        name: _SpecColor
-      second: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+        name: _LightDirF
+      second: {r: 0, g: 0, b: -1, a: 1}
+    - first:
+        name: _LightDirR
+      second: {r: 1, g: 0, b: 0, a: 1}
+    - first:
+        name: _LightDirT
+      second: {r: 0, g: 1, b: 0, a: 1}
+    - first:
+        name: _LightTint
+      second: {r: 1, g: 1, b: 1, a: 1}
+    - first:
+        name: _LightmapColor
+      second: {r: 0, g: 0, b: 0, a: 1}
+    - first:
+        name: _MainColor
+      second: {r: 1, g: 1, b: 1, a: 1}
+    - first:
+        name: _RimColor
+      second: {r: 0.9098039, g: 0.25490198, b: 0.10980392, a: 1}
