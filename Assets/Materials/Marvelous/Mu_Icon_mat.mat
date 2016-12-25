@@ -6,9 +6,9 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Down_up_env
-  m_Shader: {fileID: 4800000, guid: 31f5ef81e1c5045c08fccaba0451f912, type: 3}
-  m_ShaderKeywords: USE_GRADIENT USE_MAIN_TEX _EMISSION
+  m_Name: Mu_Icon_mat
+  m_Shader: {fileID: 4800000, guid: 8e1bdfc809e384f0ea56f59ec32eb660, type: 3}
+  m_ShaderKeywords: USE_LIGHTMAP USE_MAIN_TEX _EMISSION
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -48,7 +48,7 @@ Material:
     - first:
         name: _LayoutTexture
       second:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: c1920a3fb7665a342b031ad26e3811e8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
@@ -60,7 +60,7 @@ Material:
     - first:
         name: _MainTex
       second:
-        m_Texture: {fileID: 2800000, guid: 765b7a3debd417942815c8dbc745d0ec, type: 3}
+        m_Texture: {fileID: 2800000, guid: 515b184a00283594dad778bc39dd2694, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
@@ -87,7 +87,7 @@ Material:
       second: 0
     - first:
         name: _AmbientPower
-      second: 0.34
+      second: 0
     - first:
         name: _BumpScale
       second: 1
@@ -123,7 +123,7 @@ Material:
       second: 0
     - first:
         name: _FrontLight
-      second: 1.32
+      second: 1.56
     - first:
         name: _GlossMapScale
       second: 1
@@ -135,10 +135,10 @@ Material:
       second: 1
     - first:
         name: _GradientHeight
-      second: 42.27
+      second: 1
     - first:
         name: _GradientStartY
-      second: -50.4
+      second: 0
     - first:
         name: _LayoutTexturePower
       second: 1
@@ -150,7 +150,7 @@ Material:
       second: 0.5
     - first:
         name: _LightmapPower
-      second: 1
+      second: 11.22
     - first:
         name: _MainTexPower
       second: 1
@@ -167,14 +167,17 @@ Material:
         name: _Parallax
       second: 0.02
     - first:
+        name: _Ratio
+      second: 0.571
+    - first:
         name: _RightLight
-      second: 0.3
+      second: 0.66
     - first:
         name: _RimPower
       second: 0.35
     - first:
         name: _ShadowPower
-      second: 0
+      second: 2.61
     - first:
         name: _Shininess
       second: 0
@@ -192,7 +195,7 @@ Material:
       second: 1
     - first:
         name: _TopLight
-      second: 0.83
+      second: 0.97
     - first:
         name: _UVSec
       second: 0
@@ -207,7 +210,7 @@ Material:
       second: 0
     - first:
         name: _UseLightMap
-      second: 0
+      second: 1
     - first:
         name: _ZWrite
       second: 1
@@ -217,7 +220,10 @@ Material:
     m_Colors:
     - first:
         name: _AmbientColor
-      second: {r: 0.71323526, g: 0.2727076, b: 0.38283953, a: 0}
+      second: {r: 0.6691177, g: 0.56579804, b: 0.56579804, a: 0}
+    - first:
+        name: _BottomColor
+      second: {r: 0, g: 0, b: 0, a: 0}
     - first:
         name: _Color
       second: {r: 1, g: 1, b: 1, a: 1}
@@ -250,16 +256,16 @@ Material:
       second: {r: 0, g: 0, b: 0, a: 1}
     - first:
         name: _LightTint
-      second: {r: 1, g: 1, b: 1, a: 0}
+      second: {r: 1, g: 1, b: 1, a: 1}
     - first:
         name: _LightmapColor
-      second: {r: 0, g: 0, b: 0, a: 0}
+      second: {r: 0.20112455, g: 0.6838235, b: 0.6638497, a: 1}
     - first:
         name: _MainColor
-      second: {r: 0.72794116, g: 0.72794116, b: 0.72794116, a: 0}
+      second: {r: 1, g: 1, b: 1, a: 1}
     - first:
         name: _MainColorBottom
-      second: {r: 0.30147058, g: 0.29537028, b: 0.2815203, a: 0}
+      second: {r: 1, g: 0.73, b: 0.117, a: 0}
     - first:
         name: _RightColor
       second: {r: 0.9, g: 0.9, b: 0.9, a: 0}
@@ -268,7 +274,7 @@ Material:
       second: {r: 0.9, g: 0.9, b: 0.9, a: 0}
     - first:
         name: _RimColor
-      second: {r: 0.058823526, g: 0.4937116, b: 1, a: 0}
+      second: {r: 0.9098039, g: 0.25490198, b: 0.10980392, a: 1}
     - first:
         name: _RimColorBottom
       second: {r: 0, g: 0, b: 0, a: 0}

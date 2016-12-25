@@ -7,8 +7,8 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: temple_entrance_env
-  m_Shader: {fileID: 4800000, guid: 42a744b811ee94b9a9619d9b4836b7fc, type: 3}
-  m_ShaderKeywords: _EMISSION
+  m_Shader: {fileID: 4800000, guid: 31f5ef81e1c5045c08fccaba0451f912, type: 3}
+  m_ShaderKeywords: USE_GRADIENT _EMISSION
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -52,6 +52,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
+        name: _LightRampTexture
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
         name: _MainTex
       second:
         m_Texture: {fileID: 0}
@@ -77,6 +83,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - first:
+        name: _Alpha
+      second: 0
+    - first:
         name: _AmbientPower
       second: 0.09
     - first:
@@ -92,6 +101,27 @@ Material:
         name: _DstBlend
       second: 0
     - first:
+        name: _FogAnimationFreq
+      second: 0.1
+    - first:
+        name: _FogAnimationHeight
+      second: 0.1
+    - first:
+        name: _FogDensity
+      second: 1
+    - first:
+        name: _FogEnd
+      second: 50
+    - first:
+        name: _FogHeight
+      second: 0.1
+    - first:
+        name: _FogStart
+      second: 0
+    - first:
+        name: _FogYStartPos
+      second: 0
+    - first:
         name: _FrontLight
       second: 2.39
     - first:
@@ -104,10 +134,25 @@ Material:
         name: _GlossyReflections
       second: 1
     - first:
+        name: _GradientHeight
+      second: 22.88
+    - first:
+        name: _GradientStartY
+      second: -10.9
+    - first:
         name: _LayoutTexturePower
       second: 0
     - first:
+        name: _LightMaxDistance
+      second: 10
+    - first:
+        name: _LightProbePower
+      second: 0.5
+    - first:
         name: _LightmapPower
+      second: 1
+    - first:
+        name: _MainTexPower
       second: 1
     - first:
         name: _Metallic
@@ -131,8 +176,14 @@ Material:
         name: _ShadowPower
       second: 0
     - first:
+        name: _Shininess
+      second: 0
+    - first:
         name: _SmoothnessTextureChannel
       second: 0
+    - first:
+        name: _Specular
+      second: 0.01
     - first:
         name: _SpecularHighlights
       second: 1
@@ -149,11 +200,20 @@ Material:
         name: _UseDirLight
       second: 0
     - first:
+        name: _UseFogDistance
+      second: 0
+    - first:
+        name: _UseFogStaticStart
+      second: 0
+    - first:
         name: _UseLightMap
       second: 0
     - first:
         name: _ZWrite
       second: 1
+    - first:
+        name: _additiveBlend
+      second: 0
     m_Colors:
     - first:
         name: _AmbientColor
@@ -165,7 +225,16 @@ Material:
         name: _EmissionColor
       second: {r: 0, g: 0, b: 0, a: 1}
     - first:
+        name: _FogColor
+      second: {r: 1, g: 1, b: 1, a: 1}
+    - first:
+        name: _FogStaticStartPos
+      second: {r: 0, g: 0, b: 0, a: 1}
+    - first:
         name: _FrontColor
+      second: {r: 0.7, g: 0.7, b: 0.7, a: 0}
+    - first:
+        name: _FrontColorBottom
       second: {r: 0.7, g: 0.7, b: 0.7, a: 0}
     - first:
         name: _LightDirF
@@ -177,6 +246,9 @@ Material:
         name: _LightDirT
       second: {r: 0, g: 1, b: 0, a: 1}
     - first:
+        name: _LightPos
+      second: {r: 0, g: 0, b: 0, a: 1}
+    - first:
         name: _LightTint
       second: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - first:
@@ -184,13 +256,28 @@ Material:
       second: {r: 0, g: 0, b: 0, a: 0}
     - first:
         name: _MainColor
-      second: {r: 0.15326335, g: 0.20588237, b: 0.1513841, a: 1}
+      second: {r: 0.2838265, g: 0.4044118, b: 0.27951992, a: 1}
+    - first:
+        name: _MainColorBottom
+      second: {r: 0.15294118, g: 0.20392157, b: 0.14901961, a: 1}
     - first:
         name: _RightColor
+      second: {r: 0.9, g: 0.9, b: 0.9, a: 0}
+    - first:
+        name: _RightColorBottom
       second: {r: 0.9, g: 0.9, b: 0.9, a: 0}
     - first:
         name: _RimColor
       second: {r: 1, g: 0.974645, b: 0.08088237, a: 0}
     - first:
+        name: _RimColorBottom
+      second: {r: 0, g: 0, b: 0, a: 0}
+    - first:
+        name: _SpecColorc
+      second: {r: 1, g: 1, b: 1, a: 0}
+    - first:
         name: _TopColor
+      second: {r: 1, g: 1, b: 1, a: 0}
+    - first:
+        name: _TopColorBottom
       second: {r: 1, g: 1, b: 1, a: 0}
