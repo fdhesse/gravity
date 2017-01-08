@@ -1,0 +1,161 @@
+fileFormatVersion: 2
+guid: e9431ba693d7ebb498a5955920d02db2
+timeCreated: 1481862462
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Octo_arm_merged:joint1
+    100002: Octo_arm_merged:joint10
+    100004: Octo_arm_merged:joint2
+    100006: Octo_arm_merged:joint3
+    100008: Octo_arm_merged:joint4
+    100010: Octo_arm_merged:joint5
+    100012: Octo_arm_merged:joint6
+    100014: Octo_arm_merged:joint7
+    100016: Octo_arm_merged:joint8
+    100018: Octo_arm_merged:joint9
+    100020: //RootNode
+    100022: Octo_arm_merged:octo_arm
+    100024: base
+    100026: joint12
+    100028: joint13
+    100030: joint14
+    100032: joint15
+    100034: octo_arm
+    100036: tip
+    400000: Octo_arm_merged:joint1
+    400002: Octo_arm_merged:joint10
+    400004: Octo_arm_merged:joint2
+    400006: Octo_arm_merged:joint3
+    400008: Octo_arm_merged:joint4
+    400010: Octo_arm_merged:joint5
+    400012: Octo_arm_merged:joint6
+    400014: Octo_arm_merged:joint7
+    400016: Octo_arm_merged:joint8
+    400018: Octo_arm_merged:joint9
+    400020: //RootNode
+    400022: Octo_arm_merged:octo_arm
+    400024: base
+    400026: joint12
+    400028: joint13
+    400030: joint14
+    400032: joint15
+    400034: octo_arm
+    400036: tip
+    2300000: Octo_arm_merged:octo_arm
+    3300000: Octo_arm_merged:octo_arm
+    4300000: Octo_arm_merged:octo_arm
+    4300002: octo_arm
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: Octo_arm_merged:octo_arm
+    13700002: octo_arm
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 50
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: base
+        weight: 1
+      - path: base/joint12
+        weight: 1
+      - path: base/joint12/joint13
+        weight: 1
+      - path: base/joint12/joint13/joint14
+        weight: 1
+      - path: base/joint12/joint13/joint14/joint15
+        weight: 1
+      - path: base/joint12/joint13/joint14/joint15/tip
+        weight: 1
+      - path: octo_arm
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

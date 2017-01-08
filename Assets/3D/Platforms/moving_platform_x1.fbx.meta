@@ -1,38 +1,15 @@
 fileFormatVersion: 2
-guid: e9431ba693d7ebb498a5955920d02db2
-timeCreated: 1481862462
+guid: cbe04e9e292b55c40ac62aaf860c61e6
+timeCreated: 1483804547
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: Octo_arm_merged:joint1
-    100002: Octo_arm_merged:joint10
-    100004: Octo_arm_merged:joint2
-    100006: Octo_arm_merged:joint3
-    100008: Octo_arm_merged:joint4
-    100010: Octo_arm_merged:joint5
-    100012: Octo_arm_merged:joint6
-    100014: Octo_arm_merged:joint7
-    100016: Octo_arm_merged:joint8
-    100018: Octo_arm_merged:joint9
-    100020: //RootNode
-    100022: Octo_arm_merged:octo_arm
-    400000: Octo_arm_merged:joint1
-    400002: Octo_arm_merged:joint10
-    400004: Octo_arm_merged:joint2
-    400006: Octo_arm_merged:joint3
-    400008: Octo_arm_merged:joint4
-    400010: Octo_arm_merged:joint5
-    400012: Octo_arm_merged:joint6
-    400014: Octo_arm_merged:joint7
-    400016: Octo_arm_merged:joint8
-    400018: Octo_arm_merged:joint9
-    400020: //RootNode
-    400022: Octo_arm_merged:octo_arm
-    4300000: Octo_arm_merged:octo_arm
-    7400000: Take 001
-    9500000: //RootNode
-    13700000: Octo_arm_merged:octo_arm
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: moving_platform
   materials:
     importMaterials: 1
     materialName: 0
@@ -73,8 +50,8 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
-    normalImportMode: 0
+    normalSmoothAngle: 0
+    normalImportMode: 1
     tangentImportMode: 3
   importAnimation: 1
   copyAvatar: 0
@@ -91,7 +68,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
