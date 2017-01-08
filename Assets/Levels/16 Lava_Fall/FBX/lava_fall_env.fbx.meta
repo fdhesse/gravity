@@ -10,26 +10,60 @@ ModelImporter:
     100004: lava_fall
     100006: lava_lake
     100008: Pipes
+    100010: lava_fall1
+    100012: lava_fall2
+    100014: lava_fall3
+    100016: lava_fall4
+    100018: lava_fall5
+    100020: lava_fall_env
+    100022: lava_crusts
     400000: //RootNode
     400002: env
     400004: lava_fall
     400006: lava_lake
     400008: Pipes
+    400010: lava_fall1
+    400012: lava_fall2
+    400014: lava_fall3
+    400016: lava_fall4
+    400018: lava_fall5
+    400020: lava_fall_env
+    400022: lava_crusts
     2300000: //RootNode
     2300002: env
     2300004: lava_fall
     2300006: lava_lake
     2300008: Pipes
+    2300010: lava_fall1
+    2300012: lava_fall2
+    2300014: lava_fall3
+    2300016: lava_fall4
+    2300018: lava_fall5
+    2300020: lava_fall_env
+    2300022: lava_crusts
     3300000: //RootNode
     3300002: env
     3300004: lava_fall
     3300006: lava_lake
     3300008: Pipes
+    3300010: lava_fall1
+    3300012: lava_fall2
+    3300014: lava_fall3
+    3300016: lava_fall4
+    3300018: lava_fall5
+    3300020: lava_fall_env
+    3300022: lava_crusts
     4300000: lava_fall_env
     4300002: lava_lake
     4300004: lava_fall
     4300006: Pipes
     4300008: env
+    4300010: lava_fall5
+    4300012: lava_fall2
+    4300014: lava_fall3
+    4300016: lava_fall4
+    4300018: lava_fall1
+    4300020: lava_crusts
   materials:
     importMaterials: 1
     materialName: 0
@@ -70,8 +104,8 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
-    normalImportMode: 0
+    normalSmoothAngle: 0
+    normalImportMode: 1
     tangentImportMode: 3
   importAnimation: 1
   copyAvatar: 0

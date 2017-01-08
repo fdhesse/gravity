@@ -6,9 +6,9 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Cogs_env_MARV_mat
+  m_Name: lava_fall_env_MARV_mat
   m_Shader: {fileID: 4800000, guid: 31f5ef81e1c5045c08fccaba0451f912, type: 3}
-  m_ShaderKeywords: USE_MAIN_TEX _EMISSION
+  m_ShaderKeywords: USE_GRADIENT USE_LIGHTMAP USE_MAIN_TEX _EMISSION
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -60,7 +60,7 @@ Material:
     - first:
         name: _MainTex
       second:
-        m_Texture: {fileID: 2800000, guid: 364ba21cf4a390246bc2d2ea81374057, type: 3}
+        m_Texture: {fileID: 2800000, guid: ba607f4dd3004164f8e5ebab044d9faf, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
@@ -123,7 +123,7 @@ Material:
       second: 0
     - first:
         name: _FrontLight
-      second: 1.07
+      second: 0.86
     - first:
         name: _GlossMapScale
       second: 1
@@ -135,10 +135,10 @@ Material:
       second: 1
     - first:
         name: _GradientHeight
-      second: 1
+      second: 2.49
     - first:
         name: _GradientStartY
-      second: 0
+      second: 0.39
     - first:
         name: _LayoutTexturePower
       second: 0.5
@@ -168,10 +168,10 @@ Material:
       second: 0.02
     - first:
         name: _RightLight
-      second: 1.76
+      second: 0.6
     - first:
         name: _RimPower
-      second: 1.8
+      second: 2.36
     - first:
         name: _ShadowPower
       second: 0
@@ -192,7 +192,7 @@ Material:
       second: 1
     - first:
         name: _TopLight
-      second: 2.19
+      second: 0.45
     - first:
         name: _UVSec
       second: 0
@@ -232,10 +232,10 @@ Material:
       second: {r: 0, g: 0, b: 0, a: 1}
     - first:
         name: _FrontColor
-      second: {r: 0.7, g: 0.7, b: 0.7, a: 0}
+      second: {r: 0.17647058, g: 0.1634411, b: 0.10899653, a: 0}
     - first:
         name: _FrontColorBottom
-      second: {r: 0.7, g: 0.7, b: 0.7, a: 0}
+      second: {r: 0.9852941, g: 0.665723, b: 0.0941825, a: 0}
     - first:
         name: _LightDirF
       second: {r: 0, g: 0, b: -1, a: 1}
@@ -253,31 +253,31 @@ Material:
       second: {r: 1, g: 1, b: 1, a: 0}
     - first:
         name: _LightmapColor
-      second: {r: 0, g: 0, b: 0, a: 0}
+      second: {r: 0.7794118, g: 0.6329361, b: 0.15473618, a: 0}
     - first:
         name: _MainColor
-      second: {r: 0.7, g: 0.7, b: 0.7, a: 0}
+      second: {r: 0.64705884, g: 0.59272164, b: 0.47577855, a: 0}
     - first:
         name: _MainColorBottom
       second: {r: 1, g: 0.73, b: 0.117, a: 0}
     - first:
         name: _RightColor
-      second: {r: 0.9, g: 0.9, b: 0.9, a: 0}
+      second: {r: 0.17254902, g: 0.16078432, b: 0.105882354, a: 0}
     - first:
         name: _RightColorBottom
-      second: {r: 0.9, g: 0.9, b: 0.9, a: 0}
+      second: {r: 0.9843137, g: 0.6627451, b: 0.09411765, a: 0}
     - first:
         name: _RimColor
-      second: {r: 1, g: 0.3897059, b: 0.7053753, a: 0}
+      second: {r: 0.17254902, g: 0.16078432, b: 0.105882354, a: 0}
     - first:
         name: _RimColorBottom
-      second: {r: 0, g: 0, b: 0, a: 0}
+      second: {r: 0.9843137, g: 0.6627451, b: 0.09411765, a: 0}
     - first:
         name: _SpecColorc
       second: {r: 1, g: 1, b: 1, a: 0}
     - first:
         name: _TopColor
-      second: {r: 1, g: 1, b: 1, a: 0}
+      second: {r: 0.29411763, g: 0.2487024, b: 0.2487024, a: 0}
     - first:
         name: _TopColorBottom
-      second: {r: 1, g: 1, b: 1, a: 0}
+      second: {r: 0.2901961, g: 0.24705882, b: 0.24705882, a: 0}

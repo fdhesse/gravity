@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Cogs_env_MARV_mat
+  m_Name: lava_fall_lake_MARV_mat
   m_Shader: {fileID: 4800000, guid: 31f5ef81e1c5045c08fccaba0451f912, type: 3}
   m_ShaderKeywords: USE_MAIN_TEX _EMISSION
   m_LightmapFlags: 1
@@ -60,7 +60,7 @@ Material:
     - first:
         name: _MainTex
       second:
-        m_Texture: {fileID: 2800000, guid: 364ba21cf4a390246bc2d2ea81374057, type: 3}
+        m_Texture: {fileID: 2800000, guid: ba607f4dd3004164f8e5ebab044d9faf, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
@@ -123,7 +123,7 @@ Material:
       second: 0
     - first:
         name: _FrontLight
-      second: 1.07
+      second: 0.86
     - first:
         name: _GlossMapScale
       second: 1
@@ -168,10 +168,10 @@ Material:
       second: 0.02
     - first:
         name: _RightLight
-      second: 1.76
+      second: 0.6
     - first:
         name: _RimPower
-      second: 1.8
+      second: 0.6
     - first:
         name: _ShadowPower
       second: 0
@@ -192,7 +192,7 @@ Material:
       second: 1
     - first:
         name: _TopLight
-      second: 2.19
+      second: 1.4
     - first:
         name: _UVSec
       second: 0
@@ -256,7 +256,7 @@ Material:
       second: {r: 0, g: 0, b: 0, a: 0}
     - first:
         name: _MainColor
-      second: {r: 0.7, g: 0.7, b: 0.7, a: 0}
+      second: {r: 0.9632353, g: 0.79022413, b: 0.41787413, a: 0}
     - first:
         name: _MainColorBottom
       second: {r: 1, g: 0.73, b: 0.117, a: 0}
@@ -268,7 +268,7 @@ Material:
       second: {r: 0.9, g: 0.9, b: 0.9, a: 0}
     - first:
         name: _RimColor
-      second: {r: 1, g: 0.3897059, b: 0.7053753, a: 0}
+      second: {r: 0.86764705, g: 0.63084805, b: 0.12121541, a: 0}
     - first:
         name: _RimColorBottom
       second: {r: 0, g: 0, b: 0, a: 0}
