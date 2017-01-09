@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: Down_up_env
   m_Shader: {fileID: 4800000, guid: 31f5ef81e1c5045c08fccaba0451f912, type: 3}
-  m_ShaderKeywords: USE_GRADIENT USE_MAIN_TEX _EMISSION
+  m_ShaderKeywords: USE_MAIN_TEX _EMISSION
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -60,7 +60,7 @@ Material:
     - first:
         name: _MainTex
       second:
-        m_Texture: {fileID: 2800000, guid: 765b7a3debd417942815c8dbc745d0ec, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0259184f1f45ac043844e61236c5568e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
@@ -87,7 +87,7 @@ Material:
       second: 0
     - first:
         name: _AmbientPower
-      second: 0.34
+      second: 0
     - first:
         name: _BumpScale
       second: 1
@@ -168,10 +168,10 @@ Material:
       second: 0.02
     - first:
         name: _RightLight
-      second: 0.3
+      second: 0.99
     - first:
         name: _RimPower
-      second: 0.35
+      second: 1.63
     - first:
         name: _ShadowPower
       second: 0
@@ -192,7 +192,7 @@ Material:
       second: 1
     - first:
         name: _TopLight
-      second: 0.83
+      second: 1.71
     - first:
         name: _UVSec
       second: 0
@@ -259,7 +259,7 @@ Material:
       second: {r: 0.72794116, g: 0.72794116, b: 0.72794116, a: 0}
     - first:
         name: _MainColorBottom
-      second: {r: 0.30147058, g: 0.29537028, b: 0.2815203, a: 0}
+      second: {r: 0.50898165, g: 0.5240038, b: 0.5294118, a: 0}
     - first:
         name: _RightColor
       second: {r: 0.9, g: 0.9, b: 0.9, a: 0}
@@ -268,10 +268,10 @@ Material:
       second: {r: 0.9, g: 0.9, b: 0.9, a: 0}
     - first:
         name: _RimColor
-      second: {r: 0.058823526, g: 0.4937116, b: 1, a: 0}
+      second: {r: 0.3644354, g: 0.4962813, b: 0.54901963, a: 1}
     - first:
         name: _RimColorBottom
-      second: {r: 0, g: 0, b: 0, a: 0}
+      second: {r: 0.24705882, g: 0.4627451, b: 0.54901963, a: 1}
     - first:
         name: _SpecColorc
       second: {r: 1, g: 1, b: 1, a: 0}
