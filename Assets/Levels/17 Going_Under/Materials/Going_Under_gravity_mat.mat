@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: gravity
+  m_Name: Going_Under_gravity_mat
   m_Shader: {fileID: 4800000, guid: 8e1bdfc809e384f0ea56f59ec32eb660, type: 3}
   m_ShaderKeywords: USE_LIGHTMAP USE_MAIN_TEX _EMISSION
   m_LightmapFlags: 1
@@ -171,7 +171,7 @@ Material:
       second: 0.66
     - first:
         name: _RimPower
-      second: 0.35
+      second: 1.77
     - first:
         name: _ShadowPower
       second: 2.61
@@ -268,7 +268,7 @@ Material:
       second: {r: 0.9, g: 0.9, b: 0.9, a: 0}
     - first:
         name: _RimColor
-      second: {r: 0.9098039, g: 0.25490198, b: 0.10980392, a: 1}
+      second: {r: 0.3169878, g: 0.52609324, b: 0.6911765, a: 1}
     - first:
         name: _RimColorBottom
       second: {r: 0, g: 0, b: 0, a: 0}

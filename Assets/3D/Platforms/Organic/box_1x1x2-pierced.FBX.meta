@@ -6,10 +6,20 @@ ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
+    100002: box_pierced_1x2x1
+    100004: core
     400000: //RootNode
+    400002: box_pierced_1x2x1
+    400004: core
     2300000: //RootNode
+    2300002: box_pierced_1x2x1
+    2300004: core
     3300000: //RootNode
+    3300002: box_pierced_1x2x1
+    3300004: core
     4300000: box_1x1x2-pierced
+    4300002: box_pierced_1x2x1
+    4300004: core
   materials:
     importMaterials: 1
     materialName: 0
@@ -39,7 +49,7 @@ ModelImporter:
     addColliders: 0
     importBlendShapes: 1
     swapUVChannels: 0
-    generateSecondaryUV: 0
+    generateSecondaryUV: 1
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
