@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: Down_up_env
   m_Shader: {fileID: 4800000, guid: 31f5ef81e1c5045c08fccaba0451f912, type: 3}
-  m_ShaderKeywords: USE_MAIN_TEX _EMISSION
+  m_ShaderKeywords: LIGHTING_FULL USE_MAIN_TEX _EMISSION
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -87,7 +87,7 @@ Material:
       second: 0
     - first:
         name: _AmbientPower
-      second: 0
+      second: 0.83
     - first:
         name: _BumpScale
       second: 1
@@ -177,13 +177,13 @@ Material:
       second: 0
     - first:
         name: _Shininess
-      second: 0
+      second: 0.06
     - first:
         name: _SmoothnessTextureChannel
       second: 0
     - first:
         name: _Specular
-      second: 0.01
+      second: 35.1
     - first:
         name: _SpecularHighlights
       second: 1
@@ -232,7 +232,7 @@ Material:
       second: {r: 0, g: 0, b: 0, a: 1}
     - first:
         name: _FrontColor
-      second: {r: 0.7, g: 0.7, b: 0.7, a: 0}
+      second: {r: 0.37662196, g: 0.5955882, b: 0.5955882, a: 0}
     - first:
         name: _FrontColorBottom
       second: {r: 0.7, g: 0.7, b: 0.7, a: 0}
@@ -262,22 +262,22 @@ Material:
       second: {r: 0.50898165, g: 0.5240038, b: 0.5294118, a: 0}
     - first:
         name: _RightColor
-      second: {r: 0.9, g: 0.9, b: 0.9, a: 0}
+      second: {r: 1, g: 0.47794116, b: 0.47794116, a: 0}
     - first:
         name: _RightColorBottom
       second: {r: 0.9, g: 0.9, b: 0.9, a: 0}
     - first:
         name: _RimColor
-      second: {r: 0.3644354, g: 0.4962813, b: 0.54901963, a: 1}
+      second: {r: 0.49803922, g: 0.42745098, b: 0.29803923, a: 1}
     - first:
         name: _RimColorBottom
       second: {r: 0.24705882, g: 0.4627451, b: 0.54901963, a: 1}
     - first:
         name: _SpecColorc
-      second: {r: 1, g: 1, b: 1, a: 0}
+      second: {r: 0.5808823, g: 0.0555255, b: 0.0555255, a: 0}
     - first:
         name: _TopColor
-      second: {r: 1, g: 1, b: 1, a: 0}
+      second: {r: 0.95334685, g: 1, b: 0.66176474, a: 0}
     - first:
         name: _TopColorBottom
       second: {r: 1, g: 1, b: 1, a: 0}
