@@ -1,0 +1,234 @@
+fileFormatVersion: 2
+guid: 7bc31ae903bcdd941921c97e38f0bf78
+timeCreated: 1484631577
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Backpack
+    100002: bag01
+    100004: blanket
+    100006: Dummy_body
+    100008: Dummy_L_leg
+    100010: DummyMaster
+    100012: hat
+    100014: hat01
+    100016: hat02
+    100018: head01
+    100020: head02
+    100022: L_Arm01
+    100024: L_Arm02
+    100026: L_foot01
+    100028: L_foot02
+    100030: L_Hand01
+    100032: L_Hand02
+    100034: L_leg01
+    100036: L_leg02
+    100038: map
+    100040: pelvis
+    100042: Player
+    100044: //RootNode
+    100046: R_Arm01
+    100048: R_Arm02
+    100050: R_foot01
+    100052: R_foot02
+    100054: R_Hand01
+    100056: R_Hand02
+    100058: R_leg01
+    100060: R_leg02
+    100062: torso
+    400000: Backpack
+    400002: bag01
+    400004: blanket
+    400006: Dummy_body
+    400008: Dummy_L_leg
+    400010: DummyMaster
+    400012: hat
+    400014: hat01
+    400016: hat02
+    400018: head01
+    400020: head02
+    400022: L_Arm01
+    400024: L_Arm02
+    400026: L_foot01
+    400028: L_foot02
+    400030: L_Hand01
+    400032: L_Hand02
+    400034: L_leg01
+    400036: L_leg02
+    400038: map
+    400040: pelvis
+    400042: Player
+    400044: //RootNode
+    400046: R_Arm01
+    400048: R_Arm02
+    400050: R_foot01
+    400052: R_foot02
+    400054: R_Hand01
+    400056: R_Hand02
+    400058: R_leg01
+    400060: R_leg02
+    400062: torso
+    2300000: map
+    3300000: map
+    4300000: Player
+    4300002: map
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: Player
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: DummyMaster
+        weight: 1
+      - path: DummyMaster/Dummy_body
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/bag01
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/bag01/Backpack
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/bag01/Backpack/blanket
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/Dummy_L_leg
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/Dummy_L_leg/L_leg01
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/Dummy_L_leg/L_leg01/L_leg02
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/Dummy_L_leg/L_leg01/L_leg02/L_foot01
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/Dummy_L_leg/L_leg01/L_leg02/L_foot01/L_foot02
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/R_leg01
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/R_leg01/R_leg02
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/R_leg01/R_leg02/R_foot01
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/R_leg01/R_leg02/R_foot01/R_foot02
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/head01
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/head01/head02
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/head01/head02/hat01
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/head01/head02/hat01/hat02
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/head01/head02/hat01/hat02/hat
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/L_Arm01
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/L_Arm01/L_Arm02
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/L_Arm01/L_Arm02/L_Hand01
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/L_Arm01/L_Arm02/L_Hand01/L_Hand02
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/R_Arm01
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/R_Arm01/R_Arm02
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/R_Arm01/R_Arm02/R_Hand01
+        weight: 1
+      - path: DummyMaster/Dummy_body/pelvis/torso/R_Arm01/R_Arm02/R_Hand01/R_Hand02
+        weight: 1
+      - path: map
+        weight: 1
+      - path: Player
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

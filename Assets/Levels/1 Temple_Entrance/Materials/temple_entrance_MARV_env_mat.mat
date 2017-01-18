@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: temple_entrance_MARV_env_mat
   m_Shader: {fileID: 4800000, guid: 31f5ef81e1c5045c08fccaba0451f912, type: 3}
-  m_ShaderKeywords: USE_MAIN_TEX _EMISSION
+  m_ShaderKeywords: USE_DIR_LIGHT USE_MAIN_TEX _EMISSION
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -238,13 +238,13 @@ Material:
       second: {r: 0.7, g: 0.7, b: 0.7, a: 0}
     - first:
         name: _LightDirF
-      second: {r: 0, g: 0, b: -1, a: 1}
+      second: {r: 0.781093, g: 0.44893914, b: 0.43399015, a: 0}
     - first:
         name: _LightDirR
-      second: {r: 1, g: 0, b: 0, a: 1}
+      second: {r: -0.49653926, g: 0.86800396, b: -0.0042342246, a: 0}
     - first:
         name: _LightDirT
-      second: {r: 0, g: 1, b: 0, a: 1}
+      second: {r: -0.37860617, g: -0.2121858, b: 0.9009077, a: 0}
     - first:
         name: _LightPos
       second: {r: 0, g: 0, b: 0, a: 1}

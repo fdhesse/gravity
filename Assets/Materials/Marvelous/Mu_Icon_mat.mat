@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Mu_Icon_mat
-  m_Shader: {fileID: 4800000, guid: 8e1bdfc809e384f0ea56f59ec32eb660, type: 3}
+  m_Shader: {fileID: 4800000, guid: 48dca5b99d113b8d11006bab44295342, type: 3}
   m_ShaderKeywords: USE_LIGHTMAP USE_MAIN_TEX _EMISSION
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
@@ -79,6 +79,12 @@ Material:
         name: _ParallaxMap
       second:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _Ramp
+      second:
+        m_Texture: {fileID: 2800000, guid: ff87cf3f4d3b72c488977bf5d67c1876, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
@@ -226,7 +232,7 @@ Material:
       second: {r: 0, g: 0, b: 0, a: 0}
     - first:
         name: _Color
-      second: {r: 1, g: 1, b: 1, a: 1}
+      second: {r: 0.78676474, g: 0.7289144, b: 0.7289144, a: 1}
     - first:
         name: _EmissionColor
       second: {r: 0, g: 0, b: 0, a: 1}

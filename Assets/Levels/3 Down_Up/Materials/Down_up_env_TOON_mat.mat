@@ -6,9 +6,9 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Down_up_env
-  m_Shader: {fileID: 4800000, guid: 31f5ef81e1c5045c08fccaba0451f912, type: 3}
-  m_ShaderKeywords: LIGHTING_FULL USE_MAIN_TEX _EMISSION
+  m_Name: Down_up_env_TOON_mat
+  m_Shader: {fileID: 4800000, guid: 48dca5b99d113b8d11006bab44295342, type: 3}
+  m_ShaderKeywords: USE_MAIN_TEX _EMISSION
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -81,13 +81,19 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - first:
+        name: _Ramp
+      second:
+        m_Texture: {fileID: 2800000, guid: ff87cf3f4d3b72c488977bf5d67c1876, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - first:
         name: _Alpha
       second: 0
     - first:
         name: _AmbientPower
-      second: 0.83
+      second: 0.09
     - first:
         name: _BumpScale
       second: 1
@@ -123,7 +129,7 @@ Material:
       second: 0
     - first:
         name: _FrontLight
-      second: 1.32
+      second: 1.14
     - first:
         name: _GlossMapScale
       second: 1
@@ -135,13 +141,13 @@ Material:
       second: 1
     - first:
         name: _GradientHeight
-      second: 42.27
+      second: 22.88
     - first:
         name: _GradientStartY
-      second: -50.4
+      second: -10.9
     - first:
         name: _LayoutTexturePower
-      second: 1
+      second: 0
     - first:
         name: _LightMaxDistance
       second: 10
@@ -168,22 +174,22 @@ Material:
       second: 0.02
     - first:
         name: _RightLight
-      second: 0.99
+      second: 3
     - first:
         name: _RimPower
-      second: 1.63
+      second: 0.74
     - first:
         name: _ShadowPower
       second: 0
     - first:
         name: _Shininess
-      second: 0.06
+      second: 0
     - first:
         name: _SmoothnessTextureChannel
       second: 0
     - first:
         name: _Specular
-      second: 35.1
+      second: 0.01
     - first:
         name: _SpecularHighlights
       second: 1
@@ -192,7 +198,7 @@ Material:
       second: 1
     - first:
         name: _TopLight
-      second: 1.71
+      second: 1.35
     - first:
         name: _UVSec
       second: 0
@@ -217,7 +223,7 @@ Material:
     m_Colors:
     - first:
         name: _AmbientColor
-      second: {r: 0.71323526, g: 0.2727076, b: 0.38283953, a: 0}
+      second: {r: 0.48389676, g: 0.5294118, b: 0.4359862, a: 1}
     - first:
         name: _Color
       second: {r: 1, g: 1, b: 1, a: 1}
@@ -232,7 +238,7 @@ Material:
       second: {r: 0, g: 0, b: 0, a: 1}
     - first:
         name: _FrontColor
-      second: {r: 0.37662196, g: 0.5955882, b: 0.5955882, a: 0}
+      second: {r: 0.7, g: 0.7, b: 0.7, a: 0}
     - first:
         name: _FrontColorBottom
       second: {r: 0.7, g: 0.7, b: 0.7, a: 0}
@@ -250,34 +256,34 @@ Material:
       second: {r: 0, g: 0, b: 0, a: 1}
     - first:
         name: _LightTint
-      second: {r: 1, g: 1, b: 1, a: 0}
+      second: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - first:
         name: _LightmapColor
       second: {r: 0, g: 0, b: 0, a: 0}
     - first:
         name: _MainColor
-      second: {r: 0.72794116, g: 0.72794116, b: 0.72794116, a: 0}
+      second: {r: 0.8897059, g: 0.8897059, b: 0.8897059, a: 1}
     - first:
         name: _MainColorBottom
-      second: {r: 0.50898165, g: 0.5240038, b: 0.5294118, a: 0}
+      second: {r: 0.15294118, g: 0.20392157, b: 0.14901961, a: 1}
     - first:
         name: _RightColor
-      second: {r: 1, g: 0.47794116, b: 0.47794116, a: 0}
+      second: {r: 0.9, g: 0.9, b: 0.9, a: 0}
     - first:
         name: _RightColorBottom
       second: {r: 0.9, g: 0.9, b: 0.9, a: 0}
     - first:
         name: _RimColor
-      second: {r: 0.49803922, g: 0.42745098, b: 0.29803923, a: 1}
+      second: {r: 1, g: 0.974645, b: 0.08088237, a: 0}
     - first:
         name: _RimColorBottom
-      second: {r: 0.24705882, g: 0.4627451, b: 0.54901963, a: 1}
+      second: {r: 0, g: 0, b: 0, a: 0}
     - first:
         name: _SpecColorc
-      second: {r: 0.5808823, g: 0.0555255, b: 0.0555255, a: 0}
+      second: {r: 1, g: 1, b: 1, a: 0}
     - first:
         name: _TopColor
-      second: {r: 0.95334685, g: 1, b: 0.66176474, a: 0}
+      second: {r: 1, g: 1, b: 1, a: 0}
     - first:
         name: _TopColorBottom
       second: {r: 1, g: 1, b: 1, a: 0}
