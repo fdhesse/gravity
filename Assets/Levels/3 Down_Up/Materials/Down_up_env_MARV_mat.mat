@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: Down_up_env_MARV_mat
   m_Shader: {fileID: 4800000, guid: 31f5ef81e1c5045c08fccaba0451f912, type: 3}
-  m_ShaderKeywords: LIGHTING_FULL USE_MAIN_TEX _EMISSION
+  m_ShaderKeywords: LIGHTING_FULL USE_DIR_LIGHT USE_MAIN_TEX _EMISSION
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -232,19 +232,19 @@ Material:
       second: {r: 0, g: 0, b: 0, a: 1}
     - first:
         name: _FrontColor
-      second: {r: 0.37662196, g: 0.5955882, b: 0.5955882, a: 0}
+      second: {r: 0.2403763, g: 0.41911763, b: 0.41911763, a: 0}
     - first:
         name: _FrontColorBottom
       second: {r: 0.7, g: 0.7, b: 0.7, a: 0}
     - first:
         name: _LightDirF
-      second: {r: 0, g: 0, b: -1, a: 1}
+      second: {r: -0.49240392, g: -0.64278764, b: 0.5868241, a: 0}
     - first:
         name: _LightDirR
-      second: {r: 1, g: 0, b: 0, a: 1}
+      second: {r: -0.7660445, g: 0.000000029802322, b: -0.64278764, a: 0}
     - first:
         name: _LightDirT
-      second: {r: 0, g: 1, b: 0, a: 1}
+      second: {r: 0.41317585, g: -0.7660445, b: -0.49240392, a: 0}
     - first:
         name: _LightPos
       second: {r: 0, g: 0, b: 0, a: 1}
@@ -262,7 +262,7 @@ Material:
       second: {r: 0.50898165, g: 0.5240038, b: 0.5294118, a: 0}
     - first:
         name: _RightColor
-      second: {r: 1, g: 0.47794116, b: 0.47794116, a: 0}
+      second: {r: 0.17647058, g: 0.090830445, b: 0.090830445, a: 0}
     - first:
         name: _RightColorBottom
       second: {r: 0.9, g: 0.9, b: 0.9, a: 0}
