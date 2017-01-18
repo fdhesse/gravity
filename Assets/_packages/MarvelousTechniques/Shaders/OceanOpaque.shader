@@ -1,4 +1,6 @@
-﻿//----------------------------------------------
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+//----------------------------------------------
 //            Marvelous Techniques
 // Copyright © 2016 - Arto Vaarala, Kirnu Interactive
 // http://www.kirnuarp.com

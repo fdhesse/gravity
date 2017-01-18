@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
 //----------------------------------------------
 //            Marvelous Techniques
 // Copyright © 2016 - Arto Vaarala, Kirnu Interactive
@@ -322,10 +324,8 @@ fixed4 customLightingHardFogFrag(CL_OUT_WPOS v,float fogYStartPos, half3 fogColo
 fixed4 customLightingSoftFogFrag(CL_OUT_WPOS v, half3 fogColor, half fogHeight, half3 lightTint, half useLightmap, half lightmapPower, half3 lightmapColor,half _ShadowPower){
 	fixed4 outColor = customLightingFrag(v, lightTint, useLightmap, lightmapPower, lightmapColor, _ShadowPower);
 	half fogDensity = clamp((v.wpos.y - _FogYStartPos)/fogHeight,0,1);
-  	outColor = fixed4(lerp ( fogColor, outColor.xyz, fogDensity),outColor.w);
-  //#ifdef USE_DIST_LIGHT
-  //	outColor = calculteDistanceLight(outColor, v);
-  //#endif
+	outColor.xyz = lerp ( fogColor, outColor.xyz, fogDensity);
+
   	return outColor;
 }
 #endif

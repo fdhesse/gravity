@@ -53,6 +53,7 @@ Shader "Kirnu/Marvelous/CustomLightingSoftFogAlpha" {
 				#pragma shader_feature USE_DIR_LIGHT
 
 				#define USE_MAIN_TEX;
+				#define USE_FOG;
 				#pragma vertex vert
 				#pragma fragment frag
 				
@@ -83,18 +84,18 @@ Shader "Kirnu/Marvelous/CustomLightingSoftFogAlpha" {
 				
 				#include "Marvelous.cginc"
 								
-				CL_OUT_WPOS_SOFT_FOG vert(CL_IN v) {
+				CL_OUT_WPOS vert(CL_IN v) {
 				#ifndef USE_DIST_FOG
 					return customLightingSoftFogVert(v, _RimColor, _RimPower, _RightColor, _FrontColor, _TopColor, _AmbientColor, _AmbientPower,_FogYStartPos, _FogAnimationHeight, _FogAnimationFreq);
 				#else
-					CL_OUT_WPOS_SOFT_FOG o=customLightingSoftFogVert(v, _RimColor, _RimPower, _RightColor, _FrontColor, _TopColor, _AmbientColor, _AmbientPower,_FogYStartPos, _FogAnimationHeight, _FogAnimationFreq);
+					CL_OUT_WPOS o=customLightingSoftFogVert(v, _RimColor, _RimPower, _RightColor, _FrontColor, _TopColor, _AmbientColor, _AmbientPower,_FogYStartPos, _FogAnimationHeight, _FogAnimationFreq);
 					float cameraVertDist = length(_WorldSpaceCameraPos - o.wpos)*_FogDensity; 
 					o.fogPower = saturate((_FogEnd - cameraVertDist) / (_FogEnd - _FogStart));	
 					return o;		
 				#endif
 				}
 				
-				fixed4 frag(CL_OUT_WPOS_SOFT_FOG v) : COLOR {
+				fixed4 frag(CL_OUT_WPOS v) : COLOR {
 				#ifndef USE_DIST_FOG
 					fixed4 c =  customLightingSoftFogFrag(v, _FogColor, _FogHeight, _LightTint, _UseLightMap, _LightmapPower, _LightmapColor, _ShadowPower);
 					c.a = _Alpha;

@@ -500,7 +500,7 @@ namespace Kirnu
 				newMesh.uv2 = newUV;
 				newMesh.triangles = newTriangles;
 				
-				newMesh.Optimize ();
+				;
 				newMesh.RecalculateBounds ();
 				
 				newFilter.mesh = newMesh;

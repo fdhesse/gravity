@@ -191,6 +191,9 @@ Material:
         name: _UseFogDistance
       second: 0
     - first:
+        name: _UseFogStaticStart
+      second: 0
+    - first:
         name: _UseLightMap
       second: 0
     - first:
@@ -213,6 +216,9 @@ Material:
         name: _FogColor
       second: {r: 1, g: 1, b: 1, a: 1}
     - first:
+        name: _FogStaticStartPos
+      second: {r: 0, g: 0, b: 0, a: 1}
+    - first:
         name: _FrontColor
       second: {r: 0.7, g: 0.7, b: 0.7, a: 0}
     - first:
@@ -220,13 +226,13 @@ Material:
       second: {r: 0.7, g: 0.7, b: 0.7, a: 0}
     - first:
         name: _LightDirF
-      second: {r: -0.61336887, g: 0.14616527, b: 0.77615356, a: 0}
+      second: {r: 0.5423763, g: 0.22062136, b: 0.8106505, a: 0}
     - first:
         name: _LightDirR
-      second: {r: -0.7878193, g: -0.1827251, b: -0.5881771, a: 0}
+      second: {r: -0.83827716, g: 0.0779678, b: 0.539641, a: 0}
     - first:
         name: _LightDirT
-      second: {r: 0.05585169, g: -0.97223824, b: 0.2272297, a: 0}
+      second: {r: 0.05585169, g: -0.97223824, b: 0.22722973, a: 0}
     - first:
         name: _LightPos
       second: {r: 0, g: 0, b: 0, a: 1}

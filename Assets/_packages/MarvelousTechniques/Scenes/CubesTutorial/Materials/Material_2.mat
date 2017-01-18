@@ -134,9 +134,6 @@ Material:
         name: _UVSec
       second: 0
     - first:
-        name: _UseDirLight
-      second: 0
-    - first:
         name: _UseLightMap
       second: 1
     - first:
@@ -159,20 +156,11 @@ Material:
         name: _FrontColor
       second: {r: 0.49264705, g: 0.36114126, b: 0.2897924, a: 0}
     - first:
-        name: _LightDirF
-      second: {r: 0, g: 0, b: -1, a: 1}
-    - first:
-        name: _LightDirR
-      second: {r: 1, g: 0, b: 0, a: 1}
-    - first:
-        name: _LightDirT
-      second: {r: 0, g: 1, b: 0, a: 1}
-    - first:
         name: _LightTint
       second: {r: 1, g: 1, b: 1, a: 0}
     - first:
         name: _LightmapColor
-      second: {r: 0.019031161, g: 0.64705884, b: 0.15329911, a: 0}
+      second: {r: 0.18030927, g: 0.8455882, b: 0.32254127, a: 0}
     - first:
         name: _MainColor
       second: {r: 1, g: 1, b: 1, a: 0}

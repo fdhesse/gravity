@@ -69,7 +69,7 @@ Shader "Kirnu/Marvelous/CustomLightingMaster" {
 		[Toggle(USE_DIR_LIGHT)] _UseDirLight ("Directional Light", Float) = 0
 
 		_Alpha ("Alpha", Range(0,1)) = 0
-
+		_Cutoff("Cutoff", Range(0,1)) = 0
 		_LightProbePower  ("Light Probe Power", Range(0,1)) = 0.5
 
 		_SpecColorc ("Specular Color", Color) = (1,1,1,0)
@@ -105,6 +105,7 @@ Shader "Kirnu/Marvelous/CustomLightingMaster" {
 				#pragma shader_feature USE_FOG
 				#pragma shader_feature USE_DIST_FOG
 				#pragma shader_feature TRANSPARENT
+				#pragma shader_feature CUTOUT
 				#pragma shader_feature USE_DIST_LIGHT
 				#pragma shader_feature DIST_LIGHT_ADDITIVE
 				#pragma shader_feature USE_REALTIME_SHADOWS
@@ -173,6 +174,7 @@ Shader "Kirnu/Marvelous/CustomLightingMaster" {
 				uniform half3 _LightPos;
 
 				uniform half _Alpha;
+				uniform half _Cutoff;
 
 				uniform half _LightProbePower;
 
@@ -232,13 +234,19 @@ Shader "Kirnu/Marvelous/CustomLightingMaster" {
 						#else
 							fixed4 c = customLightingSoftFogFrag(v, _FogColor, _FogHeight, _LightTint, _UseLightMap, _LightmapPower, _LightmapColor, _ShadowPower);
 							o = lerp(half4(_FogColor,1),c,v.color.w);
+							o.a = c.a;
 						#endif
 					#else
 						o = customLightingFrag(v, _LightTint, _UseLightMap, _LightmapPower, _LightmapColor, _ShadowPower);
 					#endif
 
 					#ifdef TRANSPARENT
-						o.a *=  1 - _Alpha;
+						o.a *=  (1 - _Alpha);
+						#ifdef CUTOUT
+							clip (o.a -_Cutoff);
+						#endif
+						
+
 					#endif 
 
 					return o;

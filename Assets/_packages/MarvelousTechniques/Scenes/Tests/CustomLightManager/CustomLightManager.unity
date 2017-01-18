@@ -209,28 +209,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc3bfae366ad84a9e89eeb707b09c2b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ambientColor:
-    r: 1
-    g: 0.022058845
-    b: 0.022058845
-    a: 1
+  ambientColor: {r: 1, g: 0.022058845, b: 0.022058845, a: 1}
   ambientPower: -0.07
-  tintColor:
-    r: 0.6397059
-    g: 0.65709937
-    b: 1
-    a: 1
-  rimColor:
-    r: 0.23053633
-    g: 0.60294116
-    b: 0.3101539
-    a: 1
+  tintColor: {r: 0.6397059, g: 0.65709937, b: 1, a: 1}
+  rimColor: {r: 0.23053633, g: 0.60294116, b: 0.3101539, a: 1}
   rimPower: 1.11
-  lightmapColor:
-    r: 0.012326986
-    g: 0.2794118
-    b: 0.14679037
-    a: 1
+  lightmapColor: {r: 0.012326986, g: 0.2794118, b: 0.14679037, a: 1}
   lightmapPower: 1.15
   lightmapEnabled: 1
   lightmapLight: 0.03

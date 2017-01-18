@@ -51,6 +51,7 @@ public class CustomLightingMasterGUI : ShaderGUI
 	static string USE_DIST_FOG = "USE_DIST_FOG";
 	static string USE_LIGHTMAP = "USE_LIGHTMAP";
 	static string TRANSPARENT = "TRANSPARENT";
+	static string CUTOUT = "CUTOUT";
 	static string USE_DIST_LIGHT = "USE_DIST_LIGHT";
 	static string DIST_LIGHT_ADDITIVE = "DIST_LIGHT_ADDITIVE";
 	static string USE_REALTIME_SHADOWS = "USE_REALTIME_SHADOWS";
@@ -107,6 +108,7 @@ public class CustomLightingMasterGUI : ShaderGUI
 	MaterialProperty fogDistanceDensity = null;
 
 	MaterialProperty alpha = null;
+	MaterialProperty cutout = null;
 
 	MaterialProperty distanceLightTexture = null;
 	MaterialProperty distanceLightDistance = null;
@@ -126,6 +128,7 @@ public class CustomLightingMasterGUI : ShaderGUI
 	bool fogMode = false;
 	bool distanceFogMode = false;
 	bool transparentMode = false;
+	bool cutoutMode = false;
 	bool distanceLightingMode = false;
 	bool distanceLightingAdditiveMode =false;
 	bool realtimeShadowsMode = false;
@@ -143,6 +146,8 @@ public class CustomLightingMasterGUI : ShaderGUI
 		fogMode =  m.IsKeywordEnabled (USE_FOG);
 		distanceFogMode = m.IsKeywordEnabled (USE_DIST_FOG);
 		transparentMode = m.IsKeywordEnabled (TRANSPARENT);
+		cutoutMode = m.IsKeywordEnabled (CUTOUT);
+
 		distanceLightingMode = m.IsKeywordEnabled (USE_DIST_LIGHT);
 		distanceLightingAdditiveMode = m.IsKeywordEnabled (DIST_LIGHT_ADDITIVE);
 		realtimeShadowsMode = m.IsKeywordEnabled (USE_REALTIME_SHADOWS);
@@ -202,6 +207,7 @@ public class CustomLightingMasterGUI : ShaderGUI
 		distanceLightPosition = FindProperty ("_LightPos", props);
 
 		alpha = FindProperty ("_Alpha", props);
+		cutout = FindProperty ("_Cutoff", props);
 
 		lightProbePower = FindProperty ("_LightProbePower", props);
 
@@ -391,7 +397,11 @@ public class CustomLightingMasterGUI : ShaderGUI
 		HeaderSeparator ("Misc");
 
 		Toggle (TRANSPARENT, 0, 0, ref transparentMode, 120, "Transparent");
-		enableTransparent (transparentMode);
+		if (transparentMode) {
+			Toggle (CUTOUT, 0, 0, ref cutoutMode, 120, "Cutout");
+		}
+		enableTransparent (transparentMode,cutoutMode);
+
 
 		Toggle (USE_REALTIME_SHADOWS, 0, 0, ref realtimeShadowsMode, 120, "Realtime Shadows");
 
@@ -438,19 +448,33 @@ public class CustomLightingMasterGUI : ShaderGUI
 		GUILayout.EndHorizontal ();
 	}
 
-	void enableTransparent(bool enable){
+	void enableTransparent(bool enable,bool enableCutout){
 		if (enable) {
 			EditorGUI.indentLevel++;
-			addProperty (alpha, "Alpha");
-			EditorGUI.indentLevel--;
-			//SrcAlpha OneMinusSrcAlpha
-			material.SetOverrideTag ("RenderType", "Transparent");
-			material.SetOverrideTag ("Queue", "Transparent");
-			material.SetInt ("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-			material.SetInt ("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-			material.SetInt ("_ZWrite", 0);
+			if (enableCutout) {
+				addProperty (cutout, "Alpha cutoff");
+				material.SetOverrideTag("RenderType", "TransparentCutout");
+				material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+				material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+				material.SetInt("_ZWrite", 1);
+				material.EnableKeyword("_ALPHATEST_ON");
+				material.DisableKeyword("_ALPHABLEND_ON");
+				material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+				material.renderQueue = 2450;
+			} 
+			else {
 
-			material.renderQueue = 3000;
+				addProperty (alpha, "Alpha");
+
+				//SrcAlpha OneMinusSrcAlpha
+				material.SetOverrideTag ("RenderType", "Transparent");
+				material.SetOverrideTag ("Queue", "Transparent");
+				material.SetInt ("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+				material.SetInt ("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+
+				material.renderQueue = 3000;
+			}
+			EditorGUI.indentLevel--;
 		}
 		else {
 			material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);

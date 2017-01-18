@@ -8,9 +8,9 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: white_cube
   m_Shader: {fileID: 4800000, guid: 31f5ef81e1c5045c08fccaba0451f912, type: 3}
-  m_ShaderKeywords: LIGHTMAP USE_LIGHTMAP USE_SHADOW _EMISSION
-  m_LightmapFlags: 1
-  m_CustomRenderQueue: -1
+  m_ShaderKeywords: LIGHTMAP USE_LIGHTMAP USE_SHADOW
+  m_LightmapFlags: 5
+  m_CustomRenderQueue: 2000
   stringTagMap: {}
   m_SavedProperties:
     serializedVersion: 2
@@ -125,14 +125,8 @@ Material:
         name: _FrontLight
       second: 0.97
     - first:
-        name: _GlossMapScale
-      second: 1
-    - first:
         name: _Glossiness
       second: 0.5
-    - first:
-        name: _GlossyReflections
-      second: 1
     - first:
         name: _GradientHeight
       second: 1
@@ -179,14 +173,8 @@ Material:
         name: _Shininess
       second: 0
     - first:
-        name: _SmoothnessTextureChannel
-      second: 0
-    - first:
         name: _Specular
       second: 0.01
-    - first:
-        name: _SpecularHighlights
-      second: 1
     - first:
         name: _SrcBlend
       second: 1
@@ -201,9 +189,6 @@ Material:
       second: 0
     - first:
         name: _UseFogDistance
-      second: 0
-    - first:
-        name: _UseFogStaticStart
       second: 0
     - first:
         name: _UseLightMap
@@ -230,9 +215,6 @@ Material:
     - first:
         name: _FogColor
       second: {r: 1, g: 1, b: 1, a: 1}
-    - first:
-        name: _FogStaticStartPos
-      second: {r: 0, g: 0, b: 0, a: 1}
     - first:
         name: _FrontColor
       second: {r: 0.7, g: 0.7, b: 0.7, a: 0}

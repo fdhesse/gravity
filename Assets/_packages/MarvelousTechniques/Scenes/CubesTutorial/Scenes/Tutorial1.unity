@@ -22716,11 +22716,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 967784d4a6f084aeaa60a61cc3b74912, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textColor:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
+  textColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &2087585404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22732,11 +22728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61d30c51d6e8f479e9a211b3aba23641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bloomColor:
-    r: 0.08823529
-    g: 0.5
-    b: 0.4318458
-    a: 1
+  bloomColor: {r: 0.08823529, g: 0.5, b: 0.4318458, a: 1}
   threshold: 0.835
   intensity: 0.394
   resolution: 1

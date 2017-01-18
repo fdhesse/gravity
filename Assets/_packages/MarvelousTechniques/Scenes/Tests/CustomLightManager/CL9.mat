@@ -87,7 +87,7 @@ Material:
       second: 0
     - first:
         name: _AmbientPower
-      second: 0.5
+      second: -0.07
     - first:
         name: _BumpScale
       second: 1
@@ -191,6 +191,9 @@ Material:
         name: _UseFogDistance
       second: 0
     - first:
+        name: _UseFogStaticStart
+      second: 0
+    - first:
         name: _UseLightMap
       second: 0
     - first:
@@ -202,7 +205,7 @@ Material:
     m_Colors:
     - first:
         name: _AmbientColor
-      second: {r: 1, g: 0.44117647, b: 0.44117647, a: 1}
+      second: {r: 1, g: 0.022058845, b: 0.022058845, a: 1}
     - first:
         name: _Color
       second: {r: 1, g: 1, b: 1, a: 1}
@@ -212,6 +215,9 @@ Material:
     - first:
         name: _FogColor
       second: {r: 1, g: 1, b: 1, a: 1}
+    - first:
+        name: _FogStaticStartPos
+      second: {r: 0, g: 0, b: 0, a: 1}
     - first:
         name: _FrontColor
       second: {r: 0.7, g: 0.7, b: 0.7, a: 0}

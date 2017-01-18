@@ -73,7 +73,7 @@ Shader "Kirnu/Marvelous/TextureAnimationTransparent" {
 			float2 offset=_MainTex_ST.zw;
 			offset.x*=_USpeed*_Time;
 			offset.y*=_VSpeed* _Time;
-  			o.main_uv += offset;
+  			o.uv += offset;
   			
 			return o;
 		}
