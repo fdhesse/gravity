@@ -6109,7 +6109,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 4bd543304ace08245bdc6a28eb171692, type: 2}
+  - {fileID: 2100000, guid: 877ee2a2de7ec6a419291f54d5077fa1, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -50053,7 +50053,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 4bd543304ace08245bdc6a28eb171692, type: 2}
+  - {fileID: 2100000, guid: 877ee2a2de7ec6a419291f54d5077fa1, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -55634,6 +55634,10 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: c468a94ec6048fe4c9e8f6c86ad2e804, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 877ee2a2de7ec6a419291f54d5077fa1, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c468a94ec6048fe4c9e8f6c86ad2e804, type: 3}
   m_IsPrefabParent: 0
@@ -57786,7 +57790,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 4bd543304ace08245bdc6a28eb171692, type: 2}
+  - {fileID: 2100000, guid: 877ee2a2de7ec6a419291f54d5077fa1, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}

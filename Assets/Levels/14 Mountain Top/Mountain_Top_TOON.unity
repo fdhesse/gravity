@@ -22235,7 +22235,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 2000000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: far clip plane
-      value: 5000
+      value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 11433416, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: focalLength
@@ -22321,6 +22321,10 @@ Prefab:
     - target: {fileID: 22470170, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
       propertyPath: m_LocalPosition.z
       value: 1006
+      objectReference: {fileID: 0}
+    - target: {fileID: 2000000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
+      propertyPath: near clip plane
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11433416, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}

@@ -99404,6 +99404,14 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 540e818aa3a4e314d8ee6d95d30c1800,
         type: 3}
+    - target: {fileID: 2000000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
+      propertyPath: near clip plane
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2000000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
+      propertyPath: far clip plane
+      value: 1500
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11433416, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
     - {fileID: 4500000, guid: e35ffd5cbdea73c449c77beae8ef82fb, type: 2}
