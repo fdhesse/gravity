@@ -6,9 +6,9 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: the_Relativity_env_TOON_mat
-  m_Shader: {fileID: 4800000, guid: 48dca5b99d113b8d11006bab44295342, type: 3}
-  m_ShaderKeywords: USE_MAIN_TEX _EMISSION
+  m_Name: the_Relativity_env_MARV_mat
+  m_Shader: {fileID: 4800000, guid: 31f5ef81e1c5045c08fccaba0451f912, type: 3}
+  m_ShaderKeywords: LIGHTING_FULL USE_MAIN_TEX _EMISSION
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -177,7 +177,7 @@ Material:
       second: 3
     - first:
         name: _RimPower
-      second: 0.74
+      second: 1
     - first:
         name: _ShadowPower
       second: 0
@@ -244,13 +244,13 @@ Material:
       second: {r: 0.7, g: 0.7, b: 0.7, a: 0}
     - first:
         name: _LightDirF
-      second: {r: 0, g: 0, b: -1, a: 1}
+      second: {r: -0.579228, g: -0.57357645, b: 0.5792279, a: 0}
     - first:
         name: _LightDirR
-      second: {r: 1, g: 0, b: 0, a: 1}
+      second: {r: -0.70710677, g: -0.000000014901161, b: -0.70710677, a: 0}
     - first:
         name: _LightDirT
-      second: {r: 0, g: 1, b: 0, a: 1}
+      second: {r: 0.4055798, g: -0.81915206, b: -0.40557975, a: 0}
     - first:
         name: _LightPos
       second: {r: 0, g: 0, b: 0, a: 1}
@@ -283,7 +283,7 @@ Material:
       second: {r: 1, g: 1, b: 1, a: 0}
     - first:
         name: _TopColor
-      second: {r: 1, g: 1, b: 1, a: 0}
+      second: {r: 0, g: 0.95862055, b: 1, a: 0}
     - first:
         name: _TopColorBottom
       second: {r: 1, g: 1, b: 1, a: 0}
