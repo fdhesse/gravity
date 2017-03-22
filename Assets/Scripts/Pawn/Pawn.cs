@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Assertions;
 
 /// <summary>
 /// <para>Monobehaviour class responsible for the player's pawn.</para>
@@ -50,14 +51,15 @@ public class Pawn : MonoBehaviour
 
 	// #VFX#
 	public ParticleSystem fallingVFX = null;
+	public LightningBolt FallingLightningBolt;
 
-	// #ANIMATIONS#
-	// animState
-	// 0 = idle
-	// 1 = walk
-	// 2 = fall
-	// 3 = land
-	private IEnumerator lookCoroutine;
+    // #ANIMATIONS#
+    // animState
+    // 0 = idle
+    // 1 = walk
+    // 2 = fall
+    // 3 = land
+    private IEnumerator lookCoroutine;
 	private Animator animator;
 	private int animState;
 	private int idleState;
@@ -82,7 +84,7 @@ public class Pawn : MonoBehaviour
 	
 	// #MOUSE#
 	[HideInInspector] public bool isCameraMode = false;
-	private float clickCountdown = 0.0f;
+	private float clickCountdown;
 
 	// #SPHERES#
 	private List<Tile> clickableTilesToChangeGravity = new List<Tile>(6);
@@ -104,14 +106,16 @@ public class Pawn : MonoBehaviour
 		}
 	}
 
-	void Awake()
+	public void Awake()
 	{
+        Assert.IsNotNull( FallingLightningBolt );
+
 		s_Instance = this;
 
 		tilesLayer = LayerMask.NameToLayer ("Tiles");
-		tilesLayerMask = LayerMask.GetMask(new string[]{"Tiles"});
+		tilesLayerMask = LayerMask.GetMask( "Tiles" );
 
-		world = gameObject.AddComponent<World>() as World;
+		world = gameObject.AddComponent<World>();
 	}
 
     void Start()
@@ -336,11 +340,16 @@ public class Pawn : MonoBehaviour
 
 			// stop the vfx if any
 			// if there's some falling sfx, start them
-			if (fallingVFX != null)
-				fallingVFX.Stop();			
+			if (fallingVFX != null ) {
+				fallingVFX.Stop();		
+            }
+		    if ( FallingLightningBolt != null )
+		    {
+		        FallingLightningBolt.Stop();
+		    }
 
-			// Snap to the tile
-			onEnterTile(collision.collider.gameObject.GetComponent<Tile>());
+            // Snap to the tile
+            onEnterTile(collision.collider.gameObject.GetComponent<Tile>());
 
 			moveTo( pawnTile.transform.position );
 		}
@@ -991,8 +1000,8 @@ public class Pawn : MonoBehaviour
 			isCameraMode = false;
 		}
 	}
-	
-	private IEnumerator DelayedPawnFall( TileOrientation orientation )
+
+    IEnumerator DelayedPawnFall( TileOrientation orientation )
 	{
 		Vector3 desiredPosition = new Vector3( 0, height * 0.5f * fallInterval, 0 );
 
@@ -1000,11 +1009,17 @@ public class Pawn : MonoBehaviour
 		isFalling = true;
 
 		// if there's some falling sfx, start them
-		if (fallingVFX != null)
-			fallingVFX.Play();
+	    if ( fallingVFX != null )
+	    {
+            fallingVFX.Play();
+        }
+	    if ( FallingLightningBolt != null )
+	    {
+            FallingLightningBolt.Play(focusedTile);
+        }
 
-//		collider.gameObject.layer = 12;
-		nextConstraint = GetComponent<Rigidbody>().constraints;
+        //		collider.gameObject.layer = 12;
+        nextConstraint = GetComponent<Rigidbody>().constraints;
 
 		ResetDynamic();
 		GetComponent<Rigidbody>().useGravity = false;
