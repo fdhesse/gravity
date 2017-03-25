@@ -2,6 +2,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine.Assertions;
 
 /// <summary>
@@ -1232,4 +1235,25 @@ public class Pawn : MonoBehaviour
 		world.GameOver();
 		fading = true;
 	}
+
+#if UNITY_EDITOR
+    [MenuItem( "Mu/Update Pawn Prefab" )]
+    public static void UpdatePawnPrefab()
+    {
+        var pawn = FindObjectOfType<Pawn>();
+        UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty( UnityEngine.SceneManagement.SceneManager.GetActiveScene() );
+        var prefab = PrefabUtility.GetPrefabParent( pawn.gameObject ) as GameObject;
+        var updatedPawn = PrefabUtility.InstantiatePrefab( prefab ) as GameObject;
+        if ( updatedPawn != null )
+        {
+            updatedPawn.transform.position = pawn.transform.position;
+            updatedPawn.name = pawn.name;
+            DestroyImmediate( pawn.gameObject );
+        }
+        else
+        {
+            Debug.LogError( "Could not find Pawn Prefab" );
+        }
+    }
+#endif
 }
