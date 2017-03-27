@@ -78,12 +78,9 @@ public class LightningBolt : MonoBehaviour
     {
         if ( focusedTile != null )
         {
-            if ( focusedTile.orientation != TileOrientation.Up )
-            {
-                target = focusedTile.gameObject.transform;
-                playing = true;
-                particleRenderer.enabled = true;
-            }
+            target = focusedTile.gameObject.transform;
+            playing = true;
+            particleRenderer.enabled = true;
         }
         else
         {
