@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 4aec59d33e06d5f41a27c53dde501c51
-timeCreated: 1490794251
+guid: 9a7a9380ed9e5b84a93269b76f8c9348
+timeCreated: 1490797742
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -10,23 +10,19 @@ ModelImporter:
     100004: joint3
     100006: joint4
     100008: joint5
-    100010: test3
+    100010: waterfall
     100012: //RootNode
-    100014: waterfall
     400000: joint1
     400002: joint2
     400004: joint3
     400006: joint4
     400008: joint5
-    400010: test3
+    400010: waterfall
     400012: //RootNode
-    400014: waterfall
-    4300000: test3
-    4300002: waterfall
+    4300000: waterfall
     7400000: Take 001
     9500000: //RootNode
-    13700000: test3
-    13700002: waterfall
+    13700000: waterfall
   materials:
     importMaterials: 1
     materialName: 0
@@ -51,15 +47,15 @@ ModelImporter:
     - serializedVersion: 16
       name: Take 001
       takeName: Take 001
-      firstFrame: 1
-      lastFrame: 60
+      firstFrame: 90
+      lastFrame: 120
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -85,11 +81,11 @@ ModelImporter:
         weight: 1
       - path: joint1/joint2/joint3/joint4/joint5
         weight: 1
-      - path: test3
+      - path: waterfall
         weight: 1
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 1
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
