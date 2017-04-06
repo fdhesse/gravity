@@ -1,4 +1,6 @@
-﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
 //----------------------------------------------
 //            Marvelous Techniques
@@ -51,7 +53,7 @@ Shader "Kirnu/Marvelous/OceanOpaque" {
   				
   					OUT o;
   	
-  					o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
+  					o.pos = UnityObjectToClipPos (v.vertex);
   					o.textcoord = TRANSFORM_TEX (v.texcoord, _ColorMap2);
   					o.textcoord.x = half(clamp(light+(1-_LightDir.w/100),0,1));
 

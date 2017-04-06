@@ -1,4 +1,6 @@
-﻿//----------------------------------------------
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+//----------------------------------------------
 //            Marvelous Techniques
 // Copyright © 2015 - Arto Vaarala, Kirnu Interactive
 // http://www.kirnuarp.com
@@ -46,7 +48,7 @@ Shader "Kirnu/Marvelous/WaterPool" {
 			OUT o;
 			v.vertex.y+=((sin((((_WaveFrequency * _Time) * 25.0) + ((v.vertex.x * _WaveLength) + (v.vertex.y * _WaveLength) + (v.vertex.z * _WaveLength)))) + 1.0) * _WaveMagnitude/100.0).x;
   					
-			o.pos = mul (UNITY_MATRIX_MVP, (v.vertex));
+			o.pos = UnityObjectToClipPos ((v.vertex));
 			float mult=_Time*_Speed ;
 			float multy=fmod(mult/8.0,0.125);
 			float2 offset=_MainTex_ST.zw;

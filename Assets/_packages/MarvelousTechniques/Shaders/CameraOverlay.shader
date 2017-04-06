@@ -1,4 +1,6 @@
-﻿//----------------------------------------------
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+//----------------------------------------------
 //            Marvelous Techniques
 // Copyright © 2015 - Arto Vaarala, Kirnu Interactive
 // http://www.kirnuarp.com
@@ -49,7 +51,7 @@ Shader "Kirnu/Marvelous/Camera Overlay"
             v2f vert (appdata_t v)
             {
                 v2f o;
-                o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+                o.vertex = UnityObjectToClipPos(v.vertex);
                 o.color = v.color;
                 o.texcoord = TRANSFORM_TEX(v.texcoord,_MainTex);
                 return o;

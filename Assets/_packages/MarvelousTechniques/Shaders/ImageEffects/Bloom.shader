@@ -1,4 +1,6 @@
-﻿Shader "Kirnu/Marvelous/Bloom" {
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Kirnu/Marvelous/Bloom" {
 Properties {
 		_MainTex ("Base (RGB)", 2D) = "white" {}
 		_Bloom ("Bloom (RGB)", 2D) = "black" {}
@@ -32,7 +34,7 @@ Properties {
 		v2f_simple vertBloom ( appdata_img v ){
 			v2f_simple o;
 			
-			o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
+			o.pos = UnityObjectToClipPos (v.vertex);
         	o.uv = v.texcoord;		
         	
         #if UNITY_UV_STARTS_AT_TOP
@@ -79,7 +81,7 @@ Properties {
 
 		v2f_Blur vertBlurVertical (appdata_img v){
 			v2f_Blur o;
-			o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
+			o.pos = UnityObjectToClipPos (v.vertex);
 			
 			o.uv = half4(v.texcoord.xy,1,1);
 			return o; 

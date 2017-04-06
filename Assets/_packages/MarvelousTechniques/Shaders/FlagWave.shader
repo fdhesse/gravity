@@ -1,4 +1,6 @@
-﻿//----------------------------------------------
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+//----------------------------------------------
 //            Marvelous Techniques
 // Copyright © 2015 - Arto Vaarala, Kirnu Interactive
 // http://www.kirnuarp.com
@@ -51,7 +53,7 @@ Shader "Kirnu/Marvelous/FlagWave" {
   					o.uv_MainTex = TRANSFORM_TEX (v.texcoord, _MainTex);
   					
   					v.vertex.z += (sin((v.vertex.x / _WaveLength) + (_Frequency * _Time)) * _Magnitude) * o.uv_MainTex.y;
-  					o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
+  					o.pos = UnityObjectToClipPos (v.vertex);
 
 					return o;
 				}
