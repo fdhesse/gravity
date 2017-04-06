@@ -13,7 +13,7 @@ public class World : MonoBehaviour {
 	private RotatingPlatform[] rotatingPlatforms;
 	private MovingPlatform[] movingPlatforms;
 	private GoldTile[] goldTiles;
-	private TileOrientation currentGravityOrientation = TileOrientation.Up;
+    private TileOrientation currentGravityOrientation = TileOrientation.Up;
 
 	public TileOrientation CurrentGravityOrientation
 	{
@@ -126,5 +126,10 @@ public class World : MonoBehaviour {
 		
 		for (int i = 0; i < goldTiles.Length; i++)
 			goldTiles[i].ChangeGravity( orientation );
+
+	    foreach ( var fallingCube in fallingCubes )
+	    {
+	        fallingCube.ChangeGravity( orientation );
+	    }
 	}
 }

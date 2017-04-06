@@ -30,8 +30,7 @@ public class FallingCube : MonoBehaviour
 		isInit = true;
 	}
 	
-	// Use this for initialization
-	void Start ()
+	public void Start ()
 	{
 		obstructedTiles = new Dictionary<Tile, TileType> ();
 
@@ -144,4 +143,18 @@ public class FallingCube : MonoBehaviour
 		
 		obstructedTiles.Clear ();
 	}
+
+    public void ChangeGravity( TileOrientation orientation )
+    {
+        // TODO: Tiles are initialized after the first gravity change
+        // TODO: They need to be sooner, or the first gravity change needs to happen later
+        // TODO: That's why there is no falling animation for the first fall
+        if ( tiles == null )
+        {
+            Debug.LogWarning( "Couldn't notify FallingCube that gravity has changed", gameObject );
+            return;
+        }
+        var fxTile = Tile.GetTileWithOrientation( tiles, Tile.GetInverseOrientation(orientation) );
+        Debug.Log( "Change gravity towards " + fxTile.orientation, fxTile );
+    }
 }

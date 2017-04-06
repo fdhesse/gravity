@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class FallingCubeBody : MonoBehaviour
 {
@@ -7,8 +6,9 @@ public class FallingCubeBody : MonoBehaviour
 	private Vector3 spawnPosition; // position of the Cube GameObject initial position
 	private Vector3 lastPosition = Vector3.zero; // position of the game object at the previous frame	
 
-	private Pawn PlayerPawn;
-	private Rigidbody body;
+	Pawn playerPawn;
+    Rigidbody playerPawnRigidbody;
+	Rigidbody body;
 
 	[HideInInspector] public FallingCube LegacyParent;
 
@@ -20,33 +20,42 @@ public class FallingCubeBody : MonoBehaviour
 		if ( bodyDummyParent == null )
 		{
 			bodyDummyParent = new GameObject( "RigidBody Dummies" );
-			bodyDummyParent.hideFlags = HideFlags.HideInHierarchy;
+			//bodyDummyParent.hideFlags = HideFlags.HideInHierarchy;
 		}
 		
-		PlayerPawn = (Pawn) GameObject.Find ("Pawn").GetComponent<Pawn>();
-		
-		body = GetComponent<Rigidbody> ();
+		playerPawn = GameObject.Find ("Pawn").GetComponent<Pawn>();
+	    playerPawnRigidbody = playerPawn.GetComponent<Rigidbody>();
+
+        body = GetComponent<Rigidbody> ();
 		body.transform.parent = bodyDummyParent.transform;
 		body.transform.localScale *= 1.001f;
 
 		body.interpolation = RigidbodyInterpolation.Interpolate;
 	}
 
-	void Update()
+	public void Update()
 	{
 		// if the cube is still falling, game can't continue
-		if ( Vector3.Magnitude(transform.position - lastPosition) > 0.001f && !isOutOfBounds )
+		if ( Vector3.Magnitude(transform.position - lastPosition) > 0.001f && !isOutOfBounds ) {
 			LegacyParent.isFalling = true;
-		else
+        }
+        else { 
 			LegacyParent.isFalling = false;
+        }
 
-		// memorise the last position for testing at the next frame
-		lastPosition = transform.position;
-		
-		if ( PlayerPawn.GetComponent<Rigidbody>().useGravity )
-			body.constraints = PlayerPawn.GetComponent<Rigidbody>().constraints;
-		else
-			body.constraints = PlayerPawn.nextConstraint;
+        // memorise the last position for testing at the next frame
+        lastPosition = transform.position;
+
+	    if ( playerPawnRigidbody.useGravity )
+	    {
+            if(body.constraints != playerPawnRigidbody.constraints ) { 
+	            body.constraints = playerPawnRigidbody.constraints;
+            }
+        }
+	    else
+	    {
+	        body.constraints = playerPawn.nextConstraint;
+        }
 		
 		LegacyParent.transform.position = transform.position;
 		LegacyParent.transform.rotation = transform.rotation;
@@ -75,7 +84,7 @@ public class FallingCubeBody : MonoBehaviour
 	{
 		if (collision.gameObject.tag == "Player")
 		{
-			PlayerPawn.CubeContact (transform.position);
+			playerPawn.CubeContact (transform.position);
 			return;
 		}
 
