@@ -7,6 +7,9 @@ public class GoldTile : MonoBehaviour
 	public Material inactiveMaterial;
 	public Material changeGravityMaterial;
 
+    [Tooltip( "The VFX to play once when the falling tile is activated and under the pawn" )]
+    public ParticleSystem FallActivationVFX = null;
+
     [Tooltip( "The VFX to play once when the gravity tile is activated and under the pawn" )]
     public ParticleSystem GravityActivationVFX = null;
 
@@ -155,12 +158,24 @@ public class GoldTile : MonoBehaviour
 		#endif
 	}
 
-	/// <summary>
-	/// Call this function if you want to play the VFX for when the tile is activated
-	/// </summary>
-	public void playActivationVFX()
-	{
-		if (GravityActivationVFX != null)
-			GravityActivationVFX.Play();
-	}
+    /// <summary>
+    /// Call this function if you want to play the gravity VFX for when the tile is activated
+    /// </summary>
+    public void PlayGravityActivationVFX()
+    {
+        if ( GravityActivationVFX != null )
+        {
+            GravityActivationVFX.Play();
+        }
+    }
+
+    /// <summary>
+    /// Call this function if you want to play the fall VFX for when the tile is activated
+    /// </summary>
+    public void PlayFallActivationVFX()
+    {
+        if ( FallActivationVFX != null ) {
+            FallActivationVFX.Play();
+        }
+    }
 }

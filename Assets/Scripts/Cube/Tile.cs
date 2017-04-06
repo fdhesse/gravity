@@ -347,7 +347,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	/// Call this function if you want to play the VFX for when the tile is activated
 	/// </summary>
 	
-	public void playActivationVFX()
+	public void PlayGravityActivationVFX()
 	{
 		if (this.transform.childCount > 0)
 		{
@@ -359,7 +359,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 				// get the gold tile component in the children which has it
 				GoldTile goldTileChild = meshGameObject.transform.GetChild(i).GetComponent<GoldTile>();
 				if (goldTileChild != null)
-					goldTileChild.playActivationVFX();
+					goldTileChild.PlayGravityActivationVFX();
 			}
 		}
 	}
