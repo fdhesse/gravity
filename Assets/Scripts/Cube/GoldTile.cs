@@ -7,11 +7,11 @@ public class GoldTile : MonoBehaviour
 	public Material inactiveMaterial;
 	public Material changeGravityMaterial;
 
-	[Tooltip("The VFX to play once when the tile is activated and under the pawn")]
-	public ParticleSystem activationVFX = null;
+    [Tooltip( "The VFX to play once when the gravity tile is activated and under the pawn" )]
+    public ParticleSystem GravityActivationVFX = null;
 
-	[Tooltip("The VFX to play in loop when the tile is active")]
-	public ParticleSystem activeVFX = null;
+    [Tooltip( "The VFX to play in loop when the gravity tile is active" )]
+	public ParticleSystem GravityActiveVFX = null;
 
 	private TileOrientation orientation;
 
@@ -118,12 +118,12 @@ public class GoldTile : MonoBehaviour
 		}
 
 		// also play/stop the active VFX if any
-		if (activeVFX != null)
+		if (GravityActiveVFX != null)
 		{
 			if (playActiveVFX)
-				activeVFX.Play();
+				GravityActiveVFX.Play();
 			else
-				activeVFX.Stop();
+				GravityActiveVFX.Stop();
 		}
 
 		// in editor mode we display the material to show the orientation of the tile
@@ -160,7 +160,7 @@ public class GoldTile : MonoBehaviour
 	/// </summary>
 	public void playActivationVFX()
 	{
-		if (activationVFX != null)
-			activationVFX.Play();
+		if (GravityActivationVFX != null)
+			GravityActivationVFX.Play();
 	}
 }
