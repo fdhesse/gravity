@@ -4,6 +4,7 @@ using UnityEditor;
 #endif
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// <para>Enum used to identify and register Platform types.</para>
@@ -347,7 +348,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 	/// Call this function if you want to play the VFX for when the tile is activated
 	/// </summary>
 	
-	public void playActivationVFX()
+	public void PlayGravityActivationVFX()
 	{
 		if (this.transform.childCount > 0)
 		{
@@ -359,7 +360,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 				// get the gold tile component in the children which has it
 				GoldTile goldTileChild = meshGameObject.transform.GetChild(i).GetComponent<GoldTile>();
 				if (goldTileChild != null)
-					goldTileChild.playActivationVFX();
+					goldTileChild.PlayGravityActivationVFX();
 			}
 		}
 	}
@@ -495,12 +496,39 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		}
 	}
 
-	#if UNITY_EDITOR
-	/// <summary>
-	/// Creates the tile mesh corresponding to the specified tile type and using some prefabs for each types.
-	/// </summary>
-	/// <param name="forceUpdate">If true, the update will be forced, even if the tile type didn't changed.</param>
-	public void updateTileMesh(bool forceUpdate)
+
+    public static Tile GetTileWithOrientation( Tile[] tileSample, TileOrientation orientation )
+    {
+        return tileSample.FirstOrDefault( tile => tile.orientation == orientation );
+    }
+
+    public static TileOrientation GetInverseOrientation( TileOrientation orientation )
+    {
+        switch ( orientation )
+        {
+            case TileOrientation.Up:
+                return TileOrientation.Down;
+            case TileOrientation.Down:
+                return TileOrientation.Up;
+            case TileOrientation.Left:
+                return TileOrientation.Right;
+            case TileOrientation.Right:
+                return TileOrientation.Left;
+            case TileOrientation.Front:
+                return TileOrientation.Back;
+            case TileOrientation.Back:
+                return TileOrientation.Front;
+            default:
+                return TileOrientation.None;
+        }
+    }
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// Creates the tile mesh corresponding to the specified tile type and using some prefabs for each types.
+    /// </summary>
+    /// <param name="forceUpdate">If true, the update will be forced, even if the tile type didn't changed.</param>
+    public void updateTileMesh(bool forceUpdate)
 	{
 		// get the prefab name of the correct prefab to spawn
 		string new_mesh_name = string.Empty;
@@ -612,5 +640,5 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			}
 		}
 	}
-	#endif
+#endif
 }

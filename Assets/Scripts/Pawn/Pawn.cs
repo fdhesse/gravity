@@ -587,7 +587,14 @@ public class Pawn : MonoBehaviour
 
 	private IEnumerator JumpToTile()
 	{
-		float elapsedTime = 0;
+        if ( focusedTile.orientation != TileOrientation.Up ) { 
+            if ( FallingLightningBolt != null )
+	        {
+	            FallingLightningBolt.Play( focusedTile );
+	        }
+        }
+
+        float elapsedTime = 0;
 		Vector3 up = new Vector3(0f, 0.25f, 0f);
 
 		while ( elapsedTime < jumpAnimationLength )
@@ -979,7 +986,7 @@ public class Pawn : MonoBehaviour
 							else
 							{
 								// asked the clicked tile to play it's attraction VFX
-								focusedTile.playActivationVFX();
+								focusedTile.PlayGravityActivationVFX();
 								//for punishing gravity take the tile == null here
 								onEnterTile(null);
 								StartCoroutine( DelayedPawnFall ( focusedTile.orientation ));
