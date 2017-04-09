@@ -1023,9 +1023,12 @@ public class Pawn : MonoBehaviour
 	    {
             fallingVFX.Play();
         }
-	    if ( FallingLightningBolt != null )
-	    {
-            FallingLightningBolt.Play(focusedTile);
+        if ( focusedTile.orientation != TileOrientation.Up )
+        {
+            if ( FallingLightningBolt != null )
+            {
+                FallingLightningBolt.Play( focusedTile );
+            }
         }
 
         //		collider.gameObject.layer = 12;
