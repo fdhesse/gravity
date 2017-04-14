@@ -1,24 +1,30 @@
 fileFormatVersion: 2
-guid: 54ceea2544ea450408c20ed795e695c6
-timeCreated: 1486701756
+guid: 0ed6bfd790d2cfa459d7d11bb9708219
+timeCreated: 1492148286
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: //RootNode
+    100000: head
     100002: pickaxe
-    100004: rope
-    400000: //RootNode
+    100004: //RootNode
+    100006: rope
+    400000: head
     400002: pickaxe
-    400004: rope
-    2300000: pickaxe
-    2300002: rope
+    400004: //RootNode
+    400006: rope
+    2300000: head
+    2300002: pickaxe
     2300004: //RootNode
-    3300000: pickaxe
-    3300002: rope
+    2300006: rope
+    3300000: head
+    3300002: pickaxe
     3300004: //RootNode
-    4300000: rope
-    4300002: pickaxe
+    3300006: rope
+    4300000: player
+    4300002: head
+    4300004: pickaxe
+    4300006: rope
     7400000: Take 001
     9500000: //RootNode
   materials:
@@ -43,7 +49,43 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 61
+      lastFrame: 120
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: head
+        weight: 1
+      - path: pickaxe
+        weight: 1
+      - path: pickaxe/rope
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -83,7 +125,7 @@ ModelImporter:
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
-    skeletonHasParents: 0
+    skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
   humanoidOversampling: 1
