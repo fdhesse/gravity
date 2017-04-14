@@ -83334,6 +83334,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1212006167}
+  - component: {fileID: 1212006168}
   m_Layer: 0
   m_Name: Gravity Waterfall
   m_TagString: Untagged
@@ -83356,6 +83357,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1212006168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1212006166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4043e4fa86e0f894eaf68938c00dc1f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WaterFlow: 0
+  WatefallAnimator: {fileID: 886371020}
 --- !u!1 &1212872485
 GameObject:
   m_ObjectHideFlags: 8
@@ -143119,7 +143133,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: ed1c797ec3736704db03a0d64d010e33, type: 2}
       propertyPath: m_LocalScale.x
-      value: 16.69951
+      value: 36.98121
       objectReference: {fileID: 0}
     - target: {fileID: 19800000, guid: ed1c797ec3736704db03a0d64d010e33, type: 2}
       propertyPath: ShapeModule.boxX
