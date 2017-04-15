@@ -9,7 +9,8 @@ public class World : MonoBehaviour {
 	public static float G = 40.0f;	// 9.81f		// constante gravité
 	private bool isGameOver = false;		//Game state
 	private FallingCube[] fallingCubes;
-	private GravityPlatform[] gravityPlatforms;
+	private Waterfall[] waterfalls;
+    private GravityPlatform[] gravityPlatforms;
 	private RotatingPlatform[] rotatingPlatforms;
 	private MovingPlatform[] movingPlatforms;
 	private GoldTile[] goldTiles;
@@ -22,8 +23,9 @@ public class World : MonoBehaviour {
 
 	public void Init()
 	{
+		waterfalls = FindObjectsOfType<Waterfall>();
 		fallingCubes = FindObjectsOfType<FallingCube>();
-		gravityPlatforms = FindObjectsOfType<GravityPlatform>();
+        gravityPlatforms = FindObjectsOfType<GravityPlatform>();
 		rotatingPlatforms = FindObjectsOfType<RotatingPlatform>();
 		movingPlatforms = FindObjectsOfType<MovingPlatform>();
 		goldTiles = FindObjectsOfType<GoldTile> ();
@@ -127,9 +129,13 @@ public class World : MonoBehaviour {
 		for (int i = 0; i < goldTiles.Length; i++)
 			goldTiles[i].ChangeGravity( orientation );
 
-	    foreach ( var fallingCube in fallingCubes )
-	    {
-	        fallingCube.ChangeGravity( orientation );
-	    }
-	}
+        foreach ( var fallingCube in fallingCubes )
+        {
+            fallingCube.ChangeGravity( orientation );
+        }
+        foreach ( var waterfall in waterfalls )
+        {
+            waterfall.ChangeGravity( orientation );
+        }
+    }
 }
