@@ -1,12 +1,26 @@
-﻿using System;
-using UnityEditor;
+﻿using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [CustomEditor( typeof(Waterfall) )]
 public class WaterfallEditor : Editor
 {
+    SerializedProperty waterfallTileOrientationProperty;
+    const string WaterfallTileOrientationPropertyName = "WaterfallTileOrientation";
+
+    public void OnEnable()
+    {
+        waterfallTileOrientationProperty = serializedObject.FindProperty( WaterfallTileOrientationPropertyName );
+    }
+
+    public void OnDisable()
+    {
+    }
+
     public override void OnInspectorGUI()
     {
+        serializedObject.Update();
         DrawDefaultInspector();
 
         var waterfall = (Waterfall)target;
@@ -27,7 +41,7 @@ public class WaterfallEditor : Editor
         gravityButton.fixedWidth = 200f;
         Color activeGravityColor;
         ColorUtility.TryParseHtmlString( "#02b102", out activeGravityColor );
-        
+
         GUILayout.Space( 20 );
 
         EditorGUILayout.BeginHorizontal();
@@ -45,48 +59,53 @@ public class WaterfallEditor : Editor
         EditorGUILayout.BeginVertical();
         EditorGUILayout.BeginHorizontal();
 
-        if ( waterfall.WaterFallTileOrientation == TileOrientation.Up )
+        if ( waterfall.WaterfallTileOrientation == TileOrientation.Up )
         {
             GUI.backgroundColor = activeTileColor;
         }
         if ( GUILayout.Button( "Up",
-            waterfall.WaterFallTileOrientation == TileOrientation.Up ? tileColoredButton : tileButton ) )
+            waterfall.WaterfallTileOrientation == TileOrientation.Up ? tileColoredButton : tileButton ) )
         {
             waterfall.transform.rotation = Quaternion.Euler( 0f, 0f, -90f );
-            waterfall.WaterFallTileOrientation = TileOrientation.Up;
-            if ( Pawn.Instance.world )
+            waterfall.WaterfallTileOrientation = TileOrientation.Up;
+            waterfallTileOrientationProperty.intValue = (int)( TileOrientation.Up );
+            if ( Pawn.Instance )
             {
                 waterfall.ChangeGravity( waterfall.GravityAffectingWaterfall );
             }
         }
         GUI.backgroundColor = oldColor;
 
-        if ( waterfall.WaterFallTileOrientation == TileOrientation.Front )
+        if ( waterfall.WaterfallTileOrientation == TileOrientation.Front )
         {
             GUI.backgroundColor = activeTileColor;
         }
         if ( GUILayout.Button( "Front",
-            waterfall.WaterFallTileOrientation == TileOrientation.Front ? tileColoredButton : tileButton ) )
+            waterfall.WaterfallTileOrientation == TileOrientation.Front ? tileColoredButton : tileButton ) )
         {
             waterfall.transform.rotation = Quaternion.Euler( 0f, -90f, 0f );
-            waterfall.WaterFallTileOrientation = TileOrientation.Front;
-            if ( Pawn.Instance.world )
+            waterfall.WaterfallTileOrientation = TileOrientation.Front;
+            waterfallTileOrientationProperty.intValue = (int)( TileOrientation.Front );
+
+            if ( Pawn.Instance )
             {
                 waterfall.ChangeGravity( waterfall.GravityAffectingWaterfall );
             }
         }
         GUI.backgroundColor = oldColor;
 
-        if ( waterfall.WaterFallTileOrientation == TileOrientation.Left )
+        if ( waterfall.WaterfallTileOrientation == TileOrientation.Left )
         {
             GUI.backgroundColor = activeTileColor;
         }
         if ( GUILayout.Button( "Left",
-            waterfall.WaterFallTileOrientation == TileOrientation.Left ? tileColoredButton : tileButton ) )
+            waterfall.WaterfallTileOrientation == TileOrientation.Left ? tileColoredButton : tileButton ) )
         {
             waterfall.transform.rotation = Quaternion.Euler( 0f, 0f, 0f );
-            waterfall.WaterFallTileOrientation = TileOrientation.Left;
-            if ( Pawn.Instance.world )
+            waterfall.WaterfallTileOrientation = TileOrientation.Left;
+            waterfallTileOrientationProperty.intValue = (int)( TileOrientation.Left );
+
+            if ( Pawn.Instance )
             {
                 waterfall.ChangeGravity( waterfall.GravityAffectingWaterfall );
             }
@@ -96,48 +115,54 @@ public class WaterfallEditor : Editor
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.BeginHorizontal();
 
-        if ( waterfall.WaterFallTileOrientation == TileOrientation.Down )
+        if ( waterfall.WaterfallTileOrientation == TileOrientation.Down )
         {
             GUI.backgroundColor = activeTileColor;
         }
         if ( GUILayout.Button( "Down",
-            waterfall.WaterFallTileOrientation == TileOrientation.Down ? tileColoredButton : tileButton ) )
+            waterfall.WaterfallTileOrientation == TileOrientation.Down ? tileColoredButton : tileButton ) )
         {
             waterfall.transform.rotation = Quaternion.Euler( 0f, 0f, 90f );
-            waterfall.WaterFallTileOrientation = TileOrientation.Down;
-            if ( Pawn.Instance.world )
+            waterfall.WaterfallTileOrientation = TileOrientation.Down;
+            waterfallTileOrientationProperty.intValue = (int)( TileOrientation.Down );
+
+            if ( Pawn.Instance )
             {
                 waterfall.ChangeGravity( waterfall.GravityAffectingWaterfall );
             }
         }
         GUI.backgroundColor = oldColor;
 
-        if ( waterfall.WaterFallTileOrientation == TileOrientation.Back )
+        if ( waterfall.WaterfallTileOrientation == TileOrientation.Back )
         {
             GUI.backgroundColor = activeTileColor;
         }
         if ( GUILayout.Button( "Back",
-            waterfall.WaterFallTileOrientation == TileOrientation.Back ? tileColoredButton : tileButton ) )
+            waterfall.WaterfallTileOrientation == TileOrientation.Back ? tileColoredButton : tileButton ) )
         {
             waterfall.transform.rotation = Quaternion.Euler( 0f, 90f, 0f );
-            waterfall.WaterFallTileOrientation = TileOrientation.Back;
-            if ( Pawn.Instance.world )
+            waterfall.WaterfallTileOrientation = TileOrientation.Back;
+            waterfallTileOrientationProperty.intValue = (int)( TileOrientation.Back );
+
+            if ( Pawn.Instance )
             {
                 waterfall.ChangeGravity( waterfall.GravityAffectingWaterfall );
             }
         }
         GUI.backgroundColor = oldColor;
 
-        if ( waterfall.WaterFallTileOrientation == TileOrientation.Right )
+        if ( waterfall.WaterfallTileOrientation == TileOrientation.Right )
         {
             GUI.backgroundColor = activeTileColor;
         }
         if ( GUILayout.Button( "Right",
-            waterfall.WaterFallTileOrientation == TileOrientation.Right ? tileColoredButton : tileButton ) )
+            waterfall.WaterfallTileOrientation == TileOrientation.Right ? tileColoredButton : tileButton ) )
         {
             waterfall.transform.rotation = Quaternion.Euler( 0f, 180f, 0f );
-            waterfall.WaterFallTileOrientation = TileOrientation.Right;
-            if ( Pawn.Instance.world )
+            waterfall.WaterfallTileOrientation = TileOrientation.Right;
+            waterfallTileOrientationProperty.intValue = (int)( TileOrientation.Right );
+
+            if ( Pawn.Instance )
             {
                 waterfall.ChangeGravity( waterfall.GravityAffectingWaterfall );
             }
@@ -154,14 +179,15 @@ public class WaterfallEditor : Editor
         ////////////////////
         //  Test Gravity  //
         ////////////////////
-        
+
         EditorGUI.BeginDisabledGroup( !Application.isPlaying );
         EditorGUILayout.BeginVertical();
 
         GUILayout.Label( "Use this to test gravity effect on waterfall:" );
         if ( !Application.isPlaying )
         {
-            GUILayout.Label( "Overriding gravity values for the waterfall only works when game is playing", EditorStyles.whiteBoldLabel );
+            GUILayout.Label( "Overriding gravity values for the waterfall only works when game is playing",
+                EditorStyles.whiteBoldLabel );
         }
         GUILayout.Space( 5 );
         EditorGUILayout.BeginVertical();
@@ -244,12 +270,12 @@ public class WaterfallEditor : Editor
         EditorGUILayout.EndVertical();
         EditorGUI.EndDisabledGroup();
 
-
-
         GUILayout.FlexibleSpace();
         EditorGUILayout.EndHorizontal();
 
         GUILayout.Space( 20 );
+
+        serializedObject.ApplyModifiedProperties();
     }
 
     Texture2D GetColoredTexture( Color color )

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Assertions;
 
 public enum WaterOrientation
@@ -13,8 +14,8 @@ public enum WaterOrientation
 
 public class Waterfall : MonoBehaviour
 {
+    [HideInInspector] public TileOrientation WaterfallTileOrientation;
     [HideInInspector] public TileOrientation GravityAffectingWaterfall;
-    [HideInInspector] public TileOrientation WaterFallTileOrientation;
     public Animator WaterfallAnimator;
 
     readonly int[,] tileToWaterOrientationMap =
@@ -47,7 +48,7 @@ public class Waterfall : MonoBehaviour
     {
         GravityAffectingWaterfall = Pawn.Instance.world.CurrentGravityOrientation;
         var orientation =
-            tileToWaterOrientationMap[(int)( WaterFallTileOrientation - 1 ), (int)( GravityAffectingWaterfall - 1 )];
+            tileToWaterOrientationMap[(int)( WaterfallTileOrientation - 1 ), (int)( GravityAffectingWaterfall - 1 )];
         WaterfallAnimator.Play( gravityOrientationToStateName[orientation] );
     }
 
@@ -55,6 +56,6 @@ public class Waterfall : MonoBehaviour
     {
         GravityAffectingWaterfall = inverseGravityOrientation;
         WaterfallAnimator.SetInteger( "WaterOrientation",
-            ( tileToWaterOrientationMap[(int)( WaterFallTileOrientation - 1 ), (int)( inverseGravityOrientation - 1 )] ) );
+            ( tileToWaterOrientationMap[(int)( WaterfallTileOrientation - 1 ), (int)( inverseGravityOrientation - 1 )] ) );
     }
 }
