@@ -1,23 +1,21 @@
-﻿using System;
-using System.IO;
-using System.Security.Cryptography;
+﻿using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-public class AnimanipulatorWindow : EditorWindow
+public class ManipulateAnimationsWindow : EditorWindow
 {
     AnimationClip animationClip;
-    string resultAnimationSavePath = "Assets/Animation/Waterfall/Sorted Animations/Derived/";
+    string resultAnimationSavePath = "Assets/Animations/";
     string resultAnimationName = "";
 
     const string AnimationClipLabel = "Target Animation";
     const string ResultAnimationSavePathLabel = "Path to save";
     const string ResultAnimationNameLabel = "Animation name";
 
-    [MenuItem( "Mu/Animanipulator" )] public static void ShowWindow()
+    [MenuItem( "Mu/Manipulate Animations" )] public static void ShowWindow()
     {
-        //Show existing window instance. If one doesn't exist, make one.
-        GetWindow( typeof(AnimanipulatorWindow) );
+        GetWindow( typeof(ManipulateAnimationsWindow) );
     }
 
     public void OnGUI()
@@ -27,7 +25,7 @@ public class AnimanipulatorWindow : EditorWindow
         var guiStyle = EditorStyles.centeredGreyMiniLabel;
         guiStyle.fontSize = 20;
         guiStyle.alignment = TextAnchor.MiddleCenter;
-        GUILayout.Label( "Animanipulator", guiStyle );
+        GUILayout.Label( "Manipulate Animations", guiStyle );
         GUILayout.Space( 20 );
         animationClip = EditorGUILayout.ObjectField(
             AnimationClipLabel, animationClip, typeof(AnimationClip), false ) as AnimationClip;
@@ -36,19 +34,14 @@ public class AnimanipulatorWindow : EditorWindow
         resultAnimationSavePath = EditorGUILayout.TextField( ResultAnimationSavePathLabel, resultAnimationSavePath );
         resultAnimationName = EditorGUILayout.TextField( ResultAnimationNameLabel, resultAnimationName );
 
-        //if ( GUILayout.Button( "Rotate Animation 180 on x (left)" ) )
-        //{
-        //    RotateOnAxisAndSave( animationClip, new Vector3( 180f, 0f, 0f ) );
-        //}
-
         if ( GUILayout.Button( "Rotate Animation 90 on x (left)" ) )
         {
-            RotateOnAxisAndSave( animationClip, new Vector3( 90f, 0f, 0f ) );
+            RotateAndSave( animationClip, new Vector3( 90f, 0f, 0f ) );
         }
 
         if ( GUILayout.Button( "Rotate Animation -90 on the x (right)" ) )
         {
-            RotateOnAxisAndSave( animationClip, new Vector3( -90, 0f, 0f ) );
+            RotateAndSave( animationClip, new Vector3( -90, 0f, 0f ) );
         }
 
         if ( GUILayout.Button( "Reverse Animation" ) )
@@ -63,17 +56,17 @@ public class AnimanipulatorWindow : EditorWindow
     {
         var resultAnimation = new AnimationClip();
 
-        float clipLength = sourceAnimation.length;
+        var clipLength = sourceAnimation.length;
         var curves = AnimationUtility.GetAllCurves( sourceAnimation, true );
 
-        foreach ( AnimationClipCurveData curve in curves )
+        foreach ( var curve in curves )
         {
             var keys = curve.curve.keys;
-            int keyCount = keys.Length;
+            var keyCount = keys.Length;
             var postWrapmode = curve.curve.postWrapMode;
             curve.curve.postWrapMode = curve.curve.preWrapMode;
             curve.curve.preWrapMode = postWrapmode;
-            for ( int i = 0; i < keyCount; i++ )
+            for ( var i = 0; i < keyCount; i++ )
             {
                 var keyframe = keys[i];
                 keyframe.time = clipLength - keyframe.time;
@@ -89,7 +82,7 @@ public class AnimanipulatorWindow : EditorWindow
         var events = AnimationUtility.GetAnimationEvents( resultAnimation );
         if ( events.Length > 0 )
         {
-            for ( int i = 0; i < events.Length; i++ )
+            for ( var i = 0; i < events.Length; i++ )
             {
                 events[i].time = resultAnimation.length - events[i].time;
             }
@@ -100,50 +93,39 @@ public class AnimanipulatorWindow : EditorWindow
             Path.ChangeExtension( Path.Combine( resultAnimationSavePath, resultAnimationName ), "anim" ) );
     }
 
-    void RotateOnAxisAndSave( AnimationClip sourceAnimation, Vector3 axialRotation )
+    // Applies some axial rotation to the animation's first joint
+    void RotateAndSave( AnimationClip sourceAnimation, Vector3 axialRotation )
     {
         var resultAnimation = new AnimationClip();
+
+        var bindings = AnimationUtility.GetCurveBindings( sourceAnimation );
+        var firstBinding = bindings[0];
+
+        var firstNode = firstBinding.path.Split( '/' )[0];
         foreach ( var binding in AnimationUtility.GetCurveBindings( sourceAnimation ) )
         {
             var curve = AnimationUtility.GetEditorCurve( sourceAnimation, binding );
-            Debug.Log( binding.propertyName );
-            if ( binding.path.Equals( "joint1" ) && binding.propertyName.Contains( "localEulerAnglesRaw.y" ) )
+            if ( binding.path.Equals( firstNode ) && binding.propertyName.Contains( "localEulerAnglesRaw." ) )
             {
                 var keyClones = new Keyframe[curve.keys.Length];
                 for ( var i = 0; i < curve.keys.Length; i++ )
                 {
                     var keys = curve.keys;
                     var keyframe = keys[i];
-                    Debug.Log( keyframe.value );
-                    keyframe.value += axialRotation.y;
-
-                    keyClones[i] = keyframe;
-                }
-                curve.keys = keyClones;
-            }
-            if ( binding.path.Equals( "joint1" ) && binding.propertyName.Contains( "localEulerAnglesRaw.x" ) )
-            {
-                var keyClones = new Keyframe[curve.keys.Length];
-                for ( var i = 0; i < curve.keys.Length; i++ )
-                {
-                    var keys = curve.keys;
-                    var keyframe = keys[i];
-                    Debug.Log( keyframe.value );
-                    keyframe.value += axialRotation.x;
-
-                    keyClones[i] = keyframe;
-                }
-                curve.keys = keyClones;
-            }
-            if ( binding.path.Equals( "joint1" ) && binding.propertyName.Contains( "localEulerAnglesRaw.z" ) )
-            {
-                var keyClones = new Keyframe[curve.keys.Length];
-                for ( var i = 0; i < curve.keys.Length; i++ )
-                {
-                    var keys = curve.keys;
-                    var keyframe = keys[i];
-                    Debug.Log( keyframe.value );
-                    keyframe.value += axialRotation.z;
+                    switch ( binding.propertyName.Last() )
+                    {
+                        case 'x':
+                            keyframe.value += axialRotation.x;
+                            break;
+                        case 'y':
+                            keyframe.value += axialRotation.y;
+                            break;
+                        case 'z':
+                            keyframe.value += axialRotation.z;
+                            break;
+                        default:
+                            throw new UnityException( string.Format( "Unknown binding property: {0}", binding.propertyName ) );
+                    }
 
                     keyClones[i] = keyframe;
                 }
