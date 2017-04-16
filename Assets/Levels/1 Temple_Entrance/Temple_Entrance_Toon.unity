@@ -142538,7 +142538,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: ed1c797ec3736704db03a0d64d010e33, type: 2}
       propertyPath: m_LocalScale.x
-      value: 47.15249
+      value: 34.444138
       objectReference: {fileID: 0}
     - target: {fileID: 19800000, guid: ed1c797ec3736704db03a0d64d010e33, type: 2}
       propertyPath: ShapeModule.boxX
@@ -142764,19 +142764,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4761929421707824, guid: 5a1b4c14a42b60541b6d93f37b5bf379, type: 2}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4761929421707824, guid: 5a1b4c14a42b60541b6d93f37b5bf379, type: 2}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 4761929421707824, guid: 5a1b4c14a42b60541b6d93f37b5bf379, type: 2}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4761929421707824, guid: 5a1b4c14a42b60541b6d93f37b5bf379, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 4761929421707824, guid: 5a1b4c14a42b60541b6d93f37b5bf379, type: 2}
       propertyPath: m_RootOrder
@@ -142801,6 +142801,16 @@ Prefab:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 75376571f76b14143993b1adce5bc289, type: 2}
+    - target: {fileID: 114653007192100996, guid: 5a1b4c14a42b60541b6d93f37b5bf379,
+        type: 2}
+      propertyPath: WaterfallTileOrientation
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114653007192100996, guid: 5a1b4c14a42b60541b6d93f37b5bf379,
+        type: 2}
+      propertyPath: waterfallTileOrientation
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5a1b4c14a42b60541b6d93f37b5bf379, type: 2}
   m_IsPrefabParent: 0
