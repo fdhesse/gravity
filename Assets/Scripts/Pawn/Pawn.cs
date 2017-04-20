@@ -556,9 +556,40 @@ public class Pawn : MonoBehaviour
 				// check if we didn't start jumping yet
 				if ( !isJumping )
 				{
-					animState = 2;
-					isJumping = true;
-					isFalling = true;
+                    isJumping = true;
+                    isFalling = true;
+
+                    var fallDistance = Mathf.Abs( pawnTile.transform.position.y - focusedTile.transform.position.y );
+
+                    Animator.SetTrigger( "Transitioning" );
+
+                    switch ( (int)fallDistance )
+				    {
+                        case 10:
+                            animState = 4; // 4 = ClimbDown
+                            break;
+                        case 20:
+                            animState = 5; // 5 = Rappel20
+                            break;
+                        case 30:
+                            animState = 6; // 6 = Rappel30
+                            break;
+                        case 40:
+                            animState = 7; // 7 = Rappel40
+                            break;
+                        case 50:
+                            animState = 8; // 8 = Rappel50
+                            break;
+                        case 60:
+                            animState = 9; // 9 = Rappel60
+                            break;
+                        case 70:
+                            animState = 10; // 10 = Rappel70
+                            break;
+                        default:
+				            animState = -1;
+				            break;
+				    }
 					
 					// reset the pawn tile when starting to jump, because if you jump from
 					// a moving platform, you don't want to jump relative to the plateform
@@ -586,7 +617,7 @@ public class Pawn : MonoBehaviour
 	    }
     }
 
-	private IEnumerator JumpToTile()
+    private IEnumerator JumpToTile()
 	{
         if ( focusedTile.orientation != TileOrientation.Up ) { 
             if ( FallingLightningBolt != null )
