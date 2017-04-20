@@ -62,8 +62,8 @@ public class Pawn : MonoBehaviour
     // 1 = walk
     // 2 = fall
     // 3 = land
+    public Animator Animator;
     private IEnumerator lookCoroutine;
-	private Animator animator;
 	private int animState;
 	private int idleState;
 	private float idleWait;
@@ -112,6 +112,7 @@ public class Pawn : MonoBehaviour
 	public void Awake()
 	{
         Assert.IsNotNull( FallingLightningBolt );
+        Assert.IsNotNull( Animator );
 
 		s_Instance = this;
 
@@ -128,8 +129,6 @@ public class Pawn : MonoBehaviour
 		isWalking = false;
 		isWalkingInStairs = false;
 		
-		animator = transform.FindChild("OldGuy").GetComponent<Animator>();
-
 		capsuleCollider = GetComponent<CapsuleCollider>();
 		height = capsuleCollider.height * capsuleCollider.transform.localScale.y;
 		width = capsuleCollider.radius * capsuleCollider.transform.localScale.x;
@@ -170,15 +169,17 @@ public class Pawn : MonoBehaviour
 				idleState = Mathf.RoundToInt( rand );
 		}
 
-		if ( idleWait != animator.GetFloat( "idle_wait" ) )
-			animator.SetFloat("idle_wait", idleWait);
+		if ( idleWait != Animator.GetFloat( "idle_wait" ) ) { 
+            Animator.SetFloat("idle_wait", idleWait);
+        }
 
-		if ( animState != animator.GetInteger( "anim_state" ) )
-			animator.SetInteger("anim_state", animState);
+        if ( animState != Animator.GetInteger( "anim_state" ) ) { 
+            Animator.SetInteger("anim_state", animState);
+        }
 
-		if ( idleState != animator.GetInteger( "idle_state" ) )
+        if ( idleState != Animator.GetInteger( "idle_state" ) )
 		{
-			animator.SetInteger("idle_state", idleState);
+            Animator.SetInteger("idle_state", idleState);
 			StartCoroutine( SetIdleToZero() );
 		}
 	}
