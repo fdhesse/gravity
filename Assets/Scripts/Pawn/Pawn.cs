@@ -36,8 +36,9 @@ public class Pawn : MonoBehaviour
 	public float fallInterval = .5f;			// Gap between tile and pawn before fall
 	public float jumpAnimationLength = 0.3f;
     public float delayBeforeClimbingDown = 0.3f;
+    public float delayBeforeRappeling = 0.3f;
     public float climbdownMovementDuration = 0.3f;
-	public float rappelAnimationLength = 0.3f;
+	public float RappelMovementDuration = 0.3f;
 
     private float height;
 	private float width;
@@ -596,9 +597,9 @@ public class Pawn : MonoBehaviour
         }
     }
 
-    void RappelDown( Vector3 destination )
+    void RappelDown( Vector3 targetTilePosition )
     {
-        var rappelDistance = Mathf.Abs( pawnTile.transform.position.y - destination.y );
+        var rappelDistance = Mathf.Abs( pawnTile.transform.position.y - targetTilePosition.y );
 
         //throw new NotImplementedException();
         isRappelingDown = true;
@@ -614,29 +615,17 @@ public class Pawn : MonoBehaviour
         onEnterTile( null );
 
         // the modification in height
-        StartCoroutine( RappelDownToTile( destination, numberOfCubes ) );
+        StartCoroutine( SectionedMotionDown( targetTilePosition, delayBeforeRappeling, RappelMovementDuration * numberOfCubes, () =>
+        {
+            isRappelingDown = false;
+            clickedTile = null; // target reached, forget it
+        } ) );
 
         // the modification in orientation
         //if ( lookCoroutine != null )
         //    StopCoroutine( lookCoroutine );
         //lookCoroutine = LookAt( clickedTile.transform.position );
         //StartCoroutine( lookCoroutine );
-    }
-
-    IEnumerator RappelDownToTile( Vector3 targetPosition, int numberOfCubes )
-    {
-        var elapsedTime = 0.0f;
-
-        while ( elapsedTime < rappelAnimationLength * numberOfCubes )
-        {
-            elapsedTime += Time.deltaTime;
-
-            yield return null;
-        }
-
-        transform.position = targetPosition;
-        isRappelingDown = false;
-        clickedTile = null; // target reached, forget it
     }
 
     void ClimbDown( Vector3 targetTilePosition )
@@ -652,7 +641,11 @@ public class Pawn : MonoBehaviour
         onEnterTile( null );
 
         // the modification in height
-        StartCoroutine( ClimbDownToTileViaBezierSingleMotion( targetTilePosition ) );
+        StartCoroutine( SectionedMotionDown( targetTilePosition, delayBeforeClimbingDown, climbdownMovementDuration, () =>
+        {
+            isClimbingDown = false;
+            clickedTile = null; // target reached, forget it
+        } ) );
 
         // the modification in orientation
         //if ( lookCoroutine != null )
@@ -682,7 +675,7 @@ public class Pawn : MonoBehaviour
         StartCoroutine( lookCoroutine );
     }
 
-    IEnumerator ClimbDownToTileViaBezierSingleMotion( Vector3 targetTilePosition )
+    IEnumerator SectionedMotionDown( Vector3 targetTilePosition, float delayBeforeMovement,float movementDuration, Action post )
     {
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
@@ -718,21 +711,21 @@ public class Pawn : MonoBehaviour
 
         var pathDistance = firstPathDistance + secondPathDistance + thirdPathDistance;
 
-        while ( elapsedTime < delayBeforeClimbingDown )
+        while ( elapsedTime < delayBeforeMovement )
         {
             elapsedTime += Time.deltaTime;
             yield return null;
         }
         elapsedTime = 0;
 
-        while ( elapsedTime < climbdownMovementDuration )
+        while ( elapsedTime < movementDuration )
         {
             elapsedTime += Time.deltaTime;
-            var t = elapsedTime / climbdownMovementDuration;
+            var t = elapsedTime / movementDuration;
 
             // BezierSingleMotionClimbdownUpdate( origin, destination, t );
 
-            BezierSectionedMotionClimbdownUpdate( p0, p1, p2, p3, pathDistance, firstPathDistance, secondPathDistance,
+            SectionedMotionDownUpdate( p0, p1, p2, p3, pathDistance, firstPathDistance, secondPathDistance,
                 thirdPathDistance, t );
 
             yield return null;
@@ -740,15 +733,17 @@ public class Pawn : MonoBehaviour
 
         transform.position = destination;
 
-        isClimbingDown = false;
-        clickedTile = null; // target reached, forget it
+        if ( post != null )
+        {
+            post();
+        }
 
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<Rigidbody>().isKinematic = false;
     }
 
     // TODO: If we want a smooth motion, we need to apply easing to float t
-    void BezierSectionedMotionClimbdownUpdate( Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float pathDistance,
+    void SectionedMotionDownUpdate( Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float pathDistance,
         float firstPathDistance, float secondPathDistance, float thirdPathDistance, float progress )
     {
         if ( progress < firstPathDistance / pathDistance )

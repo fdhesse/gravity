@@ -202,7 +202,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1449105262096966}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 9.39, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4796367178624962}
@@ -674,8 +674,9 @@ MonoBehaviour:
   fallInterval: 0.5
   jumpAnimationLength: 0.25
   delayBeforeClimbingDown: 1
+  delayBeforeRappeling: 0.5
   climbdownMovementDuration: 1.5
-  rappelAnimationLength: 0.3
+  RappelMovementDuration: 0.5
   isJumping: 0
   isClimbingDown: 0
   isRappelingDown: 0
