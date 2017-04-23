@@ -74260,22 +74260,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 858ff58416cbf3b41b06415b148af504, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1435678485 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1206944418512834, guid: 6aa99eb3f473ae44096a7d96264bf8b3,
-    type: 2}
-  m_PrefabInternal: {fileID: 1504178659}
---- !u!114 &1435678486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1435678485}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55318570525818c468642d3fdc419cea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1439631769
 GameObject:
   m_ObjectHideFlags: 8
@@ -77369,81 +77353,7 @@ Prefab:
       propertyPath: m_RootOrder
       value: 13
       objectReference: {fileID: 0}
-    - target: {fileID: 4743879635918934, guid: 6aa99eb3f473ae44096a7d96264bf8b3, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -180
-      objectReference: {fileID: 0}
-    - target: {fileID: 4806579101474762, guid: 6aa99eb3f473ae44096a7d96264bf8b3, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 50.83753
-      objectReference: {fileID: 0}
-    - target: {fileID: 4806579101474762, guid: 6aa99eb3f473ae44096a7d96264bf8b3, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 4369811179774952, guid: 6aa99eb3f473ae44096a7d96264bf8b3, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 28.060867
-      objectReference: {fileID: 0}
-    - target: {fileID: 4369811179774952, guid: 6aa99eb3f473ae44096a7d96264bf8b3, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -6.098447
-      objectReference: {fileID: 0}
-    - target: {fileID: 4369811179774952, guid: 6aa99eb3f473ae44096a7d96264bf8b3, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -58.65411
-      objectReference: {fileID: 0}
-    - target: {fileID: 4796367178624962, guid: 6aa99eb3f473ae44096a7d96264bf8b3, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -180
-      objectReference: {fileID: 0}
-    - target: {fileID: 4743879635918934, guid: 6aa99eb3f473ae44096a7d96264bf8b3, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -3.4785922
-      objectReference: {fileID: 0}
-    - target: {fileID: 4743879635918934, guid: 6aa99eb3f473ae44096a7d96264bf8b3, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -1.2378408e-15
-      objectReference: {fileID: 0}
-    - target: {fileID: 4796367178624962, guid: 6aa99eb3f473ae44096a7d96264bf8b3, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 5.378346e-15
-      objectReference: {fileID: 0}
-    - target: {fileID: 4796367178624962, guid: 6aa99eb3f473ae44096a7d96264bf8b3, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 5.378346e-15
-      objectReference: {fileID: 0}
-    - target: {fileID: 114838258743866270, guid: 6aa99eb3f473ae44096a7d96264bf8b3,
-        type: 2}
-      propertyPath: speed
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 114838258743866270, guid: 6aa99eb3f473ae44096a7d96264bf8b3,
-        type: 2}
-      propertyPath: climbdownAnimationLength
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 136062718941945180, guid: 6aa99eb3f473ae44096a7d96264bf8b3,
-        type: 2}
-      propertyPath: m_Center.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4796367178624962, guid: 6aa99eb3f473ae44096a7d96264bf8b3, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -3.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114838258743866270, guid: 6aa99eb3f473ae44096a7d96264bf8b3,
-        type: 2}
-      propertyPath: climbdownMovementDuration
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114838258743866270, guid: 6aa99eb3f473ae44096a7d96264bf8b3,
-        type: 2}
-      propertyPath: delayBeforeClimbingDown
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 114970959194896084, guid: 6aa99eb3f473ae44096a7d96264bf8b3, type: 2}
+    m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6aa99eb3f473ae44096a7d96264bf8b3, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1511665332
@@ -100201,22 +100111,6 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1893249301 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1449105262096966, guid: 6aa99eb3f473ae44096a7d96264bf8b3,
-    type: 2}
-  m_PrefabInternal: {fileID: 1504178659}
---- !u!114 &1893249302
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1893249301}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55318570525818c468642d3fdc419cea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1897893132
 GameObject:
   m_ObjectHideFlags: 8

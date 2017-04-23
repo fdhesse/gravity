@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 95061510918737334}
   - component: {fileID: 82987064834458180}
   - component: {fileID: 114800751195916624}
-  - component: {fileID: 114970959194896084}
+  - component: {fileID: 114186840053988510}
   m_Layer: 0
   m_Name: PlayerPlaceholder
   m_TagString: Untagged
@@ -79,6 +79,7 @@ GameObject:
   - component: {fileID: 114838258743866270}
   - component: {fileID: 136062718941945180}
   - component: {fileID: 114590520804778086}
+  - component: {fileID: 114635573944026788}
   m_Layer: 0
   m_Name: Placeholder Pawn
   m_TagString: Player
@@ -201,7 +202,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1449105262096966}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 10, z: 0}
+  m_LocalPosition: {x: 0, y: 9.39, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4796367178624962}
@@ -243,7 +244,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1206944418512834}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -3.5, z: 0}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children:
   - {fileID: 4369811179774952}
@@ -602,7 +603,29 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114186840053988510
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1206944418512834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55318570525818c468642d3fdc419cea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114590520804778086
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1449105262096966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55318570525818c468642d3fdc419cea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114635573944026788
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -650,7 +673,9 @@ MonoBehaviour:
   fallDelay: 0.5
   fallInterval: 0.5
   jumpAnimationLength: 0.25
-  climbdownAnimationLength: 0.3
+  delayBeforeClimbingDown: 1
+  climbdownMovementDuration: 1.5
+  rappelAnimationLength: 0.3
   isJumping: 0
   isClimbingDown: 0
   isRappelingDown: 0
@@ -659,6 +684,7 @@ MonoBehaviour:
   fallingVFX: {fileID: 198573825562584706}
   FallingLightningBolt: {fileID: 114935111319211600}
   Animator: {fileID: 95061510918737334}
+  pawnTile: {fileID: 0}
   fadeinoutTexture: {fileID: 2800000, guid: 05efee2a74d3eb54797f6e4769543df7, type: 3}
   fadeSpeed: 1.5
   isCameraMode: 0
@@ -677,17 +703,6 @@ MonoBehaviour:
   zigs: 100
   speed: 1
   scale: 5
---- !u!114 &114970959194896084
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1206944418512834}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55318570525818c468642d3fdc419cea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!136 &136062718941945180
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -700,7 +715,7 @@ CapsuleCollider:
   m_Radius: 3
   m_Height: 8
   m_Direction: 1
-  m_Center: {x: 0, y: 3.3, z: 0}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!198 &198490210747726104
 ParticleSystem:
   m_ObjectHideFlags: 1
