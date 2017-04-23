@@ -41,6 +41,7 @@ GameObject:
   - component: {fileID: 95061510918737334}
   - component: {fileID: 82987064834458180}
   - component: {fileID: 114800751195916624}
+  - component: {fileID: 114186840053988510}
   m_Layer: 0
   m_Name: PlayerPlaceholder
   m_TagString: Untagged
@@ -77,6 +78,8 @@ GameObject:
   - component: {fileID: 54580519484080026}
   - component: {fileID: 114838258743866270}
   - component: {fileID: 136062718941945180}
+  - component: {fileID: 114590520804778086}
+  - component: {fileID: 114635573944026788}
   m_Layer: 0
   m_Name: Placeholder Pawn
   m_TagString: Player
@@ -220,7 +223,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4796367178624962}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 28.060867, y: -6.098447, z: -58.65411}
 --- !u!4 &4743879635918934
 Transform:
   m_ObjectHideFlags: 1
@@ -233,7 +236,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4806579101474762}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -3.4785922, y: -1.2378408e-15, z: -180}
 --- !u!4 &4796367178624962
 Transform:
   m_ObjectHideFlags: 1
@@ -241,14 +244,14 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1206944418512834}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -3.5, z: 0}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children:
   - {fileID: 4369811179774952}
   - {fileID: 4806579101474762}
   m_Father: {fileID: 4202606421681368}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 5.378346e-15, y: -180, z: 5.378346e-15}
 --- !u!4 &4806579101474762
 Transform:
   m_ObjectHideFlags: 1
@@ -262,7 +265,7 @@ Transform:
   - {fileID: 4743879635918934}
   m_Father: {fileID: 4796367178624962}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 50.83753, y: -90, z: 0}
 --- !u!15 &15399027031850474
 EllipsoidParticleEmitter:
   m_ObjectHideFlags: 1
@@ -600,6 +603,39 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114186840053988510
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1206944418512834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55318570525818c468642d3fdc419cea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114590520804778086
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1449105262096966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55318570525818c468642d3fdc419cea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114635573944026788
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1449105262096966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55318570525818c468642d3fdc419cea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114800751195916624
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -637,12 +673,19 @@ MonoBehaviour:
   fallDelay: 0.5
   fallInterval: 0.5
   jumpAnimationLength: 0.25
+  delayBeforeClimbingDown: 1
+  delayBeforeRappeling: 0.5
+  climbdownMovementDuration: 1.5
+  RappelMovementDuration: 0.5
   isJumping: 0
+  isClimbingDown: 0
+  isRappelingDown: 0
   isFalling: 0
   nextConstraint: 0
   fallingVFX: {fileID: 198573825562584706}
   FallingLightningBolt: {fileID: 114935111319211600}
   Animator: {fileID: 95061510918737334}
+  pawnTile: {fileID: 0}
   fadeinoutTexture: {fileID: 2800000, guid: 05efee2a74d3eb54797f6e4769543df7, type: 3}
   fadeSpeed: 1.5
   isCameraMode: 0

@@ -26,15 +26,21 @@ public class Pawn : MonoBehaviour
 	private static Pawn s_Instance = null;
 	public static Pawn Instance { get { return s_Instance; } }
 
-	// #PAWN#
-	public float speed = 30.0f;					// Speed of the pawn
+    const float TileHeight = 0.5f; // Distance from cube to tile
+
+    // #PAWN#
+    public float speed = 30.0f;					// Speed of the pawn
 	public float maxTranslation = 2.5f;			// Max translation of the pawn
 	public float turnDelay = .5f;				// Time of pawn's rotation
 	public float fallDelay = .5f;				// Time of pawn's fall
 	public float fallInterval = .5f;			// Gap between tile and pawn before fall
 	public float jumpAnimationLength = 0.3f;
+    public float delayBeforeClimbingDown = 0.3f;
+    public float delayBeforeRappeling = 0.3f;
+    public float climbdownMovementDuration = 0.3f;
+	public float RappelMovementDuration = 0.3f;
 
-	private float height;
+    private float height;
 	private float width;
 	private bool newTarget = true;
 	private Vector3 desiredRotation;
@@ -48,7 +54,9 @@ public class Pawn : MonoBehaviour
 	private bool isGlued;
 
 	[HideInInspector] public bool isJumping = false;
-	[HideInInspector] public bool isFalling = true;
+	[HideInInspector] public bool isClimbingDown = false;
+	[HideInInspector] public bool isRappelingDown = false;
+    [HideInInspector] public bool isFalling = true;
 	[HideInInspector] public RigidbodyConstraints nextConstraint;
 	private RigidbodyConstraints transformConstraints;
 
@@ -74,7 +82,7 @@ public class Pawn : MonoBehaviour
 	
 	// #TILES#
 	private List<Tile> path = new List<Tile> (); // List of tiles in the current path
-	private Tile pawnTile = null; // Tile beneath the Pawn
+	public Tile pawnTile; // Tile beneath the Pawn
 	private Tile clickedTile = null; // Tile the player clicked
 	private Tile focusedTile = null; // Tile the cursor focus
 
@@ -145,7 +153,7 @@ public class Pawn : MonoBehaviour
 
 	void Update()
 	{
-		if (!(world.IsGameOver() || hud.IsPaused)) // is the game active?, i.e. is the game not paused and not finished?
+        if (!(world.IsGameOver() || hud.IsPaused)) // is the game active?, i.e. is the game not paused and not finished?
 		{
 			UpdateAnimation();
 			computeFocusedAndClickableTiles();
@@ -341,6 +349,8 @@ public class Pawn : MonoBehaviour
 			animState = 3;
 			isFalling = false;
 			isJumping = false;
+		    isClimbingDown = false;
+		    isRappelingDown = false;
 
 			// stop the vfx if any
 			// if there's some falling sfx, start them
@@ -371,8 +381,8 @@ public class Pawn : MonoBehaviour
 	/// <param name="tile">The new tile the pawn has under his feet. CAN be null.</param>
 	public void onEnterTile(Tile tile)
 	{
-		// save the new pawntile (can be null)
-		pawnTile = tile;
+        // save the new pawntile (can be null)
+        pawnTile = tile;
 
 		// and now check stuff related with glue, and set the glue flag
 		if ((tile != null) && tile.IsGlueTile)
@@ -465,7 +475,7 @@ public class Pawn : MonoBehaviour
 				
             moveAlongPath(); //otherwise, move along the path to the player selected tile
         }
-		else if (isWalkingInStairs || isJumping)
+		else if (isWalkingInStairs || isJumping || isClimbingDown | isRappelingDown)
 			moveAlongPath();
     }
 	
@@ -553,93 +563,242 @@ public class Pawn : MonoBehaviour
 				// normally my verticality is the same as the world gravity, otherwise we won't have a clicked tile
 				Debug.Assert(GetFeltVerticality() == GetWorldVerticality());
 
-				// check if we didn't start jumping yet
-				if ( !isJumping )
-				{
-                    isJumping = true;
-                    isFalling = true;
+                // check if we didn't start jumping/climbing/rappeling yet
+                if ( !isJumping && !isClimbingDown && !isRappelingDown ) { 
+			        if ( world.CurrentGravityOrientation != TileOrientation.Up )
+			        {
+                        Jump();
+			        }
+                    else
+			        {
+                       var fallDistance = Mathf.Abs( pawnTile.transform.position.y - focusedTile.transform.position.y );
+			            if ( fallDistance < 20f )
+			            {
+			                ClimbDown( focusedTile.transform.position );
+			            }
+			            else
+			            {
+                            RappelDown( focusedTile.transform.position );
+			            }
+                    }
+                }
 
-                    var fallDistance = Mathf.Abs( pawnTile.transform.position.y - focusedTile.transform.position.y );
+                if(!isClimbingDown && !isRappelingDown ) { 
+                    //calculate the vector from the Pawns position to the landing tile position at the same height
+                    var clickedTilePosition = getGroundHeightPosition( clickedTile.transform.position );
 
-                    Animator.SetTrigger( "Transitioning" );
+                    if ( moveTo( clickedTilePosition ) ) // move the pawn towards the landing tile
+                    {
+                        clickedTile = null; // target reached, forget it
+                        isJumping = false;
+                    }
+                }
+            }
+        }
+    }
 
-                    switch ( (int)fallDistance )
-				    {
-                        case 10:
-                            animState = 4; // 4 = ClimbDown
-                            break;
-                        case 20:
-                            animState = 5; // 5 = Rappel20
-                            break;
-                        case 30:
-                            animState = 6; // 6 = Rappel30
-                            break;
-                        case 40:
-                            animState = 7; // 7 = Rappel40
-                            break;
-                        case 50:
-                            animState = 8; // 8 = Rappel50
-                            break;
-                        case 60:
-                            animState = 9; // 9 = Rappel60
-                            break;
-                        case 70:
-                            animState = 10; // 10 = Rappel70
-                            break;
-                        default:
-				            animState = -1;
-				            break;
-				    }
-					
-					// reset the pawn tile when starting to jump, because if you jump from
-					// a moving platform, you don't want to jump relative to the plateform
-					onEnterTile(null);
+    void RappelDown( Vector3 targetTilePosition )
+    {
+        var rappelDistance = Mathf.Abs( pawnTile.transform.position.y - targetTilePosition.y );
 
-					// the modification in height
-					StartCoroutine( JumpToTile());
+        //throw new NotImplementedException();
+        isRappelingDown = true;
+        isFalling = true;
 
-					// the modification in orientation
-					if( lookCoroutine != null )
-						StopCoroutine( lookCoroutine );					
-					lookCoroutine = LookAt ( clickedTile.transform.position );
-					StartCoroutine( lookCoroutine );
+        var numberOfCubes = (int)( rappelDistance / 10 );
+        animState = numberOfCubes + 3;
 
-				}
-					// calculate the vector from the Pawns position to the landing tile position at the same height
-				Vector3 landingPositionAtGroundHeight = getGroundHeightPosition(clickedTile.transform.position);
+        Animator.SetTrigger( "Transitioning" );
 
-				if (moveTo(landingPositionAtGroundHeight)) // move the pawn towards the landing tile
-				{
-					clickedTile = null; // target reached, forget it
-					isJumping = false;
-				}
-			}
-	    }
+        // reset the pawn tile when starting to climb down, because if you climb down from
+        // a moving platform, you don't want to climb down relative to the plateform
+        onEnterTile( null );
+
+        // the modification in height
+        StartCoroutine( SectionedMotionDown( targetTilePosition, delayBeforeRappeling, RappelMovementDuration * numberOfCubes, () =>
+        {
+            isRappelingDown = false;
+            clickedTile = null; // target reached, forget it
+        } ) );
+
+        // the modification in orientation
+        //if ( lookCoroutine != null )
+        //    StopCoroutine( lookCoroutine );
+        //lookCoroutine = LookAt( clickedTile.transform.position );
+        //StartCoroutine( lookCoroutine );
+    }
+
+    void ClimbDown( Vector3 targetTilePosition )
+    {
+        isClimbingDown = true;
+        isFalling = true;
+
+        animState = 4;
+        Animator.SetTrigger( "Transitioning" );
+
+        // reset the pawn tile when starting to climb down, because if you climb down from
+        // a moving platform, you don't want to climb down relative to the plateform
+        onEnterTile( null );
+
+        // the modification in height
+        StartCoroutine( SectionedMotionDown( targetTilePosition, delayBeforeClimbingDown, climbdownMovementDuration, () =>
+        {
+            isClimbingDown = false;
+            clickedTile = null; // target reached, forget it
+        } ) );
+
+        // the modification in orientation
+        //if ( lookCoroutine != null )
+        //    StopCoroutine( lookCoroutine );
+        //lookCoroutine = LookAt( clickedTile.transform.position );
+        //StartCoroutine( lookCoroutine );
+    }
+
+    void Jump()
+    {
+        isJumping = true;
+        isFalling = true;
+
+        animState = 2;
+
+        // reset the pawn tile when starting to jump, because if you jump from
+        // a moving platform, you don't want to jump relative to the plateform
+        onEnterTile( null );
+
+        // the modification in height
+        StartCoroutine( JumpToTile() );
+
+        // the modification in orientation
+        if ( lookCoroutine != null )
+            StopCoroutine( lookCoroutine );
+        lookCoroutine = LookAt( clickedTile.transform.position );
+        StartCoroutine( lookCoroutine );
+    }
+
+    IEnumerator SectionedMotionDown( Vector3 targetTilePosition, float delayBeforeMovement,float movementDuration, Action post )
+    {
+        GetComponent<Rigidbody>().useGravity = false;
+        GetComponent<Rigidbody>().isKinematic = true;
+
+        var origin = transform.position;
+        var destination = targetTilePosition + Vector3.up * (height/2 - TileHeight );
+        var elapsedTime = 0.0f;
+
+        // These four points compose
+        // The path that takes the pawn down
+        // To the tile bellow
+
+        var p0 = origin;  // Center of origin tile
+        DebugUtils.DrawPoint( p0, Color.red );
+
+        var p3 = destination; // center of destination tile
+        DebugUtils.DrawPoint( p3, Color.yellow );
+
+        var p0Flat = new Vector3( p0.x, 0, p0.z );
+        var p3Flat = new Vector3( p3.x, 0, p3.z );
+        var p1 = p0 + ( p3Flat - p0Flat ) / 2 + ( p3Flat - p0Flat ).normalized * width;  // Edge of origin tile
+        DebugUtils.DrawPoint( p1, Color.green );
+
+        var p2 = p3 - ( p3Flat - p0Flat ) / 2 + ( p3Flat - p0Flat ).normalized * width;  // Edge of destination tile
+        DebugUtils.DrawPoint( p2, Color.blue );
+
+        // p0->p1 : first subpath
+        // p1->p2 : second subpath
+        // p2->p3 : third subpath
+        var firstPathDistance = ( p1 - p0 ).magnitude;
+        var secondPathDistance = ( p2 - p1 ).magnitude;
+        var thirdPathDistance = ( p3 - p2 ).magnitude;
+
+        var pathDistance = firstPathDistance + secondPathDistance + thirdPathDistance;
+
+        while ( elapsedTime < delayBeforeMovement )
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        elapsedTime = 0;
+
+        while ( elapsedTime < movementDuration )
+        {
+            elapsedTime += Time.deltaTime;
+            var t = elapsedTime / movementDuration;
+
+            // BezierSingleMotionClimbdownUpdate( origin, destination, t );
+
+            SectionedMotionDownUpdate( p0, p1, p2, p3, pathDistance, firstPathDistance, secondPathDistance,
+                thirdPathDistance, t );
+
+            yield return null;
+        }
+
+        transform.position = destination;
+
+        if ( post != null )
+        {
+            post();
+        }
+
+        GetComponent<Rigidbody>().useGravity = true;
+        GetComponent<Rigidbody>().isKinematic = false;
+    }
+
+    // TODO: If we want a smooth motion, we need to apply easing to float t
+    void SectionedMotionDownUpdate( Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float pathDistance,
+        float firstPathDistance, float secondPathDistance, float thirdPathDistance, float progress )
+    {
+        if ( progress < firstPathDistance / pathDistance )
+        {
+            // Move on first path
+            var firstPathSectionProgress = progress/( firstPathDistance / pathDistance );
+            transform.position = Vector3.Lerp(p0,p1, firstPathSectionProgress );
+        }
+        else
+        {
+            if ( progress < ( firstPathDistance + secondPathDistance ) / pathDistance )
+            {
+                if ( focusedTile == null )
+                {
+			        onEnterTile(focusedTile);
+                }
+                // Move on second path
+                var secondPathSectionProgress = ( progress - firstPathDistance / pathDistance ) /
+                                                ( secondPathDistance / pathDistance );
+                transform.position = Vector3.Lerp( p1, p2, secondPathSectionProgress );
+            }
+            else
+            {
+                // Move on third path
+                var thirdPathSectionProgress = ( progress - ( firstPathDistance + secondPathDistance ) / pathDistance ) /
+                                                ( thirdPathDistance / pathDistance );
+                transform.position = Vector3.Lerp( p2, p3, thirdPathSectionProgress );
+            }
+        }
     }
 
     private IEnumerator JumpToTile()
-	{
-        if ( focusedTile.orientation != TileOrientation.Up ) { 
+    {
+        if ( focusedTile.orientation != TileOrientation.Up )
+        {
             if ( FallingLightningBolt != null )
-	        {
-	            FallingLightningBolt.Play( focusedTile );
-	        }
+            {
+                FallingLightningBolt.Play( focusedTile );
+            }
         }
 
-        float elapsedTime = 0;
-		Vector3 up = new Vector3(0f, 0.25f, 0f);
+        var elapsedTime = 0.0f;
+        var up = new Vector3( 0f, 0.25f, 0f );
 
-		while ( elapsedTime < jumpAnimationLength )
-		{
-			float t = elapsedTime / jumpAnimationLength;
+        while ( elapsedTime < jumpAnimationLength )
+        {
+            var t = elapsedTime / jumpAnimationLength;
 
-			transform.Translate( up * Mathf.Cos( t ), Space.Self );
+            transform.Translate( up * Mathf.Cos( t ), Space.Self );
 
-			elapsedTime += Time.deltaTime;
+            elapsedTime += Time.deltaTime;
 
-			yield return null;
-		}
-	}
+            yield return null;
+        }
+    }
 
     /// <summary>
     /// Moves the pawn to the specified destination.
@@ -651,8 +810,9 @@ public class Pawn : MonoBehaviour
 	{
 		// Convert the world destination into local space
 		Vector3 moveDirection = transform.worldToLocalMatrix.MultiplyPoint(destination);
-		// stay on the ground (in local coord of the pawn)
-		moveDirection.y += height * 0.5f;
+
+        // stay on the ground t(in local coord of the pawn)
+        moveDirection.y += height * 0.5f - TileHeight;
 
 		if ( moveDirection.magnitude > 1 )
 		{
@@ -720,7 +880,7 @@ public class Pawn : MonoBehaviour
     /// </summary>
     private void checkUnderneath()
 	{
-		if (isJumping || isFalling)
+		if (isJumping || isFalling || isClimbingDown | isRappelingDown )
 			return;
 		
 		Vector3 down = getMyVerticality();
@@ -961,7 +1121,7 @@ public class Pawn : MonoBehaviour
 
 		if( !isCameraMode )
 		{
-			if (isFalling || isJumping || (path != null && path.Count > 0))
+			if (isFalling || isJumping || isClimbingDown | isRappelingDown || (path != null && path.Count > 0))
 				return;
 
 	        if (InputManager.isClickHeldDown())
