@@ -26,7 +26,7 @@ public class Pawn : MonoBehaviour
 	private static Pawn s_Instance = null;
 	public static Pawn Instance { get { return s_Instance; } }
 
-    const float TileHeight = 0.5f; // Distance from cube to tile
+    public const float TileHeight = 0.5f; // Distance from cube to tile
 
     // #PAWN#
     public float speed = 30.0f;					// Speed of the pawn
@@ -35,13 +35,13 @@ public class Pawn : MonoBehaviour
 	public float fallDelay = .5f;				// Time of pawn's fall
 	public float fallInterval = .5f;			// Gap between tile and pawn before fall
 	public float jumpAnimationLength = 0.3f;
-    public float delayBeforeClimbingDown = 0.3f;
     public float delayBeforeRappeling = 0.3f;
-    public float climbdownMovementDuration = 0.3f;
 	public float RappelMovementDuration = 0.3f;
 
-    private float height;
-	private float width;
+    [HideInInspector] public AnimatedMotion[] AnimatedMotions = new AnimatedMotion[0];
+
+    public float height;
+    public float width;
 	private bool newTarget = true;
 	private Vector3 desiredRotation;
 	private bool isWalking;
@@ -72,7 +72,7 @@ public class Pawn : MonoBehaviour
     // 3 = land
     public Animator Animator;
     private IEnumerator lookCoroutine;
-	private int animState;
+    public int animState;
 	private int idleState;
 	private float idleWait;
 	
@@ -82,9 +82,9 @@ public class Pawn : MonoBehaviour
 	
 	// #TILES#
 	private List<Tile> path = new List<Tile> (); // List of tiles in the current path
-	public Tile pawnTile; // Tile beneath the Pawn
-	private Tile clickedTile = null; // Tile the player clicked
-	private Tile focusedTile = null; // Tile the cursor focus
+	[HideInInspector] public Tile pawnTile; // Tile beneath the Pawn
+    [HideInInspector] public Tile clickedTile = null; // Tile the player clicked
+    [HideInInspector] public Tile focusedTile = null; // Tile the cursor focus
 
 	// #GUI#
 	public Texture fadeinoutTexture;
@@ -574,11 +574,30 @@ public class Pawn : MonoBehaviour
                        var fallDistance = Mathf.Abs( pawnTile.transform.position.y - focusedTile.transform.position.y );
 			            if ( fallDistance < 20f )
 			            {
-			                ClimbDown( focusedTile.transform.position );
-			            }
+			                if ( this.HasMotionType( typeof(ClimbDownAnimatedMotion) ) )
+			                {
+			                    var motion = this.GetMotion( typeof(ClimbDownAnimatedMotion) ) as ClimbDownAnimatedMotion;
+			                    System.Diagnostics.Debug.Assert( motion != null, "motion != null" );
+			                    motion.Move(this);
+			                }
+			                else
+			                {
+			                    Jump();
+			                }
+                        }
 			            else
 			            {
-                            RappelDown( focusedTile.transform.position );
+                            var rappelDistance = Mathf.Abs( pawnTile.transform.position.y - focusedTile.transform.position.y );
+                            if ( this.GetRappelingMotion( ( int )( rappelDistance ) ) != null)
+                            {
+                                var motion = this.GetMotion( typeof( RappelDownAnimatedMotion ) ) as RappelDownAnimatedMotion;
+                                System.Diagnostics.Debug.Assert( motion != null, "motion != null" );
+                                motion.Move( this );
+                            }
+                            else
+                            {
+                                Jump();
+                            }
 			            }
                     }
                 }
@@ -597,61 +616,9 @@ public class Pawn : MonoBehaviour
         }
     }
 
-    void RappelDown( Vector3 targetTilePosition )
+   IEnumerator SectionedMotionDown( Vector3 targetTilePosition, float f, float f1, Action action )
     {
-        var rappelDistance = Mathf.Abs( pawnTile.transform.position.y - targetTilePosition.y );
-
-        //throw new NotImplementedException();
-        isRappelingDown = true;
-        isFalling = true;
-
-        var numberOfCubes = (int)( rappelDistance / 10 );
-        animState = numberOfCubes + 3;
-
-        Animator.SetTrigger( "Transitioning" );
-
-        // reset the pawn tile when starting to climb down, because if you climb down from
-        // a moving platform, you don't want to climb down relative to the plateform
-        onEnterTile( null );
-
-        // the modification in height
-        StartCoroutine( SectionedMotionDown( targetTilePosition, delayBeforeRappeling, RappelMovementDuration * numberOfCubes, () =>
-        {
-            isRappelingDown = false;
-            clickedTile = null; // target reached, forget it
-        } ) );
-
-        // the modification in orientation
-        //if ( lookCoroutine != null )
-        //    StopCoroutine( lookCoroutine );
-        //lookCoroutine = LookAt( clickedTile.transform.position );
-        //StartCoroutine( lookCoroutine );
-    }
-
-    void ClimbDown( Vector3 targetTilePosition )
-    {
-        isClimbingDown = true;
-        isFalling = true;
-
-        animState = 4;
-        Animator.SetTrigger( "Transitioning" );
-
-        // reset the pawn tile when starting to climb down, because if you climb down from
-        // a moving platform, you don't want to climb down relative to the plateform
-        onEnterTile( null );
-
-        // the modification in height
-        StartCoroutine( SectionedMotionDown( targetTilePosition, delayBeforeClimbingDown, climbdownMovementDuration, () =>
-        {
-            isClimbingDown = false;
-            clickedTile = null; // target reached, forget it
-        } ) );
-
-        // the modification in orientation
-        //if ( lookCoroutine != null )
-        //    StopCoroutine( lookCoroutine );
-        //lookCoroutine = LookAt( clickedTile.transform.position );
-        //StartCoroutine( lookCoroutine );
+        throw new NotImplementedException();
     }
 
     void Jump()
@@ -674,107 +641,6 @@ public class Pawn : MonoBehaviour
         lookCoroutine = LookAt( clickedTile.transform.position );
         StartCoroutine( lookCoroutine );
     }
-
-    IEnumerator SectionedMotionDown( Vector3 targetTilePosition, float delayBeforeMovement,float movementDuration, Action post )
-    {
-        GetComponent<Rigidbody>().useGravity = false;
-        GetComponent<Rigidbody>().isKinematic = true;
-
-        var origin = transform.position;
-        var destination = targetTilePosition + Vector3.up * (height/2 - TileHeight );
-        var elapsedTime = 0.0f;
-
-        // These four points compose
-        // The path that takes the pawn down
-        // To the tile bellow
-
-        var p0 = origin;  // Center of origin tile
-        DebugUtils.DrawPoint( p0, Color.red );
-
-        var p3 = destination; // center of destination tile
-        DebugUtils.DrawPoint( p3, Color.yellow );
-
-        var p0Flat = new Vector3( p0.x, 0, p0.z );
-        var p3Flat = new Vector3( p3.x, 0, p3.z );
-        var p1 = p0 + ( p3Flat - p0Flat ) / 2 + ( p3Flat - p0Flat ).normalized * width;  // Edge of origin tile
-        DebugUtils.DrawPoint( p1, Color.green );
-
-        var p2 = p3 - ( p3Flat - p0Flat ) / 2 + ( p3Flat - p0Flat ).normalized * width;  // Edge of destination tile
-        DebugUtils.DrawPoint( p2, Color.blue );
-
-        // p0->p1 : first subpath
-        // p1->p2 : second subpath
-        // p2->p3 : third subpath
-        var firstPathDistance = ( p1 - p0 ).magnitude;
-        var secondPathDistance = ( p2 - p1 ).magnitude;
-        var thirdPathDistance = ( p3 - p2 ).magnitude;
-
-        var pathDistance = firstPathDistance + secondPathDistance + thirdPathDistance;
-
-        while ( elapsedTime < delayBeforeMovement )
-        {
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        elapsedTime = 0;
-
-        while ( elapsedTime < movementDuration )
-        {
-            elapsedTime += Time.deltaTime;
-            var t = elapsedTime / movementDuration;
-
-            // BezierSingleMotionClimbdownUpdate( origin, destination, t );
-
-            SectionedMotionDownUpdate( p0, p1, p2, p3, pathDistance, firstPathDistance, secondPathDistance,
-                thirdPathDistance, t );
-
-            yield return null;
-        }
-
-        transform.position = destination;
-
-        if ( post != null )
-        {
-            post();
-        }
-
-        GetComponent<Rigidbody>().useGravity = true;
-        GetComponent<Rigidbody>().isKinematic = false;
-    }
-
-    // TODO: If we want a smooth motion, we need to apply easing to float t
-    void SectionedMotionDownUpdate( Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float pathDistance,
-        float firstPathDistance, float secondPathDistance, float thirdPathDistance, float progress )
-    {
-        if ( progress < firstPathDistance / pathDistance )
-        {
-            // Move on first path
-            var firstPathSectionProgress = progress/( firstPathDistance / pathDistance );
-            transform.position = Vector3.Lerp(p0,p1, firstPathSectionProgress );
-        }
-        else
-        {
-            if ( progress < ( firstPathDistance + secondPathDistance ) / pathDistance )
-            {
-                if ( focusedTile == null )
-                {
-			        onEnterTile(focusedTile);
-                }
-                // Move on second path
-                var secondPathSectionProgress = ( progress - firstPathDistance / pathDistance ) /
-                                                ( secondPathDistance / pathDistance );
-                transform.position = Vector3.Lerp( p1, p2, secondPathSectionProgress );
-            }
-            else
-            {
-                // Move on third path
-                var thirdPathSectionProgress = ( progress - ( firstPathDistance + secondPathDistance ) / pathDistance ) /
-                                                ( thirdPathDistance / pathDistance );
-                transform.position = Vector3.Lerp( p2, p3, thirdPathSectionProgress );
-            }
-        }
-    }
-
     private IEnumerator JumpToTile()
     {
         if ( focusedTile.orientation != TileOrientation.Up )

@@ -79,7 +79,6 @@ GameObject:
   - component: {fileID: 114838258743866270}
   - component: {fileID: 136062718941945180}
   - component: {fileID: 114590520804778086}
-  - component: {fileID: 114635573944026788}
   m_Layer: 0
   m_Name: Placeholder Pawn
   m_TagString: Player
@@ -202,7 +201,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1449105262096966}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 9.39, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4796367178624962}
@@ -625,17 +624,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55318570525818c468642d3fdc419cea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114635573944026788
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1449105262096966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55318570525818c468642d3fdc419cea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114800751195916624
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -673,10 +661,18 @@ MonoBehaviour:
   fallDelay: 0.5
   fallInterval: 0.5
   jumpAnimationLength: 0.25
-  delayBeforeClimbingDown: 1
-  delayBeforeRappeling: 0.5
-  climbdownMovementDuration: 1.5
-  RappelMovementDuration: 0.5
+  delayBeforeRappeling: 1
+  RappelMovementDuration: 1
+  AnimatedMotions:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  height: 0
+  width: 0
   isJumping: 0
   isClimbingDown: 0
   isRappelingDown: 0
@@ -685,7 +681,10 @@ MonoBehaviour:
   fallingVFX: {fileID: 198573825562584706}
   FallingLightningBolt: {fileID: 114935111319211600}
   Animator: {fileID: 95061510918737334}
+  animState: 0
   pawnTile: {fileID: 0}
+  clickedTile: {fileID: 0}
+  focusedTile: {fileID: 0}
   fadeinoutTexture: {fileID: 2800000, guid: 05efee2a74d3eb54797f6e4769543df7, type: 3}
   fadeSpeed: 1.5
   isCameraMode: 0
