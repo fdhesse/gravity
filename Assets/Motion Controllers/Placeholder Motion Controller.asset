@@ -1,0 +1,275 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d38a63b4cf101445911c9bf28ac82a5, type: 3}
+  m_Name: Placeholder Motion Controller
+  m_EditorClassIdentifier: 
+  AnimatedMotions:
+  - {fileID: 114618429421340470}
+  - {fileID: 114846612050045092}
+  - {fileID: 114575919599861412}
+  - {fileID: 114825242943656272}
+  - {fileID: 114510268552199876}
+  - {fileID: 114490736038650314}
+  - {fileID: 114709787368977732}
+--- !u!114 &114195129690342056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d1c91a3dc8e9e846a1ea94940688492, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Climb Down Animated Motion
+  Description: New Climb Down Motion
+  TargetAnimation: {fileID: 0}
+  MovementDuration: 0.3
+--- !u!114 &114224862535426418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ec0f6ad867818448a5a2a142f4c365b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Animated Rappel Down 40 Motion
+  Description: New Rappel Down Motion
+  TargetAnimation: {fileID: 0}
+  Type: 40
+  MovementDuration: 0.3
+--- !u!114 &114389007226583862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ec0f6ad867818448a5a2a142f4c365b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Animated Rappel Down 60 Motion
+  Description: New Rappel Down Motion
+  TargetAnimation: {fileID: 0}
+  Type: 60
+  MovementDuration: 0.3
+--- !u!114 &114490736038650314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ec0f6ad867818448a5a2a142f4c365b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Animated Rappel Down 20 Motion
+  Description: New Rappel Down Motion
+  TargetAnimation: {fileID: 7400000, guid: 1c7bf7f6680e8964fbc13f69b7dad3e8, type: 2}
+  Type: 20
+  MovementDuration: 2.3000011
+--- !u!114 &114510268552199876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ec0f6ad867818448a5a2a142f4c365b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Animated Rappel Down 30 Motion
+  Description: New Rappel Down Motion
+  TargetAnimation: {fileID: 7400000, guid: 4228620c8901f8d4bb3238ee06911114, type: 2}
+  Type: 30
+  MovementDuration: 2.3000002
+--- !u!114 &114511620133680942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ec0f6ad867818448a5a2a142f4c365b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Animated Rappel Down 50 Motion
+  Description: New Rappel Down Motion
+  TargetAnimation: {fileID: 0}
+  Type: 50
+  MovementDuration: 0.3
+--- !u!114 &114571282893281406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ec0f6ad867818448a5a2a142f4c365b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Animated Rappel Down 70 Motion
+  Description: New Rappel Down Motion
+  TargetAnimation: {fileID: 0}
+  Type: 70
+  MovementDuration: 0.3
+--- !u!114 &114575919599861412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ec0f6ad867818448a5a2a142f4c365b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Animated Rappel Down 50 Motion
+  Description: New Rappel Down Motion
+  TargetAnimation: {fileID: 7400000, guid: a468edcbd3374014b897e094db4fa465, type: 2}
+  Type: 50
+  MovementDuration: 2.9666681
+--- !u!114 &114609967355551330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ec0f6ad867818448a5a2a142f4c365b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Animated Rappel Down 50 Motion
+  Description: New Rappel Down Motion
+  TargetAnimation: {fileID: 0}
+  Type: 50
+  MovementDuration: 0.3
+--- !u!114 &114618429421340470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ec0f6ad867818448a5a2a142f4c365b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Animated Rappel Down 70 Motion
+  Description: New Rappel Down Motion
+  TargetAnimation: {fileID: 7400000, guid: 169ef5ac0b59f9c4489fe6a38151fca6, type: 2}
+  Type: 70
+  MovementDuration: 2.9666672
+--- !u!114 &114633973194798450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ec0f6ad867818448a5a2a142f4c365b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Animated Rappel Down 30 Motion
+  Description: New Rappel Down Motion
+  TargetAnimation: {fileID: 0}
+  Type: 30
+  MovementDuration: 0.3
+--- !u!114 &114709787368977732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d1c91a3dc8e9e846a1ea94940688492, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Climb Down Animated Motion
+  Description: New Climb Down Motion
+  TargetAnimation: {fileID: 7400000, guid: 14700e01e807e274288ec3b64e1252e4, type: 2}
+  MovementDuration: 1.9666672
+--- !u!114 &114727945256550476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ec0f6ad867818448a5a2a142f4c365b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Animated Rappel Down 70 Motion
+  Description: New Rappel Down Motion
+  TargetAnimation: {fileID: 0}
+  Type: 70
+  MovementDuration: 0.3
+--- !u!114 &114825242943656272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ec0f6ad867818448a5a2a142f4c365b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Animated Rappel Down 40 Motion
+  Description: New Rappel Down Motion
+  TargetAnimation: {fileID: 7400000, guid: 13f5fb6cb8eba924a99f70b05c4441b5, type: 2}
+  Type: 40
+  MovementDuration: 2.3000002
+--- !u!114 &114846612050045092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ec0f6ad867818448a5a2a142f4c365b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Animated Rappel Down 60 Motion
+  Description: New Rappel Down Motion
+  TargetAnimation: {fileID: 7400000, guid: 717583e6665069849a40e20b6c0a85ba, type: 2}
+  Type: 60
+  MovementDuration: 2.9666672
+--- !u!114 &114925937573032058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ec0f6ad867818448a5a2a142f4c365b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Animated Rappel Down 20 Motion
+  Description: New Rappel Down Motion
+  TargetAnimation: {fileID: 0}
+  Type: 20
+  MovementDuration: 0.3

@@ -3826,21 +3826,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 148a77708b1c1be4ebaafb4daba538e4, type: 2}
   m_IsPrefabParent: 0
---- !u!114 &351140763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d1c91a3dc8e9e846a1ea94940688492, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Name: Climb Down Animated Motion
-  Description: New Climb Down Motion
-  TargetAnimation: {fileID: 0}
-  MovementDuration: 0.3
 --- !u!1 &382947064
 GameObject:
   m_ObjectHideFlags: 8
@@ -10503,21 +10488,6 @@ MonoBehaviour:
   m_front: 4
   m_back: 4
   GluedSides: 0
---- !u!114 &681692020
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d1c91a3dc8e9e846a1ea94940688492, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Name: Climb Down Animated Motion
-  Description: New Climb Down Motion
-  TargetAnimation: {fileID: 0}
-  MovementDuration: 0.3
 --- !u!1 &716396273
 GameObject:
   m_ObjectHideFlags: 8
@@ -24190,11 +24160,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114838258743866270, guid: 6aa99eb3f473ae44096a7d96264bf8b3,
-        type: 2}
-      propertyPath: AnimatedMotions.Array.size
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4202606421681368, guid: 6aa99eb3f473ae44096a7d96264bf8b3, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -24227,47 +24192,30 @@ Prefab:
       propertyPath: m_RootOrder
       value: 9
       objectReference: {fileID: 0}
-    - target: {fileID: 114838258743866270, guid: 6aa99eb3f473ae44096a7d96264bf8b3,
-        type: 2}
-      propertyPath: AnimatedMotions.Array.data[0]
-      value: 
-      objectReference: {fileID: 681692020}
-    - target: {fileID: 114838258743866270, guid: 6aa99eb3f473ae44096a7d96264bf8b3,
-        type: 2}
-      propertyPath: AnimatedMotions.Array.data[1]
-      value: 
-      objectReference: {fileID: 351140763}
-    - target: {fileID: 114838258743866270, guid: 6aa99eb3f473ae44096a7d96264bf8b3,
-        type: 2}
-      propertyPath: AnimatedMotions.Array.data[2]
-      value: 
-      objectReference: {fileID: 351140763}
-    - target: {fileID: 114838258743866270, guid: 6aa99eb3f473ae44096a7d96264bf8b3,
-        type: 2}
-      propertyPath: AnimatedMotions.Array.data[3]
-      value: 
-      objectReference: {fileID: 351140763}
-    - target: {fileID: 114838258743866270, guid: 6aa99eb3f473ae44096a7d96264bf8b3,
-        type: 2}
-      propertyPath: AnimatedMotions.Array.data[4]
-      value: 
-      objectReference: {fileID: 351140763}
-    - target: {fileID: 114838258743866270, guid: 6aa99eb3f473ae44096a7d96264bf8b3,
-        type: 2}
-      propertyPath: AnimatedMotions.Array.data[5]
-      value: 
-      objectReference: {fileID: 351140763}
-    - target: {fileID: 114838258743866270, guid: 6aa99eb3f473ae44096a7d96264bf8b3,
-        type: 2}
-      propertyPath: AnimatedMotions.Array.data[6]
-      value: 
-      objectReference: {fileID: 351140763}
-    - target: {fileID: 114838258743866270, guid: 6aa99eb3f473ae44096a7d96264bf8b3,
-        type: 2}
-      propertyPath: MotionController
-      value: 
-      objectReference: {fileID: 11400000, guid: a5de9a469b4339c4481929e0e2324716,
-        type: 2}
+    - target: {fileID: 4743879635918934, guid: 6aa99eb3f473ae44096a7d96264bf8b3, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -11.608015
+      objectReference: {fileID: 0}
+    - target: {fileID: 4743879635918934, guid: 6aa99eb3f473ae44096a7d96264bf8b3, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -2.0870053e-15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4796367178624962, guid: 6aa99eb3f473ae44096a7d96264bf8b3, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 8.632083e-15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4796367178624962, guid: 6aa99eb3f473ae44096a7d96264bf8b3, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -180
+      objectReference: {fileID: 0}
+    - target: {fileID: 4796367178624962, guid: 6aa99eb3f473ae44096a7d96264bf8b3, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 8.632083e-15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4806579101474762, guid: 6aa99eb3f473ae44096a7d96264bf8b3, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 21.062449
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6aa99eb3f473ae44096a7d96264bf8b3, type: 2}
   m_IsPrefabParent: 0

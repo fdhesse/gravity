@@ -57,7 +57,7 @@ public class MotionControllerEditor : Editor
     {
         serializedObject.Update();
         // Pull information from the target into the serializedObject.
-        DrawDefaultInspector();
+        // DrawDefaultInspector();
 
         foreach ( var editor in AnimatedMotionEditors )
         {

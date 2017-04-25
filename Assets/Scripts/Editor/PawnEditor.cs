@@ -4,10 +4,9 @@ using UnityEditor;
 using UnityEngine;
 
 [CustomEditor( typeof( Pawn ) )]
-public class PawnEditor : EditorWithSubEditors<AnimatedMotionEditor, AnimatedMotion>
+public class PawnEditor : Editor
 {
     private Pawn pawn;
-
     
     public override void OnInspectorGUI()
     {
@@ -15,17 +14,6 @@ public class PawnEditor : EditorWithSubEditors<AnimatedMotionEditor, AnimatedMot
 
         // Pull information from the target into the serializedObject.
         serializedObject.Update();
-
-        if(pawn.MotionController != null && pawn.MotionController.AnimatedMotions.Length > 0 ) { 
-            CheckAndCreateSubEditors( pawn.MotionController.AnimatedMotions );
-        }
-
-        // Display all of the ConditionCollections.
-        for ( int i = 0; i < subEditors.Length; i++ )
-        {
-            subEditors[i].OnInspectorGUI();
-            EditorGUILayout.Space();
-        }
 
         // Create a right-aligned button which when clicked, creates a new ConditionCollection in the ConditionCollections array.
         EditorGUILayout.BeginVertical();
@@ -52,20 +40,9 @@ public class PawnEditor : EditorWithSubEditors<AnimatedMotionEditor, AnimatedMot
             return;
         }
 
-        // Check if the Editors for the Conditions need creating and optionally create them.
-        if ( pawn.MotionController != null && pawn.MotionController.AnimatedMotions.Length > 0 )
-        {
-            CheckAndCreateSubEditors( pawn.MotionController.AnimatedMotions );
-        }
     }
 
     void OnDisable()
-    {
-        // When this Editor ends, destroy all it's subEditors.
-        CleanupEditors();
-    }
-
-    protected override void SubEditorSetup( AnimatedMotionEditor editor )
     {
     }
 }
