@@ -2,9 +2,9 @@
 using UnityEditor;
 
 [CustomEditor( typeof( ClimbDownAnimatedMotion ) )]
-public class AnimatedClimbDownMotionEditor : AnimatedMotionEditor
+public class ClimbDownAnimatedMotionEditor : AnimatedMotionEditor
 {
-    ClimbDownAnimatedMotion animatedClimbDownMotion ;
+    ClimbDownAnimatedMotion animatedClimbDownMotion;
 
     SerializedProperty movementDurationProperty;
 
@@ -17,7 +17,7 @@ public class AnimatedClimbDownMotionEditor : AnimatedMotionEditor
 
         movementDurationProperty = serializedObject.FindProperty( MovementDurationPropertyName );
 
-        animatedClimbDownMotion.Name = "Animated Climb Down Motion";
+        animatedClimbDownMotion.Name = "Climb Down Animated Motion";
     }
 
     public override void PostOnInspectorGUI()

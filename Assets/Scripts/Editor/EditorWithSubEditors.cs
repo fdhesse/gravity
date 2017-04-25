@@ -29,8 +29,11 @@ public abstract class EditorWithSubEditors<TEditor, TTarget> : Editor
         // Populate the array and setup each Editor.
         for (int i = 0; i < subEditors.Length; i++)
         {
-            subEditors[i] = CreateEditor (subEditorTargets[i]) as TEditor;
-            SubEditorSetup (subEditors[i]);
+            if ( subEditors[i] != null )
+            {
+                subEditors[i] = CreateEditor( subEditorTargets[i] ) as TEditor;
+                SubEditorSetup( subEditors[i] );
+            }
         }
     }
 

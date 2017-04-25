@@ -22,6 +22,16 @@ public static class SerializedPropertyExtensions
 
         // Push all the information on the serializedObject back to the target.
         arrayProperty.serializedObject.ApplyModifiedProperties();
+
+        if ( elementToAdd != null )
+        {
+            Debug.LogError( "element to add is not null" );
+        }
+
+        if ( arrayProperty.GetArrayElementAtIndex( arrayProperty.arraySize - 1 ).objectReferenceValue == null )
+        {
+            Debug.LogError( "MOFO is null - check to see if monobehaviour version is also null" );
+        }
     }
 
 

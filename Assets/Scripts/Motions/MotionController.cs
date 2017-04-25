@@ -1,16 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class MotionController : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+[CreateAssetMenu]
+public class MotionController : ScriptableObject {
+    public ClimbDownAnimatedMotion[] AnimatedMotions = new ClimbDownAnimatedMotion[0];
 }

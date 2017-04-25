@@ -8,9 +8,6 @@ public class PawnEditor : EditorWithSubEditors<AnimatedMotionEditor, AnimatedMot
 {
     private Pawn pawn;
 
-    SerializedProperty animatedMotionsCollectionProperty;
-
-    const string AnimatedCollectionsPropertyName = "AnimatedMotions";
     
     public override void OnInspectorGUI()
     {
@@ -19,7 +16,9 @@ public class PawnEditor : EditorWithSubEditors<AnimatedMotionEditor, AnimatedMot
         // Pull information from the target into the serializedObject.
         serializedObject.Update();
 
-        CheckAndCreateSubEditors( pawn.AnimatedMotions );
+        if(pawn.MotionController != null && pawn.MotionController.AnimatedMotions.Length > 0 ) { 
+            CheckAndCreateSubEditors( pawn.MotionController.AnimatedMotions );
+        }
 
         // Display all of the ConditionCollections.
         for ( int i = 0; i < subEditors.Length; i++ )
@@ -31,43 +30,8 @@ public class PawnEditor : EditorWithSubEditors<AnimatedMotionEditor, AnimatedMot
         // Create a right-aligned button which when clicked, creates a new ConditionCollection in the ConditionCollections array.
         EditorGUILayout.BeginVertical();
         GUILayout.FlexibleSpace();
-        if ( !pawn.HasMotionType( typeof( ClimbDownAnimatedMotion ) ) )
-        {
-            if ( GUILayout.Button( "Add Climb Down Motion" ) )
-            {
-                var motion = AnimatedMotionEditor.CreateClimbDownAnimatedMotion( "New Climb Down Motion" );
-                animatedMotionsCollectionProperty.AddToObjectArray( motion );
-            }
-        }
 
-        var allRappelMotions = pawn.GetAllMotionsOfType( typeof(RappelDownAnimatedMotion) );
 
-        var typesNotFound = new List<RappelDownLengthType>();
-        foreach ( var rappelType in Enum.GetValues( typeof(RappelDownLengthType) ) )
-        {
-            var found = false;
-            foreach ( var rappelMotion in allRappelMotions )
-            {
-                if ( ( (RappelDownAnimatedMotion)rappelMotion ).Type == (RappelDownLengthType)rappelType )
-                {
-                    found = true;
-                    break;
-                }
-            }
-            if ( !found )
-            {
-                typesNotFound.Add( ( RappelDownLengthType )rappelType );
-            }
-        }
-        foreach ( var type in typesNotFound )
-        {
-            if ( GUILayout.Button( "Add Rappel Down " + (int)type ) )
-            {
-                var motion = AnimatedMotionEditor.CreateRappelDownAnimatedMotion( "New Rappel Down Motion" );
-                motion.Type = (RappelDownLengthType)type;
-                animatedMotionsCollectionProperty.AddToObjectArray( motion );
-            }
-        }
         
         EditorGUILayout.EndVertical();
 
@@ -88,11 +52,11 @@ public class PawnEditor : EditorWithSubEditors<AnimatedMotionEditor, AnimatedMot
             return;
         }
 
-        // Cache the SerializedProperties.
-        animatedMotionsCollectionProperty = serializedObject.FindProperty( AnimatedCollectionsPropertyName );
-
         // Check if the Editors for the Conditions need creating and optionally create them.
-        CheckAndCreateSubEditors( pawn.AnimatedMotions );
+        if ( pawn.MotionController != null && pawn.MotionController.AnimatedMotions.Length > 0 )
+        {
+            CheckAndCreateSubEditors( pawn.MotionController.AnimatedMotions );
+        }
     }
 
     void OnDisable()
@@ -103,6 +67,5 @@ public class PawnEditor : EditorWithSubEditors<AnimatedMotionEditor, AnimatedMot
 
     protected override void SubEditorSetup( AnimatedMotionEditor editor )
     {
-        editor.pawnAnimatedMotions = animatedMotionsCollectionProperty;
     }
 }

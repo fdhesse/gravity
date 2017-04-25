@@ -4,7 +4,7 @@ using UnityEngine;
 [CustomEditor( typeof(AnimatedMotion) )]
 public class AnimatedMotionEditor : Editor
 {
-    public SerializedProperty pawnAnimatedMotions;
+    public SerializedProperty ControllerMotionsArray;
 
     AnimatedMotion animatedMotion;
 
@@ -61,7 +61,7 @@ public class AnimatedMotionEditor : Editor
 
         if ( GUILayout.Button( "x", removeMotionButton ) )
         {
-            pawnAnimatedMotions.RemoveFromObjectArray( animatedMotion );
+            ControllerMotionsArray.RemoveFromObjectArray( animatedMotion );
         }
 
         GUI.backgroundColor = oldColor;
@@ -117,6 +117,7 @@ public class AnimatedMotionEditor : Editor
     {
         var newMotion = CreateInstance<ClimbDownAnimatedMotion>();
 
+        newMotion.Name = newMotion.GetType().ToString();
         newMotion.Description = description;
         return newMotion;
     }

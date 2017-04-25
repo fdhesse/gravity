@@ -38,7 +38,7 @@ public class Pawn : MonoBehaviour
     public float delayBeforeRappeling = 0.3f;
 	public float RappelMovementDuration = 0.3f;
 
-    [HideInInspector] public AnimatedMotion[] AnimatedMotions = new AnimatedMotion[0];
+    public MotionController MotionController;
 
     public float height;
     public float width;
@@ -121,6 +121,7 @@ public class Pawn : MonoBehaviour
 	{
         Assert.IsNotNull( FallingLightningBolt );
         Assert.IsNotNull( Animator );
+        Assert.IsNotNull( MotionController );
 
 		s_Instance = this;
 
@@ -574,9 +575,9 @@ public class Pawn : MonoBehaviour
                        var fallDistance = Mathf.Abs( pawnTile.transform.position.y - focusedTile.transform.position.y );
 			            if ( fallDistance < 20f )
 			            {
-			                if ( this.HasMotionType( typeof(ClimbDownAnimatedMotion) ) )
+			                if ( MotionController.HasMotionType( typeof(ClimbDownAnimatedMotion) ) )
 			                {
-			                    var motion = this.GetMotion( typeof(ClimbDownAnimatedMotion) ) as ClimbDownAnimatedMotion;
+			                    var motion = MotionController.GetMotion( typeof(ClimbDownAnimatedMotion) ) as ClimbDownAnimatedMotion;
 			                    System.Diagnostics.Debug.Assert( motion != null, "motion != null" );
 			                    motion.Move(this);
 			                }
@@ -588,9 +589,9 @@ public class Pawn : MonoBehaviour
 			            else
 			            {
                             var rappelDistance = Mathf.Abs( pawnTile.transform.position.y - focusedTile.transform.position.y );
-                            if ( this.GetRappelingMotion( ( int )( rappelDistance ) ) != null)
+                            if ( MotionController.GetRappelingMotion( ( int )( rappelDistance ) ) != null)
                             {
-                                var motion = this.GetMotion( typeof( RappelDownAnimatedMotion ) ) as RappelDownAnimatedMotion;
+                                var motion = MotionController.GetMotion( typeof( RappelDownAnimatedMotion ) ) as RappelDownAnimatedMotion;
                                 System.Diagnostics.Debug.Assert( motion != null, "motion != null" );
                                 motion.Move( this );
                             }
