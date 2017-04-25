@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,10 +11,7 @@ public class PawnEditor : EditorWithSubEditors<AnimatedMotionEditor, AnimatedMot
     SerializedProperty animatedMotionsCollectionProperty;
 
     const string AnimatedCollectionsPropertyName = "AnimatedMotions";
-
-    const float AnimatedMotionButtonWidth = 30f; // Width of the button for adding a new Condition.
-    const float CollectionButtonWidth = 125f; // Width of the button for removing the target from it's Interactable.
-
+    
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
@@ -72,59 +68,14 @@ public class PawnEditor : EditorWithSubEditors<AnimatedMotionEditor, AnimatedMot
                 animatedMotionsCollectionProperty.AddToObjectArray( motion );
             }
         }
-
-        if ( !pawn.HasMotionType( typeof( ClimbDownAnimatedMotion ) ) )
-        {
-            if ( GUILayout.Button( "Add Climb Down Motion" ) )
-            {
-                var motion = AnimatedMotionEditor.CreateClimbDownAnimatedMotion( "New Climb Down Motion" );
-                animatedMotionsCollectionProperty.AddToObjectArray( motion );
-            }
-        }
+        
         EditorGUILayout.EndVertical();
 
         EditorGUILayout.Space();
 
         serializedObject.ApplyModifiedProperties();
     }
-
-    void InnerEditor()
-    {
-        EditorGUILayout.Space();
-
-        // Display the description for editing.
-        EditorGUILayout.Space();
-
-        // Display the Labels for the Conditions evenly split over the width of the inspector.
-        float space = EditorGUIUtility.currentViewWidth / 3f;
-
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField( "Condition", GUILayout.Width( space ) );
-        EditorGUILayout.LabelField( "Satisfied?", GUILayout.Width( space ) );
-        EditorGUILayout.LabelField( "Add/Remove", GUILayout.Width( space ) );
-        EditorGUILayout.EndHorizontal();
-
-        // Display each of the Conditions.
-        EditorGUILayout.BeginVertical( GUI.skin.box );
-        for ( int i = 0; i < subEditors.Length; i++ )
-        {
-            subEditors[i].OnInspectorGUI();
-        }
-        EditorGUILayout.EndHorizontal();
-
-        // Display a right aligned button which when clicked adds a Condition to the array.
-        EditorGUILayout.BeginHorizontal();
-        GUILayout.FlexibleSpace();
-        if ( GUILayout.Button( "+", GUILayout.Width( AnimatedMotionButtonWidth ) ) )
-        {
-            var newCondition = AnimatedMotionEditor.CreateAnimatedMotion( "New animated motion" );
-            animatedMotionsCollectionProperty.AddToObjectArray( newCondition );
-        }
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.Space();
-    }
-
+    
     public void OnEnable()
     {
         // Cache a reference to the target.
@@ -154,19 +105,4 @@ public class PawnEditor : EditorWithSubEditors<AnimatedMotionEditor, AnimatedMot
     {
         editor.pawnAnimatedMotions = animatedMotionsCollectionProperty;
     }
-
-    //public static AnimatedMotionCollection CreateConditionCollection()
-    //{
-    //    // Create a new instance of ConditionCollection.
-    //    var newAnimatedMotionCollection = CreateInstance<AnimatedMotionCollection>();
-
-    //    // Give it a default description.
-    //    newAnimatedMotionCollection.Name = "New animated motion collection";
-
-    //    // Give it a single default Condition.
-    //    newAnimatedMotionCollection.AnimatedMotions = new AnimatedMotion[1];
-    //    newAnimatedMotionCollection.AnimatedMotions[0] =
-    //        AnimatedMotionEditor.CreateAnimatedMotion( "New animated motion" );
-    //    return newAnimatedMotionCollection;
-    //}
 }

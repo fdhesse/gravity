@@ -17,11 +17,7 @@ public class AnimatedClimbDownMotionEditor : AnimatedMotionEditor
 
         movementDurationProperty = serializedObject.FindProperty( MovementDurationPropertyName );
 
-        animatedMotionName = "Animated Climb Down Motion";
-    }
-
-    public override void PreOnInspectorGUI()
-    {
+        animatedClimbDownMotion.Name = "Animated Climb Down Motion";
     }
 
     public override void PostOnInspectorGUI()

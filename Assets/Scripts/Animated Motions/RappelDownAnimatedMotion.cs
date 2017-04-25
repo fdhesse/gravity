@@ -10,15 +10,15 @@ public enum RappelDownLengthType
     SevenBlocks = 70
 }
 
-public class RappelDownAnimatedMotion : AnimatedMotion {
-
+public class RappelDownAnimatedMotion : AnimatedMotion
+{
     public RappelDownLengthType Type;
     public float MovementDuration = 0.3f;
 
     public void Move( Pawn pawn )
     {
         var rappelDistance = Mathf.Abs( pawn.pawnTile.transform.position.y - pawn.focusedTile.transform.position.y );
-        var numberOfCubes = ( int )( rappelDistance / 10 );
+        var numberOfCubes = (int)( rappelDistance / 10 );
 
         //throw new NotImplementedException();
         pawn.isRappelingDown = true;

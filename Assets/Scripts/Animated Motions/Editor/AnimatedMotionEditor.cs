@@ -16,8 +16,6 @@ public class AnimatedMotionEditor : Editor
     const string DescriptionPropertyName = "Description";
     const string AnimatedClipPropertyName = "TargetAnimation";
 
-    protected string animatedMotionName = "Animated Motion";
-
     public virtual void OnEnable()
     {
         // Cache the target.
@@ -47,11 +45,11 @@ public class AnimatedMotionEditor : Editor
 
         EditorGUILayout.BeginHorizontal();
 
-        var guiStyle = EditorStyles.centeredGreyMiniLabel;
+        var guiStyle = EditorStyles.foldout;
         guiStyle.fontSize = 13;
         guiStyle.fontStyle = FontStyle.Bold;
-        guiStyle.font.material.color = Color.black;
-        EditorGUILayout.LabelField( animatedMotionName, guiStyle );
+        nameProperty.isExpanded = EditorGUILayout.Foldout( nameProperty.isExpanded, nameProperty.stringValue, guiStyle );
+        //EditorGUILayout.LabelField( nameProperty.stringValue, guiStyle );
 
         var removeMotionButton = new GUIStyle( GUI.skin.button );
         removeMotionButton.normal.textColor = Color.white;
@@ -69,31 +67,34 @@ public class AnimatedMotionEditor : Editor
         GUI.backgroundColor = oldColor;
 
 
-        EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndHorizontal();
+        if ( nameProperty.isExpanded )
+        {
+            EditorGUILayout.BeginVertical( GUI.skin.box );
 
-        EditorGUILayout.BeginVertical( GUI.skin.box );
+            EditorGUILayout.LabelField( "Description:" );
+            animatedMotion.Description = EditorGUILayout.TextArea( animatedMotion.Description, GUILayout.Height( 50 ) );
 
-        EditorGUILayout.LabelField( "Description:" );
-        animatedMotion.Description = EditorGUILayout.TextArea( animatedMotion.Description, GUILayout.Height( 50 ) );
+            EditorGUILayout.Space();
 
-        EditorGUILayout.Space();
+            EditorGUILayout.BeginHorizontal();
 
-        EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField( "Target Animation:" );
+            animatedMotion.TargetAnimation =
+                (AnimationClip)
+                    EditorGUILayout.ObjectField( animatedMotion.TargetAnimation, typeof(AnimationClip), true );
 
-        EditorGUILayout.LabelField( "Target Animation:" );
-        animatedMotion.TargetAnimation =
-            (AnimationClip)EditorGUILayout.ObjectField( animatedMotion.TargetAnimation, typeof(AnimationClip), true );
+            EditorGUILayout.EndHorizontal();
 
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.EndVertical();
+            EditorGUILayout.EndVertical();
 
         PostOnInspectorGUI();
+        }
 
         EditorGUILayout.EndVertical();
 
         EditorGUI.indentLevel--;
-        EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndHorizontal();
     }
 
     public virtual void PreOnInspectorGUI()

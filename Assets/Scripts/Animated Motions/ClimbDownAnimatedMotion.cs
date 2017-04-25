@@ -2,6 +2,11 @@
 
     public float MovementDuration = 0.3f;
 
+    public void OnValidate()
+    {
+        Name = "Climb Down Animated Motion";
+    }
+
     public void Move( Pawn pawn )
     {
         pawn.isClimbingDown = true;

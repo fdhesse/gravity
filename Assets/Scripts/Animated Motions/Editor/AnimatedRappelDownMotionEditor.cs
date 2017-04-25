@@ -20,7 +20,7 @@ public class AnimatedRappelMotionEditor : AnimatedMotionEditor
         movementDurationProperty = serializedObject.FindProperty( MovementDurationPropertyName );
         TypeProperty = serializedObject.FindProperty( TypePropertyName );
 
-        animatedMotionName = string.Format( "Animated Rappel Down {0} Motion", ( int )animatedRappelDownMotion.Type );
+        animatedRappelDownMotion.Name = string.Format( "Animated Rappel Down {0} Motion", ( int )animatedRappelDownMotion.Type );
     }
 
     public override void PreOnInspectorGUI()
@@ -50,7 +50,7 @@ public class AnimatedRappelMotionEditor : AnimatedMotionEditor
 
         animatedRappelDownMotion.Type =
             (RappelDownLengthType) EditorGUILayout.EnumPopup( "Type of Rappel Down motion:", animatedRappelDownMotion.Type );
-        animatedMotionName = string.Format( "Animated Rappel Down {0} Motion", ( int )animatedRappelDownMotion.Type );
+        //animatedMotionName = string.Format( "Animated Rappel Down {0} Motion", ( int )animatedRappelDownMotion.Type );
 
         //animatedClimbDownMotion.MovementDuration = EditorGUILayout.FloatField( animatedClimbDownMotion.MovementDuration );
 
