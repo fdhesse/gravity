@@ -1,14 +1,16 @@
-﻿using UnityEditor;
+﻿using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 [CustomEditor( typeof(AnimatedMotion) )]
 public class AnimatedMotionEditor : Editor
 {
-    public SerializedProperty ControllerMotionsArray;
+    public MotionControllerEditor ParentEditor;
+    public MotionController Controller;
 
     AnimatedMotion animatedMotion;
 
-    SerializedProperty nameProperty;
+    public SerializedProperty nameProperty;
     SerializedProperty descriptionProperty;
     SerializedProperty animatedClipProperty;
 
@@ -61,7 +63,13 @@ public class AnimatedMotionEditor : Editor
 
         if ( GUILayout.Button( "x", removeMotionButton ) )
         {
-            ControllerMotionsArray.RemoveFromObjectArray( animatedMotion );
+            var editorList = ParentEditor.AnimatedMotionEditors.ToList();
+            editorList.Remove( this );
+            ParentEditor.AnimatedMotionEditors = editorList.ToArray();
+
+            var motionList = Controller.AnimatedMotions.ToList();
+            motionList.Remove( animatedMotion );
+            Controller.AnimatedMotions = motionList.ToArray();
         }
 
         GUI.backgroundColor = oldColor;

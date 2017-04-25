@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu]
 public class MotionController : ScriptableObject {
-    public ClimbDownAnimatedMotion[] AnimatedMotions = new ClimbDownAnimatedMotion[0];
+    [HideInInspector] public AnimatedMotion[] AnimatedMotions = new AnimatedMotion[0];
 }

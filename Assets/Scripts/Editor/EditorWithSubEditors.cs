@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using NUnit.Framework;
+using UnityEngine;
 using UnityEditor;
 
 // This class acts as a base class for Editors that have Editors
@@ -26,14 +27,18 @@ public abstract class EditorWithSubEditors<TEditor, TTarget> : Editor
         // Create an array of the subEditor type that is the right length for the targets.
         subEditors = new TEditor[subEditorTargets.Length];
 
+        var count = 0;
         // Populate the array and setup each Editor.
         for (int i = 0; i < subEditors.Length; i++)
         {
             if ( subEditors[i] != null )
             {
                 subEditors[i] = CreateEditor( subEditorTargets[i] ) as TEditor;
+                Assert.IsNotNull( subEditors[i] );
                 SubEditorSetup( subEditors[i] );
+                Assert.IsNotNull( subEditors[i] );
             }
+            count++;
         }
     }
 

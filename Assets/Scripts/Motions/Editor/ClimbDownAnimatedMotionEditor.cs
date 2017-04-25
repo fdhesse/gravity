@@ -13,6 +13,7 @@ public class ClimbDownAnimatedMotionEditor : AnimatedMotionEditor
     public override void OnEnable()
     {
         base.OnEnable();
+
         animatedClimbDownMotion = ( ClimbDownAnimatedMotion )target;
 
         movementDurationProperty = serializedObject.FindProperty( MovementDurationPropertyName );

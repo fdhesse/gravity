@@ -1,25 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public static class MotionControllerExtensions
 {
     public static bool HasMotionType( this MotionController controller, Type type )
     {
-        if ( controller == null )
-        {
-            Debug.LogError( "Controller null" );
-        }
-
-        if ( controller.AnimatedMotions == null )
-        {
-            Debug.LogError( "AnimatedMotions null" );
-        }
-        foreach ( var motion in controller.AnimatedMotions )
-        {
-            Debug.Log( motion.Name );
-        }
         return controller.AnimatedMotions.Any( motion => motion.GetType() == type );
     }
 
@@ -30,8 +16,7 @@ public static class MotionControllerExtensions
 
     public static List<AnimatedMotion> GetAllMotionsOfType( this MotionController controller, Type type )
     {
-        //return controller.AnimatedMotions.Where( motion => motion.GetType() == type ).ToList();
-        return null;
+        return controller.AnimatedMotions.Where( motion => motion.GetType() == type ).ToList();
     }
 
     public static RappelDownAnimatedMotion GetRappelingMotion( this MotionController controller, int rappelDistance )
@@ -48,4 +33,22 @@ public static class MotionControllerExtensions
 
         return null;
     }
+
+
+        public static AnimatedMotion TryGetAnimatedMotionAt( this MotionController controller, int index )
+        {
+            // Cache the AllConditions array.
+            AnimatedMotion[] allConditions = controller.AnimatedMotions;
+
+            // If it doesn't exist or there are null elements, return null.
+            if ( allConditions == null || allConditions[0] == null )
+                return null;
+
+            // If the given index is beyond the length of the array return the first element.
+            if ( index >= allConditions.Length )
+                return allConditions[0];
+
+            // Otherwise return the Condition at the given index.
+            return allConditions[index];
+        }
 }
