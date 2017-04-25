@@ -201,7 +201,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1449105262096966}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 9.39, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4796367178624962}
@@ -663,14 +663,7 @@ MonoBehaviour:
   jumpAnimationLength: 0.25
   delayBeforeRappeling: 1
   RappelMovementDuration: 1
-  AnimatedMotions:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  MotionController: {fileID: 11400000, guid: 3046d55a971f1084da6580a5c58ad686, type: 2}
   height: 0
   width: 0
   isJumping: 0

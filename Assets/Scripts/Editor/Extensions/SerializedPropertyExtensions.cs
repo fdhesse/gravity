@@ -22,6 +22,8 @@ public static class SerializedPropertyExtensions
 
         // Push all the information on the serializedObject back to the target.
         arrayProperty.serializedObject.ApplyModifiedProperties();
+
+        Debug.Assert( arrayProperty.GetArrayElementAtIndex( arrayProperty.arraySize - 1 ).objectReferenceValue != null );
     }
 
 
