@@ -35,8 +35,7 @@ public class Pawn : MonoBehaviour
 	public float fallDelay = .5f;				// Time of pawn's fall
 	public float fallInterval = .5f;			// Gap between tile and pawn before fall
 	public float jumpAnimationLength = 0.3f;
-    public float delayBeforeRappeling = 0.3f;
-	public float RappelMovementDuration = 0.3f;
+    public float YRotationOffset = 0;
 
     public MotionController MotionController;
 
@@ -589,6 +588,7 @@ public class Pawn : MonoBehaviour
 			            else
 			            {
                             var rappelDistance = Mathf.Abs( pawnTile.transform.position.y - focusedTile.transform.position.y );
+
                             if ( MotionController.GetRappelingMotion( ( int )( rappelDistance ) ) != null)
                             {
                                 var motion = MotionController.GetMotion( typeof( RappelDownAnimatedMotion ) ) as RappelDownAnimatedMotion;
@@ -719,18 +719,20 @@ public class Pawn : MonoBehaviour
 		Vector3 forward = targetPoint - transform.position;
 		
 		Quaternion fromRot = transform.rotation;
-		Quaternion toRot = Quaternion.identity;
-		
-		if ( forward != Vector3.zero )
-			toRot = Quaternion.LookRotation( forward, -down );
+	    Quaternion toRot = Quaternion.identity;
 
-		//float angle = Quaternion.Angle (fromRot, toRot);
-		//float delay = turnDelay;
+	    if ( forward != Vector3.zero )
+	    {
+	        toRot = Quaternion.LookRotation( forward, -down );
+	    }
 
-		//if (angle > 90)
-		//	delay *= .5f;
-		
-		while ( elapsedTime < turnDelay )
+        //float angle = Quaternion.Angle (fromRot, toRot);
+        //float delay = turnDelay;
+
+        //if (angle > 90)
+        //	delay *= .5f;
+
+        while ( elapsedTime < turnDelay )
 		{
 			elapsedTime += Time.deltaTime;
 			transform.rotation = Quaternion.Lerp( fromRot, toRot, elapsedTime / turnDelay );
@@ -1325,4 +1327,13 @@ public class Pawn : MonoBehaviour
         }
     }
 #endif
+
+    public void LookAtPosition(Vector3 lookPosition)
+    {
+        if ( lookCoroutine != null ) { 
+            StopCoroutine( lookCoroutine );
+        }
+        lookCoroutine = LookAt( lookPosition );
+        StartCoroutine( lookCoroutine );
+    }
 }

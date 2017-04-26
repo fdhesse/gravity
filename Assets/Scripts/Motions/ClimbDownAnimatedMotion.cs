@@ -9,6 +9,9 @@
 
     public void Move( Pawn pawn )
     {
+        var tilePosition = pawn.focusedTile.Position;
+        var direction = tilePosition - pawn.transform.position;
+
         pawn.isClimbingDown = true;
         pawn.isFalling = true;
 
@@ -24,13 +27,14 @@
         {
             pawn.isClimbingDown = false;
             pawn.clickedTile = null; // target reached, forget it
+                                     // the modification in orientation
+            //pawn.LookAtPosition( pawn.transform.position + direction );
         } ) );
 
-        // the modification in orientation
-        //if ( lookCoroutine != null )
-        //    StopCoroutine( lookCoroutine );
-        //lookCoroutine = LookAt( clickedTile.transform.position );
-        //StartCoroutine( lookCoroutine );
+        // look the other way
+        // pawn.LookAtPosition( pawn.transform.position - direction );
+
+        pawn.LookAtPosition( tilePosition );
     }
 
 }

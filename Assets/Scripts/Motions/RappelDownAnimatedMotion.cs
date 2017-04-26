@@ -12,11 +12,17 @@ public enum RappelDownLengthType
 
 public class RappelDownAnimatedMotion : AnimatedMotion
 {
+    public AnimationClip StartRappelAnimationClip;
     public RappelDownLengthType Type;
     public float MovementDuration = 0.3f;
 
     public void Move( Pawn pawn )
     {
+        var tilePosition = pawn.focusedTile.Position;
+
+        var direction = tilePosition - pawn.transform.position;
+        var horizontalDirection = new Vector3(direction.x,0,direction.z);
+
         var rappelDistance = Mathf.Abs( pawn.pawnTile.transform.position.y - pawn.focusedTile.transform.position.y );
         var numberOfCubes = (int)( rappelDistance / 10 );
 
@@ -37,12 +43,12 @@ public class RappelDownAnimatedMotion : AnimatedMotion
         {
             pawn.isRappelingDown = false;
             pawn.clickedTile = null; // target reached, forget it
+            //pawn.LookAtPosition( pawn.transform.position + direction );
         } ) );
 
-        // the modification in orientation
-        //if ( lookCoroutine != null )
-        //    StopCoroutine( lookCoroutine );
-        //lookCoroutine = LookAt( clickedTile.transform.position );
-        //StartCoroutine( lookCoroutine );
+        // Look the other way
+        // pawn.LookAtPosition( pawn.transform.position - ( tilePosition - pawn.transform.position ) );
+
+        pawn.LookAtPosition( tilePosition );
     }
 }
