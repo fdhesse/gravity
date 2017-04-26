@@ -38,6 +38,16 @@ public class AnimatedRappelMotionEditor : AnimatedMotionEditor
 
         EditorGUILayout.EndHorizontal();
 
+
+        EditorGUILayout.BeginHorizontal();
+
+        EditorGUILayout.LabelField( "Target Animation:" );
+        animatedRappelDownMotion.StartRappelAnimationClip =
+            ( AnimationClip )
+                EditorGUILayout.ObjectField( animatedRappelDownMotion.StartRappelAnimationClip, typeof( AnimationClip ), true );
+
+        EditorGUILayout.EndHorizontal();
+
         EditorGUILayout.BeginHorizontal();
 
         EditorGUILayout.LabelField( "Movement Duration:" );
@@ -56,17 +66,16 @@ public class AnimatedRappelMotionEditor : AnimatedMotionEditor
 
         EditorGUILayout.EndHorizontal();
 
-        EditorGUI.BeginDisabledGroup( animatedRappelDownMotion.TargetAnimation == null );
+        EditorGUI.BeginDisabledGroup( animatedRappelDownMotion.TargetAnimation == null || animatedRappelDownMotion.StartRappelAnimationClip == null );
 
-        if ( animatedRappelDownMotion.TargetAnimation == null ||
+        if ( animatedRappelDownMotion.TargetAnimation == null || animatedRappelDownMotion.StartRappelAnimationClip == null ||
              ( animatedRappelDownMotion.TargetAnimation != null &&
-               animatedRappelDownMotion.MovementDuration != animatedRappelDownMotion.TargetAnimation.length ) )
+               animatedRappelDownMotion.MovementDuration != animatedRappelDownMotion.TargetAnimation.length + animatedRappelDownMotion.StartRappelAnimationClip.length ) )
         {
-            if ( GUILayout.Button( "Calculate Movement Duration based on Animation" ) )
+            if ( GUILayout.Button( "Calculate Movement Duration based on Animations (start + rappel)" ) )
             {
-                var animation = animatedRappelDownMotion.TargetAnimation;
-
-                animatedRappelDownMotion.MovementDuration = animation.length;
+                animatedRappelDownMotion.MovementDuration = animatedRappelDownMotion.TargetAnimation.length +
+                                                            animatedRappelDownMotion.StartRappelAnimationClip.length;
             }
         }
 
