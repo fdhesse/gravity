@@ -71,6 +71,31 @@ ModelImporter:
     100126: R_leg01
     100128: R_leg02
     100130: torso
+    100132: bag
+    100134: head
+    100136: head1
+    100138: L_Arm
+    100140: L_elbow
+    100142: L_finger
+    100144: L_foot
+    100146: L_Hand
+    100148: L_knee
+    100150: L_leg
+    100152: L_toe
+    100154: left_foot
+    100156: left_hand
+    100158: neck
+    100160: R_Arm
+    100162: R_elbow
+    100164: R_finger
+    100166: R_foot
+    100168: R_Hand
+    100170: R_knee
+    100172: R_leg
+    100174: R_toe
+    100176: righ_hand
+    100178: right_foot
+    100180: torso 1
     400000: Backpack
     400002: bag01
     400004: blanket
@@ -137,7 +162,56 @@ ModelImporter:
     400126: R_leg01
     400128: R_leg02
     400130: torso
+    400132: bag
+    400134: head
+    400136: head1
+    400138: L_Arm
+    400140: L_elbow
+    400142: L_finger
+    400144: L_foot
+    400146: L_Hand
+    400148: L_knee
+    400150: L_leg
+    400152: L_toe
+    400154: left_foot
+    400156: left_hand
+    400158: neck
+    400160: R_Arm
+    400162: R_elbow
+    400164: R_finger
+    400166: R_foot
+    400168: R_Hand
+    400170: R_knee
+    400172: R_leg
+    400174: R_toe
+    400176: righ_hand
+    400178: right_foot
+    400180: torso 1
+    2300000: bag
+    2300002: hat
+    2300004: head
+    2300006: left_foot
+    2300008: left_hand
+    2300010: righ_hand
+    2300012: right_foot
+    2300014: torso 1
+    3300000: bag
+    3300002: hat
+    3300004: head
+    3300006: left_foot
+    3300008: left_hand
+    3300010: righ_hand
+    3300012: right_foot
+    3300014: torso 1
     4300000: Player
+    4300002: hat
+    4300004: head
+    4300006: left_hand
+    4300008: righ_hand
+    4300010: torso
+    4300012: bag
+    4300014: right_foot
+    4300016: left_foot
     7400000: Idle02
     9500000: //RootNode
     13700000: Player
@@ -151,6 +225,8 @@ ModelImporter:
     resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -165,8 +241,8 @@ ModelImporter:
     - serializedVersion: 16
       name: Idle02
       takeName: Take 001
-      firstFrame: 0
-      lastFrame: 50
+      firstFrame: 61
+      lastFrame: 120
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -347,6 +423,7 @@ ModelImporter:
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
+    serializedVersion: 2
     human: []
     skeleton: []
     armTwist: 0.5
@@ -357,7 +434,10 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
   humanoidOversampling: 1
