@@ -279,11 +279,6 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!95 &42628467 stripped
-Animator:
-  m_PrefabParentObject: {fileID: 9500000, guid: 03461a16fadeff842aee894ebffa5d23,
-    type: 3}
-  m_PrefabInternal: {fileID: 420611435}
 --- !u!1 &97258300
 GameObject:
   m_ObjectHideFlags: 8
@@ -4102,52 +4097,6 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 0}
---- !u!1001 &420611435
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1293009845}
-    m_Modifications:
-    - target: {fileID: 400038, guid: 03461a16fadeff842aee894ebffa5d23, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400038, guid: 03461a16fadeff842aee894ebffa5d23, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400038, guid: 03461a16fadeff842aee894ebffa5d23, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400038, guid: 03461a16fadeff842aee894ebffa5d23, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400038, guid: 03461a16fadeff842aee894ebffa5d23, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400038, guid: 03461a16fadeff842aee894ebffa5d23, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400038, guid: 03461a16fadeff842aee894ebffa5d23, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 400038, guid: 03461a16fadeff842aee894ebffa5d23, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9500000, guid: 03461a16fadeff842aee894ebffa5d23, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: e91d85eb1e6e1f34b9395f0a6056b357, type: 2}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 03461a16fadeff842aee894ebffa5d23, type: 3}
-  m_IsPrefabParent: 0
 --- !u!1001 &425191897
 Prefab:
   m_ObjectHideFlags: 0
@@ -7381,35 +7330,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 9
       objectReference: {fileID: 0}
-    - target: {fileID: 100054, guid: a4a288f9ec393234898092925bc03587, type: 2}
-      propertyPath: m_Name
-      value: Old Guy Pawn
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: a4a288f9ec393234898092925bc03587, type: 2}
-      propertyPath: MotionController
-      value: 
-      objectReference: {fileID: 11400000, guid: a436e0165585cc847ab8fb1105619168,
-        type: 2}
-    - target: {fileID: 4458343837999854, guid: a4a288f9ec393234898092925bc03587, type: 2}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 446654, guid: a4a288f9ec393234898092925bc03587, type: 2}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 439478, guid: a4a288f9ec393234898092925bc03587, type: 2}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 147078, guid: a4a288f9ec393234898092925bc03587, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: a4a288f9ec393234898092925bc03587, type: 2}
-      propertyPath: Animator
-      value: 
-      objectReference: {fileID: 42628467}
     - target: {fileID: 13610078, guid: a4a288f9ec393234898092925bc03587, type: 2}
       propertyPath: m_Center.y
       value: 4
@@ -31982,10 +31902,6 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
---- !u!4 &1293009845 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 400054, guid: a4a288f9ec393234898092925bc03587, type: 2}
-  m_PrefabInternal: {fileID: 465237716}
 --- !u!1 &1295052161
 GameObject:
   m_ObjectHideFlags: 8

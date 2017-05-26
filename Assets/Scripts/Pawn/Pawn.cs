@@ -756,8 +756,10 @@ public class Pawn : MonoBehaviour
 
 		RaycastHit hit = new RaycastHit();
 
+	    var downRay = new Ray( transform.position + -down * height * 0.5f, down );
+
 		// casting a ray down, we need a sphereCast because the capsule has thickness, and we only need tiles layer
-		if (Physics.SphereCast (transform.position, width * 0.4f, down, out hit, height * 0.5f, tilesLayerMask))
+		if (Physics.SphereCast ( downRay, width * 0.4f, out hit, height * 0.5f, tilesLayerMask))
 		{
 			GameObject hitTileGameObject = hit.collider.gameObject;
 			Tile hitTile = hitTileGameObject.GetComponent<Tile>();
@@ -807,9 +809,10 @@ public class Pawn : MonoBehaviour
 			TileOrientation orientation = (TileOrientation)(i + 1);
 
 			RaycastHit hit = new RaycastHit();
+            var downRay = new Ray( transform.position + -World.getGravityVector( orientation ) * height * 0.5f, World.getGravityVector( orientation ) );
 
-			// Casting a ray towards 'orientation', SphereCast needed because of Pawn's capsule thickness and ignoring Pawn's collider
-			if (Physics.SphereCast(transform.position, width * 0.4f, World.getGravityVector(orientation), out hit, 10000, tilesLayerMask))
+            // Casting a ray towards 'orientation', SphereCast needed because of Pawn's capsule thickness and ignoring Pawn's collider
+            if (Physics.SphereCast( downRay, width * 0.4f, out hit, Mathf.Infinity, tilesLayerMask))
 			{
 				Tile tile = hit.collider.gameObject.GetComponent<Tile>();
 				
@@ -844,13 +847,16 @@ public class Pawn : MonoBehaviour
 		Tile pointedTile = TileSelection.getTile();
 
 		// the set the focused tile with the pointed one if it is not null and clickable
-		if ((pointedTile != null) && TileSelection.isClickableType(pointedTile.Type))
+		if ((pointedTile != null) && TileSelection.isClickableType( pointedTile.Type ) )
+        { 
 			focusedTile = pointedTile;
-		else
+        }
+        else { 
 			focusedTile = null;
+        }
 
-		// Now we will check if the focused tile is clickable or not.
-		bool isFocusedTileClickable = false;
+        // Now we will check if the focused tile is clickable or not.
+        bool isFocusedTileClickable = false;
 
 		// For that will we ask a valid AStar for normal walk navigation from the pawntile,
 		// or we will check if the tile is accessible by fall from pawntile.
@@ -878,8 +884,8 @@ public class Pawn : MonoBehaviour
 					foreach (Tile tile in accessibleTiles)
 						if (!tile.IsGlueTile)
 						{
-							// we found a non glue tile in the path, so we cannot click on destination
-							isFocusedTileClickable = false;
+                            // we found a non glue tile in the path, so we cannot click on destination
+                            isFocusedTileClickable = false;
 							break;
 						}
 				}
@@ -1224,7 +1230,7 @@ public class Pawn : MonoBehaviour
 		if (pawnTile != null) 
 		{
 			Vector3 down = getMyVerticality();
-			return Physics.SphereCast( new Ray( transform.position, down ), width * 0.5f, height * 0.5f, tilesLayerMask );
+			return Physics.SphereCast( new Ray( transform.position-down * width * 0.5f, down ), width * 0.5f, height * 0.5f, tilesLayerMask );
 		}
 		
 		return false; // if there isn't a tile beneath him, he isn't grounded
