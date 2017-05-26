@@ -40,7 +40,7 @@ public class LevelSelect : MonoBehaviour {
 	{
 		target.GetComponent<Renderer>().material.color = highlightColor;
 		
-		Renderer[] childrenRenderers = target.transform.FindChild("text").GetComponentsInChildren<Renderer> ();
+		Renderer[] childrenRenderers = target.transform.Find("text").GetComponentsInChildren<Renderer> ();
 		
 		foreach ( Renderer renderer in childrenRenderers )
 		{
@@ -52,7 +52,7 @@ public class LevelSelect : MonoBehaviour {
 	{
 		targetHit.GetComponent<Renderer>().material.color = defaultColor;
 
-		Renderer[] childrenRenderers = target.transform.FindChild("text").GetComponentsInChildren<Renderer> ();
+		Renderer[] childrenRenderers = target.transform.Find("text").GetComponentsInChildren<Renderer> ();
 		
 		foreach ( Renderer renderer in childrenRenderers )
 		{

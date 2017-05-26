@@ -60,12 +60,12 @@ public class FallingCube : MonoBehaviour
 		GameObject[] faces = new GameObject[6];
 		tiles = new Tile[6];
 		
-		faces[0] = transform.FindChild ("left").gameObject;
-		faces[1] = transform.FindChild ("right").gameObject;
-		faces[2] = transform.FindChild ("up").gameObject;
-		faces[3] = transform.FindChild ("down").gameObject;
-		faces[4] = transform.FindChild ("back").gameObject;
-		faces[5] = transform.FindChild ("front").gameObject;
+		faces[0] = transform.Find ("left").gameObject;
+		faces[1] = transform.Find ("right").gameObject;
+		faces[2] = transform.Find ("up").gameObject;
+		faces[3] = transform.Find ("down").gameObject;
+		faces[4] = transform.Find ("back").gameObject;
+		faces[5] = transform.Find ("front").gameObject;
 		
 		for ( int i = 0, l = faces.Length; i < l; i++ )
 		{

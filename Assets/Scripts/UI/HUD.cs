@@ -66,23 +66,23 @@ public class HUD : MonoBehaviour
 	void Awake()
 	{
 		// hud
-		mGravityCounterText = this.transform.FindChild("HUD/CounterText").GetComponent<UnityEngine.UI.Text>();
+		mGravityCounterText = this.transform.Find("HUD/CounterText").GetComponent<UnityEngine.UI.Text>();
 		this.GravityChangeCount = 0;
 
 		// result
-		mResultPage = this.transform.FindChild("ResultPage").gameObject;
-		mStar1 = mResultPage.transform.FindChild("Stars/Star1").GetComponent<UnityEngine.UI.Button>();
-		mStar2 = mResultPage.transform.FindChild("Stars/Star2").GetComponent<UnityEngine.UI.Button>();
-		mStar3 = mResultPage.transform.FindChild("Stars/Star3").GetComponent<UnityEngine.UI.Button>();
-		mMinimumGravityChangeText = mResultPage.transform.FindChild("MinimumChange").GetComponent<UnityEngine.UI.Text>();
-		mCurrentGravityChangeText = mResultPage.transform.FindChild("GravityChange").GetComponent<UnityEngine.UI.Text>();
+		mResultPage = this.transform.Find("ResultPage").gameObject;
+		mStar1 = mResultPage.transform.Find("Stars/Star1").GetComponent<UnityEngine.UI.Button>();
+		mStar2 = mResultPage.transform.Find("Stars/Star2").GetComponent<UnityEngine.UI.Button>();
+		mStar3 = mResultPage.transform.Find("Stars/Star3").GetComponent<UnityEngine.UI.Button>();
+		mMinimumGravityChangeText = mResultPage.transform.Find("MinimumChange").GetComponent<UnityEngine.UI.Text>();
+		mCurrentGravityChangeText = mResultPage.transform.Find("GravityChange").GetComponent<UnityEngine.UI.Text>();
 			
 		// pause
-		mPausePage = this.transform.FindChild("PauseMenu").gameObject;
+		mPausePage = this.transform.Find("PauseMenu").gameObject;
 
 		// tutorial
-		mTutorialPage = this.transform.FindChild("TutorialPage").gameObject;
-		mTutorialText = mTutorialPage.transform.FindChild("Text").GetComponent<UnityEngine.UI.Text>();
+		mTutorialPage = this.transform.Find("TutorialPage").gameObject;
+		mTutorialText = mTutorialPage.transform.Find("Text").GetComponent<UnityEngine.UI.Text>();
 	}
 
     // Use this for initialization
