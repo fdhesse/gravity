@@ -7,7 +7,7 @@
         Name = "Climb Down Animated Motion";
     }
 
-    public void Move( Pawn pawn )
+    public void Move( Pawn pawn, float progress )
     {
         var tilePosition = pawn.focusedTile.Position;
         var direction = tilePosition - pawn.transform.position;

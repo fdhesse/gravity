@@ -461,13 +461,18 @@ public class Pawn : MonoBehaviour
 		}
 		
 	}
-		
+
+    public bool IsMotionOverridingMovement;
 	/// <summary>
     ///  Moves the pawn.
     ///  Applies player requested movement and gravity.
     /// </summary>
     private void movePawn()
 	{
+	    if ( IsMotionOverridingMovement )
+	    {
+	        return;
+	    }
 		if (isGrounded() ) // is the player touching a tile "beneath" him?
 		{
 			if( pawnTile.Type.Equals(TileType.Exit) ) //if this tile is an exit tile, make the game end
@@ -574,11 +579,14 @@ public class Pawn : MonoBehaviour
                        var fallDistance = Mathf.Abs( pawnTile.transform.position.y - focusedTile.transform.position.y );
 			            if ( fallDistance < 20f )
 			            {
-			                if ( MotionController.HasMotionType( typeof(ClimbDownAnimatedMotion) ) )
+			                if ( MotionController.HasMotionType( typeof( ClimbDownFramedAnimatedMotion ) ) )
 			                {
-			                    var motion = MotionController.GetMotion( typeof(ClimbDownAnimatedMotion) ) as ClimbDownAnimatedMotion;
-			                    System.Diagnostics.Debug.Assert( motion != null, "motion != null" );
-			                    motion.Move(this);
+			                    var motion = MotionController.GetMotion( typeof( ClimbDownFramedAnimatedMotion ) ) as ClimbDownFramedAnimatedMotion;
+                                Debug.Assert( motion !=  null);
+
+                                var tilePosition = focusedTile.Position;
+                                var direction = tilePosition - transform.position;
+                                motion.Move(this, direction);
 			                }
 			                else
 			                {
@@ -1180,7 +1188,7 @@ public class Pawn : MonoBehaviour
 		return getTileOrientationFromDownVector( getMyVerticality() );
 	}
 
-	private TileOrientation GetWorldVerticality()
+    public TileOrientation GetWorldVerticality()
 	{
 		return getTileOrientationFromDownVector( Physics.gravity );
 	}

@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using FullInspector;
+using UnityEngine;
 
-public class AnimatedMotion : ScriptableObject
+public class AnimatedMotion : BaseScriptableObject
 {
     public string Name = "Animated Motion";
     public string Description;

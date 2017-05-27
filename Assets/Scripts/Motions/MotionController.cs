@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using FullInspector;
+using UnityEngine;
 
 [CreateAssetMenu]
-public class MotionController : ScriptableObject {
-    [HideInInspector] public AnimatedMotion[] AnimatedMotions = new AnimatedMotion[0];
+public class MotionController : BaseScriptableObject {
+    public AnimatedMotion[] AnimatedMotions = new AnimatedMotion[0];
 }
