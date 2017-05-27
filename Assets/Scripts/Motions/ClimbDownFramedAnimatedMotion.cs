@@ -1,35 +1,42 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Eppy;
 using UnityEngine;
+
+public class FrameProgression
+{
+    public float Progress;
+    public MotionFrameData MotionFrameData;
+
+    public FrameProgression( float progress, MotionFrameData motionFrameData )
+    {
+        Progress = progress;
+        MotionFrameData = motionFrameData;
+    }
+}
 
 [CreateAssetMenu]
 public class ClimbDownFramedAnimatedMotion : FramedAnimatedMotion
 {
-    List<Tuple<float, MotionFrameData>> frameToMotionFramesData;
+    List<FrameProgression> frameToMotionFramesData;
 
-    Tile LastTile;
+    Tile tileBeforeMovement;
 
     public void Move( Pawn pawn, Vector3 direction )
     {
-        var orientation = pawn.GetWorldVerticality();
-        var gravity = World.getGravityVector( orientation );
+        frameToMotionFramesData = new List<FrameProgression>();
+        var gravityOrientation = pawn.GetWorldVerticality();
+        var gravityDirection = World.getGravityVector( gravityOrientation );
 
-        var planarDirection = new Vector3( gravity.x == 0f ? direction.x : 0, gravity.y == 0f ? direction.y : 0,
-            gravity.z == 0f ? direction.z : 0 );
-        var normalizedPlanarDirection = planarDirection.normalized;
-        //Debug.LogError( string.Format( "Gravity is {0}, direction is {1}, nplanarDir{2}", gravity, direction, normalizedPlanarDirection ) );
+        const float tolerance = 0.001f;
+        var planarDirection = new Vector3(
+            Math.Abs( gravityDirection.x ) < tolerance ? direction.x : 0,
+            Math.Abs( gravityDirection.y ) < tolerance ? direction.y : 0,
+            Math.Abs( gravityDirection.z ) < tolerance ? direction.z : 0 );
 
-        if ( AlmostEqual( normalizedPlanarDirection, Vector3.forward, 0.01f ) )
-        {
-            ClimbDown( pawn );
-        }
-        else
-        {
-            throw new NotImplementedException();
-            // Debug.LogError( string.Format( "{0} is not {1}", normalizedPlanarDirection, Vector3.forward ) );
-        }
+        var normalizedPlanarDirection = planarDirection.normalized; // Tipically something like Vector(0,1f,0)
+
+        ClimbDown( pawn, normalizedPlanarDirection );
     }
 
     public static bool AlmostEqual( Vector3 v1, Vector3 v2, float precision )
@@ -43,18 +50,23 @@ public class ClimbDownFramedAnimatedMotion : FramedAnimatedMotion
         return equal;
     }
 
-    void ClimbDown( Pawn pawn )
+    void ClimbDown( Pawn pawn, Vector3 targetTileDirection )
     {
-        frameToMotionFramesData = new List<Tuple<float, MotionFrameData>>();
+        var movementRotationAngle = GetPawnRotationOnTheVerticalAxisForTargetTileDirection( targetTileDirection );
+        //Debug.Log( string.Format( "Movement rotation angle " + movementRotationAngle ) );
+        frameToMotionFramesData = new List<FrameProgression>();
 
         for ( var i = 0; i < MotionFramesData.Count; i++ )
         {
-            var motionFrame = MotionFramesData[i];
-            var motionFrameSection = ( motionFrame.Frame - 1 ) / ( (float)TotalFrames - 1 ); // %
-            Debug.LogError( motionFrameSection );
-            var elem = new Tuple<float, MotionFrameData>( motionFrameSection, motionFrame );
+            var rotation = MotionFramesData[i].Rotation + movementRotationAngle;
+            var translation = RotatePointAroundPivot( MotionFramesData[i].Translation, pawn.transform.position,
+                movementRotationAngle );
+            var motionFrameSection = ( MotionFramesData[i].Frame - 1 ) / ( (float)TotalFrames - 1 ); // %
+            var motionFrame = new MotionFrameData( MotionFramesData[i].Frame, translation, rotation );
+            var elem = new FrameProgression( motionFrameSection, motionFrame );
             frameToMotionFramesData.Add( elem );
         }
+        //Debug.Log( "Populated frameToMotionFramesData with " + MotionFramesData.Count + " elements" );
         pawn.IsMotionOverridingMovement = true;
         pawn.GetComponent<Rigidbody>().useGravity = false;
         pawn.GetComponent<Rigidbody>().isKinematic = true;
@@ -65,17 +77,16 @@ public class ClimbDownFramedAnimatedMotion : FramedAnimatedMotion
         pawn.animState = 4;
         pawn.Animator.SetTrigger( "Transitioning" );
 
-        LastTile = pawn.pawnTile;
-        Debug.LogError( "LAstTile", LastTile );
+        tileBeforeMovement = pawn.pawnTile;
         // reset the pawn tile when starting to climb down, because if you climb down from
         // a moving platform, you don't want to climb down relative to the plateform
         pawn.onEnterTile( null );
-        pawn.StartCoroutine( MoveEveryFrame( pawn ) );
+        pawn.StartCoroutine( MoveEveryFrame( pawn.gameObject ) );
 
         return;
         pawn.StartCoroutine( SectionedMovement.MoveDown( pawn, 0, MovementDuration, () =>
         {
-            frameToMotionFramesData = new List<Tuple<float, MotionFrameData>>();
+            frameToMotionFramesData = new List<FrameProgression>();
             pawn.isClimbingDown = false;
             pawn.clickedTile = null; // target reached, forget it
             // the modification in orientation
@@ -88,34 +99,35 @@ public class ClimbDownFramedAnimatedMotion : FramedAnimatedMotion
         // pawn.LookAtPosition( tilePosition );
     }
 
-    IEnumerator MoveEveryFrame( Pawn pawn )
+    IEnumerator MoveEveryFrame( GameObject moveable )
     {
         var progress = 0f;
         var elapsedTime = 0f;
         var frameIndex = 0;
-        var firstFrameData = new MotionFrameData( Vector3.zero, Vector3.zero );
+        var firstFrameData = new MotionFrameData( 0, Vector3.zero, Vector3.zero );
 
         while ( progress < 1f )
         {
             elapsedTime += Time.deltaTime;
             progress = elapsedTime / MovementDuration;
 
-            if ( progress > frameToMotionFramesData[frameIndex].Item1 )
+            if ( progress > frameToMotionFramesData[frameIndex].Progress )
             {
                 frameIndex++;
             }
             else
             {
                 var sourceFrameData = frameIndex == 0 ?
-                    firstFrameData : frameToMotionFramesData[frameIndex - 1].Item2;
-                var destinationFrameData = frameToMotionFramesData[frameIndex].Item2;
+                    firstFrameData : frameToMotionFramesData[frameIndex - 1].MotionFrameData;
+                var destinationFrameData = frameToMotionFramesData[frameIndex].MotionFrameData;
 
                 var lowerBoundFrameDataProgress = frameIndex == 0
-                    ? 0f : frameToMotionFramesData[frameIndex - 1].Item1;
-                var upperBoundFrameDataProgress = frameToMotionFramesData[frameIndex].Item1;
+                    ? 0f : frameToMotionFramesData[frameIndex - 1].Progress;
+                var upperBoundFrameDataProgress = frameToMotionFramesData[frameIndex].Progress;
 
                 MoveLinearlyAccordingToFrameData(
-                    pawn,
+                    moveable,
+                    tileBeforeMovement.transform.position,
                     progress,
                     lowerBoundFrameDataProgress,
                     upperBoundFrameDataProgress,
@@ -127,7 +139,8 @@ public class ClimbDownFramedAnimatedMotion : FramedAnimatedMotion
         }
     }
 
-    void MoveLinearlyAccordingToFrameData( Pawn pawn, float progress, float lowerProgressRange, float upperProgressRange,
+    static void MoveLinearlyAccordingToFrameData( GameObject moveable, Vector3 positionBeforeMovement, float progress,
+        float lowerProgressRange, float upperProgressRange,
         MotionFrameData sourceFrameData, MotionFrameData destinationFrameData )
     {
         var progressInThisFrameRange = progress - lowerProgressRange;
@@ -139,12 +152,41 @@ public class ClimbDownFramedAnimatedMotion : FramedAnimatedMotion
             Debug.LogError( string.Format( "lower:{0} upper:{1}", lowerProgressRange, upperProgressRange ) );
         }
         var t = progressInThisFrameRange / differenceBetweenProgressRanges;
-        pawn.transform.position = LastTile.transform.position +
-                                  Vector3.Lerp( sourceFrameData.Translation, destinationFrameData.Translation, t ) + Vector3.up* Pawn.TileHeight;
-        pawn.transform.rotation = Quaternion.Lerp( Quaternion.Euler( sourceFrameData.Rotation ),
+        moveable.transform.position = positionBeforeMovement +
+                                      Vector3.Lerp( sourceFrameData.Translation, destinationFrameData.Translation, t ) +
+                                      Vector3.up * Pawn.TileHeight;
+        moveable.transform.rotation = Quaternion.Lerp( Quaternion.Euler( sourceFrameData.Rotation ),
             Quaternion.Euler( destinationFrameData.Rotation ), t );
 
-        Debug.DrawLine( LastTile.transform.position + sourceFrameData.Translation,
-            LastTile.transform.position + destinationFrameData.Translation, Color.green, 1f );
+        Debug.DrawLine( positionBeforeMovement + sourceFrameData.Translation,
+            positionBeforeMovement + destinationFrameData.Translation, Color.green, 1f );
+    }
+
+    static Vector3 GetPawnRotationOnTheVerticalAxisForTargetTileDirection( Vector3 targetTileDirection )
+    {
+        const float tolerance = 0.001f;
+        if ( AlmostEqual( targetTileDirection, Vector3.forward, tolerance ) )
+        {
+            return new Vector3( 0, 0, 0 );
+        }
+        if ( AlmostEqual( targetTileDirection, Vector3.right, tolerance ) )
+        {
+            return new Vector3( 0, 90, 0 );
+        }
+        if ( AlmostEqual( targetTileDirection, -Vector3.forward, tolerance ) )
+        {
+            return new Vector3( 0, 180, 0 );
+        }
+        if ( AlmostEqual( targetTileDirection, -Vector3.right, tolerance ) )
+        {
+            return new Vector3( 0, 270, 0 );
+        }
+        Debug.LogError( "No rotation found for target tile direction: " + targetTileDirection );
+        return Vector3.zero;
+    }
+
+    public Vector3 RotatePointAroundPivot( Vector3 point, Vector3 pivot, Vector3 angles )
+    {
+        return Quaternion.Euler( angles ) * ( point - pivot ) + pivot;
     }
 }

@@ -6,26 +6,26 @@ using UnityEngine;
 [CustomEditor( typeof( Pawn ) )]
 public class PawnEditor : Editor
 {
-    private Pawn pawn;
+    Pawn pawn;
     
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
 
-        // Pull information from the target into the serializedObject.
-        serializedObject.Update();
+        //// Pull information from the target into the serializedObject.
+        //serializedObject.Update();
 
-        // Create a right-aligned button which when clicked, creates a new ConditionCollection in the ConditionCollections array.
-        EditorGUILayout.BeginVertical();
-        GUILayout.FlexibleSpace();
+        //// Create a right-aligned button which when clicked, creates a new ConditionCollection in the ConditionCollections array.
+        //EditorGUILayout.BeginVertical();
+        //GUILayout.FlexibleSpace();
 
 
         
-        EditorGUILayout.EndVertical();
+        //EditorGUILayout.EndVertical();
 
-        EditorGUILayout.Space();
+        //EditorGUILayout.Space();
 
-        serializedObject.ApplyModifiedProperties();
+        //serializedObject.ApplyModifiedProperties();
     }
     
     public void OnEnable()
