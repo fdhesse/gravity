@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 
 public class FrameProgression
@@ -19,8 +20,6 @@ public class FrameProgression
 public class ClimbDownFramedAnimatedMotion : FramedAnimatedMotion
 {
     List<FrameProgression> frameToMotionFramesData;
-
-    Tile tileBeforeMovement;
 
     public void Move( Pawn pawn, Vector3 direction )
     {
@@ -53,20 +52,22 @@ public class ClimbDownFramedAnimatedMotion : FramedAnimatedMotion
     void ClimbDown( Pawn pawn, Vector3 targetTileDirection )
     {
         var movementRotationAngle = GetPawnRotationOnTheVerticalAxisForTargetTileDirection( targetTileDirection );
-        //Debug.Log( string.Format( "Movement rotation angle " + movementRotationAngle ) );
+        Assert.IsNotNull( pawn.pawnTile );
+        var positionBeforeMovement = pawn.pawnTile.transform.position;
         frameToMotionFramesData = new List<FrameProgression>();
 
         for ( var i = 0; i < MotionFramesData.Count; i++ )
         {
             var rotation = MotionFramesData[i].Rotation + movementRotationAngle;
-            var translation = RotatePointAroundPivot( MotionFramesData[i].Translation, pawn.transform.position,
+            var translation = RotatePointAroundPivot( 
+                positionBeforeMovement + MotionFramesData[i].Translation,
+                pawn.transform.position,
                 movementRotationAngle );
             var motionFrameSection = ( MotionFramesData[i].Frame - 1 ) / ( (float)TotalFrames - 1 ); // %
             var motionFrame = new MotionFrameData( MotionFramesData[i].Frame, translation, rotation );
             var elem = new FrameProgression( motionFrameSection, motionFrame );
             frameToMotionFramesData.Add( elem );
         }
-        //Debug.Log( "Populated frameToMotionFramesData with " + MotionFramesData.Count + " elements" );
         pawn.IsMotionOverridingMovement = true;
         pawn.GetComponent<Rigidbody>().useGravity = false;
         pawn.GetComponent<Rigidbody>().isKinematic = true;
@@ -77,34 +78,25 @@ public class ClimbDownFramedAnimatedMotion : FramedAnimatedMotion
         pawn.animState = 4;
         pawn.Animator.SetTrigger( "Transitioning" );
 
-        tileBeforeMovement = pawn.pawnTile;
         // reset the pawn tile when starting to climb down, because if you climb down from
         // a moving platform, you don't want to climb down relative to the plateform
         pawn.onEnterTile( null );
-        pawn.StartCoroutine( MoveEveryFrame( pawn.gameObject ) );
-
-        return;
-        pawn.StartCoroutine( SectionedMovement.MoveDown( pawn, 0, MovementDuration, () =>
+        pawn.StartCoroutine( MoveEveryFrame( pawn.gameObject, () =>
         {
             frameToMotionFramesData = new List<FrameProgression>();
+            pawn.IsMotionOverridingMovement = false;
+            pawn.GetComponent<Rigidbody>().useGravity = true;
+            pawn.GetComponent<Rigidbody>().isKinematic = false;
             pawn.isClimbingDown = false;
             pawn.clickedTile = null; // target reached, forget it
-            // the modification in orientation
-            //pawn.LookAtPosition( pawn.transform.position + direction );
         } ) );
-
-        // look the other way
-        // pawn.LookAtPosition( pawn.transform.position - direction );
-
-        // pawn.LookAtPosition( tilePosition );
     }
 
-    IEnumerator MoveEveryFrame( GameObject moveable )
+    IEnumerator MoveEveryFrame( GameObject moveable, Action atTheEndDo )
     {
         var progress = 0f;
         var elapsedTime = 0f;
-        var frameIndex = 0;
-        var firstFrameData = new MotionFrameData( 0, Vector3.zero, Vector3.zero );
+        var frameIndex = 1;
 
         while ( progress < 1f )
         {
@@ -117,17 +109,14 @@ public class ClimbDownFramedAnimatedMotion : FramedAnimatedMotion
             }
             else
             {
-                var sourceFrameData = frameIndex == 0 ?
-                    firstFrameData : frameToMotionFramesData[frameIndex - 1].MotionFrameData;
+                var sourceFrameData =frameToMotionFramesData[frameIndex - 1].MotionFrameData;
                 var destinationFrameData = frameToMotionFramesData[frameIndex].MotionFrameData;
 
-                var lowerBoundFrameDataProgress = frameIndex == 0
-                    ? 0f : frameToMotionFramesData[frameIndex - 1].Progress;
+                var lowerBoundFrameDataProgress = frameToMotionFramesData[frameIndex - 1].Progress;
                 var upperBoundFrameDataProgress = frameToMotionFramesData[frameIndex].Progress;
 
                 MoveLinearlyAccordingToFrameData(
                     moveable,
-                    tileBeforeMovement.transform.position,
                     progress,
                     lowerBoundFrameDataProgress,
                     upperBoundFrameDataProgress,
@@ -137,9 +126,10 @@ public class ClimbDownFramedAnimatedMotion : FramedAnimatedMotion
                 yield return new WaitForEndOfFrame();
             }
         }
+        atTheEndDo();
     }
 
-    static void MoveLinearlyAccordingToFrameData( GameObject moveable, Vector3 positionBeforeMovement, float progress,
+    static void MoveLinearlyAccordingToFrameData( GameObject moveable, float progress,
         float lowerProgressRange, float upperProgressRange,
         MotionFrameData sourceFrameData, MotionFrameData destinationFrameData )
     {
@@ -152,14 +142,12 @@ public class ClimbDownFramedAnimatedMotion : FramedAnimatedMotion
             Debug.LogError( string.Format( "lower:{0} upper:{1}", lowerProgressRange, upperProgressRange ) );
         }
         var t = progressInThisFrameRange / differenceBetweenProgressRanges;
-        moveable.transform.position = positionBeforeMovement +
-                                      Vector3.Lerp( sourceFrameData.Translation, destinationFrameData.Translation, t ) +
+        moveable.transform.position = Vector3.Lerp( sourceFrameData.Translation, destinationFrameData.Translation, t ) +
                                       Vector3.up * Pawn.TileHeight;
         moveable.transform.rotation = Quaternion.Lerp( Quaternion.Euler( sourceFrameData.Rotation ),
             Quaternion.Euler( destinationFrameData.Rotation ), t );
 
-        Debug.DrawLine( positionBeforeMovement + sourceFrameData.Translation,
-            positionBeforeMovement + destinationFrameData.Translation, Color.green, 1f );
+        Debug.DrawLine( sourceFrameData.Translation, destinationFrameData.Translation, Color.green, 1f );
     }
 
     static Vector3 GetPawnRotationOnTheVerticalAxisForTargetTileDirection( Vector3 targetTileDirection )

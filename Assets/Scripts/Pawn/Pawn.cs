@@ -81,7 +81,7 @@ public class Pawn : MonoBehaviour
 	
 	// #TILES#
 	private List<Tile> path = new List<Tile> (); // List of tiles in the current path
-	[HideInInspector] public Tile pawnTile; // Tile beneath the Pawn
+	public Tile pawnTile; // Tile beneath the Pawn
     [HideInInspector] public Tile clickedTile = null; // Tile the player clicked
     [HideInInspector] public Tile focusedTile = null; // Tile the cursor focus
 
