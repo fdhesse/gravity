@@ -21,7 +21,7 @@ public class ClimbDownFramedAnimatedMotion : FramedAnimatedMotion
 {
     List<FrameProgression> frameToMotionFramesData;
 
-    public void Move( Pawn pawn, Vector3 direction )
+    public void Move( Pawn pawn, Vector3 direction, Tile focussedTile )
     {
         frameToMotionFramesData = new List<FrameProgression>();
         var gravityOrientation = pawn.GetWorldVerticality();
@@ -35,7 +35,7 @@ public class ClimbDownFramedAnimatedMotion : FramedAnimatedMotion
 
         var normalizedPlanarDirection = planarDirection.normalized; // Tipically something like Vector(0,1f,0)
 
-        ClimbDown( pawn, normalizedPlanarDirection );
+        ClimbDown( pawn, normalizedPlanarDirection, focussedTile );
     }
 
     public static bool AlmostEqual( Vector3 v1, Vector3 v2, float precision )
@@ -49,7 +49,7 @@ public class ClimbDownFramedAnimatedMotion : FramedAnimatedMotion
         return equal;
     }
 
-    void ClimbDown( Pawn pawn, Vector3 targetTileDirection )
+    void ClimbDown( Pawn pawn, Vector3 targetTileDirection, Tile targetTile )
     {
         var movementRotationAngle = GetPawnRotationOnTheVerticalAxisForTargetTileDirection( targetTileDirection );
         Assert.IsNotNull( pawn.pawnTile );
@@ -85,9 +85,11 @@ public class ClimbDownFramedAnimatedMotion : FramedAnimatedMotion
         {
             frameToMotionFramesData = new List<FrameProgression>();
             pawn.IsMotionOverridingMovement = false;
+            pawn.onEnterTile( targetTile );
             pawn.GetComponent<Rigidbody>().useGravity = true;
             pawn.GetComponent<Rigidbody>().isKinematic = false;
             pawn.isClimbingDown = false;
+            pawn.isFalling = false;
             pawn.clickedTile = null; // target reached, forget it
         } ) );
     }

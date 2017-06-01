@@ -265,8 +265,8 @@ public class Pawn : MonoBehaviour
 
 		GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation & ~RigidbodyConstraints.FreezePositionY;
 	}
-	
-	private void ResetDynamic()
+
+    public void ResetDynamic()
 	{
 		GetComponent<Rigidbody>().velocity = Vector3.zero;
 		GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
@@ -586,7 +586,7 @@ public class Pawn : MonoBehaviour
 
                                 var tilePosition = focusedTile.Position;
                                 var direction = tilePosition - transform.position;
-                                motion.Move(this, direction);
+                                motion.Move(this, direction, focusedTile );
 			                }
 			                else
 			                {
@@ -623,11 +623,6 @@ public class Pawn : MonoBehaviour
                 }
             }
         }
-    }
-
-   IEnumerator SectionedMotionDown( Vector3 targetTilePosition, float f, float f1, Action action )
-    {
-        throw new NotImplementedException();
     }
 
     void Jump()
@@ -681,7 +676,7 @@ public class Pawn : MonoBehaviour
     /// </summary>
 	/// <param name="destination">the destination where the player should be moved to in world coord</param>
     /// <returns>returns true if the vector is small, i.e. smaller than 1 of magnitude, in this case, the Pawn has reached his destination</returns>
-    private bool moveTo(Vector3 destination)
+    public bool moveTo(Vector3 destination)
 	{
 		// Convert the world destination into local space
 		Vector3 moveDirection = transform.worldToLocalMatrix.MultiplyPoint(destination);
