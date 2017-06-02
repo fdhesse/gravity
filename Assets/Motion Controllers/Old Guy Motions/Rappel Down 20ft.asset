@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47e88f8d101bec443993e29135e78997, type: 3}
+  m_Name: Rappel Down 20ft
+  m_EditorClassIdentifier: 
+  _objectReferences:
+  - {fileID: 7400000, guid: 179d2017575ae4440a2aae4612ca17b6, type: 2}
+  - {fileID: 7400000, guid: 876c30a443f8784439fd35ff41318a44, type: 2}
+  _serializedStateKeys:
+  - MotionFramesData
+  - Type
+  - TargetAnimations
+  _serializedStateValues:
+  - '[{"Frame":1,"Translation":{"x":0.0,"y":0.0,"z":0.0},"Rotation":{"x":0.0,"y":0.0,"z":0.0}},{"Frame":8,"Translation":{"x":0.0,"y":0.0,"z":2.37},"Rotation":{"x":0.0,"y":90.0,"z":0.0}},{"Frame":10,"Translation":{"x":0.0,"y":-1.33,"z":3.83},"Rotation":{"x":0.0,"y":120.96,"z":0.0}},{"Frame":15,"Translation":{"x":0.0,"y":-3.95,"z":7.11},"Rotation":{"x":0.0,"y":180.0,"z":0.0}},{"Frame":35,"Translation":{"x":0.0,"y":-20.0,"z":8.0},"Rotation":{"x":0.0,"y":180.0,"z":0.0}},{"Frame":45,"Translation":{"x":0.0,"y":-20.0,"z":10.0},"Rotation":{"x":0.0,"y":0.0,"z":0.0}}]'
+  - '"RappelDown20"'
+  - '[0,1]'
+  Type: 1
+  TargetAnimations:
+  - {fileID: 7400000, guid: 179d2017575ae4440a2aae4612ca17b6, type: 2}
+  - {fileID: 7400000, guid: 876c30a443f8784439fd35ff41318a44, type: 2}
+  MovementDuration: 1.4333344
+  TotalFrames: 45

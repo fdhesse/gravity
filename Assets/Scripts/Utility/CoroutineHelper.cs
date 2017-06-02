@@ -27,4 +27,10 @@ public class CoroutineHelper : MonoBehaviour {
         action();
     }
 
+    public static IEnumerator WaitUntilEndOfFrameAndDo( Action action )
+    {
+        yield return new WaitForEndOfFrame();
+        action();
+    }
+
 }

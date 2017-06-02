@@ -462,7 +462,7 @@ public class Pawn : MonoBehaviour
 		
 	}
 
-    public bool IsMotionOverridingMovement;
+    public bool IsMotionOverridingMovement = false;
 	/// <summary>
     ///  Moves the pawn.
     ///  Applies player requested movement and gravity.
@@ -549,67 +549,76 @@ public class Pawn : MonoBehaviour
 			// path can be null because we may have recompute it if we are on a moving platform
 			if ((path == null) || (path.Count == 0))
 			{
-				animState = 0;
-				isWalking = false;
+		        animState = 0;
+		        isWalking = false;
 
-				ResetDynamic();
-			}
-			
-        }
-        else if (clickedTile != null) // Case where there is no path but a target tile, ie: target tile is not aligned to tile
+		        ResetDynamic();
+		    }
+		}
+		else if ( clickedTile != null ) // Case where there is no path but a target tile, ie: target tile is not aligned to tile
 		{
-			if ( clickedTile == pawnTile )
-			{
-				clickedTile = null;
-			}
-			else
-			{
-				// tile is not accessible but in valid space, so that means the pawn will jump on the tile
-				// normally my verticality is the same as the world gravity, otherwise we won't have a clicked tile
-				Debug.Assert(GetFeltVerticality() == GetWorldVerticality());
+		    if ( clickedTile == pawnTile )
+		    {
+		        clickedTile = null;
+		    }
+		    else
+		    {
+		        // tile is not accessible but in valid space, so that means the pawn will jump on the tile
+		        // normally my verticality is the same as the world gravity, otherwise we won't have a clicked tile
+		        Debug.Assert( GetFeltVerticality() == GetWorldVerticality() );
 
-                // check if we didn't start jumping/climbing/rappeling yet
-                if ( !isJumping && !isClimbingDown && !isRappelingDown ) { 
-			        if ( world.CurrentGravityOrientation != TileOrientation.Up )
-			        {
-                        Jump();
-			        }
-                    else
-			        {
-                       var fallDistance = Mathf.Abs( pawnTile.transform.position.y - focusedTile.transform.position.y );
-			            if ( fallDistance < 20f )
-			            {
-			                if ( MotionController.HasMotionType( typeof( ClimbDownFramedAnimatedMotion ) ) )
-			                {
-			                    var motion = MotionController.GetMotion( typeof( ClimbDownFramedAnimatedMotion ) ) as ClimbDownFramedAnimatedMotion;
-                                Debug.Assert( motion !=  null);
+		        // check if we didn't start jumping/climbing/rappeling yet
+		        if ( !isJumping && !isClimbingDown && !isRappelingDown )
+		        {
+		            if ( world.CurrentGravityOrientation != TileOrientation.Up )
+		            {
+		                Jump();
+		            }
+		            else
+		            {
+		                var tilePosition = focusedTile.Position;
+		                var direction = tilePosition - transform.position;
+		                var fallDistance = Mathf.Abs( pawnTile.transform.position.y - focusedTile.transform.position.y );
+		                if ( fallDistance < 20f )
+		                {
+		                    if ( MotionController.HasMotionType( FramedAnimationMotionType.ClimbDown ) )
+		                    {
+                                animState = 4;
 
-                                var tilePosition = focusedTile.Position;
-                                var direction = tilePosition - transform.position;
-                                motion.Move(this, direction, focusedTile );
-			                }
-			                else
-			                {
-			                    Jump();
-			                }
-                        }
-			            else
-			            {
-                            var rappelDistance = Mathf.Abs( pawnTile.transform.position.y - focusedTile.transform.position.y );
+                                var motion = MotionController.GetMotion( FramedAnimationMotionType.ClimbDown );
+		                        Debug.Assert( motion != null );
 
-                            if ( MotionController.GetRappelingMotion( ( int )( rappelDistance ) ) != null)
-                            {
-                                var motion = MotionController.GetMotion( typeof( RappelDownAnimatedMotion ) ) as RappelDownAnimatedMotion;
-                                System.Diagnostics.Debug.Assert( motion != null, "motion != null" );
-                                motion.Move( this );
+                                motion.Move( this, direction, focusedTile );
+                                Animator.SetTrigger( "Transitioning" );
                             }
                             else
-                            {
-                                Jump();
-                            }
-			            }
-                    }
-                }
+		                    {
+		                        Jump();
+		                    }
+		                }
+		                else
+		                {
+		                    var rappelDistance = Mathf.Abs( pawnTile.transform.position.y - focusedTile.transform.position.y );
+		                    var rappelType = MotionController.GetRappelingMotion( (int)( rappelDistance ) );
+		                    if ( rappelType > 0 )
+		                    {
+                                animState = (int)( rappelDistance/10+3 );
+
+                                var motion = MotionController.GetMotion( rappelType );
+		                        System.Diagnostics.Debug.Assert( motion != null, "motion != null" );
+		                        motion.Move( this, direction, focusedTile );
+		                        StartCoroutine( CoroutineHelper.WaitUntilEndOfFrameAndDo( () =>
+		                        {
+		                            Animator.SetTrigger( "Transitioning" );
+		                        } ) );
+		                    }
+                            else
+		                    {
+		                        Jump();
+		                    }
+		                }
+		            }
+		        }
 
                 if(!isClimbingDown && !isRappelingDown ) { 
                     //calculate the vector from the Pawns position to the landing tile position at the same height

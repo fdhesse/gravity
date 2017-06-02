@@ -4,14 +4,14 @@ using System.Linq;
 
 public static class MotionControllerExtensions
 {
-    public static bool HasMotionType( this MotionController controller, Type type )
+    public static bool HasMotionType( this MotionController controller, FramedAnimationMotionType type )
     {
-        return controller.AnimatedMotions.Any( motion => motion.GetType() == type );
+        return controller.AnimatedMotions.Any( motion => motion.Type == type );
     }
 
-    public static AnimatedMotion GetMotion( this MotionController controller, Type type )
+    public static AnimatedMotion GetMotion( this MotionController controller, FramedAnimationMotionType type )
     {
-        return controller.AnimatedMotions.FirstOrDefault( motion => motion.GetType() == type );
+        return controller.AnimatedMotions.FirstOrDefault( motion => motion.Type == type );
     }
 
     public static List<AnimatedMotion> GetAllMotionsOfType( this MotionController controller, Type type )
@@ -19,20 +19,20 @@ public static class MotionControllerExtensions
         return controller.AnimatedMotions.Where( motion => motion.GetType() == type ).ToList();
     }
 
-    public static RappelDownAnimatedMotion GetRappelingMotion( this MotionController controller, int rappelDistance )
-    {
-        var rappelMotions = controller.GetAllMotionsOfType( typeof(RappelDownAnimatedMotion) ).Cast<RappelDownAnimatedMotion>();
-        var rappelType = (RappelDownLengthType)rappelDistance;
-        foreach ( var motion in rappelMotions )
-        {
-            if ( motion.Type == rappelType )
-            {
-                return motion;
-            }
-        }
+    //public static RappelDownAnimatedMotion GetRappelingMotion( this MotionController controller, int rappelDistance )
+    //{
+    //    var rappelMotions = controller.GetAllMotionsOfType( typeof(RappelDownAnimatedMotion) ).Cast<RappelDownAnimatedMotion>();
+    //    var rappelType = (RappelDownLengthType)rappelDistance;
+    //    foreach ( var motion in rappelMotions )
+    //    {
+    //        if ( motion.Type == rappelType )
+    //        {
+    //            return motion;
+    //        }
+    //    }
 
-        return null;
-    }
+    //    return null;
+    //}
 
 
         public static AnimatedMotion TryGetAnimatedMotionAt( this MotionController controller, int index )
