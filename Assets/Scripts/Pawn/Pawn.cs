@@ -691,7 +691,7 @@ public class Pawn : MonoBehaviour
 		Vector3 moveDirection = transform.worldToLocalMatrix.MultiplyPoint(destination);
 
         // stay on the ground t(in local coord of the pawn)
-        moveDirection.y += height * 0.5f - TileHeight;
+        moveDirection.y += /*height * 0.5f - */TileHeight;
 
 		if ( moveDirection.magnitude > 1 )
 		{
@@ -768,10 +768,11 @@ public class Pawn : MonoBehaviour
 
 		RaycastHit hit = new RaycastHit();
 
-	    var downRay = new Ray( transform.position + -down * height * 0.5f, down );
+	    var downRay = new Ray( transform.position - down, down );
+	    //Debug.DrawRay( downRay.origin, downRay.direction, Color.black,1f,false );
 
-		// casting a ray down, we need a sphereCast because the capsule has thickness, and we only need tiles layer
-		if (Physics.SphereCast ( downRay, width * 0.4f, out hit, height * 0.5f, tilesLayerMask))
+        // casting a ray down, we need a sphereCast because the capsule has thickness, and we only need tiles layer
+        if ( Physics.SphereCast( downRay, width * 0.4f, out hit, height * 0.5f, tilesLayerMask ) )
 		{
 			GameObject hitTileGameObject = hit.collider.gameObject;
 			Tile hitTile = hitTileGameObject.GetComponent<Tile>();
@@ -821,10 +822,12 @@ public class Pawn : MonoBehaviour
 			TileOrientation orientation = (TileOrientation)(i + 1);
 
 			RaycastHit hit = new RaycastHit();
-            var downRay = new Ray( transform.position + -World.getGravityVector( orientation ) * height * 0.5f, World.getGravityVector( orientation ) );
+            var rayTowardsTile = new Ray( transform.position + -World.getGravityVector( orientation ) * height * 0.5f, World.getGravityVector( orientation ) );
+            //Debug.DrawRay( rayTowardsTile.origin, rayTowardsTile.direction, Color.yellow );
+            //Debug.LogError( "putDestinationMarks" );
 
             // Casting a ray towards 'orientation', SphereCast needed because of Pawn's capsule thickness and ignoring Pawn's collider
-            if (Physics.SphereCast( downRay, width * 0.4f, out hit, Mathf.Infinity, tilesLayerMask))
+            if ( Physics.SphereCast( rayTowardsTile, width * 0.4f, out hit, Mathf.Infinity, tilesLayerMask))
 			{
 				Tile tile = hit.collider.gameObject.GetComponent<Tile>();
 				
@@ -1242,7 +1245,8 @@ public class Pawn : MonoBehaviour
 		if (pawnTile != null) 
 		{
 			Vector3 down = getMyVerticality();
-			return Physics.SphereCast( new Ray( transform.position-down * width * 0.5f, down ), width * 0.5f, height * 0.5f, tilesLayerMask );
+            var isGrounded = Physics.SphereCast( new Ray( transform.position - down * width * 0.5f, down ), width * 0.5f, height * 0.5f, tilesLayerMask );
+		    return isGrounded;
 		}
 		
 		return false; // if there isn't a tile beneath him, he isn't grounded
