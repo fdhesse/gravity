@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 03461a16fadeff842aee894ebffa5d23
-timeCreated: 1495370888
+guid: d271f604d7169994884f744f844d87bf
+timeCreated: 1496499968
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -109,8 +109,8 @@ ModelImporter:
     7400002: playerIdle02
     7400004: playerWalk
     7400006: playerClimbDown
-    7400008: playerStartRappelDown
-    7400010: playerRappelDown_2
+    7400008: playerRappelDown_2
+    7400010: playerStartRappelDown
     7400012: playerRappelDown_3
     7400014: playerRappelDown_4
     7400016: playerRappelDown_5
@@ -151,7 +151,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -237,7 +237,7 @@ ModelImporter:
         weight: 1
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 1
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: playerIdle02
       takeName: Take 001
@@ -249,7 +249,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -347,7 +347,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -445,7 +445,105 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Dummy_body
+        weight: 1
+      - path: Dummy_body/pelvis
+        weight: 1
+      - path: Dummy_body/pelvis/L_leg
+        weight: 1
+      - path: Dummy_body/pelvis/L_leg/L_knee
+        weight: 1
+      - path: Dummy_body/pelvis/L_leg/L_knee/L_foot
+        weight: 1
+      - path: Dummy_body/pelvis/L_leg/L_knee/L_foot/L_toe
+        weight: 1
+      - path: Dummy_body/pelvis/L_leg/L_knee/L_foot/left_foot
+        weight: 1
+      - path: Dummy_body/pelvis/R_leg
+        weight: 1
+      - path: Dummy_body/pelvis/R_leg/R_knee
+        weight: 1
+      - path: Dummy_body/pelvis/R_leg/R_knee/R_foot
+        weight: 1
+      - path: Dummy_body/pelvis/R_leg/R_knee/R_foot/R_toe
+        weight: 1
+      - path: Dummy_body/pelvis/R_leg/R_knee/R_foot/right_foot
+        weight: 1
+      - path: Dummy_body/pelvis/torso
+        weight: 1
+      - path: Dummy_body/pelvis/torso/bag01
+        weight: 1
+      - path: Dummy_body/pelvis/torso/bag01/Backpack
+        weight: 1
+      - path: Dummy_body/pelvis/torso/bag01/bag
+        weight: 1
+      - path: Dummy_body/pelvis/torso/L_Arm
+        weight: 1
+      - path: Dummy_body/pelvis/torso/L_Arm/L_elbow
+        weight: 1
+      - path: Dummy_body/pelvis/torso/L_Arm/L_elbow/L_Hand
+        weight: 1
+      - path: Dummy_body/pelvis/torso/L_Arm/L_elbow/L_Hand/L_finger
+        weight: 1
+      - path: Dummy_body/pelvis/torso/L_Arm/L_elbow/L_Hand/left_hand
+        weight: 1
+      - path: Dummy_body/pelvis/torso/neck
+        weight: 1
+      - path: Dummy_body/pelvis/torso/neck/head
+        weight: 1
+      - path: Dummy_body/pelvis/torso/neck/head1
+        weight: 1
+      - path: Dummy_body/pelvis/torso/neck/head1/hat01
+        weight: 1
+      - path: Dummy_body/pelvis/torso/neck/head1/hat01/hat
+        weight: 1
+      - path: Dummy_body/pelvis/torso/R_Arm
+        weight: 1
+      - path: Dummy_body/pelvis/torso/R_Arm/R_elbow
+        weight: 1
+      - path: Dummy_body/pelvis/torso/R_Arm/R_elbow/R_Hand
+        weight: 1
+      - path: Dummy_body/pelvis/torso/R_Arm/R_elbow/R_Hand/pickaxe
+        weight: 1
+      - path: Dummy_body/pelvis/torso/R_Arm/R_elbow/R_Hand/pickaxe/rope
+        weight: 1
+      - path: Dummy_body/pelvis/torso/R_Arm/R_elbow/R_Hand/R_finger
+        weight: 1
+      - path: Dummy_body/pelvis/torso/R_Arm/R_elbow/R_Hand/righ_hand
+        weight: 1
+      - path: Dummy_body/pelvis/torso/torso 1
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: playerRappelDown_2
+      takeName: Take 001
+      firstFrame: 225
+      lastFrame: 260
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -543,105 +641,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Dummy_body
-        weight: 1
-      - path: Dummy_body/pelvis
-        weight: 1
-      - path: Dummy_body/pelvis/L_leg
-        weight: 1
-      - path: Dummy_body/pelvis/L_leg/L_knee
-        weight: 1
-      - path: Dummy_body/pelvis/L_leg/L_knee/L_foot
-        weight: 1
-      - path: Dummy_body/pelvis/L_leg/L_knee/L_foot/L_toe
-        weight: 1
-      - path: Dummy_body/pelvis/L_leg/L_knee/L_foot/left_foot
-        weight: 1
-      - path: Dummy_body/pelvis/R_leg
-        weight: 1
-      - path: Dummy_body/pelvis/R_leg/R_knee
-        weight: 1
-      - path: Dummy_body/pelvis/R_leg/R_knee/R_foot
-        weight: 1
-      - path: Dummy_body/pelvis/R_leg/R_knee/R_foot/R_toe
-        weight: 1
-      - path: Dummy_body/pelvis/R_leg/R_knee/R_foot/right_foot
-        weight: 1
-      - path: Dummy_body/pelvis/torso
-        weight: 1
-      - path: Dummy_body/pelvis/torso/bag01
-        weight: 1
-      - path: Dummy_body/pelvis/torso/bag01/Backpack
-        weight: 1
-      - path: Dummy_body/pelvis/torso/bag01/bag
-        weight: 1
-      - path: Dummy_body/pelvis/torso/L_Arm
-        weight: 1
-      - path: Dummy_body/pelvis/torso/L_Arm/L_elbow
-        weight: 1
-      - path: Dummy_body/pelvis/torso/L_Arm/L_elbow/L_Hand
-        weight: 1
-      - path: Dummy_body/pelvis/torso/L_Arm/L_elbow/L_Hand/L_finger
-        weight: 1
-      - path: Dummy_body/pelvis/torso/L_Arm/L_elbow/L_Hand/left_hand
-        weight: 1
-      - path: Dummy_body/pelvis/torso/neck
-        weight: 1
-      - path: Dummy_body/pelvis/torso/neck/head
-        weight: 1
-      - path: Dummy_body/pelvis/torso/neck/head1
-        weight: 1
-      - path: Dummy_body/pelvis/torso/neck/head1/hat01
-        weight: 1
-      - path: Dummy_body/pelvis/torso/neck/head1/hat01/hat
-        weight: 1
-      - path: Dummy_body/pelvis/torso/R_Arm
-        weight: 1
-      - path: Dummy_body/pelvis/torso/R_Arm/R_elbow
-        weight: 1
-      - path: Dummy_body/pelvis/torso/R_Arm/R_elbow/R_Hand
-        weight: 1
-      - path: Dummy_body/pelvis/torso/R_Arm/R_elbow/R_Hand/pickaxe
-        weight: 1
-      - path: Dummy_body/pelvis/torso/R_Arm/R_elbow/R_Hand/pickaxe/rope
-        weight: 1
-      - path: Dummy_body/pelvis/torso/R_Arm/R_elbow/R_Hand/R_finger
-        weight: 1
-      - path: Dummy_body/pelvis/torso/R_Arm/R_elbow/R_Hand/righ_hand
-        weight: 1
-      - path: Dummy_body/pelvis/torso/torso 1
-        weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: playerRappelDown_2
-      takeName: Take 001
-      firstFrame: 231
-      lastFrame: 260
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -739,7 +739,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -825,7 +825,7 @@ ModelImporter:
         weight: 1
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 1
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: playerRappelDown_4
       takeName: Take 001
@@ -837,7 +837,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -923,7 +923,7 @@ ModelImporter:
         weight: 1
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 1
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: playerRappelDown_5
       takeName: Take 001
@@ -935,7 +935,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -1021,7 +1021,7 @@ ModelImporter:
         weight: 1
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 1
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: playerRappelDown_6
       takeName: Take 001
@@ -1033,7 +1033,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -1119,7 +1119,7 @@ ModelImporter:
         weight: 1
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 1
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: playerRappelDown_7
       takeName: Take 001
@@ -1131,7 +1131,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -1217,7 +1217,7 @@ ModelImporter:
         weight: 1
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 1
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
