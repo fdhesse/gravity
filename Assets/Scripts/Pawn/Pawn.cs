@@ -584,7 +584,9 @@ public class Pawn : MonoBehaviour
 		                    if ( MotionController.HasMotionType( FramedAnimationMotionType.ClimbDown ) )
 		                    {
                                 animState = 4;
-
+                                if ( MotionTesterSingleton.Instance ) { 
+                                    MotionTesterSingleton.Instance.SpawnClimbDownPrefab();
+                                }
                                 var motion = MotionController.GetMotion( FramedAnimationMotionType.ClimbDown );
 		                        Debug.Assert( motion != null );
 

@@ -135,6 +135,10 @@ public class AnimatedMotion : BaseScriptableObject
                 pawn.isClimbingDown = false;
                 pawn.isFalling = false;
                 pawn.clickedTile = null; // target reached, forget it
+                if ( MotionTesterSingleton.Instance )
+                {
+                    MotionTesterSingleton.Instance.DestroyLastSpawnedPawnTester();
+                }
             } ) );
         }
         catch
@@ -150,7 +154,6 @@ public class AnimatedMotion : BaseScriptableObject
         var frameIndex = 1;
         while ( progress < 1f )
         {
-
             elapsedTime += Time.deltaTime;
             progress = elapsedTime / MovementDuration;
 
