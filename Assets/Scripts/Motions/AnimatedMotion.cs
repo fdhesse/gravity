@@ -66,6 +66,7 @@ public class AnimatedMotion : BaseScriptableObject
         MotionFramesData = motionFramesData;
     }
 
+
     public void Move( Pawn pawn, Vector3 direction, Tile focussedTile )
     {
         frameToMotionFramesData = new List<FrameProgression>();
@@ -135,9 +136,10 @@ public class AnimatedMotion : BaseScriptableObject
                 pawn.isClimbingDown = false;
                 pawn.isFalling = false;
                 pawn.clickedTile = null; // target reached, forget it
-                if ( MotionTesterSingleton.Instance )
+                if ( CinematicAnimationSingleton.Instance )
                 {
-                    MotionTesterSingleton.Instance.DestroyLastSpawnedPawnTester();
+                    CinematicAnimationSingleton.Instance.DestroyCinematicPawn();
+                    pawn.ShowPawn();
                 }
             } ) );
         }
@@ -205,7 +207,7 @@ public class AnimatedMotion : BaseScriptableObject
         Debug.DrawLine( sourceFrameData.Translation, destinationFrameData.Translation, Color.green, 1f );
     }
 
-    static Vector3 GetPawnRotationOnTheVerticalAxisForTargetTileDirection( Vector3 targetTileDirection )
+    public static Vector3 GetPawnRotationOnTheVerticalAxisForTargetTileDirection( Vector3 targetTileDirection )
     {
         const float tolerance = 0.1f;
         if ( AlmostEqual( targetTileDirection, Vector3.forward, tolerance ) )

@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -584,8 +585,11 @@ public class Pawn : MonoBehaviour
 		                    if ( MotionController.HasMotionType( FramedAnimationMotionType.ClimbDown ) )
 		                    {
                                 animState = 4;
-                                if ( MotionTesterSingleton.Instance ) { 
-                                    MotionTesterSingleton.Instance.SpawnClimbDownPrefab();
+                                if ( CinematicAnimationSingleton.Instance )
+                                {
+                                    HidePawn();
+                                    var axialDisplacementAngles = GetAxialDisplacement( direction );
+                                    CinematicAnimationSingleton.Instance.SpawnClimbDownPrefab( axialDisplacementAngles );
                                 }
                                 var motion = MotionController.GetMotion( FramedAnimationMotionType.ClimbDown );
 		                        Debug.Assert( motion != null );
@@ -633,6 +637,41 @@ public class Pawn : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    Vector3 GetAxialDisplacement( Vector3 direction )
+    {
+        var gravityOrientation = GetWorldVerticality();
+        var gravityDirection = World.getGravityVector( gravityOrientation );
+
+        const float tolerance = 0.001f;
+        var planarDirection = new Vector3(
+            Math.Abs( gravityDirection.x ) < tolerance ? direction.x : 0,
+            Math.Abs( gravityDirection.y ) < tolerance ? direction.y : 0,
+            Math.Abs( gravityDirection.z ) < tolerance ? direction.z : 0 );
+
+        var normalizedPlanarDirection = planarDirection.normalized; // Tipically something like Vector(0,1f,0)
+        var movementRotationAngle = AnimatedMotion.GetPawnRotationOnTheVerticalAxisForTargetTileDirection( normalizedPlanarDirection );
+
+        return movementRotationAngle;
+    }
+
+    List<MeshRenderer> pawnRenderers;
+    void HidePawn()
+    {
+        pawnRenderers = GetComponentsInChildren<MeshRenderer>().ToList();
+        foreach ( var pawnRenderer in pawnRenderers )
+        {
+            pawnRenderer.enabled = false;
+        }
+    }
+
+    public void ShowPawn()
+    {
+        foreach ( var pawnRenderer in pawnRenderers)
+        {
+            pawnRenderer.enabled = true;
         }
     }
 
