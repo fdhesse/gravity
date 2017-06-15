@@ -9,22 +9,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 47e88f8d101bec443993e29135e78997, type: 3}
-  m_Name: Rappel Down 20ft
+  m_Name: Rappel Down 70ft
   m_EditorClassIdentifier: 
   _objectReferences:
   - {fileID: 7400010, guid: d271f604d7169994884f744f844d87bf, type: 3}
-  - {fileID: 7400008, guid: d271f604d7169994884f744f844d87bf, type: 3}
+  - {fileID: 7400020, guid: d271f604d7169994884f744f844d87bf, type: 3}
   _serializedStateKeys:
   - MotionFramesData
   - Type
   - TargetAnimations
   _serializedStateValues:
   - '[{"Frame":1,"Translation":{"x":0.0,"y":0.0,"z":0.0},"Rotation":{"x":0.0,"y":0.0,"z":0.0}},{"Frame":10,"Translation":{"x":0.0,"y":0.0,"z":2.37},"Rotation":{"x":0.0,"y":90.0,"z":0.0}},{"Frame":15,"Translation":{"x":0.0,"y":-1.33,"z":3.83},"Rotation":{"x":0.0,"y":120.96,"z":0.0}},{"Frame":27,"Translation":{"x":0.0,"y":-3.95,"z":7.11},"Rotation":{"x":0.0,"y":180.0,"z":0.0}},{"Frame":40,"Translation":{"x":0.0,"y":-20.0,"z":8.0},"Rotation":{"x":0.0,"y":180.0,"z":0.0}},{"Frame":43,"Translation":{"x":0.0,"y":-20.0,"z":10.0},"Rotation":{"x":0.0,"y":180.0,"z":0.0}},{"Frame":45,"Translation":{"x":0.0,"y":-20.0,"z":10.0},"Rotation":{"x":0.0,"y":0.0,"z":0.0}}]'
-  - '"RappelDown20"'
+  - '"RappelDown70"'
   - '[0,1]'
-  Type: 1
+  Type: 6
   TargetAnimations:
   - {fileID: 7400010, guid: d271f604d7169994884f744f844d87bf, type: 3}
-  - {fileID: 7400008, guid: d271f604d7169994884f744f844d87bf, type: 3}
-  MovementDuration: 1.6333342
+  - {fileID: 7400020, guid: d271f604d7169994884f744f844d87bf, type: 3}
+  MovementDuration: 2.4333353
   TotalFrames: 45

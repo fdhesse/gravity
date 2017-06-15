@@ -599,7 +599,7 @@ public class Pawn : MonoBehaviour
                             }
                             else
 		                    {
-		                        Jump();
+                                Jump();
 		                    }
 		                }
 		                else
@@ -608,15 +608,27 @@ public class Pawn : MonoBehaviour
 		                    var rappelType = MotionController.GetRappelingMotion( (int)( rappelDistance ) );
 		                    if ( rappelType > 0 )
 		                    {
-                                animState = (int)( rappelDistance/10+3 );
+		                        if ( CinematicAnimationSingleton.Instance )
+		                        {
+		                            HidePawn();
+		                            var axialDisplacementAngles = GetAxialDisplacement( direction );
+		                            CinematicAnimationSingleton.Instance.SpawnJumpPrefab( axialDisplacementAngles,
+		                                fallDistance );
+		                        }
+		                        else
+		                        {
+                                    animState = ( int )( rappelDistance / 10 + 3 );
+
+                                    StartCoroutine( CoroutineHelper.WaitUntilEndOfFrameAndDo( () =>
+                                    {
+                                        Animator.SetTrigger( "Transitioning" );
+                                    } ) );
+                                }
+
 
                                 var motion = MotionController.GetMotion( rappelType );
 		                        System.Diagnostics.Debug.Assert( motion != null, "motion != null" );
 		                        motion.Move( this, direction, focusedTile );
-		                        StartCoroutine( CoroutineHelper.WaitUntilEndOfFrameAndDo( () =>
-		                        {
-		                            Animator.SetTrigger( "Transitioning" );
-		                        } ) );
 		                    }
                             else
 		                    {
@@ -664,6 +676,8 @@ public class Pawn : MonoBehaviour
         foreach ( var pawnRenderer in pawnRenderers )
         {
             pawnRenderer.enabled = false;
+            Debug.LogError( "Hide Pawn" );
+
         }
     }
 
@@ -672,6 +686,7 @@ public class Pawn : MonoBehaviour
         foreach ( var pawnRenderer in pawnRenderers)
         {
             pawnRenderer.enabled = true;
+            Debug.LogError( "Show Pawn" );
         }
     }
 
