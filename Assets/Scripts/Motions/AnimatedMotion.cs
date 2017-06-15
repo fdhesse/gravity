@@ -56,6 +56,7 @@ public class AnimatedMotion : BaseScriptableObject
 
     [InspectorButton] public void AssignTargetAnimationDuration()
     {
+        TotalFrames = TargetAnimations.Sum( targetAnimation => (int)(targetAnimation.frameRate* targetAnimation.length ) ) + 1;
         MovementDuration = TargetAnimations.Sum( targetAnimation => targetAnimation.length );
     }
 

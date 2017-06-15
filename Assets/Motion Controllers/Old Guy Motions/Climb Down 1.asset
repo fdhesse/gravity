@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 47e88f8d101bec443993e29135e78997, type: 3}
-  m_Name: Climb Down
+  m_Name: Climb Down 1
   m_EditorClassIdentifier: 
   _objectReferences:
   - {fileID: 7400000, guid: 05af3f4beb4a0304b9001c2fa9c94445, type: 2}
@@ -18,11 +18,11 @@ MonoBehaviour:
   - Type
   - TargetAnimations
   _serializedStateValues:
-  - '[{"Frame":1,"Translation":{"x":0.0,"y":0.0,"z":0.0},"Rotation":{"x":0.0,"y":0.0,"z":0.0}},{"Frame":60,"Translation":{"x":0.0,"y":-9.95,"z":10.0},"Rotation":{"x":0.0,"y":0.0,"z":0.0}}]'
+  - '[{"Frame":1,"Translation":{"x":0.0,"y":0.0,"z":0.0},"Rotation":{"x":0.0,"y":0.0,"z":0.0}},{"Frame":18,"Translation":{"x":0.0,"y":0.0,"z":2.44},"Rotation":{"x":0.0,"y":0.0,"z":0.0}},{"Frame":30,"Translation":{"x":0.0,"y":-2.6,"z":5.26},"Rotation":{"x":0.0,"y":110.5,"z":0.0}},{"Frame":35,"Translation":{"x":0.0,"y":-2.6,"z":6.22},"Rotation":{"x":0.0,"y":180.0,"z":0.0}},{"Frame":45,"Translation":{"x":0.0,"y":-9.95,"z":7.8},"Rotation":{"x":0.0,"y":180.0,"z":0.0}},{"Frame":59,"Translation":{"x":0.0,"y":-9.95,"z":10.0},"Rotation":{"x":0.0,"y":0.0,"z":0.0}}]'
   - '"ClimbDown"'
   - '[0]'
   Type: 0
   TargetAnimations:
   - {fileID: 7400000, guid: 05af3f4beb4a0304b9001c2fa9c94445, type: 2}
-  MovementDuration: 1.967
-  TotalFrames: 60
+  MovementDuration: 1.9666672
+  TotalFrames: 20
