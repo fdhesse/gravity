@@ -37,7 +37,6 @@ namespace Kirnu
 		[Range(1, 8)]
 		public int blurIterations = 1;
 		
-		Shader shader;
 		public Material material;
 		
 		void Start ()

@@ -65,7 +65,7 @@ public class PathNode : MonoBehaviour, IPathNode<PathNode>
     public static List<PathNode> CreateGrid(Vector3 center, Vector3 spacing, int[] dim, float randomSpace,GameObject parent)
     {
         GameObject groupObject = new GameObject("grid");
-        Random.seed = 1337;
+        Random.InitState(1337);
         int xCount = dim[0];
         int yCount = dim[1];
         int zCount = dim[2];

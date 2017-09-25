@@ -1,4 +1,6 @@
-﻿//----------------------------------------------
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+//----------------------------------------------
 //            Marvelous Techniques
 // Copyright © 2015 - Arto Vaarala, Kirnu Interactive
 // http://www.kirnuarp.com
@@ -61,7 +63,7 @@ Shader "Kirnu/Marvelous/WaterBox" {
   					if(v.vertex.y>=0.9){
   						v.vertex.y+=(sin((((_Frequency * _Time) ) + ((v.vertex.x * _Wavelength) + (v.vertex.y * _Wavelength) + (v.vertex.z * _Wavelength)))) + 1.0) * _Magnitude/50;
   					}
-  					o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
+  					o.pos = UnityObjectToClipPos (v.vertex);
   					
 					return o;
 				}

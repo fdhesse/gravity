@@ -88,8 +88,6 @@ public class ObjectRotator : MonoBehaviour {
 	public bool insideTransformToRotate = false;
 	public float speed = 0.3f;
 	private bool horizontal = true;
-	private Quaternion fromRotation;
-	private Quaternion toRotation;
 
 	private float clickPosition;
 	private IEnumerator slowDownCoroutine = null;

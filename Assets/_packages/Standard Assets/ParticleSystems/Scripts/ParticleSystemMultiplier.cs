@@ -15,9 +15,10 @@ namespace UnityStandardAssets.Effects
             var systems = GetComponentsInChildren<ParticleSystem>();
             foreach (ParticleSystem system in systems)
             {
-                system.startSize *= multiplier;
-                system.startSpeed *= multiplier;
-                system.startLifetime *= Mathf.Lerp(multiplier, 1, 0.5f);
+				var mainPS = system.main;
+				mainPS.startSizeMultiplier = multiplier;
+				mainPS.startSpeedMultiplier = multiplier;
+				mainPS.startLifetimeMultiplier = Mathf.Lerp(multiplier, 1, 0.5f);
                 system.Clear();
                 system.Play();
             }

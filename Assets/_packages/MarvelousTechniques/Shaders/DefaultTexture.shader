@@ -1,4 +1,6 @@
-﻿//----------------------------------------------
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+//----------------------------------------------
 //            Marvelous Techniques
 // Copyright © 2015 - Arto Vaarala, Kirnu Interactive
 // http://www.kirnuarp.com
@@ -39,7 +41,7 @@ Shader "Kirnu/Marvelous/DefaultTexture" {
 					OUT o;
   					
   					o.uv_MainTex = TRANSFORM_TEX (v.texcoord, _MainTex);
-  					o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
+  					o.pos = UnityObjectToClipPos (v.vertex);
   	
 					return o;
 				}

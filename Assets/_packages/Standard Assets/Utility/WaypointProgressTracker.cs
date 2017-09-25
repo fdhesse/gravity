@@ -11,7 +11,7 @@ namespace UnityStandardAssets.Utility
         // This script manages the amount to look ahead along the route,
         // and keeps track of progress and laps.
 
-        [SerializeField] private WaypointCircuit circuit; // A reference to the waypoint-based route we should follow
+        [SerializeField] private WaypointCircuit circuit = null; // A reference to the waypoint-based route we should follow
 
         [SerializeField] private float lookAheadForTargetOffset = 5;
         // The offset ahead along the route that the we will aim for
@@ -72,7 +72,7 @@ namespace UnityStandardAssets.Utility
         {
             progressDistance = 0;
             progressNum = 0;
-            if (progressStyle == ProgressStyle.PointToPoint)
+            if ((progressStyle == ProgressStyle.PointToPoint) && (circuit != null))
             {
                 target.position = circuit.Waypoints[progressNum].position;
                 target.rotation = circuit.Waypoints[progressNum].rotation;
@@ -82,6 +82,10 @@ namespace UnityStandardAssets.Utility
 
         private void Update()
         {
+			// early exit if there's no circuit set
+			if (circuit == null)
+				return;
+
             if (progressStyle == ProgressStyle.SmoothAlongRoute)
             {
                 // determine the position we should currently be aiming for
@@ -118,7 +122,7 @@ namespace UnityStandardAssets.Utility
                 Vector3 targetDelta = target.position - transform.position;
                 if (targetDelta.magnitude < pointToPointThreshold)
                 {
-                    progressNum = (progressNum + 1)%circuit.Waypoints.Length;
+                    progressNum = (progressNum + 1) % circuit.Waypoints.Length;
                 }
 
 
@@ -143,7 +147,8 @@ namespace UnityStandardAssets.Utility
             {
                 Gizmos.color = Color.green;
                 Gizmos.DrawLine(transform.position, target.position);
-                Gizmos.DrawWireSphere(circuit.GetRoutePosition(progressDistance), 1);
+				if (circuit != null)
+					Gizmos.DrawWireSphere(circuit.GetRoutePosition(progressDistance), 1);
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawLine(target.position, target.position + target.forward);
             }

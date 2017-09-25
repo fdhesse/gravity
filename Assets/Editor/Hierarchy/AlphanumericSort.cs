@@ -1,7 +1,9 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
+#pragma warning disable CS0618 // Type or member is obsolete
 public class AlphaNumericSort : BaseHierarchySort
+#pragma warning restore CS0618 // Type or member is obsolete
 {
 	public override int Compare( GameObject lhs, GameObject rhs )
 	{

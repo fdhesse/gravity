@@ -25,7 +25,6 @@ namespace Kirnu
 		public float vignetteMaxValue = 0.2f;
 
 		public Texture2D gradientTexture = null;
-		Shader shader;
 		public Material material;
 
 		

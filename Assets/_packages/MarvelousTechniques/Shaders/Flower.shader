@@ -1,4 +1,6 @@
-﻿Shader "Kirnu/Marvelous/Flower" {
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Kirnu/Marvelous/Flower" {
 	Properties {
 		_Color1 ("Color 1", Color) = (1,1,1,1)
 		_Color2 ("Color 2", Color) = (1,1,1,1)
@@ -40,7 +42,7 @@
 				OUT vert(IN v) {
 					
 					OUT o;
-					o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
+					o.pos = UnityObjectToClipPos (v.vertex);
 					
   					o.color = lerp(_Color1,_Color2,abs(v.vertex.x)*_PowerX+abs(v.vertex.y)*_PowerY+abs(v.vertex.z)*_PowerZ);
 

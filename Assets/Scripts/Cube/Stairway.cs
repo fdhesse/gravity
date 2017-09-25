@@ -246,17 +246,17 @@ public class Stairway : MonoBehaviour {
 
 	void OnDrawGizmosSelected()
 	{
-		Quaternion arrowRotation = Quaternion.LookRotation ( arrowDirection );
+		Quaternion arrowRotation = Quaternion.LookRotation(arrowDirection);
 
 		Handles.color = Color.cyan;
-		Handles.ArrowCap( 0, arrowPosition, arrowRotation, 10f );
+		Handles.ArrowHandleCap(0, arrowPosition, arrowRotation, 10f, EventType.Repaint);
 
-		arrowRotation = Quaternion.LookRotation ( -arrowDirection );
+		arrowRotation = Quaternion.LookRotation(-arrowDirection);
 		Vector3 arrow2Position = arrowPosition + arrowDirection;
-		Handles.ArrowCap( 0, arrow2Position, arrowRotation, 10f );
+		Handles.ArrowHandleCap(0, arrow2Position, arrowRotation, 10f, EventType.Repaint);
 
 		Gizmos.color = Color.red;
-		Gizmos.DrawWireCube (transform.position, Vector3.one * 10f);
+		Gizmos.DrawWireCube(transform.position, Vector3.one * 10f);
 	}
 #endif
 }

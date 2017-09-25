@@ -131,7 +131,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
         defineOrientation();
 
 		// Temp code, destroy the old "graphics" child object
-		Transform graphics = transform.FindChild("graphics");
+		Transform graphics = transform.Find("graphics");
 		if ( graphics != null )
 			DestroyImmediate( graphics.gameObject );	
     }

@@ -32,23 +32,19 @@ namespace UnityStandardAssets.CrossPlatformInput
 		public float Xsensitivity = 1f;
 		public float Ysensitivity = 1f;
 
-		Vector3 m_StartPos;
-		Vector2 m_PreviousDelta;
-		Vector3 m_JoytickOutput;
 		bool m_UseX; // Toggle for using the x axis
 		bool m_UseY; // Toggle for using the Y axis
 		CrossPlatformInputManager.VirtualAxis m_HorizontalVirtualAxis; // Reference to the joystick in the cross platform input
 		CrossPlatformInputManager.VirtualAxis m_VerticalVirtualAxis; // Reference to the joystick in the cross platform input
 		bool m_Dragging;
 		int m_Id = -1;
-		Vector2 m_PreviousTouchPos; // swipe style control touch
-
 
 #if !UNITY_EDITOR
+	Vector2 m_PreviousTouchPos; // swipe style control touch
     private Vector3 m_Center;
     private Image m_Image;
 #else
-		Vector3 m_PreviousMouse;
+        Vector3 m_PreviousMouse;
 #endif
 
 		void OnEnable()

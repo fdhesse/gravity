@@ -1,4 +1,6 @@
-﻿Shader "Kirnu/Marvelous/OneColor" {
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Kirnu/Marvelous/OneColor" {
 	Properties {
 		_Color ("Color", Color) = (1,1,1,1)
 	}
@@ -29,7 +31,7 @@
 				OUT vert(IN v) {
 					
 					OUT o;
-					o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
+					o.pos = UnityObjectToClipPos (v.vertex);
 
 					return o;
 				}

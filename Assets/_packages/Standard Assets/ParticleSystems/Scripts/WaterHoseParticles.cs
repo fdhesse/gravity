@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UnityStandardAssets.Effects
@@ -9,7 +10,7 @@ namespace UnityStandardAssets.Effects
         public float force = 1;
 
 
-        private ParticleCollisionEvent[] m_CollisionEvents = new ParticleCollisionEvent[16];
+        private List<ParticleCollisionEvent> m_CollisionEvents = new List<ParticleCollisionEvent>(16);
         private ParticleSystem m_ParticleSystem;
 
 
@@ -23,9 +24,9 @@ namespace UnityStandardAssets.Effects
         {
             int safeLength = m_ParticleSystem.GetSafeCollisionEventSize();
 
-            if (m_CollisionEvents.Length < safeLength)
+            if (m_CollisionEvents.Count < safeLength)
             {
-                m_CollisionEvents = new ParticleCollisionEvent[safeLength];
+                m_CollisionEvents = new List<ParticleCollisionEvent>(safeLength);
             }
 
             int numCollisionEvents = m_ParticleSystem.GetCollisionEvents(other, m_CollisionEvents);
@@ -38,7 +39,7 @@ namespace UnityStandardAssets.Effects
                     lastSoundTime = Time.time;
                 }
 
-                var col = m_CollisionEvents[i].collider;
+                var col = m_CollisionEvents[i].colliderComponent;
                 var attachedRigidbody = col.GetComponent<Rigidbody>();
                 if (attachedRigidbody != null)
                 {

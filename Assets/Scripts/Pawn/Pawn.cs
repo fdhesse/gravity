@@ -121,7 +121,7 @@ public class Pawn : MonoBehaviour
 		isWalking = false;
 		isWalkingInStairs = false;
 		
-		animator = transform.FindChild("OldGuy").GetComponent<Animator>();
+		animator = transform.Find("OldGuy").GetComponent<Animator>();
 
 		capsuleCollider = GetComponent<CapsuleCollider>();
 		height = capsuleCollider.height * capsuleCollider.transform.localScale.y;

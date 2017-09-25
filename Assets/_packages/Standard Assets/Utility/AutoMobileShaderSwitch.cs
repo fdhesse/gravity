@@ -9,7 +9,9 @@ namespace UnityStandardAssets.Utility
 {
     public class AutoMobileShaderSwitch : MonoBehaviour
     {
+        #pragma warning disable
         [SerializeField] private ReplacementList m_ReplacementList;
+        #pragma warning restore
 
         // Use this for initialization
         private void OnEnable()

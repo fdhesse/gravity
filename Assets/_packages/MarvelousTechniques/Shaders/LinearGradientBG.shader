@@ -1,4 +1,6 @@
-﻿//----------------------------------------------
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+//----------------------------------------------
 //            Marvelous Techniques
 // Copyright © 2015 - Arto Vaarala, Kirnu Interactive
 // http://www.kirnuarp.com
@@ -47,7 +49,7 @@ Shader "Kirnu/Marvelous/LinearGradientBG" {
 			OUT vert (IN v)
 			{
 				OUT o;
-				o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+				o.pos = UnityObjectToClipPos(v.vertex);
 				_Ratio *= 2;
 				_Ratio -=1;
 				o.color = lerp(_BottomColor,_TopColor,clamp(v.uv.y+(_Ratio),0,1));
