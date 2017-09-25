@@ -18,6 +18,10 @@ public class HUD : MonoBehaviour
 	[Tooltip("The change gravity counts for having two or three stars")]
 	public Stars stars;
 
+	// the singleton for the HUD
+	private static HUD s_Instance = null;
+	public static HUD Instance { get { return s_Instance; } }
+
 	// for hud
 	private UnityEngine.UI.Text mGravityCounterText = null;
 	private int mGravityChangeCount = 0;// times that the gravity has been changed
@@ -63,8 +67,15 @@ public class HUD : MonoBehaviour
 		}
 	}
 
+	public void IncreaseGravityChangeCount()
+	{
+		GravityChangeCount = GravityChangeCount + 1;
+	}
+
 	void Awake()
 	{
+		s_Instance = this;
+
 		// hud
 		mGravityCounterText = this.transform.Find("HUD/CounterText").GetComponent<UnityEngine.UI.Text>();
 		this.GravityChangeCount = 0;

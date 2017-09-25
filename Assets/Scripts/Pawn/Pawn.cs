@@ -43,8 +43,8 @@ public class Pawn : MonoBehaviour
 	
 	private bool isGlued;
 
-	[HideInInspector] public bool isJumping = false;
-	[HideInInspector] public bool isFalling = true;
+	private bool isJumping = false;
+	private bool isFalling = true;
 	[HideInInspector] public RigidbodyConstraints nextConstraint;
 	private RigidbodyConstraints transformConstraints;
 
@@ -77,11 +77,10 @@ public class Pawn : MonoBehaviour
 	public Texture fadeinoutTexture;
 	public float fadeSpeed = 1.5f;				// Speed that the screen fades to and from black.
 	private float alphaFadeValue;
-	private bool fading; // fading state
-	private HUD hud; //script responsible for the HUD
+	private bool isFading; // fading state
 	
 	// #MOUSE#
-	[HideInInspector] public bool isCameraMode = false;
+	private bool isCameraMode = false;
 	private float clickCountdown = 0.0f;
 
 	// #SPHERES#
@@ -131,7 +130,6 @@ public class Pawn : MonoBehaviour
 		Assets.SetMouseCursor();
 
 		initSpawn();
-        initHUD();
 
 		world.Init();
 		world.GameStart();
@@ -139,7 +137,7 @@ public class Pawn : MonoBehaviour
 
 	void Update()
 	{
-		if (!(world.IsGameOver() || hud.IsPaused)) // is the game active?, i.e. is the game not paused and not finished?
+		if (!(world.IsGameOver() || HUD.Instance.IsPaused)) // is the game active?, i.e. is the game not paused and not finished?
 		{
 			UpdateAnimation();
 			computeFocusedAndClickableTiles();
@@ -212,11 +210,6 @@ public class Pawn : MonoBehaviour
 		spawnRotation = (spawn == null) ? transform.rotation : spawn.transform.rotation;
 	}
 	
-	private void initHUD()
-	{
-		hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
-	}
-
 	public void respawn(TileOrientation startingOrientation)
 	{
 		path = null;
@@ -320,7 +313,7 @@ public class Pawn : MonoBehaviour
 	private void Crush()
 	{
 		world.GameOver();
-		fading = true;
+		isFading = true;
 	}
 
 	public void OnCollisionEnter(Collision collision)
@@ -404,7 +397,7 @@ public class Pawn : MonoBehaviour
 		if (world.IsGameOver()) //is the game over? 
         {
 			if (pawnTile != null && pawnTile.Type.Equals(TileType.Exit)) //Has the player reached an exit Tile?
-				hud.showResultPage(); //activate the endscreen
+				HUD.Instance.showResultPage(); //activate the endscreen
 		}
 		
 		// #FADEINOUT_TEXTURE#
@@ -415,7 +408,7 @@ public class Pawn : MonoBehaviour
 		}
 		
 		
-		if (fading)
+		if (isFading)
 		{
 			alphaFadeValue += Mathf.Clamp01(Time.deltaTime / 1);
 			
@@ -423,7 +416,7 @@ public class Pawn : MonoBehaviour
 			GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), fadeinoutTexture);
 			
 			if (alphaFadeValue > 1)
-				fading = false;
+				isFading = false;
 			
 		}
 		else if (alphaFadeValue > 0)
@@ -954,7 +947,7 @@ public class Pawn : MonoBehaviour
 						     ( isGlued && (focusedTile == pawnTile)) )
 						{
 							// player has changed the gravity, increase the counter
-							hud.GravityChangeCount = hud.GravityChangeCount + 1;
+							HUD.Instance.IncreaseGravityChangeCount();
 
 							// play the gravity change sound)
 							sound.playSound(Camera2DSound.SoundId.GRAVITY_CHANGE);
@@ -1215,6 +1208,6 @@ public class Pawn : MonoBehaviour
 	public void outOfBounds()
 	{
 		world.GameOver();
-		fading = true;
+		isFading = true;
 	}
 }
