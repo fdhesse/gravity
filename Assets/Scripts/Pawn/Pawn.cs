@@ -27,23 +27,22 @@ public class Pawn : MonoBehaviour
 	public float fallInterval = .5f;			// Gap between tile and pawn before fall
 	public float jumpAnimationLength = 0.3f;
 
-	private float height;
-	private float width;
+	private float height = 1f;					// will be init in Awake from the capsule height
+	private float width = 1f;					// will be init in Awake from the capsule width
 	private bool newTarget = true;
-	private Vector3 desiredRotation;
-	private bool isWalking;
-	private bool isWalkingInStairs;
+	private Vector3 desiredRotation = Vector3.zero;
+	private bool isWalking = false;
+	private bool isWalkingInStairs = false;
 
-	private int tilesLayer;
-	private LayerMask tilesLayerMask;
-	private CapsuleCollider capsuleCollider;
-	
-	private bool isGlued;
+	private int tilesLayer = 0;						// will be init in Awake
+	private LayerMask tilesLayerMask;				// will be init in Awake
+	private CapsuleCollider capsuleCollider = null; // will be init in Awake
 
+	private bool isGlued = false;
 	private bool isJumping = false;
 	private bool isFalling = true;
-	[HideInInspector] public RigidbodyConstraints nextConstraint;
-	private RigidbodyConstraints transformConstraints;
+	[HideInInspector] public RigidbodyConstraints nextConstraint = RigidbodyConstraints.None;
+	private RigidbodyConstraints transformConstraints = RigidbodyConstraints.None;
 
 	// #VFX#
 	public ParticleSystem fallingVFX = null;
@@ -54,15 +53,15 @@ public class Pawn : MonoBehaviour
 	// 1 = walk
 	// 2 = fall
 	// 3 = land
-	private IEnumerator lookCoroutine;
-	private Animator animator;
-	private int animState;
-	private int idleState;
-	private float idleWait;
+	private IEnumerator lookCoroutine = null;
+	private Animator animator = null;		// will be init in Awake
+	private int animState = 0;
+	private int idleState = 0;
+	private float idleWait = 0;
 	
 	// #SPAWN#
-	private Vector3 spawnPosition;// position of the spawn GameObject
-	private Quaternion spawnRotation;// rotation of the spawn GameObject
+	private Vector3 spawnPosition = Vector3.zero;			// position of the spawn GameObject
+	private Quaternion spawnRotation = Quaternion.identity;	// rotation of the spawn GameObject
 	
 	// #TILES#
 	private List<Tile> path = new List<Tile> (); // List of tiles in the current path
@@ -98,19 +97,14 @@ public class Pawn : MonoBehaviour
 	{
 		s_Instance = this;
 
+		// init the tile layers
 		tilesLayer = LayerMask.NameToLayer ("Tiles");
 		tilesLayerMask = LayerMask.GetMask(new string[]{"Tiles"});
-	}
 
-    void Start()
-	{
-		desiredRotation = Vector3.zero;
+		// get my animator
+		animator = GetComponentInChildren<Animator>();
 
-		isWalking = false;
-		isWalkingInStairs = false;
-		
-		animator = transform.Find("OldGuy").GetComponent<Animator>();
-
+		// get my collider
 		capsuleCollider = GetComponent<CapsuleCollider>();
 		height = capsuleCollider.height * capsuleCollider.transform.localScale.y;
 		width = capsuleCollider.radius * capsuleCollider.transform.localScale.x;
@@ -118,8 +112,13 @@ public class Pawn : MonoBehaviour
 		// Game cursor
 		Assets.SetMouseCursor();
 
+		// init the spawn position
 		InitSpawn();
+	}
 
+	void Start()
+	{
+		// start the game
 		World.Instance.GameStart();
 	}
 
