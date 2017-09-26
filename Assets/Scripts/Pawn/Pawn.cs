@@ -72,12 +72,6 @@ public class Pawn : MonoBehaviour
 	private Tile pawnTile = null; // Tile beneath the Pawn
 	private Tile clickedTile = null; // Tile the player clicked
 	private Tile focusedTile = null; // Tile the cursor focus
-
-	// #GUI#
-	public Texture fadeinoutTexture;
-	public float fadeSpeed = 1.5f;				// Speed that the screen fades to and from black.
-	private float alphaFadeValue;
-	private bool isFading; // fading state
 	
 	// #MOUSE#
 	private bool isCameraMode = false;
@@ -313,7 +307,7 @@ public class Pawn : MonoBehaviour
 	private void Crush()
 	{
 		world.GameOver();
-		isFading = true;
+		HUD.Instance.StartFadeOut();
 	}
 
 	public void OnCollisionEnter(Collision collision)
@@ -387,8 +381,7 @@ public class Pawn : MonoBehaviour
 	}
 
     /// <summary>
-    ///  ONGUI
-    ///  THIS IS CALLED ONCE PER FRAME
+    ///  ONGUI is a Debug tool function, this function should be killed for the release of the game
     ///  
     /// Checks if the game as ended, if it has, it activates the HUD's endscreen
     /// </summary>
@@ -398,38 +391,7 @@ public class Pawn : MonoBehaviour
         {
 			if (pawnTile != null && pawnTile.Type.Equals(TileType.Exit)) //Has the player reached an exit Tile?
 				HUD.Instance.showResultPage(); //activate the endscreen
-		}
-		
-		// #FADEINOUT_TEXTURE#
-		if (!fadeinoutTexture)
-		{
-			Debug.LogError("Missing texture");
-			return;
-		}
-		
-		
-		if (isFading)
-		{
-			alphaFadeValue += Mathf.Clamp01(Time.deltaTime / 1);
-			
-			GUI.color = new Color(0, 0, 0, alphaFadeValue);
-			GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), fadeinoutTexture);
-			
-			if (alphaFadeValue > 1)
-				isFading = false;
-			
-		}
-		else if (alphaFadeValue > 0)
-		{
-			alphaFadeValue -= Mathf.Clamp01(Time.deltaTime / 1);
-			
-			GUI.color = new Color(0, 0, 0, alphaFadeValue);
-			GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), fadeinoutTexture);
-			
-			if (world.IsGameOver()) //is the game over? 
-				world.GameStart();
-		}
-		
+		}		
 	}
 		
 	/// <summary>
@@ -1208,6 +1170,6 @@ public class Pawn : MonoBehaviour
 	public void outOfBounds()
 	{
 		world.GameOver();
-		isFading = true;
+		HUD.Instance.StartFadeOut();
 	}
 }

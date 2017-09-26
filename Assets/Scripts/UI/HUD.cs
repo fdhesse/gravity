@@ -26,6 +26,12 @@ public class HUD : MonoBehaviour
 	private UnityEngine.UI.Text mGravityCounterText = null;
 	private int mGravityChangeCount = 0;// times that the gravity has been changed
 
+	// fadeout screen
+	public Texture fadeinoutTexture;
+	public float fadeSpeed = 1.5f;              // Speed that the screen fades to and from black.
+	private float alphaFadeValue;
+	private bool isFading; // fading state
+
 	// for result page
 	private GameObject mResultPage = null;
 	private UnityEngine.UI.Button mStar1 = null;
@@ -150,7 +156,40 @@ public class HUD : MonoBehaviour
 			style.alignment = TextAnchor.UpperRight;
 			GUI.Label(new Rect(10, 5, 100, 30), fps.ToString("f1"), style);
 		}
-    }
+
+		// #FADEINOUT_TEXTURE#
+		if (fadeinoutTexture != null)
+		{
+			if (isFading)
+			{
+				alphaFadeValue += Mathf.Clamp01(Time.deltaTime / 1);
+
+				GUI.color = new Color(0, 0, 0, alphaFadeValue);
+				GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), fadeinoutTexture);
+
+				if (alphaFadeValue > 1)
+					isFading = false;
+
+			}
+			else if (alphaFadeValue > 0)
+			{
+				alphaFadeValue -= Mathf.Clamp01(Time.deltaTime / 1);
+
+				GUI.color = new Color(0, 0, 0, alphaFadeValue);
+				GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), fadeinoutTexture);
+
+				if (Pawn.Instance.world.IsGameOver()) //is the game over? 
+					Pawn.Instance.world.GameStart();
+			}
+		}
+	}
+
+	#region fade in / fade out
+	public void StartFadeOut()
+	{
+		isFading = true;
+	}
+	#endregion
 
 	#region HUD
 	public void onPauseButtonPressed()
