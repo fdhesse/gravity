@@ -16,6 +16,11 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Screen))]
 public class Pawn : MonoBehaviour
 {
+	private static readonly int ANIM_IDLE_TRIGGER = Animator.StringToHash("Idle");
+	private static readonly int ANIM_WALK_TRIGGER = Animator.StringToHash("Walk");
+	private static readonly int ANIM_FALL_TRIGGER = Animator.StringToHash("Fall");
+	private static readonly int ANIM_LAND_TRIGGER = Animator.StringToHash("Land");
+
 	private static Pawn s_Instance = null;
 	public static Pawn Instance { get { return s_Instance; } }
 
@@ -37,6 +42,7 @@ public class Pawn : MonoBehaviour
 	private int tilesLayer = 0;						// will be init in Awake
 	private LayerMask tilesLayerMask;				// will be init in Awake
 	private CapsuleCollider capsuleCollider = null; // will be init in Awake
+	private Rigidbody rigidBody = null;             // will be init in Awake
 
 	private bool isGlued = false;
 	private bool isJumping = false;
@@ -55,7 +61,6 @@ public class Pawn : MonoBehaviour
 	// 3 = land
 	private IEnumerator lookCoroutine = null;
 	private Animator animator = null;		// will be init in Awake
-	private int animState = 0;
 	private int idleState = 0;
 	private float idleWait = 0;
 	
@@ -68,7 +73,12 @@ public class Pawn : MonoBehaviour
 	private Tile pawnTile = null; // Tile beneath the Pawn
 	private Tile clickedTile = null; // Tile the player clicked
 	private Tile focusedTile = null; // Tile the cursor focus
-	
+
+	private bool IsThereAPath
+	{
+		get { return (path != null) && (path.Count > 0); }
+	}
+
 	// #MOUSE#
 	private bool isCameraMode = false;
 	private float clickCountdown = 0.0f;
@@ -103,6 +113,9 @@ public class Pawn : MonoBehaviour
 
 		// get my animator
 		animator = GetComponentInChildren<Animator>();
+
+		// get my rigid body
+		rigidBody = GetComponent<Rigidbody>();
 
 		// get my collider
 		capsuleCollider = GetComponent<CapsuleCollider>();
@@ -150,9 +163,6 @@ public class Pawn : MonoBehaviour
 
 		if ( idleWait != animator.GetFloat( "idle_wait" ) )
 			animator.SetFloat("idle_wait", idleWait);
-
-		if ( animState != animator.GetInteger( "anim_state" ) )
-			animator.SetInteger("anim_state", animState);
 
 		if ( idleState != animator.GetInteger( "idle_state" ) )
 		{
@@ -203,7 +213,10 @@ public class Pawn : MonoBehaviour
 		clickedTile = null;
 		focusedTile = null;
 
-		animState = 2;
+		animator.ResetTrigger(ANIM_IDLE_TRIGGER);
+		animator.ResetTrigger(ANIM_WALK_TRIGGER);
+		animator.ResetTrigger(ANIM_LAND_TRIGGER);
+		animator.SetTrigger(ANIM_FALL_TRIGGER);
 		isFalling = true;
 		isJumping = false;
 		isWalking = false;
@@ -216,8 +229,8 @@ public class Pawn : MonoBehaviour
 		OnEnterTile(null);
 
 		ResetDynamic();
-		
-		GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+
+		rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
 		capsuleCollider.enabled = true;
 
 		StartCoroutine( DelayedReset ());
@@ -227,13 +240,13 @@ public class Pawn : MonoBehaviour
 	{
 		yield return new WaitForSeconds(0.1f);
 
-		GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation & ~RigidbodyConstraints.FreezePositionY;
+		rigidBody.constraints = RigidbodyConstraints.FreezeRotation & ~RigidbodyConstraints.FreezePositionY;
 	}
 	
 	private void ResetDynamic()
 	{
-		GetComponent<Rigidbody>().velocity = Vector3.zero;
-		GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+		rigidBody.velocity = Vector3.zero;
+		rigidBody.angularVelocity = Vector3.zero;
 		
 		//World.SetGravity (GetWorldGravity());
 	}
@@ -304,7 +317,8 @@ public class Pawn : MonoBehaviour
 
 		if (isFalling)
 		{
-			animState = 3;
+			animator.ResetTrigger(ANIM_FALL_TRIGGER);
+			animator.SetTrigger(ANIM_LAND_TRIGGER);
 			isFalling = false;
 			isJumping = false;
 
@@ -339,12 +353,12 @@ public class Pawn : MonoBehaviour
 		if ((tile != null) && tile.IsGlueTile)
 		{
 			isGlued = true;
-			GetComponent<Rigidbody>().useGravity = false;
+			rigidBody.useGravity = false;
 		}
 		else
 		{
 			isGlued = false;
-			GetComponent<Rigidbody>().useGravity = true;
+			rigidBody.useGravity = true;
 		}
 
 		// if the tile is not null, check if we need to attach the pawn to the tile
@@ -392,12 +406,11 @@ public class Pawn : MonoBehaviour
     /// </summary>
     private void MoveAlongPath()
 	{
-		if (path != null && path.Count > 0) //is there a path?
+		if (IsThereAPath)
 		{
 			Tile nextTile = path[0];
 
-			// play animation: walk
-			animState = 1;
+			// set the walking flag
 			isWalking = true;
 
 			// look at the new target if any
@@ -433,7 +446,7 @@ public class Pawn : MonoBehaviour
 					// if we found a path with a passage between static and moving tile, recompute the path
 					if (isMovingFound && isStaticFound && (clickedTile != null))
 					{
-						path = AStarHelper.Calculate(path[0], clickedTile);
+						StartToWalkToTile(path[0], clickedTile);
 						// if the path is broken, clear the click tile to avoid the pawn to try to jump on it
 						if (path == null)
 							clickedTile = null;
@@ -442,14 +455,13 @@ public class Pawn : MonoBehaviour
 			}
 
 			// path can be null because we may have recompute it if we are on a moving platform
-			if ((path == null) || (path.Count == 0))
+			if (!IsThereAPath)
 			{
-				animState = 0;
+				animator.SetTrigger(ANIM_IDLE_TRIGGER);
 				isWalking = false;
 
 				ResetDynamic();
-			}
-			
+			}			
         }
         else if (clickedTile != null) // Case where there is no path but a target tile, ie: target tile is not aligned to tile
 		{
@@ -466,7 +478,7 @@ public class Pawn : MonoBehaviour
 				// check if we didn't start jumping yet
 				if ( !isJumping )
 				{
-					animState = 2;
+					animator.SetTrigger(ANIM_FALL_TRIGGER);
 					isJumping = true;
 					isFalling = true;
 					
@@ -533,6 +545,25 @@ public class Pawn : MonoBehaviour
 			transform.Translate( moveDirection * Time.deltaTime * speed, Space.Self );
             return true;
         }
+	}
+
+	/// <summary>
+	/// This function will calculate a path between the specified start and goal tiles.
+	/// This path will be saved in the "path" member.
+	/// If there's any path, it will also trigger the walk animation.
+	/// </summary>
+	/// <param name="start">The tile from which the pawn start to walk</param>
+	/// <param name="goal">The goal tile that the pawn tries to reach</param>
+	private void StartToWalkToTile(Tile start, Tile goal)
+	{
+		// ask the path from the A*
+		path = AStarHelper.Calculate(start, goal);
+
+		// if a valid path is returned, trigger the walk anim
+		if (IsThereAPath)
+			animator.SetTrigger(ANIM_WALK_TRIGGER);
+		else
+			animator.SetTrigger(ANIM_IDLE_TRIGGER);
 	}
 
 	private void StartToLookAt(Vector3 point)
@@ -617,12 +648,7 @@ public class Pawn : MonoBehaviour
 				OnEnterTile(hitTile);
 
 			// check if we are on the stairs
-			isWalkingInStairs = false;
-			if (hitTileGameObject.tag == "Stairway")
-			{
-				animState = 1;
-				isWalkingInStairs = true;
-			}
+			isWalkingInStairs = (hitTileGameObject.tag == "Stairway");
 		}
 		else
 		{
@@ -840,7 +866,7 @@ public class Pawn : MonoBehaviour
 
 		if( !isCameraMode )
 		{
-			if (isFalling || isJumping || (path != null && path.Count > 0))
+			if (isFalling || isJumping || IsThereAPath)
 				return;
 
 	        if (InputManager.isClickHeldDown())
@@ -909,7 +935,7 @@ public class Pawn : MonoBehaviour
 							clickedTile = focusedTile;
 							// ask a new path if we go to a different tile
 							if (pawnTile != clickedTile)
-								path = AStarHelper.Calculate(pawnTile, clickedTile);
+								StartToWalkToTile(pawnTile, clickedTile);
 						}
 					}
 	            }
@@ -934,11 +960,11 @@ public class Pawn : MonoBehaviour
 			fallingVFX.Play();
 
 //		collider.gameObject.layer = 12;
-		nextConstraint = GetComponent<Rigidbody>().constraints;
+		nextConstraint = rigidBody.constraints;
 
 		ResetDynamic();
-		GetComponent<Rigidbody>().useGravity = false;
-		GetComponent<Rigidbody>().constraints = transformConstraints;
+		rigidBody.useGravity = false;
+		rigidBody.constraints = transformConstraints;
 
 		float timer = .0f;
 		float delay = fallDelay * 0.5f;
@@ -971,10 +997,10 @@ public class Pawn : MonoBehaviour
 		transform.rotation = toRot;
 
 		// Fall animation
-		animState = 2;
-		
-		GetComponent<Rigidbody>().constraints = nextConstraint;
-		GetComponent<Rigidbody>().useGravity = true;
+		animator.SetTrigger(ANIM_FALL_TRIGGER);
+
+		rigidBody.constraints = nextConstraint;
+		rigidBody.useGravity = true;
 
 		World.Instance.SetGravity( orientation );
 	}
