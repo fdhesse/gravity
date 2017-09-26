@@ -400,14 +400,9 @@ public class Pawn : MonoBehaviour
 			animState = 1;
 			isWalking = true;
 
+			// look at the new target if any
 			if (newTarget)
-			{
-				if ( lookCoroutine != null )
-					StopCoroutine( lookCoroutine );
-
-				lookCoroutine = LookAt ( nextTile.transform.position );
-				StartCoroutine( lookCoroutine );
-			}
+				StartToLookAt(nextTile.transform.position);
 			
             // if there is, move the pawn towards the next point in that path
 			if (MoveTo(nextTile.transform.position))
@@ -483,11 +478,7 @@ public class Pawn : MonoBehaviour
 					StartCoroutine( JumpToTile());
 
 					// the modification in orientation
-					if( lookCoroutine != null )
-						StopCoroutine( lookCoroutine );					
-					lookCoroutine = LookAt ( clickedTile.transform.position );
-					StartCoroutine( lookCoroutine );
-
+					StartToLookAt(clickedTile.transform.position);
 				}
 					// calculate the vector from the Pawns position to the landing tile position at the same height
 				Vector3 landingPositionAtGroundHeight = GetGroundHeightPosition(clickedTile.transform.position);
@@ -544,7 +535,18 @@ public class Pawn : MonoBehaviour
         }
 	}
 
-	private IEnumerator LookAt( Vector3 point )
+	private void StartToLookAt(Vector3 point)
+	{
+		// stop the look coroutine if it is already running
+		if (lookCoroutine != null)
+			StopCoroutine(lookCoroutine);
+
+		// start the new look at coroutine
+		lookCoroutine = LookAt(point);
+		StartCoroutine(lookCoroutine);
+	}
+
+	private IEnumerator LookAt(Vector3 point)
 	{
 		Vector3 down = GetMyVerticality();
 
