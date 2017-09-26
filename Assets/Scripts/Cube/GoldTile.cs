@@ -26,8 +26,8 @@ public class GoldTile : MonoBehaviour
 
 			// get the world gravity if any
 			TileOrientation worldGravityOrientation = TileOrientation.Up;
-			if ((Pawn.Instance != null) && (Pawn.Instance.world != null))
-				worldGravityOrientation = Pawn.Instance.world.CurrentGravityOrientation;
+			if ((Pawn.Instance != null) && (World.Instance != null))
+				worldGravityOrientation = World.Instance.CurrentGravityOrientation;
 
 			// and change the material
 			DefineMaterial(worldGravityOrientation);

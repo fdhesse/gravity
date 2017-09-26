@@ -473,8 +473,8 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		defineOrientation();
 
 		// update also the orientation of my children mesh tile
-		if ((Pawn.Instance != null) && (Pawn.Instance.world != null))
-			updateMeshTileOrientation(Pawn.Instance.world.CurrentGravityOrientation);
+		if ((Pawn.Instance != null) && (World.Instance != null))
+			updateMeshTileOrientation(World.Instance.CurrentGravityOrientation);
 	}
 
 	private void updateMeshTileOrientation(TileOrientation worldGravityOrientation)

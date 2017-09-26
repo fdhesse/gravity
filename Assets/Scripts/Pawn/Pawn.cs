@@ -16,9 +16,6 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Screen))]
 public class Pawn : MonoBehaviour
 {
-	// #WORLD#
-	[HideInInspector] public World world;
-
 	private static Pawn s_Instance = null;
 	public static Pawn Instance { get { return s_Instance; } }
 
@@ -103,8 +100,6 @@ public class Pawn : MonoBehaviour
 
 		tilesLayer = LayerMask.NameToLayer ("Tiles");
 		tilesLayerMask = LayerMask.GetMask(new string[]{"Tiles"});
-
-		world = gameObject.AddComponent<World>() as World;
 	}
 
     void Start()
@@ -125,13 +120,12 @@ public class Pawn : MonoBehaviour
 
 		initSpawn();
 
-		world.Init();
-		world.GameStart();
+		World.Instance.GameStart();
 	}
 
 	void Update()
 	{
-		if (!(world.IsGameOver() || HUD.Instance.IsPaused)) // is the game active?, i.e. is the game not paused and not finished?
+		if (!(World.Instance.IsGameOver() || HUD.Instance.IsPaused)) // is the game active?, i.e. is the game not paused and not finished?
 		{
 			UpdateAnimation();
 			computeFocusedAndClickableTiles();
@@ -306,7 +300,7 @@ public class Pawn : MonoBehaviour
 	
 	private void Crush()
 	{
-		world.GameOver();
+		World.Instance.GameOver();
 		HUD.Instance.StartFadeOut();
 	}
 
@@ -387,7 +381,7 @@ public class Pawn : MonoBehaviour
     /// </summary>
     void OnGUI()
     {
-		if (world.IsGameOver()) //is the game over? 
+		if (World.Instance.IsGameOver()) //is the game over? 
         {
 			if (pawnTile != null && pawnTile.Type.Equals(TileType.Exit)) //Has the player reached an exit Tile?
 				HUD.Instance.showResultPage(); //activate the endscreen
@@ -403,7 +397,7 @@ public class Pawn : MonoBehaviour
 		if (isGrounded() ) // is the player touching a tile "beneath" him?
 		{
 			if( pawnTile.Type.Equals(TileType.Exit) ) //if this tile is an exit tile, make the game end
-				world.GameOver();
+				World.Instance.GameOver();
 				
             moveAlongPath(); //otherwise, move along the path to the player selected tile
         }
@@ -892,7 +886,7 @@ public class Pawn : MonoBehaviour
 				}
 				else
 				{
-					if ( isWalking || isFalling || focusedTile == null || world.FallingCubes() )
+					if ( isWalking || isFalling || focusedTile == null || World.Instance.IsThereAnyCubeFalling() )
 						return;
 
 					// if the focussed tile is highlighted that means it is clickable
@@ -917,7 +911,7 @@ public class Pawn : MonoBehaviour
 							// If the pawn is on a glue tile, the change of gravity is managed differently
 							if ( isGlued )
 							{
-								world.SetGravity( focusedTile.orientation );
+								World.Instance.SetGravity( focusedTile.orientation );
 							}
 							else
 							{
@@ -1001,7 +995,7 @@ public class Pawn : MonoBehaviour
 		GetComponent<Rigidbody>().constraints = nextConstraint;
 		GetComponent<Rigidbody>().useGravity = true;
 
-		world.SetGravity( orientation );
+		World.Instance.SetGravity( orientation );
 	}
 
 	private void SetPawnOrientation(TileOrientation orientation)
@@ -1169,7 +1163,7 @@ public class Pawn : MonoBehaviour
 	/// </summary>
 	public void outOfBounds()
 	{
-		world.GameOver();
+		World.Instance.GameOver();
 		HUD.Instance.StartFadeOut();
 	}
 }

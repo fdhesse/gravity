@@ -178,8 +178,8 @@ public class HUD : MonoBehaviour
 				GUI.color = new Color(0, 0, 0, alphaFadeValue);
 				GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), fadeinoutTexture);
 
-				if (Pawn.Instance.world.IsGameOver()) //is the game over? 
-					Pawn.Instance.world.GameStart();
+				if (World.Instance.IsGameOver()) //is the game over? 
+					World.Instance.GameStart();
 			}
 		}
 	}

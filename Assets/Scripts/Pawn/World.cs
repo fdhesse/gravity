@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 /// <summary>
 /// Class in charge of the "World" 
 /// </summary>
-public class World : MonoBehaviour {
-	
+public class World : MonoBehaviour
+{
+	private static World s_Instance = null;
+	public static World Instance { get { return s_Instance; } }
+
 	public static float G = 40.0f;	// 9.81f		// constante gravité
 	private bool isGameOver = false;		//Game state
 	private FallingCube[] fallingCubes;
@@ -20,13 +22,16 @@ public class World : MonoBehaviour {
 		get { return currentGravityOrientation; }
 	}
 
-	public void Init()
+	void Awake()
 	{
+		s_Instance = this;
+
+		// init the various list of element of the world
 		fallingCubes = FindObjectsOfType<FallingCube>();
 		gravityPlatforms = FindObjectsOfType<GravityPlatform>();
 		rotatingPlatforms = FindObjectsOfType<RotatingPlatform>();
 		movingPlatforms = FindObjectsOfType<MovingPlatform>();
-		goldTiles = FindObjectsOfType<GoldTile> ();
+		goldTiles = FindObjectsOfType<GoldTile>();
 	}
 	
 	public void Restart(TileOrientation startingOrientation)
@@ -67,20 +72,13 @@ public class World : MonoBehaviour {
 		Restart(TileOrientation.Up);
 	}
 	
-	public bool FallingCubes()
+	public bool IsThereAnyCubeFalling()
 	{
-		for (int i = 0; i != fallingCubes.Length; i++)
-		{
-			FallingCube cube = (FallingCube) fallingCubes[i];
-
-			if ( cube.isFalling )
+		foreach (FallingCube cube in fallingCubes)
+			if (cube.isFalling)
 				return true;
-				
-		}
-		
 		return false;
 	}
-
 	
 	/// <summary>
 	/// Gets the gravitational orientation vector.
