@@ -118,7 +118,7 @@ public class Pawn : MonoBehaviour
 		// Game cursor
 		Assets.SetMouseCursor();
 
-		initSpawn();
+		InitSpawn();
 
 		World.Instance.GameStart();
 	}
@@ -128,10 +128,10 @@ public class Pawn : MonoBehaviour
 		if (!(World.Instance.IsGameOver() || HUD.Instance.IsPaused)) // is the game active?, i.e. is the game not paused and not finished?
 		{
 			UpdateAnimation();
-			computeFocusedAndClickableTiles();
-			manageMouse();
-			movePawn();
-			checkUnderneath();
+			ComputeFocusedAndClickableTiles();
+			ManageMouse();
+			MovePawn();
+			CheckUnderneath();
 		}
 	}
 	
@@ -191,14 +191,14 @@ public class Pawn : MonoBehaviour
 	/// Fetches the position of the spawn GameObject.
 	/// Incase there is no spawn it will use the Pawn's initial position as spawnPoint
 	/// </summary>
-	private void initSpawn()
+	private void InitSpawn()
 	{
 		GameObject spawn = GameObject.FindGameObjectWithTag("Spawn");
 		spawnPosition = (spawn == null) ? transform.position : spawn.transform.position;
 		spawnRotation = (spawn == null) ? transform.rotation : spawn.transform.rotation;
 	}
 	
-	public void respawn(TileOrientation startingOrientation)
+	public void Respawn(TileOrientation startingOrientation)
 	{
 		path = null;
 		clickedTile = null;
@@ -214,7 +214,7 @@ public class Pawn : MonoBehaviour
 		transform.rotation = spawnRotation;
 
 		// please teleport the pawn first before reseting the pawn tile
-		onEnterTile(null);
+		OnEnterTile(null);
 
 		ResetDynamic();
 		
@@ -265,17 +265,17 @@ public class Pawn : MonoBehaviour
 			if (pos.x != 0)
 			{
 				if (pos.x > _pos.x)
-					Crush ();
+					Crush();
 			}
 			else if (pos.y != 0)
 			{
 				if (pos.y > _pos.y)
-					Crush ();
+					Crush();
 			}
 			else if (pos.z != 0)
 			{
 				if (pos.z > _pos.z)
-					Crush ();
+					Crush();
 			}
 		}
 		else // gravité supérieur à 0, le cube doit etre au dessous
@@ -283,25 +283,19 @@ public class Pawn : MonoBehaviour
 			if (pos.x != 0)
 			{
 				if (pos.x < _pos.x)
-					Crush ();
+					Crush();
 			}
 			else if (pos.y != 0)
 			{
 				if (pos.y < _pos.y)
-					Crush ();
+					Crush();
 			}
 			else if (pos.z != 0)
 			{
 				if (pos.z < _pos.z)
-					Crush ();
+					Crush();
 			}
 		}
-	}
-	
-	private void Crush()
-	{
-		World.Instance.GameOver();
-		HUD.Instance.StartFadeOut();
 	}
 
 	public void OnCollisionEnter(Collision collision)
@@ -321,9 +315,9 @@ public class Pawn : MonoBehaviour
 				fallingVFX.Stop();			
 
 			// Snap to the tile
-			onEnterTile(collision.collider.gameObject.GetComponent<Tile>());
+			OnEnterTile(collision.collider.gameObject.GetComponent<Tile>());
 
-			moveTo( pawnTile.transform.position );
+			MoveTo( pawnTile.transform.position );
 		}
 
 		ResetDynamic();
@@ -337,7 +331,7 @@ public class Pawn : MonoBehaviour
 	/// changes or becomes null
 	/// </summary>
 	/// <param name="tile">The new tile the pawn has under his feet. CAN be null.</param>
-	public void onEnterTile(Tile tile)
+	public void OnEnterTile(Tile tile)
 	{
 		// save the new pawntile (can be null)
 		pawnTile = tile;
@@ -374,35 +368,21 @@ public class Pawn : MonoBehaviour
 			this.transform.parent = null;
 	}
 
-    /// <summary>
-    ///  ONGUI is a Debug tool function, this function should be killed for the release of the game
-    ///  
-    /// Checks if the game as ended, if it has, it activates the HUD's endscreen
-    /// </summary>
-    void OnGUI()
-    {
-		if (World.Instance.IsGameOver()) //is the game over? 
-        {
-			if (pawnTile != null && pawnTile.Type.Equals(TileType.Exit)) //Has the player reached an exit Tile?
-				HUD.Instance.showResultPage(); //activate the endscreen
-		}		
-	}
-		
 	/// <summary>
     ///  Moves the pawn.
     ///  Applies player requested movement and gravity.
     /// </summary>
-    private void movePawn()
+    private void MovePawn()
 	{
-		if (isGrounded() ) // is the player touching a tile "beneath" him?
+		if (IsGrounded() ) // is the player touching a tile "beneath" him?
 		{
 			if( pawnTile.Type.Equals(TileType.Exit) ) //if this tile is an exit tile, make the game end
-				World.Instance.GameOver();
+				World.Instance.GameOver(true);
 				
-            moveAlongPath(); //otherwise, move along the path to the player selected tile
+            MoveAlongPath(); //otherwise, move along the path to the player selected tile
         }
 		else if (isWalkingInStairs || isJumping)
-			moveAlongPath();
+			MoveAlongPath();
     }
 	
     /// <summary>
@@ -411,7 +391,7 @@ public class Pawn : MonoBehaviour
     /// Otherwise, if there isn't a path, but there is a clickedTile, a valid tile that the player has clicked. 
     /// This clickedTile can be in a place not directly accessible to the Pawn, for example if there is a gap or if the tile is lower and the Pawn is supposed to fall.
     /// </summary>
-    private void moveAlongPath()
+    private void MoveAlongPath()
 	{
 		if (path != null && path.Count > 0) //is there a path?
 		{
@@ -431,7 +411,7 @@ public class Pawn : MonoBehaviour
 			}
 			
             // if there is, move the pawn towards the next point in that path
-			if (moveTo(nextTile.transform.position))
+			if (MoveTo(nextTile.transform.position))
 			{
 				newTarget = true;
 				position = nextTile.transform.position;
@@ -498,7 +478,7 @@ public class Pawn : MonoBehaviour
 					
 					// reset the pawn tile when starting to jump, because if you jump from
 					// a moving platform, you don't want to jump relative to the plateform
-					onEnterTile(null);
+					OnEnterTile(null);
 
 					// the modification in height
 					StartCoroutine( JumpToTile());
@@ -511,9 +491,9 @@ public class Pawn : MonoBehaviour
 
 				}
 					// calculate the vector from the Pawns position to the landing tile position at the same height
-				Vector3 landingPositionAtGroundHeight = getGroundHeightPosition(clickedTile.transform.position);
+				Vector3 landingPositionAtGroundHeight = GetGroundHeightPosition(clickedTile.transform.position);
 
-				if (moveTo(landingPositionAtGroundHeight)) // move the pawn towards the landing tile
+				if (MoveTo(landingPositionAtGroundHeight)) // move the pawn towards the landing tile
 				{
 					clickedTile = null; // target reached, forget it
 					isJumping = false;
@@ -545,7 +525,7 @@ public class Pawn : MonoBehaviour
     /// </summary>
 	/// <param name="destination">the destination where the player should be moved to in world coord</param>
     /// <returns>returns true if the vector is small, i.e. smaller than 1 of magnitude, in this case, the Pawn has reached his destination</returns>
-    private bool moveTo(Vector3 destination)
+    private bool MoveTo(Vector3 destination)
 	{
 		// Convert the world destination into local space
 		Vector3 moveDirection = transform.worldToLocalMatrix.MultiplyPoint(destination);
@@ -567,7 +547,7 @@ public class Pawn : MonoBehaviour
 
 	private IEnumerator LookAt( Vector3 point )
 	{
-		Vector3 down = getMyVerticality();
+		Vector3 down = GetMyVerticality();
 
 		newTarget = false;
 		float elapsedTime = .0f;
@@ -616,12 +596,12 @@ public class Pawn : MonoBehaviour
     /// Checks the space underneath the Pawn
     /// Assigns the spheres/dots to the tiles of other orientations where the Pawn would land after gravity changes
     /// </summary>
-    private void checkUnderneath()
+    private void CheckUnderneath()
 	{
 		if (isJumping || isFalling)
 			return;
 		
-		Vector3 down = getMyVerticality();
+		Vector3 down = GetMyVerticality();
 
 		RaycastHit hit = new RaycastHit();
 
@@ -633,7 +613,7 @@ public class Pawn : MonoBehaviour
 
 			// if the pawn change the tile, call the notification
 			if (hitTile != pawnTile)
-				onEnterTile(hitTile);
+				OnEnterTile(hitTile);
 
 			// check if we are on the stairs
 			isWalkingInStairs = false;
@@ -645,12 +625,12 @@ public class Pawn : MonoBehaviour
 		}
 		else
 		{
-			onEnterTile(null);
+			OnEnterTile(null);
         }
 	}
 	
 	#region focused tile, clickable tile, and destination marks
-	private void removeDestinationMarks()
+	private void RemoveDestinationMarks()
 	{
 		// clear the flag on all the tiles
 		foreach (Tile tile in clickableTilesToChangeGravity)
@@ -660,9 +640,9 @@ public class Pawn : MonoBehaviour
 		clickableTilesToChangeGravity.Clear();
 	}
 
-	private bool putDestinationMarks(Tile tileToCheck)
+	private bool PutDestinationMarks(Tile tileToCheck)
 	{
-		removeDestinationMarks();
+		RemoveDestinationMarks();
 
 		if ( isWalking || isWalkingInStairs || isFalling || isJumping )
 			return false;
@@ -703,7 +683,7 @@ public class Pawn : MonoBehaviour
 	/// Compute and set the tile focused by cursor, if valid.
 	/// Also clear and refill the array of clickable tiles.
 	/// </summary>
-	private void computeFocusedAndClickableTiles()
+	private void ComputeFocusedAndClickableTiles()
 	{
 		// unhighlight the previous focused tile if not null
 		if (focusedTile != null)
@@ -759,7 +739,7 @@ public class Pawn : MonoBehaviour
 				// the tile must be below the pawn tile and the gravity must be in the right direction
 				// so if the pawn is glued on the pawntile with a gravity in different direction,
 				// he cannot jump
-				bool isAccessibleByFall = isTileBelow(focusedTile) && (pawnTile.orientation == GetWorldVerticality());
+				bool isAccessibleByFall = IsTileBelow(focusedTile) && (pawnTile.orientation == GetWorldVerticality());
 
 				// iff (if and only if)
 				if ( isAccessibleByFall && ( pawnTile.orientation == TileOrientation.Down || pawnTile.orientation == TileOrientation.Up ) )
@@ -823,7 +803,7 @@ public class Pawn : MonoBehaviour
 
 		// now compute the destination marks for the gravity change.
 		// This function will also mark some tiles as clickable
-		bool canFocusedTileClhangeGravity = putDestinationMarks(focusedTile);
+		bool canFocusedTileClhangeGravity = PutDestinationMarks(focusedTile);
 		// update the clickable flag
 		isFocusedTileClickable = isFocusedTileClickable || canFocusedTileClhangeGravity;
 
@@ -847,7 +827,7 @@ public class Pawn : MonoBehaviour
     /// <summary>
     /// Manages the interaction with the mouse.
     /// </summary>
-    private void manageMouse()
+    private void ManageMouse()
 	{
 		// for very low framerate, we give at least 3 frames to switch to camera mode,
 		// otherwise for normal framerate, we use a fixed value of 1 quarter of second.
@@ -918,7 +898,7 @@ public class Pawn : MonoBehaviour
 								// asked the clicked tile to play it's attraction VFX
 								focusedTile.playActivationVFX();
 								//for punishing gravity take the tile == null here
-								onEnterTile(null);
+								OnEnterTile(null);
 								StartCoroutine( DelayedPawnFall ( focusedTile.orientation ));
 							}
 						}
@@ -1031,15 +1011,15 @@ public class Pawn : MonoBehaviour
 
 	private TileOrientation GetFeltVerticality()
 	{
-		return getTileOrientationFromDownVector( getMyVerticality() );
+		return GetTileOrientationFromDownVector( GetMyVerticality() );
 	}
 
 	private TileOrientation GetWorldVerticality()
 	{
-		return getTileOrientationFromDownVector( Physics.gravity );
+		return GetTileOrientationFromDownVector( Physics.gravity );
 	}
 
-	private TileOrientation getTileOrientationFromDownVector(Vector3 down)
+	private TileOrientation GetTileOrientationFromDownVector(Vector3 down)
 	{
 		if (down.x > 0.7f)
 			return TileOrientation.Right;
@@ -1066,7 +1046,7 @@ public class Pawn : MonoBehaviour
 	/// glued on a wall.
 	/// </summary>
 	/// <returns>The my verticality for the pawn.</returns>
-	private Vector3 getMyVerticality()
+	private Vector3 GetMyVerticality()
 	{
 		if (isGlued && (pawnTile != null))
 			return pawnTile.getDownVector();
@@ -1078,12 +1058,12 @@ public class Pawn : MonoBehaviour
 	/// Checks if the pawn is grounded.
 	/// Answers the question " is the player touching a tile "beneath" him?" where beneath relates to the current gravitational orientation.
 	/// </summary>
-	private bool isGrounded()
+	private bool IsGrounded()
 	{
 		//is there even a tile beneath the Pawn
 		if (pawnTile != null) 
 		{
-			Vector3 down = getMyVerticality();
+			Vector3 down = GetMyVerticality();
 			return Physics.SphereCast( new Ray( transform.position, down ), width * 0.5f, height * 0.5f, tilesLayerMask );
 		}
 		
@@ -1094,7 +1074,7 @@ public class Pawn : MonoBehaviour
 	/// <summary>
 	/// Is the target tile above the Pawn?
 	/// </summary>
-	private bool isTileBelow(Tile target)
+	private bool IsTileBelow(Tile target)
 	{
 		switch (pawnTile.orientation)
         {
@@ -1118,7 +1098,7 @@ public class Pawn : MonoBehaviour
     /// <summary>
     /// Gets the player ground position, i.e. the position of the "feet" of the Pawn, pawn has 8 height
     /// </summary>
-    private Vector3 getGroundPosition()
+    private Vector3 GetGroundPosition()
 	{
 		float halfHeight = height * 0.5f;
 
@@ -1146,24 +1126,44 @@ public class Pawn : MonoBehaviour
     /// </summary>
     /// <param name="position">Position of something</param>
     /// <returns>The position of something at the same height as the Pawn</returns>
-    private Vector3 getGroundHeightPosition(Vector3 position)
+    private Vector3 GetGroundHeightPosition(Vector3 position)
 	{
 		TileOrientation pawnOrientation = GetFeltVerticality();
 
 		if (pawnOrientation == TileOrientation.Up || pawnOrientation == TileOrientation.Down)
-            return new Vector3(position.x, getGroundPosition().y, position.z);
+            return new Vector3(position.x, GetGroundPosition().y, position.z);
 		else if (pawnOrientation == TileOrientation.Left || pawnOrientation == TileOrientation.Right)
-            return new Vector3(getGroundPosition().x, position.y, position.z);
+            return new Vector3(GetGroundPosition().x, position.y, position.z);
         else
-            return new Vector3(position.x, position.y, getGroundPosition().z);
+            return new Vector3(position.x, position.y, GetGroundPosition().z);
+	}
+
+	#region pawn death
+	/// <summary>
+	/// call this method when the player die by being crushed by a falling cube.
+	/// This will trigger a game over
+	/// </summary>
+	private void Crush()
+	{
+		World.Instance.GameOver(false);
 	}
 
 	/// <summary>
-	/// Is the Pawn out of bounds?
+	/// Call this method when the Pawn is out of bounds, i.e. leaves the game space.
+	/// This will trigger a game over
 	/// </summary>
-	public void outOfBounds()
+	public void OutOfBounds()
 	{
-		World.Instance.GameOver();
-		HUD.Instance.StartFadeOut();
+		World.Instance.GameOver(false);
 	}
+
+	/// <summary>
+	/// Call this method when the Pawn falls on spikes.
+	/// This will trigger a game over
+	/// </summary>
+	public void DieOnSpikes()
+	{
+		World.Instance.GameOver(false);
+	}
+	#endregion
 }

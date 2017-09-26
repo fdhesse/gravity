@@ -199,7 +199,7 @@ public class HUD : MonoBehaviour
 	#endregion
 
 	#region Result Page
-	public void showResultPage()
+	public void ShowResultPage()
 	{
 		this.showResultPage(true);
 	}

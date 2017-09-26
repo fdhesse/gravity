@@ -36,7 +36,7 @@ public class World : MonoBehaviour
 	
 	public void Restart(TileOrientation startingOrientation)
 	{
-		Pawn.Instance.respawn( startingOrientation );
+		Pawn.Instance.Respawn( startingOrientation );
 		
 		for (int i = 0; i < fallingCubes.Length; i++)
 			((FallingCube) fallingCubes[i]).Reset( startingOrientation );
@@ -61,11 +61,23 @@ public class World : MonoBehaviour
 		return isGameOver;
 	}
 	
-	public void GameOver()
+	/// <summary>
+	/// Make the game over. This will bring the fadeout if the player failed (like dying by falling
+	/// or being crushed), or may bring the result page if the player has succeeded.
+	/// </summary>
+	/// <param name="hasPlayerWin">Should be <c>true</c> if the player as successfully completed the level, or false if he died and need to restart the level</param>
+	public void GameOver(bool hasPlayerWin)
 	{
+		// set the game over flag
 		isGameOver = true;
+
+		// activate the end screen or the fade out depending if player won or lose
+		if (hasPlayerWin)
+			HUD.Instance.ShowResultPage();
+		else
+			HUD.Instance.StartFadeOut();
 	}
-	
+
 	public void GameStart()
 	{
 		isGameOver = false;

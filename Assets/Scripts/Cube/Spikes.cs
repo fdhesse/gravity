@@ -9,6 +9,6 @@ public class Spikes : MonoBehaviour
     void OnTriggerEnter(Collider c)
 	{
 		if (c.gameObject.tag == "Player" )
-	        c.gameObject.GetComponent<Pawn>().outOfBounds();
+	        c.gameObject.GetComponent<Pawn>().DieOnSpikes();
     }
 }

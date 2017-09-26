@@ -32,9 +32,9 @@ public class GameSpace : MonoBehaviour
 
     void OnTriggerExit(Collider c)
 	{
-		if (c.gameObject.tag == "Player" )
-	        c.gameObject.GetComponent<Pawn>().outOfBounds();
-		else if (c.gameObject.tag == "FallingCube" )
+		if (c.gameObject.tag == "Player")
+	        c.gameObject.GetComponent<Pawn>().OutOfBounds();
+		else if (c.gameObject.tag == "FallingCube")
 			c.gameObject.GetComponent<FallingCubeBody>().OutOfBounds();
     }
 }

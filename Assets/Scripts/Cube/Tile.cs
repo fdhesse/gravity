@@ -155,7 +155,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			return;
 
 		// warn the pawn that he enter on my tile
-		Pawn.Instance.onEnterTile(this);
+		Pawn.Instance.OnEnterTile(this);
 	}
 
     /// <summary>
