@@ -54,15 +54,8 @@ public class Pawn : MonoBehaviour
 	public ParticleSystem fallingVFX = null;
 
 	// #ANIMATIONS#
-	// animState
-	// 0 = idle
-	// 1 = walk
-	// 2 = fall
-	// 3 = land
 	private IEnumerator lookCoroutine = null;
 	private Animator animator = null;		// will be init in Awake
-	private int idleState = 0;
-	private float idleWait = 0;
 	
 	// #SPAWN#
 	private Vector3 spawnPosition = Vector3.zero;			// position of the spawn GameObject
@@ -139,42 +132,11 @@ public class Pawn : MonoBehaviour
 	{
 		if (!(World.Instance.IsGameOver() || HUD.Instance.IsPaused)) // is the game active?, i.e. is the game not paused and not finished?
 		{
-			UpdateAnimation();
 			ComputeFocusedAndClickableTiles();
 			ManageMouse();
 			MovePawn();
 			CheckUnderneath();
 		}
-	}
-	
-	private void UpdateAnimation()
-	{
-		idleWait += Time.deltaTime;
-		
-		if ( idleWait > 1.0f )
-		{
-			idleWait = 0;
-
-			float rand = UnityEngine.Random.value;
-
-			if ( rand > 0.65f )
-				idleState = Mathf.RoundToInt( rand );
-		}
-
-		if ( idleWait != animator.GetFloat( "idle_wait" ) )
-			animator.SetFloat("idle_wait", idleWait);
-
-		if ( idleState != animator.GetInteger( "idle_state" ) )
-		{
-			animator.SetInteger("idle_state", idleState);
-			StartCoroutine( SetIdleToZero() );
-		}
-	}
-
-	private IEnumerator SetIdleToZero()
-	{
-		yield return new WaitForSeconds (1);
-		idleState = 0;
 	}
 	
 	private IEnumerator SetCameraCursor()
