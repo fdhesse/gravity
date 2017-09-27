@@ -5,9 +5,9 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 400000}
+  - component: {fileID: 400000}
   m_Layer: 0
   m_Name: lights
   m_TagString: Untagged
@@ -20,10 +20,10 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 400004}
-  - 108: {fileID: 10800002}
+  - component: {fileID: 400004}
+  - component: {fileID: 10800002}
   m_Layer: 0
   m_Name: fill
   m_TagString: Untagged
@@ -36,10 +36,10 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 415112}
-  - 108: {fileID: 10822832}
+  - component: {fileID: 415112}
+  - component: {fileID: 10822832}
   m_Layer: 0
   m_Name: back
   m_TagString: Untagged
@@ -56,13 +56,13 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 415112}
   - {fileID: 4000013934690610}
   - {fileID: 400004}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &400004
 Transform:
   m_ObjectHideFlags: 1
@@ -72,10 +72,10 @@ Transform:
   m_LocalRotation: {x: 0.19176687, y: 0.48254874, z: -0.79753673, w: 0.30709502}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.0000007, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 62.541004, y: -1.1470001, z: -138.414}
   m_Children: []
   m_Father: {fileID: 400000}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 62.541004, y: -1.1470001, z: -138.414}
 --- !u!4 &415112
 Transform:
   m_ObjectHideFlags: 1
@@ -85,10 +85,10 @@ Transform:
   m_LocalRotation: {x: -0.88439655, y: 0.2664499, z: -0.13405839, w: 0.35899243}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 214.29199, y: -31.307983, z: 43.401}
   m_Children: []
   m_Father: {fileID: 400000}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 214.29199, y: -31.307983, z: 43.401}
 --- !u!108 &10800002
 Light:
   m_ObjectHideFlags: 1
@@ -96,7 +96,7 @@ Light:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
   m_Enabled: 1
-  serializedVersion: 7
+  serializedVersion: 8
   m_Type: 1
   m_Color: {r: 0.5955882, g: 0.5912089, b: 0.5912089, a: 1}
   m_Intensity: 0.1
@@ -121,6 +121,8 @@ Light:
   m_Lightmapping: 1
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!108 &10822832
@@ -130,7 +132,7 @@ Light:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 112214}
   m_Enabled: 1
-  serializedVersion: 7
+  serializedVersion: 8
   m_Type: 1
   m_Color: {r: 0.3019608, g: 0.2627451, b: 0.21176471, a: 1}
   m_Intensity: 0.3
@@ -155,6 +157,8 @@ Light:
   m_Lightmapping: 1
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!1001 &100100000
@@ -173,10 +177,10 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000013934690610}
-  - 108: {fileID: 108000010686476524}
+  - component: {fileID: 4000013934690610}
+  - component: {fileID: 108000010686476524}
   m_Layer: 0
   m_Name: key
   m_TagString: Untagged
@@ -193,10 +197,10 @@ Transform:
   m_LocalRotation: {x: 0.038257193, y: 0.7825987, z: -0.5064163, w: 0.36002538}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 400000}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!108 &108000010686476524
 Light:
   m_ObjectHideFlags: 1
@@ -204,7 +208,7 @@ Light:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010791532406}
   m_Enabled: 1
-  serializedVersion: 7
+  serializedVersion: 8
   m_Type: 1
   m_Color: {r: 0.8235294, g: 0.8235294, b: 0.8235294, a: 1}
   m_Intensity: 0.57
@@ -229,5 +233,7 @@ Light:
   m_Lightmapping: 1
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0

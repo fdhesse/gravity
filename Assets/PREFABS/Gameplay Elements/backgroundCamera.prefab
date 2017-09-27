@@ -5,12 +5,12 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 494648}
-  - 20: {fileID: 2046616}
-  - 92: {fileID: 9223146}
-  - 124: {fileID: 12442368}
+  - component: {fileID: 494648}
+  - component: {fileID: 2046616}
+  - component: {fileID: 9223146}
+  - component: {fileID: 12442368}
   m_Layer: 0
   m_Name: gameplayCamera
   m_TagString: Untagged
@@ -23,15 +23,15 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 465804}
-  - 20: {fileID: 2007022}
-  - 92: {fileID: 9278098}
-  - 124: {fileID: 12426684}
-  - 81: {fileID: 8124322}
-  - 114: {fileID: 11466214}
-  - 45: {fileID: 4572654}
+  - component: {fileID: 465804}
+  - component: {fileID: 2007022}
+  - component: {fileID: 9278098}
+  - component: {fileID: 12426684}
+  - component: {fileID: 8124322}
+  - component: {fileID: 11466214}
+  - component: {fileID: 4572654}
   m_Layer: 0
   m_Name: backgroundCamera
   m_TagString: MainCamera
@@ -45,13 +45,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 177400}
-  m_LocalRotation: {x: .146446586, y: .853553474, z: -.353553444, w: .353553295}
-  m_LocalPosition: {x: -75.9998779, y: 111.999939, z: 78.9998779}
+  m_LocalRotation: {x: 0.14644659, y: 0.8535535, z: -0.35355344, w: 0.3535533}
+  m_LocalPosition: {x: -75.99988, y: 111.99994, z: 78.99988}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 494648}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &494648
 Transform:
   m_ObjectHideFlags: 1
@@ -59,11 +60,12 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 166456}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .000152587891, y: -.145248413, z: -647.855164}
+  m_LocalPosition: {x: 0.00015258789, y: -0.14524841, z: -647.85516}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 465804}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &2007022
 Camera:
   m_ObjectHideFlags: 1
@@ -73,14 +75,14 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: .611764729, g: .505882382, b: .698039234, a: .0196078438}
+  m_BackGroundColor: {r: 0.6117647, g: 0.5058824, b: 0.69803923, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
     y: 0
     width: 1
     height: 1
-  near clip plane: .300000012
+  near clip plane: 0.3
   far clip plane: 2000
   field of view: 60
   orthographic: 0
@@ -94,9 +96,11 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
+  m_AllowMSAA: 1
+  m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
-  m_StereoSeparation: .0219999999
+  m_StereoSeparation: 0.022
   m_StereoMirrorMode: 0
 --- !u!20 &2046616
 Camera:
@@ -107,14 +111,14 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 3
-  m_BackGroundColor: {r: .611764729, g: .505882382, b: .698039234, a: .0196078438}
+  m_BackGroundColor: {r: 0.6117647, g: 0.5058824, b: 0.69803923, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
     y: 0
     width: 1
     height: 1
-  near clip plane: .300000012
+  near clip plane: 0.3
   far clip plane: 2000
   field of view: 10
   orthographic: 0
@@ -128,9 +132,11 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
+  m_AllowMSAA: 1
+  m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
-  m_StereoSeparation: .0219999999
+  m_StereoSeparation: 0.022
   m_StereoMirrorMode: 0
 --- !u!45 &4572654
 Skybox:
@@ -173,16 +179,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  rotationTime: 10
   distance: 180
-  xPivotingRatio: .699999988
-  yPivotingRatio: .699999988
+  distanceWithZoom: 0
   distanceMin: 180
   distanceMax: 180
-  roll: 0
-  pan: 0
-  tilt: 0
-  delta: {x: 0, y: 0, z: 0}
+  xPivotingRatio: 0.7
+  yPivotingRatio: 0.7
+  snapToAxis: 1
+  snapAngleInDegree: 10
+  snapTimeInSecond: 0.3
+  deformationAfterSnap: 0
+  deformationTimeInSecond: 0.3
+  deformationFOV: 10
 --- !u!124 &12426684
 Behaviour:
   m_ObjectHideFlags: 1

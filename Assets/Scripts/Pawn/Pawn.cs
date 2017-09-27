@@ -4,25 +4,38 @@ using System.Collections;
 using System.Collections.Generic;
 
 /// <summary>
-/// <para>Monobehaviour class responsible for the player's pawn.</para>
-/// <para>Since it is a monobehaviour, its supposed to be attached to a gameobject.</para>
-/// <para>It has Pawn Movement, pathfinding, interactions and also some gamelogic.</para>
+/// Monobehaviour class responsible for the player's pawn logic.
+/// It computes all the movement logic, and drive the animator by triggering
+/// state changes (but let the animator states performs visual stuff).
+/// This class also manage the input, like tap/click and mouse moves.
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CapsuleCollider))]
-//[RequireComponent(typeof(Animator))]
-//[RequireComponent(typeof(CharacterController))]
-//[RequireComponent(typeof(MeshRenderer))]
-[RequireComponent(typeof(Screen))]
 public class Pawn : MonoBehaviour
 {
 	public static readonly int ANIM_IDLE_TRIGGER = Animator.StringToHash("Idle");
 	private static readonly int ANIM_WALK_TRIGGER = Animator.StringToHash("Walk");
+	private static readonly int ANIM_JUMP_TO_TILE_TRIGGER = Animator.StringToHash("Jump to Tile");
+	private static readonly int ANIM_BORDER_DIRECTION_INT = Animator.StringToHash("Border Direction");
 	private static readonly int ANIM_FALL_TRIGGER = Animator.StringToHash("Fall");
 	private static readonly int ANIM_LAND_TRIGGER = Animator.StringToHash("Land");
 
 	private static Pawn s_Instance = null;
 	public static Pawn Instance { get { return s_Instance; } }
+
+	/// <summary>
+	/// This enum is used to set a relative direction of the border, relative to the pawn direction
+	/// for helping the Animator to choose the right animation to play.
+	/// For example if the pawn is facing the border he wants to jump to, then the BorderDirection
+	/// should be FACE, and if the border is on his right, it should be right, etc...
+	/// </summary>
+	private enum BorderDirection
+	{
+		FACE = 0,
+		RIGHT,
+		BACK,
+		LEFT,
+	}
 
 	// #PAWN#
 	public float speed = 30.0f;					// Speed of the pawn
@@ -96,6 +109,7 @@ public class Pawn : MonoBehaviour
 		}
 	}
 
+	#region Unity standard method
 	void Awake()
 	{
 		s_Instance = this;
@@ -138,26 +152,9 @@ public class Pawn : MonoBehaviour
 			CheckUnderneath();
 		}
 	}
-	
-	private IEnumerator SetCameraCursor()
-	{
-		yield return null;
-		// get the camera control of the main camera
-		CameraControl cameraControl = Camera.main.GetComponent<CameraControl>();
-		if (cameraControl != null)
-			cameraControl.SetCameraCursor();
-	}
+	#endregion
 
-	private IEnumerator SetNormalCursor()
-	{
-		yield return null;
-		// get the camera control of the main camera
-		CameraControl cameraControl = Camera.main.GetComponent<CameraControl>();
-		if (cameraControl != null)
-			cameraControl.SetNormalCursor();
-	}
-	
-	
+	#region init and respawn
 	/// <summary>
 	/// Fetches the position of the spawn GameObject.
 	/// Incase there is no spawn it will use the Pawn's initial position as spawnPoint
@@ -212,7 +209,9 @@ public class Pawn : MonoBehaviour
 		
 		//World.SetGravity (GetWorldGravity());
 	}
-	
+	#endregion
+
+	#region collision management
 	// TODO -- Pawn.CubeContact() -> traverser le joueur / pass through player
 	// TODO -- Pawn.CubeContact() -> réécriture / rewritting
 	public void CubeContact(Vector3 pos)
@@ -342,12 +341,14 @@ public class Pawn : MonoBehaviour
 		else
 			this.transform.parent = null;
 	}
+	#endregion
 
+	#region move
 	/// <summary>
-    ///  Moves the pawn.
-    ///  Applies player requested movement and gravity.
-    /// </summary>
-    private void MovePawn()
+	///  Moves the pawn.
+	///  Applies player requested movement and gravity.
+	/// </summary>
+	private void MovePawn()
 	{
 		if (IsGrounded() ) // is the player touching a tile "beneath" him?
 		{
@@ -465,23 +466,6 @@ public class Pawn : MonoBehaviour
 			}
 	    }
     }
-
-	private IEnumerator JumpToTile()
-	{
-		float elapsedTime = 0;
-		Vector3 up = new Vector3(0f, 0.25f, 0f);
-
-		while ( elapsedTime < jumpAnimationLength )
-		{
-			float t = elapsedTime / jumpAnimationLength;
-
-			transform.Translate( up * Mathf.Cos( t ), Space.Self );
-
-			elapsedTime += Time.deltaTime;
-
-			yield return null;
-		}
-	}
 
     /// <summary>
     /// Moves the pawn to the specified destination.
@@ -617,7 +601,115 @@ public class Pawn : MonoBehaviour
 			OnEnterTile(null);
         }
 	}
-	
+	#endregion
+
+	#region jump and fall
+	private IEnumerator JumpToTile()
+	{
+		float elapsedTime = 0;
+		Vector3 up = new Vector3(0f, 0.25f, 0f);
+
+		while (elapsedTime < jumpAnimationLength)
+		{
+			float t = elapsedTime / jumpAnimationLength;
+
+			transform.Translate(up * Mathf.Cos(t), Space.Self);
+
+			elapsedTime += Time.deltaTime;
+
+			yield return null;
+		}
+	}
+
+	private IEnumerator DelayedPawnFall(TileOrientation orientation)
+	{
+		Vector3 desiredPosition = new Vector3(0, height * 0.5f * fallInterval, 0);
+
+		// Block the "manageMouse" loop
+		isFalling = true;
+
+		// if there's some falling sfx, start them
+		if (fallingVFX != null)
+			fallingVFX.Play();
+
+		//		collider.gameObject.layer = 12;
+		nextConstraint = rigidBody.constraints;
+
+		ResetDynamic();
+		rigidBody.useGravity = false;
+		rigidBody.constraints = transformConstraints;
+
+		float timer = .0f;
+		float delay = fallDelay * 0.5f;
+
+		// Make the pawn float in the airs a little
+		while (timer < delay)
+		{
+			timer += Time.deltaTime;
+			Vector3 toPos = desiredPosition * timer / delay;
+			desiredPosition = desiredPosition - toPos;
+			transform.Translate(toPos, Space.Self);
+			yield return null;
+		}
+
+		SetPawnOrientation(orientation);
+
+		Quaternion fromRot = transform.rotation;
+		Quaternion toRot = Quaternion.Euler(desiredRotation);
+
+		timer = .0f;
+
+		// Rotate the pawn in order to face the correct direction
+		while (timer < delay)
+		{
+			timer += Time.deltaTime;
+			transform.rotation = Quaternion.Lerp(fromRot, toRot, timer / delay);
+			yield return null;
+		}
+
+		transform.rotation = toRot;
+
+		// Fall animation
+		animator.SetTrigger(ANIM_FALL_TRIGGER);
+
+		rigidBody.constraints = nextConstraint;
+		rigidBody.useGravity = true;
+
+		World.Instance.SetGravity(orientation);
+	}
+
+	private void SetPawnOrientation(TileOrientation orientation)
+	{
+		switch (orientation)
+		{
+			case TileOrientation.Front:
+				desiredRotation = new Vector3(270, 0, 0);
+				transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationX;
+				break;
+			case TileOrientation.Back:
+				desiredRotation = new Vector3(90, 0, 0);
+				transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationX;
+				break;
+			case TileOrientation.Right:
+				desiredRotation = new Vector3(0, 0, 90);
+				transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationZ;
+				break;
+			case TileOrientation.Left:
+				desiredRotation = new Vector3(0, 0, 270);
+				transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationZ;
+				break;
+			case TileOrientation.Up:
+				desiredRotation = new Vector3(0, 0, 0);
+				transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationY;
+				break;
+			case TileOrientation.Down:
+				desiredRotation = new Vector3(180, 0, 0);
+				transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationY;
+				break;
+		}
+	}
+	#endregion
+
 	#region focused tile, clickable tile, and destination marks
 	private void RemoveDestinationMarks()
 	{
@@ -813,10 +905,29 @@ public class Pawn : MonoBehaviour
 	}
 	#endregion
 
-    /// <summary>
-    /// Manages the interaction with the mouse.
-    /// </summary>
-    private void ManageMouse()
+	#region mouse management
+	private IEnumerator SetCameraCursor()
+	{
+		yield return null;
+		// get the camera control of the main camera
+		CameraControl cameraControl = Camera.main.GetComponent<CameraControl>();
+		if (cameraControl != null)
+			cameraControl.SetCameraCursor();
+	}
+
+	private IEnumerator SetNormalCursor()
+	{
+		yield return null;
+		// get the camera control of the main camera
+		CameraControl cameraControl = Camera.main.GetComponent<CameraControl>();
+		if (cameraControl != null)
+			cameraControl.SetNormalCursor();
+	}
+
+	/// <summary>
+	/// Manages the interaction with the mouse.
+	/// </summary>
+	private void ManageMouse()
 	{
 		// for very low framerate, we give at least 3 frames to switch to camera mode,
 		// otherwise for normal framerate, we use a fixed value of 1 quarter of second.
@@ -909,95 +1020,9 @@ public class Pawn : MonoBehaviour
 			isCameraMode = false;
 		}
 	}
-	
-	private IEnumerator DelayedPawnFall( TileOrientation orientation )
-	{
-		Vector3 desiredPosition = new Vector3( 0, height * 0.5f * fallInterval, 0 );
+	#endregion
 
-		// Block the "manageMouse" loop
-		isFalling = true;
-
-		// if there's some falling sfx, start them
-		if (fallingVFX != null)
-			fallingVFX.Play();
-
-//		collider.gameObject.layer = 12;
-		nextConstraint = rigidBody.constraints;
-
-		ResetDynamic();
-		rigidBody.useGravity = false;
-		rigidBody.constraints = transformConstraints;
-
-		float timer = .0f;
-		float delay = fallDelay * 0.5f;
-
-		// Make the pawn float in the airs a little
-		while( timer < delay )
-		{
-			timer += Time.deltaTime;
-			Vector3 toPos = desiredPosition * timer / delay;
-			desiredPosition = desiredPosition - toPos;
-			transform.Translate( toPos, Space.Self );
-			yield return null;
-		}
-		
-		SetPawnOrientation( orientation );
-		
-		Quaternion fromRot = transform.rotation;
-		Quaternion toRot = Quaternion.Euler ( desiredRotation );
-
-		timer = .0f;
-
-		// Rotate the pawn in order to face the correct direction
-		while( timer < delay )
-		{
-			timer += Time.deltaTime;
-			transform.rotation = Quaternion.Lerp(fromRot, toRot, timer / delay);
-			yield return null;
-		}
-
-		transform.rotation = toRot;
-
-		// Fall animation
-		animator.SetTrigger(ANIM_FALL_TRIGGER);
-
-		rigidBody.constraints = nextConstraint;
-		rigidBody.useGravity = true;
-
-		World.Instance.SetGravity( orientation );
-	}
-
-	private void SetPawnOrientation(TileOrientation orientation)
-	{
-		switch (orientation)
-		{
-		case TileOrientation.Front:
-			desiredRotation = new Vector3(270, 0, 0);
-			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationX;
-			break;
-		case TileOrientation.Back:
-			desiredRotation = new Vector3(90, 0, 0);
-			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationX;
-			break;
-		case TileOrientation.Right:
-			desiredRotation = new Vector3(0, 0, 90);
-			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationZ;
-			break;
-		case TileOrientation.Left:
-			desiredRotation = new Vector3(0, 0, 270);
-			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationZ;
-			break;
-		case TileOrientation.Up:
-			desiredRotation = new Vector3(0, 0, 0);
-			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationY;
-			break;
-		case TileOrientation.Down:
-			desiredRotation = new Vector3(180, 0, 0);
-			transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationY;
-			break;
-		}
-	}
-
+	#region verticality
 	private TileOrientation GetFeltVerticality()
 	{
 		return GetTileOrientationFromDownVector( GetMyVerticality() );
@@ -1026,10 +1051,6 @@ public class Pawn : MonoBehaviour
 		return TileOrientation.Up;
 	}
 
-
-	// ----- CHECKERS ----- //
-	// 
-
 	/// <summary>
 	/// Gets my verticality, which equals to the gravity normally, but which can be different if the pawn is
 	/// glued on a wall.
@@ -1042,7 +1063,9 @@ public class Pawn : MonoBehaviour
 		else
 			return Physics.gravity.normalized;
 	}
+	#endregion
 
+	#region ground detection
 	/// <summary>
 	/// Checks if the pawn is grounded.
 	/// Answers the question " is the player touching a tile "beneath" him?" where beneath relates to the current gravitational orientation.
@@ -1058,7 +1081,6 @@ public class Pawn : MonoBehaviour
 		
 		return false; // if there isn't a tile beneath him, he isn't grounded
 	}
-
 
 	/// <summary>
 	/// Is the target tile above the Pawn?
@@ -1081,8 +1103,6 @@ public class Pawn : MonoBehaviour
 				return pawnTile.transform.position.z > target.transform.position.z;
         }
 	}
-
-    /// ----- GETTERS ----- ///
 
     /// <summary>
     /// Gets the player ground position, i.e. the position of the "feet" of the Pawn, pawn has 8 height
@@ -1126,6 +1146,7 @@ public class Pawn : MonoBehaviour
         else
             return new Vector3(position.x, position.y, GetGroundPosition().z);
 	}
+	#endregion
 
 	#region pawn death
 	/// <summary>
