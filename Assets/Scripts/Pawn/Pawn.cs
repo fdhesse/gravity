@@ -68,7 +68,8 @@ public class Pawn : MonoBehaviour
 
 	// #ANIMATIONS#
 	private IEnumerator lookCoroutine = null;
-	private Animator animator = null;		// will be init in Awake
+	private Animator animator = null;       // will be init in Awake
+	private bool isMovedByAnim = false;		// tell if the pawn is moved by the animation, or by the script
 	
 	// #SPAWN#
 	private Vector3 spawnPosition = Vector3.zero;			// position of the spawn GameObject
@@ -146,6 +147,7 @@ public class Pawn : MonoBehaviour
 	{
 		if (!(World.Instance.IsGameOver() || HUD.Instance.IsPaused)) // is the game active?, i.e. is the game not paused and not finished?
 		{
+			UpdateAnimation();
 			ComputeFocusedAndClickableTiles();
 			ManageMouse();
 			MovePawn();
@@ -179,6 +181,7 @@ public class Pawn : MonoBehaviour
 		isFalling = true;
 		isJumping = false;
 		isWalking = false;
+		isMovedByAnim = false;
 
 		// teleport the pawn at the spawn position
 		transform.position = spawnPosition;
@@ -343,6 +346,28 @@ public class Pawn : MonoBehaviour
 	}
 	#endregion
 
+	#region animation
+	private void UpdateAnimation()
+	{
+		// if the pawn is moved by the animation, apply the translation and rotation comming from the animation
+		if (isMovedByAnim)
+		{
+			// apply translation of the animator child to me, and reset it
+			transform.position = animator.transform.position;
+			animator.transform.localPosition = Vector3.zero;
+
+			// apply rotation of the animator child to me, and reset it
+			transform.rotation = animator.transform.rotation;
+			animator.transform.localRotation = Quaternion.identity;
+		}
+		else
+		{
+			animator.transform.localPosition = Vector3.zero;
+			animator.transform.localRotation = Quaternion.identity;
+		}
+	}
+	#endregion
+
 	#region move
 	/// <summary>
 	///  Moves the pawn.
@@ -350,15 +375,17 @@ public class Pawn : MonoBehaviour
 	/// </summary>
 	private void MovePawn()
 	{
-		if (IsGrounded() ) // is the player touching a tile "beneath" him?
+		if (IsGrounded()) // is the player touching a tile "beneath" him?
 		{
-			if( pawnTile.Type.Equals(TileType.Exit) ) //if this tile is an exit tile, make the game end
+			if (pawnTile.Type.Equals(TileType.Exit)) //if this tile is an exit tile, make the game end
 				World.Instance.GameOver(true);
-				
-            MoveAlongPath(); //otherwise, move along the path to the player selected tile
-        }
+
+			MoveAlongPath(); //otherwise, move along the path to the player selected tile
+		}
 		else if (isWalkingInStairs || isJumping)
+		{
 			MoveAlongPath();
+		}
     }
 	
     /// <summary>
@@ -441,28 +468,44 @@ public class Pawn : MonoBehaviour
 				// check if we didn't start jumping yet
 				if ( !isJumping )
 				{
-					animator.SetTrigger(ANIM_FALL_TRIGGER);
 					isJumping = true;
 					isFalling = true;
-					
+
+					// compute the height (in grid step) between the pawn tile and the clicked tile
+					int tileRelativeGridHeight = World.Instance.GetTileRelativeGridHeight(pawnTile, clickedTile);
+
+					// compute the border direction and set it in any case (both type of animation needs it)
+					animator.SetInteger(ANIM_BORDER_DIRECTION_INT, (int)GetBorderDirectionToGoToThisTile(clickedTile));
+
+					// if the height is just one step, the pawn will jump, otherwise he will use his rope
+					if (tileRelativeGridHeight == 1)
+					{
+						// the tile is just under me, we just do a simple jump
+						animator.SetTrigger(ANIM_JUMP_TO_TILE_TRIGGER);
+						isMovedByAnim = true;
+					}
+					else
+					{
+						// the tile is too low under me, trigger the jump with rope
+						animator.SetTrigger(ANIM_FALL_TRIGGER);
+						isMovedByAnim = false;
+
+						// the modification in height
+						StartCoroutine(JumpToTile());
+
+						// the modification in orientation
+						StartToLookAt(clickedTile.transform.position);
+					}
+
 					// reset the pawn tile when starting to jump, because if you jump from
 					// a moving platform, you don't want to jump relative to the plateform
 					OnEnterTile(null);
-
-					// the modification in height
-					StartCoroutine( JumpToTile());
-
-					// the modification in orientation
-					StartToLookAt(clickedTile.transform.position);
 				}
-					// calculate the vector from the Pawns position to the landing tile position at the same height
+
+				// calculate the vector from the Pawns position to the landing tile position at the same height
 				Vector3 landingPositionAtGroundHeight = GetGroundHeightPosition(clickedTile.transform.position);
-
-				if (MoveTo(landingPositionAtGroundHeight)) // move the pawn towards the landing tile
-				{
-					clickedTile = null; // target reached, forget it
-					isJumping = false;
-				}
+				if (!isMovedByAnim && MoveTo(landingPositionAtGroundHeight)) // move the pawn towards the landing tile
+					OnJumpFinished();
 			}
 	    }
     }
@@ -619,6 +662,16 @@ public class Pawn : MonoBehaviour
 
 			yield return null;
 		}
+	}
+
+	/// <summary>
+	/// This callback is called by the animator state machine when all the animations are finished after a jump.
+	/// </summary>
+	public void OnJumpFinished()
+	{
+		clickedTile = null; // target reached, forget it
+		isJumping = false;
+		isMovedByAnim = false;
 	}
 
 	private IEnumerator DelayedPawnFall(TileOrientation orientation)
@@ -1022,7 +1075,7 @@ public class Pawn : MonoBehaviour
 	}
 	#endregion
 
-	#region verticality
+	#region verticality and border direction
 	private TileOrientation GetFeltVerticality()
 	{
 		return GetTileOrientationFromDownVector( GetMyVerticality() );
@@ -1062,6 +1115,17 @@ public class Pawn : MonoBehaviour
 			return pawnTile.getDownVector();
 		else
 			return Physics.gravity.normalized;
+	}
+
+	/// <summary>
+	/// Compute the direction of the border of the current pawn tile, if the pawn
+	/// needs to go to the specified tile.
+	/// </summary>
+	/// <param name="targetTile">The tile where the pawn wants to go.</param>
+	/// <returns>a relative direction of the border, relative to the current orientation of the pawn</returns>
+	private BorderDirection GetBorderDirectionToGoToThisTile(Tile targetTile)
+	{
+		return BorderDirection.FACE;
 	}
 	#endregion
 

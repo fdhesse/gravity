@@ -95,7 +95,7 @@ public class World : MonoBehaviour
 	/// <summary>
 	/// Gets the gravitational orientation vector.
 	/// </summary>
-	public static Vector3 getGravityVector( TileOrientation vec )
+	public static Vector3 getGravityVector(TileOrientation vec)
 	{
 		switch (vec)
 		{
@@ -136,5 +136,35 @@ public class World : MonoBehaviour
 		
 		for (int i = 0; i < goldTiles.Length; i++)
 			goldTiles[i].ChangeGravity( orientation );
+	}
+
+	/// <summary>
+	///  Compute the relative height from the specified tile1 to the specified tile2
+	///  along the world's gravity, and convert it into grid step (currently one tile
+	///  is 10m in world's coordinates). 
+	///  The value is positive if tile1 is above tile2, negative otherwise.
+	/// </summary>
+	/// <param name="tile1">The first tile you want to test</param>
+	/// <param name="tile2">The second tile you want to test</param>
+	/// <returns>a number of grid step representing the difference of height (along current world's gravity) betweent the two tiles.</returns>
+	public int GetTileRelativeGridHeight(Tile tile1, Tile tile2)
+	{
+		// compute the tile position difference
+		Vector3 distance = tile1.Position - tile2.Position;
+
+		// get the correct height according to the gravity
+		float height = 0f;
+		switch (currentGravityOrientation)
+		{
+			case TileOrientation.Up:	height = distance.y; break;
+			case TileOrientation.Down:	height = -distance.y; break;
+			case TileOrientation.Left:	height = distance.x; break;
+			case TileOrientation.Right: height = -distance.x; break;
+			case TileOrientation.Front: height = distance.z; break;
+			case TileOrientation.Back:	height = -distance.z; break;
+		}
+
+		// convert the distance into grid step
+		return (int)Mathf.Round(height / 10f);
 	}
 }
