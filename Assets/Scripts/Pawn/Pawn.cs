@@ -31,7 +31,7 @@ public class Pawn : MonoBehaviour
 	/// </summary>
 	private enum BorderDirection
 	{
-		FACE = 0,
+		FRONT = 0,
 		RIGHT,
 		BACK,
 		LEFT,
@@ -1125,7 +1125,18 @@ public class Pawn : MonoBehaviour
 	/// <returns>a relative direction of the border, relative to the current orientation of the pawn</returns>
 	private BorderDirection GetBorderDirectionToGoToThisTile(Tile targetTile)
 	{
-		return BorderDirection.FACE;
+		// compute the position of the target tile in the pawn local coordinates
+		Vector3 localTargetTilePosition = transform.worldToLocalMatrix * targetTile.Position;
+
+		// now check if the target position if roughly in front, back, right or left
+		if (localTargetTilePosition.z > 5f)
+			return BorderDirection.FRONT;
+		else if (localTargetTilePosition.z < -5f)
+			return BorderDirection.BACK;
+		else if (localTargetTilePosition.x > 5f)
+			return BorderDirection.RIGHT;
+		else
+			return BorderDirection.LEFT;		
 	}
 	#endregion
 
