@@ -58,7 +58,7 @@ public class AnimStateIdle : StateMachineBehaviour
 	public override void OnStateExit(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
 	{
 		//Reset the idle trigger when I leave the state, to avoid returning to it
-		animator.ResetTrigger(animatorStateInfo.shortNameHash);
+		animator.ResetTrigger(Pawn.ANIM_IDLE_TRIGGER);
 
 		// reset the idle anim id, if I leave the wait state
 		if (animator.GetInteger(IDLE_ANIM_ID) == (int)IdleId.WAIT)

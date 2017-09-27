@@ -16,7 +16,7 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Screen))]
 public class Pawn : MonoBehaviour
 {
-	private static readonly int ANIM_IDLE_TRIGGER = Animator.StringToHash("Idle");
+	public static readonly int ANIM_IDLE_TRIGGER = Animator.StringToHash("Idle");
 	private static readonly int ANIM_WALK_TRIGGER = Animator.StringToHash("Walk");
 	private static readonly int ANIM_FALL_TRIGGER = Animator.StringToHash("Fall");
 	private static readonly int ANIM_LAND_TRIGGER = Animator.StringToHash("Land");
