@@ -246,9 +246,13 @@ public class GameplayCube : MonoBehaviour
 			UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
 	}
 
+	private static Color s_DefaultColor = new Color(0.6f, 0.6f, 0.6f);
+	private static Color s_SelectedColor = new Color(1f, 0.25f, 0f);
+	private static Color s_EmptyCubeColor = Color.red;
+
 	void OnDrawGizmosSelected()
 	{
-		Gizmos.color = Color.red;
+		Gizmos.color = s_SelectedColor;
 		Gizmos.DrawWireCube (transform.position, transform.localScale);
 	}
 
@@ -259,10 +263,12 @@ public class GameplayCube : MonoBehaviour
 		if ((m_left == TileType.None) && (m_right == TileType.None) &&
 			(m_up == TileType.None) && (m_down == TileType.None) &&
 			(m_front == TileType.None) && (m_back == TileType.None))
-		{
-			Gizmos.color = Color.red;
-			Gizmos.DrawWireCube (transform.position, transform.localScale);
-		}
+			Gizmos.color = s_EmptyCubeColor;
+		else
+			Gizmos.color = s_DefaultColor;
+
+		// draw the wire cube
+		Gizmos.DrawWireCube (transform.position, transform.localScale);
 	}
 	#endif
 }

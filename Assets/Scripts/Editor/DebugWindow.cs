@@ -34,7 +34,7 @@ public class DebugWindow : EditorWindow
 	}
     #endregion
 
-	#region time scalce
+	#region time scale
 	private void DrawTimeScale()
 	{
 		Time.timeScale = EditorGUILayout.Slider("Time Scale", Time.timeScale, 0, 1f);
