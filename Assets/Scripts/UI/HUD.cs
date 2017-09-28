@@ -50,11 +50,6 @@ public class HUD : MonoBehaviour
 	private string[] textPages;
 	private int pageId;
 
-	// fps related
-	public bool drawFPS = true;
-	private float fps = 0.0f;
-	private float lastSampledTimeForFPS = 0.0f;
-
 	// Camera reference
 	private CameraControl cameraControl = null;
 
@@ -113,22 +108,6 @@ public class HUD : MonoBehaviour
 		showNarrativePage(false);
     }
 	
-	// Update is called once per frame
-	void Update()
-	{
-		if (drawFPS)
-		{
-			// compute the FPS
-			const int nbFrameForAverage = 100;
-			if ((Time.frameCount % nbFrameForAverage) == 0)
-			{
-				float averageDeltaTime = (Time.time - lastSampledTimeForFPS) / (float)nbFrameForAverage;
-				fps = 1.0f / averageDeltaTime;
-				lastSampledTimeForFPS = Time.time;
-			}
-		}
-	}
-
 	private void freezeGameTime(bool shouldPause)
 	{
 		if (shouldPause)
@@ -148,15 +127,6 @@ public class HUD : MonoBehaviour
     // Update is called once per frame
     void OnGUI()
     {
-		// debug print the fps
-		if (drawFPS)
-		{
-			GUI.color = Color.black;
-			GUIStyle style = new GUIStyle();
-			style.alignment = TextAnchor.UpperRight;
-			GUI.Label(new Rect(10, 5, 100, 30), fps.ToString("f1"), style);
-		}
-
 		// #FADEINOUT_TEXTURE#
 		if (fadeinoutTexture != null)
 		{
