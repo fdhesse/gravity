@@ -472,7 +472,7 @@ public class Pawn : MonoBehaviour
 					isFalling = true;
 
 					// compute the height (in grid step) between the pawn tile and the clicked tile
-					int tileRelativeGridHeight = World.Instance.GetTileRelativeGridHeight(pawnTile, clickedTile);
+					int tileRelativeGridHeight = World.Instance.GetTileRelativeGridHeight(pawnTile, clickedTile, GetFeltVerticality());
 
 					// compute the border direction and set it in any case (both type of animation needs it)
 					animator.SetInteger(ANIM_BORDER_DIRECTION_INT, (int)GetBorderDirectionToGoToThisTile(clickedTile));

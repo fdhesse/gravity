@@ -140,21 +140,26 @@ public class World : MonoBehaviour
 
 	/// <summary>
 	///  Compute the relative height from the specified tile1 to the specified tile2
-	///  along the world's gravity, and convert it into grid step (currently one tile
-	///  is 10m in world's coordinates). 
+	///  along the specified height direction, and convert it into grid step 
+	///  (currently one tile is 10m in world's coordinates). 
 	///  The value is positive if tile1 is above tile2, negative otherwise.
 	/// </summary>
 	/// <param name="tile1">The first tile you want to test</param>
 	/// <param name="tile2">The second tile you want to test</param>
+	/// <param name="heightDirection">The direction along which you want to know the height. If this parameter equals <c>TileOrientation.None</c>, the current world's gravity will be used instead.</param>
 	/// <returns>a number of grid step representing the difference of height (along current world's gravity) betweent the two tiles.</returns>
-	public int GetTileRelativeGridHeight(Tile tile1, Tile tile2)
+	public int GetTileRelativeGridHeight(Tile tile1, Tile tile2, TileOrientation heightDirection = TileOrientation.None)
 	{
+		// if the height direction is not specified, used the current gravity
+		if (heightDirection == TileOrientation.None)
+			heightDirection = currentGravityOrientation;
+
 		// compute the tile position difference
 		Vector3 distance = tile1.Position - tile2.Position;
 
 		// get the correct height according to the gravity
 		float height = 0f;
-		switch (currentGravityOrientation)
+		switch (heightDirection)
 		{
 			case TileOrientation.Up:	height = distance.y; break;
 			case TileOrientation.Down:	height = -distance.y; break;
