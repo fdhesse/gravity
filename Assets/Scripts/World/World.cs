@@ -165,8 +165,8 @@ public class World : MonoBehaviour
 			case TileOrientation.Down:	height = -distance.y; break;
 			case TileOrientation.Left:	height = distance.x; break;
 			case TileOrientation.Right: height = -distance.x; break;
-			case TileOrientation.Front: height = distance.z; break;
-			case TileOrientation.Back:	height = -distance.z; break;
+			case TileOrientation.Back:	height = distance.z; break;
+			case TileOrientation.Front: height = -distance.z; break;
 		}
 
 		// convert the distance into grid step
