@@ -174,27 +174,27 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 
 		Vector3 tileDirection = transform.rotation * Quaternion.Euler( -90f, 0, 0 ) * -Vector3.up;
 
-		if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Up) ), 0 ) )
+		if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.GetGravityNormalizedVector(TileOrientation.Up) ), 0 ) )
 		{
 			orientation = TileOrientation.Up;
 		}
-		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Down) ), 0 ) )
+		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.GetGravityNormalizedVector(TileOrientation.Down) ), 0 ) )
 		{
 			orientation = TileOrientation.Down;
 		}
-		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Right) ), 0 ) )
+		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.GetGravityNormalizedVector(TileOrientation.Right) ), 0 ) )
 		{
 			orientation = TileOrientation.Right;
 		}
-		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Left) ), 0 ) )
+		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.GetGravityNormalizedVector(TileOrientation.Left) ), 0 ) )
 		{
 			orientation = TileOrientation.Left;
 		}
-		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Front) ), 0 ) )
+		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.GetGravityNormalizedVector(TileOrientation.Front) ), 0 ) )
 		{
 			orientation = TileOrientation.Front;
 		}
-		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.getGravityVector(TileOrientation.Back) ), 0 ) )
+		else if ( Mathf.Approximately ( Vector3.Angle( tileDirection, World.GetGravityNormalizedVector(TileOrientation.Back) ), 0 ) )
 		{
 			orientation = TileOrientation.Back;
 		}

@@ -68,7 +68,7 @@ public class RotatingPlatform : MonoBehaviour
 	private void SetInitialRotation( TileOrientation orientation )
 	{
 		// by default, init the last gravity is the one of the specified orientation
-		lastGravity = World.getGravityVector(orientation);
+		lastGravity = World.GetGravityNormalizedVector(orientation);
 
 		// but if the orientation is parallel to the rotation axis, then we init the last gravity like my current orientation
 		if ( constrainedAxis == ConstraintAxis.X )
@@ -138,7 +138,7 @@ public class RotatingPlatform : MonoBehaviour
 		Vector3 axis = Vector3.up;
 		Quaternion tRotation = transform.rotation;
 
-		Vector3 targetPosition = transform.position - World.getGravityVector(orientation);
+		Vector3 targetPosition = transform.position - World.GetGravityNormalizedVector(orientation);
 		
 		if (constrainedAxis == ConstraintAxis.X)
 			axis = Vector3.left;
@@ -162,7 +162,7 @@ public class RotatingPlatform : MonoBehaviour
 		float angleA, angleB;
 
 		Vector3 forwardA = lastGravity;
-		Vector3 forwardB = World.getGravityVector(orientation);
+		Vector3 forwardB = World.GetGravityNormalizedVector(orientation);
 
 		lastGravity = forwardB;
 

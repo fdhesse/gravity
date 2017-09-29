@@ -14,6 +14,7 @@ public class World : MonoBehaviour
 	private GravityPlatform[] gravityPlatforms;
 	private RotatingPlatform[] rotatingPlatforms;
 	private MovingPlatform[] movingPlatforms;
+	private Waterfall[] waterfalls;
 	private GoldTile[] goldTiles;
 	private TileOrientation currentGravityOrientation = TileOrientation.Up;
 
@@ -31,6 +32,7 @@ public class World : MonoBehaviour
 		gravityPlatforms = FindObjectsOfType<GravityPlatform>();
 		rotatingPlatforms = FindObjectsOfType<RotatingPlatform>();
 		movingPlatforms = FindObjectsOfType<MovingPlatform>();
+		waterfalls = FindObjectsOfType<Waterfall>();
 		goldTiles = FindObjectsOfType<GoldTile>();
 	}
 	
@@ -38,20 +40,23 @@ public class World : MonoBehaviour
 	{
 		Pawn.Instance.Respawn( startingOrientation );
 		
-		for (int i = 0; i < fallingCubes.Length; i++)
-			((FallingCube) fallingCubes[i]).Reset( startingOrientation );
-		
-		for (int i = 0; i < gravityPlatforms.Length; i++)
-			((GravityPlatform) gravityPlatforms[i]).Reset( startingOrientation );
+		foreach (var cube in fallingCubes)
+			cube.Reset(startingOrientation);
 
-		for (int i = 0; i < rotatingPlatforms.Length; i++)
-			((RotatingPlatform) rotatingPlatforms[i]).Reset( startingOrientation );
+		foreach (var platform in gravityPlatforms)
+			platform.Reset(startingOrientation);
 
-		for (int i = 0; i < movingPlatforms.Length; i++)
-			((MovingPlatform) movingPlatforms[i]).Reset( startingOrientation );
+		foreach (var platform in rotatingPlatforms)
+			platform.Reset(startingOrientation);
 
-		for (int i = 0; i < goldTiles.Length; i++)
-			((GoldTile)goldTiles[i]).Reset( startingOrientation );
+		foreach (var platform in movingPlatforms)
+			platform.Reset(startingOrientation);
+
+		foreach (var tile in goldTiles)
+			tile.Reset(startingOrientation);
+
+		foreach (var waterfall in waterfalls)
+			waterfall.Reset(startingOrientation);
 
 		SetGravity( startingOrientation );
 	}
@@ -91,13 +96,14 @@ public class World : MonoBehaviour
 				return true;
 		return false;
 	}
-	
+
 	/// <summary>
-	/// Gets the gravitational orientation vector.
+	/// Gets the gravitational normalized vector, according to the specified orientation.
+	/// <param name="orientation"/>The orientation for which you want the gravity vector</param>
 	/// </summary>
-	public static Vector3 getGravityVector(TileOrientation vec)
+	public static Vector3 GetGravityNormalizedVector(TileOrientation orientation)
 	{
-		switch (vec)
+		switch (orientation)
 		{
 		case TileOrientation.Up:
 			return new Vector3(0, -1, 0);
@@ -115,7 +121,16 @@ public class World : MonoBehaviour
 			return new Vector3(0, -1, 0);
 		}
 	}
-	
+
+	/// <summary>
+	/// Gets the gravitational vector (including the gravity acceleration), according to the specified orientation.
+	/// <param name="orientation"/>The orientation for which you want the gravity vector</param>
+	/// </summary>
+	public static Vector3 GetGravityVector(TileOrientation orientation)
+	{
+		return GetGravityNormalizedVector(orientation) * G;
+	}
+
 	/// <summary>
 	/// Sets the gravitational orientation.
 	/// </summary>
@@ -125,17 +140,21 @@ public class World : MonoBehaviour
 		currentGravityOrientation = orientation;
 
 		// change the gravity vector
-		Physics.gravity = getGravityVector(orientation) * G;
+		Physics.gravity = GetGravityVector(orientation);
 
 		// inform all the platforms of the gravity change
-		for (int i = 0; i < gravityPlatforms.Length; i++)
-			gravityPlatforms[i].Unfreeze( orientation );
-		
-		for (int i = 0; i < rotatingPlatforms.Length; i++)
-			rotatingPlatforms[i].ChangeGravity( orientation );
-		
-		for (int i = 0; i < goldTiles.Length; i++)
-			goldTiles[i].ChangeGravity( orientation );
+		foreach (var platform in gravityPlatforms)
+			platform.Unfreeze(orientation);
+
+		foreach (var platform in rotatingPlatforms)
+			platform.ChangeGravity(orientation);
+
+		foreach (var tile in goldTiles)
+			tile.ChangeGravity(orientation);
+
+		// inform the waterfalls of the gravity change
+		foreach (var waterfall in waterfalls)
+			waterfall.ChangeGravity(orientation);
 	}
 
 	/// <summary>

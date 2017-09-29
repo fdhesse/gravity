@@ -104,7 +104,7 @@ public class FallingCube : MonoBehaviour
 		// Detect all the obstructed tiles
 		foreach ( TileOrientation orientation in System.Enum.GetValues( typeof( TileOrientation ) ) )
 		{
-			RaycastHit[] hitInfos = Physics.RaycastAll( transform.position, World.getGravityVector( orientation ), transform.localScale.x * 0.55f, 1 << LayerMask.NameToLayer( "Tiles" ) );
+			RaycastHit[] hitInfos = Physics.RaycastAll( transform.position, World.GetGravityNormalizedVector( orientation ), transform.localScale.x * 0.55f, 1 << LayerMask.NameToLayer( "Tiles" ) );
 			
 			foreach ( RaycastHit hitInfo in hitInfos )
 			{

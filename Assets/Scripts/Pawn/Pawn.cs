@@ -792,7 +792,7 @@ public class Pawn : MonoBehaviour
 			RaycastHit hit = new RaycastHit();
 
 			// Casting a ray towards 'orientation', SphereCast needed because of Pawn's capsule thickness and ignoring Pawn's collider
-			if (Physics.SphereCast(transform.position, width * 0.4f, World.getGravityVector(orientation), out hit, 10000, tilesLayerMask))
+			if (Physics.SphereCast(transform.position, width * 0.4f, World.GetGravityNormalizedVector(orientation), out hit, 10000, tilesLayerMask))
 			{
 				Tile tile = hit.collider.gameObject.GetComponent<Tile>();
 				
