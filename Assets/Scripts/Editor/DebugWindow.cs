@@ -41,7 +41,7 @@ public class DebugWindow : EditorWindow
 	}
 	#endregion
 
-	#region MC
+	#region Pawn
 	private void DrawSelectMCButton()
 	{
 		if (GUILayout.Button("Select Pawn"))

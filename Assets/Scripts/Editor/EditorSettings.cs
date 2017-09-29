@@ -30,6 +30,7 @@ public class EditorSettings : EditorWindow
 	protected virtual void OnGUI()
 	{
 		DrawHideHUD();
+		DrawBlockGrid();
 	}
 	#endregion
 
@@ -105,6 +106,65 @@ public class EditorSettings : EditorWindow
 	private static void OnSceneSaved(Scene scene)
 	{
 		EnableDisableHUDIfNeeded();
+	}
+	#endregion
+
+	#region block grid
+	private bool m_IsBlockGridGeneratorOpen = true;
+	private Vector3 m_GridSize = new Vector3(5f, 1f, 5f);
+	private GameObject m_GridCubePrefab = null;
+
+	private void DrawBlockGrid()
+	{
+		GUILayout.Space(5);
+		m_IsBlockGridGeneratorOpen = EditorGUILayout.Foldout(m_IsBlockGridGeneratorOpen, "Grid Generator");
+		if (m_IsBlockGridGeneratorOpen)
+		{
+			// get the prefab for the cube
+			m_GridCubePrefab = EditorGUILayout.ObjectField("Cube Prefab", m_GridCubePrefab, typeof(GameObject), false) as GameObject;
+			if (m_GridCubePrefab == null)
+				EditorGUILayout.HelpBox("Please provide a valid prefab for the generation of the grid.", MessageType.Warning);
+			
+			// the grid size
+			m_GridSize = EditorGUILayout.Vector3Field("Grid Size", m_GridSize);
+			if ((m_GridSize.x == 0) || (m_GridSize.y == 0) || (m_GridSize.z == 0))
+				EditorGUILayout.HelpBox("One of the grid size is null, nothing will be generated.", MessageType.Warning);
+
+			// check if the parent of the grid is selected
+			bool isGridParentValid = Selection.gameObjects.Length > 0;
+			if (!isGridParentValid)
+				EditorGUILayout.HelpBox("Select one parent for the grid (only one), or the generate button won't work.", MessageType.Warning);
+
+			// and the generate button
+			if (GUILayout.Button("Generate block grid") && isGridParentValid)
+				GenerateBlocksGrid();
+		}
+	}
+
+	/// <summary>
+	/// Instantiates the blocks that make up the grid
+	/// </summary>
+	private void GenerateBlocksGrid()
+	{
+		const int BLOCK_SIZE = 10;
+
+		// if no object is selected to become the parent, early exit
+		if (Selection.gameObjects.Length == 0)
+			return;
+		Transform gridParent = Selection.gameObjects[0].transform;
+
+		for (int i = 0; i != m_GridSize.x; i++)
+		{
+			for (int j = 0; j != m_GridSize.z; j++)
+			{
+				for (int k = 0; k != m_GridSize.y; k++)
+				{
+					Vector3 blockPosition = new Vector3(i * BLOCK_SIZE, k * BLOCK_SIZE, j * BLOCK_SIZE);
+					GameObject tempBlock = Instantiate(m_GridCubePrefab, blockPosition, Quaternion.identity, gridParent) as GameObject;
+					tempBlock.name = tempBlock.name + "(" + i + ", " + k + ", " + j + ")";
+				}
+			}
+		}
 	}
 	#endregion
 }
