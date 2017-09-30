@@ -20,7 +20,10 @@ public class Waterfall : MonoBehaviour
 	private ParticleSystem.MinMaxCurve m_SizeCurveForWidth;
 	private ParticleSystem.MinMaxCurve m_SizeCurveAlongGravity;
 	private ParticleSystem.MinMaxCurve m_SizeCurveAlongEmissionDirection;
-	
+
+	// a flag to tell if the emitter should be prewarmed during the next gravity change because when the world init, both Reset and ChangeGravity are called
+	private bool m_InitEmitterDuringNextGravityChange = false;
+
 	private void Awake()
 	{
 		// copy all the original curve (the VFX is designed in the editor to have the gravity
@@ -38,19 +41,34 @@ public class Waterfall : MonoBehaviour
 
 	public void Reset(TileOrientation startingOrientation)
 	{
-		// stop and clear the current emitter
-		m_CurrentEmitterPlaying.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-		m_CurrentEmitterPlaying.Clear(true);
-		// set the correct curve along the starting gravity
-		SetCurveAccordingToGravityForCurrentEmitter(startingOrientation);
-		// restart the current emitter with prewarm
-		StartCurrentEmitter(true);
+		// stop and clear all the emitter
+		m_StreamWaterEmitter.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+		m_DuplicatedStreamWaterEmitter.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+		m_AgaintGravityWaterEmitter.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
+		// During world init, both Reset and SetGravity is called. We need to wait for the physical gravity
+		// to be reset before initializing the particle emitter. So set a flag to tell that the next GravityChange
+		// call will be the one called after the reset
+		m_InitEmitterDuringNextGravityChange = true;
 	}
 
 	public void ChangeGravity(TileOrientation orientation)
 	{
-		SwitchEmitter(orientation);
-		SetCurveAccordingToGravityForCurrentEmitter(orientation);
+		// check if we need to ignore this gravity change
+		if (m_InitEmitterDuringNextGravityChange)
+		{
+			// reset the flag
+			m_InitEmitterDuringNextGravityChange = false;
+			// set the correct curve along the starting gravity
+			SetCurveAccordingToGravityForCurrentEmitter(orientation);
+			// restart the current emitter with prewarm
+			StartCurrentEmitter(true);
+		}
+		else
+		{
+			SwitchEmitter(orientation);
+			SetCurveAccordingToGravityForCurrentEmitter(orientation);
+		}
 	}
 
 	private void SetCurveAccordingToGravityForCurrentEmitter(TileOrientation orientation)
