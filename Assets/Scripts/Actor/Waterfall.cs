@@ -54,21 +54,11 @@ public class Waterfall : MonoBehaviour
 
 	public void ChangeGravity(TileOrientation orientation)
 	{
-		// check if we need to ignore this gravity change
-		if (m_InitEmitterDuringNextGravityChange)
-		{
-			// reset the flag
-			m_InitEmitterDuringNextGravityChange = false;
-			// set the correct curve along the starting gravity
-			SetCurveAccordingToGravityForCurrentEmitter(orientation);
-			// restart the current emitter with prewarm
-			StartCurrentEmitter(true);
-		}
-		else
-		{
-			SwitchEmitter(orientation);
-			SetCurveAccordingToGravityForCurrentEmitter(orientation);
-		}
+		// switch emitter to choose the correct one at init time
+		SwitchEmitter(orientation, m_InitEmitterDuringNextGravityChange);
+
+		// reset the flag after calling the switch emitter
+		m_InitEmitterDuringNextGravityChange = false;
 	}
 
 	private void SetCurveAccordingToGravityForCurrentEmitter(TileOrientation orientation)
@@ -105,17 +95,57 @@ public class Waterfall : MonoBehaviour
 		}
 	}
 
-	private void SwitchEmitter(TileOrientation orientation)
+	private void SwitchEmitter(TileOrientation orientation, bool usePrewarm)
 	{
 		// stop the current emitter and let the particle die
 		m_CurrentEmitterPlaying.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-		// switch
-		if (orientation == TileOrientation.Back)
+		
+		// get the direction of the emission (the forward of the waterfall) compared to the direction of the gravity
+		Vector3 gravityVector = World.GetGravityNormalizedVector(orientation);
+		float dot = Vector3.Dot(gravityVector, transform.forward);
+		
+		// switch either to the against gravity emitter or to the stream emmitter depending on the gravity direction and waterfall direction
+		if (dot < -0.5f)
+		{
+			// the gravity is in opposite direction of the waterfall direction
 			m_CurrentEmitterPlaying = m_AgaintGravityWaterEmitter;
+		}
 		else
+		{
+			// switch between the stream emitter and the cloned one.
 			m_CurrentEmitterPlaying = (m_CurrentEmitterPlaying == m_StreamWaterEmitter) ? m_DuplicatedStreamWaterEmitter : m_StreamWaterEmitter;
+
+			// check is the emitter is aligned with gravity
+			bool isEmitterAlongGravity = (dot > 0.5f);
+
+			// if the gravity is right in the same direction of the waterfall, we need to disable the rotation over life time
+			var rotationOverLifetime = m_CurrentEmitterPlaying.rotationOverLifetime;
+			rotationOverLifetime.enabled = !isEmitterAlongGravity;
+
+			// also rotate the emitter (if not along with gravity)
+			if (!isEmitterAlongGravity)
+				RotateEmitter(gravityVector);
+		}
+
 		// start the new emitter
-		StartCurrentEmitter(false);
+		StartCurrentEmitter(usePrewarm);
+	}
+
+	private void RotateEmitter(Vector3 gravityVector)
+	{
+		// we don't need to rotate the against gravity emitter
+		Debug.Assert(m_CurrentEmitterPlaying != m_AgaintGravityWaterEmitter);
+
+		// allign the up of the emitter with the gravity
+		Transform emitterTransform = m_CurrentEmitterPlaying.transform;
+		emitterTransform.rotation = Quaternion.FromToRotation(emitterTransform.up, -gravityVector) * emitterTransform.rotation;
+	}
+
+	private void SetStartRotation(ParticleSystem.MainModule mainModule, float x, float y, float z)
+	{
+		mainModule.startRotationX = new ParticleSystem.MinMaxCurve(x * Mathf.Deg2Rad);
+		mainModule.startRotationY = new ParticleSystem.MinMaxCurve(y * Mathf.Deg2Rad);
+		mainModule.startRotationZ = new ParticleSystem.MinMaxCurve(z * Mathf.Deg2Rad);
 	}
 
 	private void StartCurrentEmitter(bool usePrewarm)
