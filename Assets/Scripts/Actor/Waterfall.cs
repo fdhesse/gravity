@@ -38,15 +38,23 @@ public class Waterfall : MonoBehaviour
 
 	public void Reset(TileOrientation startingOrientation)
 	{
-		// for now simply change the orientation
-		ChangeGravity(startingOrientation);
+		// stop and clear the current emitter
+		m_CurrentEmitterPlaying.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+		m_CurrentEmitterPlaying.Clear(true);
+		// set the correct curve along the starting gravity
+		SetCurveAccordingToGravityForCurrentEmitter(startingOrientation);
+		// restart the current emitter with prewarm
 		StartCurrentEmitter(true);
 	}
 
 	public void ChangeGravity(TileOrientation orientation)
 	{
 		SwitchEmitter(orientation);
+		SetCurveAccordingToGravityForCurrentEmitter(orientation);
+	}
 
+	private void SetCurveAccordingToGravityForCurrentEmitter(TileOrientation orientation)
+	{
 		// if we don't play the against gravity, emitter, we need to set the correct curves
 		if (m_CurrentEmitterPlaying != m_AgaintGravityWaterEmitter)
 		{
@@ -94,8 +102,14 @@ public class Waterfall : MonoBehaviour
 
 	private void StartCurrentEmitter(bool usePrewarm)
 	{
-		var mainModule = m_CurrentEmitterPlaying.main;
-		mainModule.prewarm = usePrewarm;
+		// set the use prewarn to the current emitter and his children
+		var allEmitters = m_CurrentEmitterPlaying.GetComponentsInChildren<ParticleSystem>();
+		foreach (var emitter in allEmitters)
+		{
+			var mainModule = emitter.main;
+			mainModule.prewarm = usePrewarm;
+		}
+		// and start the current emitter
 		m_CurrentEmitterPlaying.Play();
 	}
 }
