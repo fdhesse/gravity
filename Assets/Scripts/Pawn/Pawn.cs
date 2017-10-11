@@ -69,8 +69,9 @@ public class Pawn : MonoBehaviour
 	// #ANIMATIONS#
 	private IEnumerator lookCoroutine = null;
 	private Animator animator = null;       // will be init in Awake
-	private bool isMovedByAnim = false;		// tell if the pawn is moved by the animation, or by the script
-	
+	private bool isMovedByAnim = false;     // tell if the pawn is moved by the animation, or by the script
+	private Vector3 m_InitialLocalPositionOfCharacterMesh = Vector3.zero;
+
 	// #SPAWN#
 	private Vector3 spawnPosition = Vector3.zero;			// position of the spawn GameObject
 	private Quaternion spawnRotation = Quaternion.identity;	// rotation of the spawn GameObject
@@ -121,6 +122,7 @@ public class Pawn : MonoBehaviour
 
 		// get my animator
 		animator = GetComponentInChildren<Animator>();
+		m_InitialLocalPositionOfCharacterMesh = animator.transform.localPosition;
 
 		// get my rigid body
 		rigidBody = GetComponent<Rigidbody>();
@@ -353,8 +355,9 @@ public class Pawn : MonoBehaviour
 		if (isMovedByAnim)
 		{
 			// apply translation of the animator child to me, and reset it
+			animator.transform.localPosition -= m_InitialLocalPositionOfCharacterMesh;
 			transform.position = animator.transform.position;
-			animator.transform.localPosition = Vector3.zero;
+			animator.transform.localPosition = m_InitialLocalPositionOfCharacterMesh;
 
 			// apply rotation of the animator child to me, and reset it
 			transform.rotation = animator.transform.rotation;
@@ -362,7 +365,7 @@ public class Pawn : MonoBehaviour
 		}
 		else
 		{
-			animator.transform.localPosition = Vector3.zero;
+			animator.transform.localPosition = m_InitialLocalPositionOfCharacterMesh;
 			animator.transform.localRotation = Quaternion.identity;
 		}
 	}
