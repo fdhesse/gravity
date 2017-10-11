@@ -6492,6 +6492,7 @@ GameObject:
   - component: {fileID: 4063669591482198}
   - component: {fileID: 95610638704186552}
   - component: {fileID: 114706742209839740}
+  - component: {fileID: 114971403134879330}
   m_Layer: 0
   m_Name: BlueGuy_Idle01
   m_TagString: Untagged
@@ -7304,6 +7305,18 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 648eb0167a6191e4f85cda98beaf3ab4, type: 3}
     - {fileID: 8300000, guid: fc355d34db5918a40969807ae0cf9bc6, type: 3}
     m_MinDelayBetweenSound: 0.2
+--- !u!114 &114971403134879330
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1385369236221796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7e1f7b0f0f48a9409f23c241a349936, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TurnSpeed: 90
 --- !u!137 &137639660225169802
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

@@ -398,8 +398,7 @@ AnimatorStateMachine:
     data:
       first: {fileID: 1107000011131795984}
       second: []
-  m_StateMachineBehaviours:
-  - {fileID: 114907631418335154}
+  m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: -432, y: -264, z: 0}
   m_EntryPosition: {x: -144, y: -252, z: 0}
   m_ExitPosition: {x: 84, y: -252, z: 0}
@@ -418,7 +417,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_IdleAnimProbability: 0.65
   m_WaitAnimTimeRange: {x: 8, y: 16}
---- !u!114 &114907631418335154
+--- !u!114 &114920145883016224
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1099,7 +1098,8 @@ AnimatorStateMachine:
   - {fileID: 1109526618398860524}
   - {fileID: 1109036494392549168}
   m_StateMachineTransitions: {}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 114920145883016224}
   m_AnyStatePosition: {x: 48, y: 36, z: 0}
   m_EntryPosition: {x: 48, y: 108, z: 0}
   m_ExitPosition: {x: 852, y: 132, z: 0}

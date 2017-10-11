@@ -68,9 +68,9 @@ public class Pawn : MonoBehaviour
 
 	// #ANIMATIONS#
 	private IEnumerator lookCoroutine = null;
-	private Animator animator = null;       // will be init in Awake
-	private bool isMovedByAnim = false;     // tell if the pawn is moved by the animation, or by the script
-	private Vector3 m_InitialLocalPositionOfCharacterMesh = Vector3.zero;
+	private Animator animator = null;							  // will be init in Awake
+	private RootMotionController m_RootMotionController = null;   // will be init in Awake
+	private AnimStateJump m_AnimStateJump = null;                 // will be init in OnEnable or Start
 
 	// #SPAWN#
 	private Vector3 spawnPosition = Vector3.zero;			// position of the spawn GameObject
@@ -120,9 +120,10 @@ public class Pawn : MonoBehaviour
 		tilesLayer = LayerMask.NameToLayer ("Tiles");
 		tilesLayerMask = LayerMask.GetMask(new string[]{"Tiles"});
 
-		// get my animator
+		// get my animator and root motion controller
 		animator = GetComponentInChildren<Animator>();
-		m_InitialLocalPositionOfCharacterMesh = animator.transform.localPosition;
+		m_RootMotionController = GetComponentInChildren<RootMotionController>();
+		m_RootMotionController.enabled = false; // disable it by default, the anim state will enable it if they need it
 
 		// get my rigid body
 		rigidBody = GetComponent<Rigidbody>();
@@ -145,11 +146,17 @@ public class Pawn : MonoBehaviour
 		World.Instance.GameStart();
 	}
 
+	private void OnEnable()
+	{
+		// according to Unity doc, you can only get the animator state behavior in Start() or OnEnable()
+		// but the state are reinstantiated when the animator get disabled, so I prefer to get them here.
+		m_AnimStateJump = animator.GetBehaviour<AnimStateJump>();
+	}
+
 	void Update()
 	{
 		if (!(World.Instance.IsGameOver() || HUD.Instance.IsPaused)) // is the game active?, i.e. is the game not paused and not finished?
 		{
-			UpdateAnimation();
 			ComputeFocusedAndClickableTiles();
 			ManageMouse();
 			MovePawn();
@@ -183,7 +190,6 @@ public class Pawn : MonoBehaviour
 		isFalling = true;
 		isJumping = false;
 		isWalking = false;
-		isMovedByAnim = false;
 
 		// teleport the pawn at the spawn position
 		transform.position = spawnPosition;
@@ -342,33 +348,9 @@ public class Pawn : MonoBehaviour
 		}
 		
 		// attach or detach the parent of the pawn
-		if (shouldAttachToTile)
-			this.transform.parent = tile.transform;
-		else
-			this.transform.parent = null;
-	}
-	#endregion
-
-	#region animation
-	private void UpdateAnimation()
-	{
-		// if the pawn is moved by the animation, apply the translation and rotation comming from the animation
-		if (isMovedByAnim)
-		{
-			// apply translation of the animator child to me, and reset it
-			animator.transform.localPosition -= m_InitialLocalPositionOfCharacterMesh;
-			transform.position = animator.transform.position;
-			animator.transform.localPosition = m_InitialLocalPositionOfCharacterMesh;
-
-			// apply rotation of the animator child to me, and reset it
-			transform.rotation = animator.transform.rotation;
-			animator.transform.localRotation = Quaternion.identity;
-		}
-		else
-		{
-			animator.transform.localPosition = m_InitialLocalPositionOfCharacterMesh;
-			animator.transform.localRotation = Quaternion.identity;
-		}
+		this.transform.parent = shouldAttachToTile ? tile.transform : null;
+		// and notify my root motion controller
+		m_RootMotionController.NotifyGrandParentAttachementChange();
 	}
 	#endregion
 
@@ -488,9 +470,11 @@ public class Pawn : MonoBehaviour
 						// disable the collider during this animation
 						capsuleCollider.enabled = false;
 
+						// set the parameters to the anim state jump
+						m_AnimStateJump.SetStartAndEndTile(pawnTile, clickedTile);
+
 						// the tile is just under me, we just do a simple jump
 						animator.SetTrigger(ANIM_JUMP_TO_TILE_TRIGGER);
-						isMovedByAnim = true;
 					}
 					else
 					{
@@ -498,7 +482,6 @@ public class Pawn : MonoBehaviour
 
 						// the tile is too low under me, trigger the jump with rope
 						animator.SetTrigger(ANIM_FALL_TRIGGER);
-						isMovedByAnim = false;
 
 						// the modification in height
 						StartCoroutine(JumpToTile());
@@ -514,7 +497,7 @@ public class Pawn : MonoBehaviour
 
 				// calculate the vector from the Pawns position to the landing tile position at the same height
 				Vector3 landingPositionAtGroundHeight = GetGroundHeightPosition(clickedTile.transform.position);
-				if (!isMovedByAnim && MoveTo(landingPositionAtGroundHeight)) // move the pawn towards the landing tile
+				if (isFalling && MoveTo(landingPositionAtGroundHeight)) // move the pawn towards the landing tile
 					OnJumpFinished();
 			}
 	    }
@@ -681,7 +664,6 @@ public class Pawn : MonoBehaviour
 	{
 		clickedTile = null; // target reached, forget it
 		isJumping = false;
-		isMovedByAnim = false;
 		// reenable the collider
 		capsuleCollider.enabled = true;
 	}
