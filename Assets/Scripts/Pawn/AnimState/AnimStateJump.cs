@@ -25,7 +25,6 @@ public class AnimStateJump : StateMachineBehaviour
 		Vector3 targetPosition = ComputeTargetPosition(isMovingToTheEdge);
 		Quaternion targetOrientation = ComputeTargetOrientation(isMovingToTheEdge);
 		rootMotionController.SetTargetPositionAndDirection(targetPosition, targetOrientation, true, animatorStateInfo.shortNameHash);
-		rootMotionController.SetMoveModes(RootMotionController.TranslationMode.MOVE_TO_TARGET_POSITION, RootMotionController.RotationMode.USE_ANIM_ROTATION);
 	}
 
 	public override void OnStateExit(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)

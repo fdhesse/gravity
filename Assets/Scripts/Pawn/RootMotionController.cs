@@ -127,6 +127,7 @@ public class RootMotionController : MonoBehaviour
 
 	private Animator m_Animator = null;
 
+	#region unity methods
 	private void Awake()
 	{
 		m_Animator = GetComponent<Animator>();
@@ -138,9 +139,12 @@ public class RootMotionController : MonoBehaviour
 		ApplyRootMovementAndResetLocalPosition();
 		ApplyRootRotationAndResetLocalRotation();
 	}
+	#endregion
 
-	public void ResetAllParameters()
+	#region init/reset
+	public void ResetAllParameters(bool startEnabled)
 	{
+		// reset all my data members
 		m_MyGrandParent = null;
 		m_LocalTargetPosition = Vector3.zero;
 		m_ActionOrientation = Quaternion.identity;
@@ -150,7 +154,10 @@ public class RootMotionController : MonoBehaviour
 		m_LastGrandParentPosition = Vector3.zero;
 		m_RotationMode = RotationMode.USE_ANIM_ROTATION;
 		m_TranslationMode = TranslationMode.USE_ANIM_TRANSLATION;
-        
+
+		// enable myself or not
+		this.enabled = startEnabled;
+
         // also interrupt the match target if one is running
         // check if the animator was set, because it may happen that this reset is called before my Awake,
         // in such case we don't care to interrupt the match target if I'm not awake yet.
@@ -158,6 +165,15 @@ public class RootMotionController : MonoBehaviour
 			InterruptMatchTarget();
     }
 
+	private void InterruptMatchTarget()
+	{
+		m_Animator.InterruptMatchTarget(false);
+		m_LastMatchTargetCancelFrameNumber = Time.frameCount + 1;
+		m_IsMatchTargetSet = false;
+	}
+	#endregion
+
+	#region match position
 	private void ApplyRootMovementAndResetLocalPosition()
 	{
 		// get the current anim state info
@@ -212,13 +228,6 @@ public class RootMotionController : MonoBehaviour
 		transform.localPosition = m_InitialLocalPositionOfCharacterMesh;
 	}
 
-	private void InterruptMatchTarget()
-	{
-		m_Animator.InterruptMatchTarget(false);
-		m_LastMatchTargetCancelFrameNumber = Time.frameCount + 1;
-		m_IsMatchTargetSet = false;
-	}
-
 	private float GetMatchTargetNormalizedEndTime(float currentNormalizedTime)
 	{
 		// try to find if there's an event to change the root rotation mode in the current clip
@@ -240,7 +249,9 @@ public class RootMotionController : MonoBehaviour
 		// by default return the end of the anim (normalized)
 		return 1f;
 	}
+	#endregion
 
+	#region match rotation
 	private void ApplyRootRotationAndResetLocalRotation()
 	{
 		switch (m_RotationMode)
@@ -255,7 +266,9 @@ public class RootMotionController : MonoBehaviour
 			break;
 		}
 	}
+	#endregion
 
+	#region grand parent
 	/// <summary>
 	/// return the world position of my grand parent, if I have any set, or zero otherwise.
 	/// This function is usefull to check if my grand parent has moved
@@ -292,6 +305,19 @@ public class RootMotionController : MonoBehaviour
 			m_MyGrandParent = newGrandParent;
 		}
 	}
+	#endregion
+
+	#region anim event
+	private void OnRootTranslationMode(int mode)
+	{
+		TranslationModeValue = (TranslationMode)mode;
+	}
+
+	private void OnRootRotationMode(int mode)
+	{
+		RotationModeValue = (RotationMode)mode;
+	}
+	#endregion
 
 	#region draw debug
 	#if UNITY_EDITOR

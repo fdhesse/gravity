@@ -123,7 +123,7 @@ public class Pawn : MonoBehaviour
 		// get my animator and root motion controller
 		animator = GetComponentInChildren<Animator>();
 		m_RootMotionController = GetComponentInChildren<RootMotionController>();
-		m_RootMotionController.enabled = false; // disable it by default, the anim state will enable it if they need it
+		m_RootMotionController.ResetAllParameters(false); // disable it by default, the anim state will enable it if they need it
 
 		// get my rigid body
 		rigidBody = GetComponent<Rigidbody>();
@@ -194,6 +194,9 @@ public class Pawn : MonoBehaviour
 		// teleport the pawn at the spawn position
 		transform.position = spawnPosition;
 		transform.rotation = spawnRotation;
+
+		// reset my root controller
+		m_RootMotionController.ResetAllParameters(false);
 
 		// please teleport the pawn first before reseting the pawn tile
 		OnEnterTile(null);
