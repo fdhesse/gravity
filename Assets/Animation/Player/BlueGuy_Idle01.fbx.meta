@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: ef01ab27230e60b4280ef3af6ac0b43e
-timeCreated: 1507023393
-licenseType: Free
+timeCreated: 1507711960
+licenseType: Pro
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
@@ -276,21 +276,21 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: BlueGuy_Idle01(Clone)
+    - name: Blueguy_Idle01(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: BlueGuy
-      parentName: BlueGuy_Idle01(Clone)
+      parentName: Blueguy_Idle01(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Root
-      parentName: BlueGuy_Idle01(Clone)
+      parentName: Blueguy_Idle01(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
+      scale: {x: 4, y: 4, z: 4}
     - name: Hip
       parentName: Root
       position: {x: 0, y: 0.90248, z: 0}

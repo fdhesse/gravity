@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: ac2abd5e387e4dc47bce961772a9b10f
-timeCreated: 1507475946
-licenseType: Free
+timeCreated: 1507712647
+licenseType: Pro
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
@@ -79,83 +79,7 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations:
-    - serializedVersion: 16
-      name: Take 001
-      takeName: Take 001
-      firstFrame: 1
-      lastFrame: 15
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: BlueGuy
-        weight: 0
-      - path: Root
-        weight: 1
-      - path: Root/Hip
-        weight: 1
-      - path: Root/Hip/Body
-        weight: 1
-      - path: Root/Hip/Body/Chest
-        weight: 1
-      - path: Root/Hip/Body/Chest/Collar_L
-        weight: 1
-      - path: Root/Hip/Body/Chest/Collar_L/Shoulder_L
-        weight: 1
-      - path: Root/Hip/Body/Chest/Collar_L/Shoulder_L/ForeArm_L
-        weight: 1
-      - path: Root/Hip/Body/Chest/Collar_L/Shoulder_L/ForeArm_L/Hand_L
-        weight: 1
-      - path: Root/Hip/Body/Chest/Collar_R
-        weight: 1
-      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R
-        weight: 1
-      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R
-        weight: 1
-      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R
-        weight: 1
-      - path: Root/Hip/Body/Chest/Neck
-        weight: 1
-      - path: Root/Hip/Body/Chest/Neck/Head
-        weight: 1
-      - path: Root/Hip/Thigh_L
-        weight: 1
-      - path: Root/Hip/Thigh_L/Shin_L
-        weight: 1
-      - path: Root/Hip/Thigh_L/Shin_L/Foot_L
-        weight: 1
-      - path: Root/Hip/Thigh_L/Shin_L/Foot_L/Toe_L
-        weight: 1
-      - path: Root/Hip/Thigh_R
-        weight: 1
-      - path: Root/Hip/Thigh_R/Shin_R
-        weight: 1
-      - path: Root/Hip/Thigh_R/Shin_R/Foot_R
-        weight: 1
-      - path: Root/Hip/Thigh_R/Shin_R/Foot_R/Toe_R
-        weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+    clipAnimations: []
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -352,21 +276,21 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: BlueGuy_Idle01(Clone)
+    - name: Blueguy_Idle01(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: BlueGuy
-      parentName: BlueGuy_Idle01(Clone)
+      parentName: Blueguy_Idle01(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Root
-      parentName: BlueGuy_Idle01(Clone)
+      parentName: Blueguy_Idle01(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
+      scale: {x: 4, y: 4, z: 4}
     - name: Hip
       parentName: Root
       position: {x: 0, y: 0.90248, z: 0}
