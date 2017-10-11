@@ -310,7 +310,8 @@ public class Pawn : MonoBehaviour
 	/// changes or becomes null
 	/// </summary>
 	/// <param name="tile">The new tile the pawn has under his feet. CAN be null.</param>
-	public void OnEnterTile(Tile tile)
+	/// <param name="useGravity">This parameter will be used to set the UseGravity of the rigid body, except if the tile entered is glued, in that case the use gravity will always be set to false.</param>
+	public void OnEnterTile(Tile tile, bool useGravity = true)
 	{
 		// save the new pawntile (can be null)
 		pawnTile = tile;
@@ -324,7 +325,7 @@ public class Pawn : MonoBehaviour
 		else
 		{
 			isGlued = false;
-			rigidBody.useGravity = true;
+			rigidBody.useGravity = useGravity;
 		}
 
 		// if the tile is not null, check if we need to attach the pawn to the tile
@@ -472,7 +473,6 @@ public class Pawn : MonoBehaviour
 				if ( !isJumping )
 				{
 					isJumping = true;
-					isFalling = true;
 
 					// compute the height (in grid step) between the pawn tile and the clicked tile
 					int tileRelativeGridHeight = World.Instance.GetTileRelativeGridHeight(pawnTile, clickedTile, GetFeltVerticality());
@@ -483,12 +483,19 @@ public class Pawn : MonoBehaviour
 					// if the height is just one step, the pawn will jump, otherwise he will use his rope
 					if (tileRelativeGridHeight == 1)
 					{
+						isFalling = false;
+
+						// disable the collider during this animation
+						capsuleCollider.enabled = false;
+
 						// the tile is just under me, we just do a simple jump
 						animator.SetTrigger(ANIM_JUMP_TO_TILE_TRIGGER);
 						isMovedByAnim = true;
 					}
 					else
 					{
+						isFalling = true;
+
 						// the tile is too low under me, trigger the jump with rope
 						animator.SetTrigger(ANIM_FALL_TRIGGER);
 						isMovedByAnim = false;
@@ -502,7 +509,7 @@ public class Pawn : MonoBehaviour
 
 					// reset the pawn tile when starting to jump, because if you jump from
 					// a moving platform, you don't want to jump relative to the plateform
-					OnEnterTile(null);
+					OnEnterTile(null, (tileRelativeGridHeight > 1));
 				}
 
 				// calculate the vector from the Pawns position to the landing tile position at the same height
@@ -675,6 +682,8 @@ public class Pawn : MonoBehaviour
 		clickedTile = null; // target reached, forget it
 		isJumping = false;
 		isMovedByAnim = false;
+		// reenable the collider
+		capsuleCollider.enabled = true;
 	}
 
 	private IEnumerator DelayedPawnFall(TileOrientation orientation)
