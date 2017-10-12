@@ -1123,7 +1123,7 @@ public class Pawn : MonoBehaviour
 	private BorderDirection GetBorderDirectionToGoToThisTile(Tile targetTile)
 	{
 		// compute the position of the target tile in the pawn local coordinates
-		Vector3 localTargetTilePosition = transform.worldToLocalMatrix * targetTile.Position;
+		Vector3 localTargetTilePosition = transform.worldToLocalMatrix.MultiplyPoint(targetTile.Position);
 
 		// now check if the target position if roughly in front, back, right or left
 		if (localTargetTilePosition.z > 5f)
