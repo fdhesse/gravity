@@ -3,10 +3,6 @@
 [RequireComponent(typeof(Animator))]
 public class RootMotionController : MonoBehaviour
 {
-	[Tooltip("Actor rotation speed in degrees per second.")]
-	[SerializeField]
-	private float m_TurnSpeed = 90.0f;
-
 	// init config
 	private Vector3 m_InitialLocalPositionOfCharacterMesh = Vector3.zero;
 
@@ -65,6 +61,7 @@ public class RootMotionController : MonoBehaviour
 	private int m_LastMatchTargetCancelFrameNumber = 0;
 	private int m_StateOrTagHashForMatchTarget = 0;
 	private float m_MatchTargetNormalisedEndTime = 0f;
+	MatchTargetWeightMask m_MatchTargetWeightMask;
 
 	// a variable to check if the grand parent position has moved
 	private Vector3 m_LastGrandParentPosition = Vector3.zero;
@@ -136,8 +133,8 @@ public class RootMotionController : MonoBehaviour
 
 	private void Update()
 	{
-		ApplyRootMovementAndResetLocalPosition();
-		ApplyRootRotationAndResetLocalRotation();
+		UpdateMatchTarget();
+		ApplyRootMovementAndResetLocalTransform();
 	}
 	#endregion
 
@@ -173,36 +170,83 @@ public class RootMotionController : MonoBehaviour
 	}
 	#endregion
 
-	#region match position
-	private void ApplyRootMovementAndResetLocalPosition()
+	#region update match target
+	private void TryToSetMatchTarget(AnimatorStateInfo animStateInfo)
+	{
+		// check if we need to set a match target (in any of the to mode requires it)
+		bool shouldMatchTranslation = (m_TranslationMode == TranslationMode.MOVE_TO_TARGET_POSITION);
+		bool shouldMatchRotation = (m_RotationMode == RotationMode.ROTATE_TOWARD_ACTION_DIRECTION);
+		bool shouldSetMatchTarget = shouldMatchTranslation || shouldMatchRotation;
+
+		// toggle the match target set flag if we need to
+		if (shouldSetMatchTarget && !m_IsMatchTargetSet && (Time.frameCount > m_LastMatchTargetCancelFrameNumber) &&
+			((m_StateOrTagHashForMatchTarget == 0) || (animStateInfo.tagHash == m_StateOrTagHashForMatchTarget) || (animStateInfo.shortNameHash == m_StateOrTagHashForMatchTarget)))
+		{
+			// set the time a little further because if you set a start time for the MatchTarget which is before the the current time it will directly teleport to the target.
+			float normalizeTime = Mathf.Repeat(animStateInfo.normalizedTime, 1f) + float.Epsilon;
+			// compute the match target end flags for both modes
+			float translationEndTime = GetMatchTargetNormalizedEndTime(normalizeTime, true);
+			float rotationEndTime = GetMatchTargetNormalizedEndTime(normalizeTime, false);
+			// now the end match target time is the bigger of the two and the mask of the smaller one is a linear progression between the two
+			float translationWeightMask = 1f;
+			float rotationWeightMask = 1f;
+			if (shouldMatchTranslation)
+			{
+				if (shouldMatchRotation)
+				{
+					// both mode should match target, we should take the smallest time
+					if (translationEndTime < rotationEndTime)
+					{
+						m_MatchTargetNormalisedEndTime = translationEndTime;
+						rotationWeightMask = translationEndTime / rotationEndTime;
+					}
+					else
+					{
+						m_MatchTargetNormalisedEndTime = rotationEndTime;
+						translationWeightMask = rotationEndTime / translationEndTime;
+					}
+				}
+				else
+				{
+					// only match target the translation
+					m_MatchTargetNormalisedEndTime = translationEndTime;
+					rotationWeightMask = 0f;
+				}
+			}
+			else
+			{
+				// only match target the rotation
+				m_MatchTargetNormalisedEndTime = rotationEndTime;
+				translationWeightMask = 0f;
+			}
+				
+			if (normalizeTime < m_MatchTargetNormalisedEndTime)
+			{
+				m_MatchTargetWeightMask = new MatchTargetWeightMask(new Vector3(translationWeightMask, translationWeightMask, translationWeightMask), rotationWeightMask);
+				// reset the match target every frame because the world TargetPosition may change if the player is on a plateform
+				m_Animator.MatchTarget(TargetPosition, m_ActionOrientation, AvatarTarget.Root, m_MatchTargetWeightMask, normalizeTime, m_MatchTargetNormalisedEndTime);
+				m_IsMatchTargetSet = true;
+				// memorise the position of the grand parent to check if I'm moving
+				m_LastGrandParentPosition = GetGrandParentWorldPosition();
+			}
+		}
+	}
+
+	private void UpdateMatchTarget()
 	{
 		// get the current anim state info
 		var animStateInfo = m_Animator.GetCurrentAnimatorStateInfo(0);
 
+		// check if we reach the end of the Match target, we should clear the m_IsMatchTargetSet flag, 
+		// to potentially set a new match target (and the clear of that flag is done in the interrupt match target function)
+		if ((m_IsMatchTargetSet) && (animStateInfo.normalizedTime > m_MatchTargetNormalisedEndTime))
+			InterruptMatchTarget();
+
 		// if the animator is in transition cancel and reset the match target
 		if (m_Animator.IsInTransition(0))
-		{
 			InterruptMatchTarget();
-		}
 		else
-		{
-			// toggle the match target set flag
-			if ((m_TranslationMode == TranslationMode.MOVE_TO_TARGET_POSITION) && !m_IsMatchTargetSet && (Time.frameCount > m_LastMatchTargetCancelFrameNumber) &&
-				((m_StateOrTagHashForMatchTarget == 0) || (animStateInfo.tagHash == m_StateOrTagHashForMatchTarget) || (animStateInfo.shortNameHash == m_StateOrTagHashForMatchTarget)))
-			{
-				// set the time a little further because if you set a start time for the MatchTarget which is before the the current time it will directly teleport to the target.
-				float normalizeTime = Mathf.Repeat(animStateInfo.normalizedTime, 1f) + float.Epsilon;
-				m_MatchTargetNormalisedEndTime = GetMatchTargetNormalizedEndTime(normalizeTime);
-				if (normalizeTime < m_MatchTargetNormalisedEndTime)
-				{
-					// reset the match target every frame because the world TargetPosition may change if the player is on a plateform
-					m_Animator.MatchTarget(TargetPosition, m_ActionOrientation, AvatarTarget.Root, new MatchTargetWeightMask(Vector3.one, 0f), normalizeTime, m_MatchTargetNormalisedEndTime);
-					m_IsMatchTargetSet = true;
-					// memorise the position of the grand parent to check if I'm moving
-					m_LastGrandParentPosition = GetGrandParentWorldPosition();
-				}
-			}
-		}
+			TryToSetMatchTarget(animStateInfo);
 
 		// update the MatchTarget position if the match target is set, in case I'm attached to a platform, floating block, etc...
 		if ((m_IsMatchTargetSet) && (m_LastGrandParentPosition != GetGrandParentWorldPosition()))
@@ -217,31 +261,27 @@ public class RootMotionController : MonoBehaviour
 			float normalizeTime = Mathf.Repeat(animStateInfo.normalizedTime, 1f) + float.Epsilon;
 			if (normalizeTime < m_MatchTargetNormalisedEndTime)
 			{
-				m_Animator.MatchTarget(TargetPosition, m_ActionOrientation, AvatarTarget.Root, new MatchTargetWeightMask(Vector3.one, 0f), normalizeTime, m_MatchTargetNormalisedEndTime);
+				m_Animator.MatchTarget(TargetPosition, m_ActionOrientation, AvatarTarget.Root, m_MatchTargetWeightMask, normalizeTime, m_MatchTargetNormalisedEndTime);
 				m_IsMatchTargetSet = true;
 			}
 		}
-
-		// apply the root motion due to the animation, to the transform of my parent, and reset my local transform
-		transform.localPosition -= m_InitialLocalPositionOfCharacterMesh;
-		transform.parent.position = transform.position;
-		transform.localPosition = m_InitialLocalPositionOfCharacterMesh;
 	}
 
-	private float GetMatchTargetNormalizedEndTime(float currentNormalizedTime)
+	private float GetMatchTargetNormalizedEndTime(float currentNormalizedTime, bool isForTranslation)
 	{
 		// try to find if there's an event to change the root rotation mode in the current clip
 		// if yes, try to match the target at the time the event if fired.
 		var clipInfo = m_Animator.GetCurrentAnimatorClipInfo(0);
 		if (clipInfo.Length > 0)
 		{
+			string eventName = isForTranslation ? "OnRootTranslationMode" : "OnRootRotationMode";
 			var clip = clipInfo[0].clip;
 			var eventList = clip.events;
 			foreach (var animEvent in eventList)
 			{
 				// normalize the time of the event, because the time in the event class is in second
 				float normalizedEventTime = animEvent.time / clip.length;
-				if ((normalizedEventTime > currentNormalizedTime) && animEvent.functionName.Equals("OnRootTranslationMode"))
+				if ((normalizedEventTime > currentNormalizedTime) && animEvent.functionName.Equals(eventName))
 					return normalizedEventTime;
 			}
 		}
@@ -251,20 +291,17 @@ public class RootMotionController : MonoBehaviour
 	}
 	#endregion
 
-	#region match rotation
-	private void ApplyRootRotationAndResetLocalRotation()
+	#region apply animation movement to parent
+	private void ApplyRootMovementAndResetLocalTransform()
 	{
-		switch (m_RotationMode)
-		{
-		case RotationMode.USE_ANIM_ROTATION:
-			transform.parent.rotation = transform.rotation;
-			transform.localRotation = Quaternion.identity;
-			break;
-		case RotationMode.ROTATE_TOWARD_ACTION_DIRECTION:
-			transform.parent.rotation = Quaternion.RotateTowards(transform.parent.rotation, m_ActionOrientation, m_TurnSpeed * Time.deltaTime);
-			transform.localRotation = Quaternion.identity;
-			break;
-		}
+		// apply the root motion due to the animation, to the transform of my parent, and reset my local transform
+		transform.localPosition -= m_InitialLocalPositionOfCharacterMesh;
+		transform.parent.position = transform.position;
+		transform.localPosition = m_InitialLocalPositionOfCharacterMesh;
+
+		// apply the rotation
+		transform.parent.rotation = transform.rotation;
+		transform.localRotation = Quaternion.identity;
 	}
 	#endregion
 
@@ -310,11 +347,25 @@ public class RootMotionController : MonoBehaviour
 	#region anim event
 	private void OnRootTranslationMode(int mode)
 	{
+		// if we just set a match target rotation value that was not set before,
+		// we need to interrupt the match target for the update to recreate one
+		if ((m_TranslationMode == TranslationMode.USE_ANIM_TRANSLATION) &&
+			(mode == (int)TranslationMode.MOVE_TO_TARGET_POSITION))
+			InterruptMatchTarget();
+
+		// set the new mode
 		TranslationModeValue = (TranslationMode)mode;
 	}
 
 	private void OnRootRotationMode(int mode)
 	{
+		// if we just set a match target rotation value that was not set before,
+		// we need to interrupt the match target for the update to recreate one
+		if ((m_RotationMode == RotationMode.USE_ANIM_ROTATION) &&
+			(mode == (int)RotationMode.ROTATE_TOWARD_ACTION_DIRECTION))
+			InterruptMatchTarget();
+
+		// set the new mode
 		RotationModeValue = (RotationMode)mode;
 	}
 	#endregion
@@ -323,13 +374,30 @@ public class RootMotionController : MonoBehaviour
 	#if UNITY_EDITOR
 	void OnDrawGizmos()
 	{
-        if (transform.parent.CompareTag("Player"))
-    		Gizmos.color = new Color(1.0f, 0.75f, 0.6f);
-        else
-    		Gizmos.color = new Color(0.6f, 0.75f, 1.0f);
-        
-        Gizmos.DrawSphere(TargetPosition, 1f);
-    }
-	#endif
+		Color activeColor = new Color(1.0f, 0.5f, 0.5f);
+		Color inactiveColor = new Color(0.8f, 0.8f, 0.6f);
+		Vector3 targetPos = TargetPosition;
+
+		// draw the target position
+		Gizmos.color = (m_TranslationMode == TranslationMode.MOVE_TO_TARGET_POSITION) ? activeColor : inactiveColor;
+        Gizmos.DrawSphere(targetPos, 1f);
+
+		// draw the target direction
+		Gizmos.color = (m_RotationMode == RotationMode.ROTATE_TOWARD_ACTION_DIRECTION) ? activeColor : inactiveColor;
+		Vector3 forward = ActionOrientation * Vector3.forward;
+		forward *= 10f;
+		Vector3 up = ActionOrientation * Vector3.up;
+		up *= 5f;
+		Gizmos.DrawRay(targetPos, forward);
+		Gizmos.DrawRay(targetPos, up);
+
+		// draw the remaining time
+		var animStateInfo = m_Animator.GetCurrentAnimatorStateInfo(0);
+		int completionRatio = 100;
+		if (animStateInfo.normalizedTime < m_MatchTargetNormalisedEndTime)
+			completionRatio = (int)((animStateInfo.normalizedTime * 100f) / m_MatchTargetNormalisedEndTime);
+		UnityEditor.Handles.Label(targetPos, completionRatio.ToString());
+	}
+#endif
 	#endregion
 }

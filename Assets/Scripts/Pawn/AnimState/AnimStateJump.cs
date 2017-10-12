@@ -20,10 +20,13 @@ public class AnimStateJump : StateMachineBehaviour
 		Debug.Assert(rootMotionController != null, "No root motion controller on the Pawn.");
 		rootMotionController.enabled = true;
 
+		// compute the up of the animation based on the current gravity
+		Vector3 up = -World.GetGravityNormalizedVector(World.Instance.CurrentGravityOrientation);
+
 		// set a mach target to the edge of the current tile
 		bool isMovingToTheEdge = (animatorStateInfo.shortNameHash != END_JUMP_ANIM_ID);
-		Vector3 targetPosition = ComputeTargetPosition(isMovingToTheEdge);
-		Quaternion targetOrientation = ComputeTargetOrientation(isMovingToTheEdge);
+		Vector3 targetPosition = ComputeTargetPosition(isMovingToTheEdge, up);
+		Quaternion targetOrientation = ComputeTargetOrientation(isMovingToTheEdge, up);
 		rootMotionController.SetTargetPositionAndDirection(targetPosition, targetOrientation, true, animatorStateInfo.shortNameHash);
 	}
 
@@ -43,18 +46,18 @@ public class AnimStateJump : StateMachineBehaviour
 		}
 	}
 	
-	private Vector3 ComputeTargetPosition(bool isMovingToTheEdge)
+	private Vector3 ComputeTargetPosition(bool isMovingToTheEdge, Vector3 up)
 	{
-		Vector3 gravityDirection = World.GetGravityNormalizedVector(World.Instance.CurrentGravityOrientation);
-		gravityDirection *= 5f;
-
 		Vector3 result = Vector3.zero;
 
+		// the target computation is different depending if I go to the edge or the center of the tile
 		if (isMovingToTheEdge)
 		{
 			result = m_StartTile.transform.position + m_EndTile.transform.position;
 			result *= 0.5f;
-			result -= gravityDirection;
+			// move up to half a cube in the direction of the up, and add it to the result
+			up *= 5f;
+			result += up;
 		}
 		else
 		{
@@ -64,13 +67,20 @@ public class AnimStateJump : StateMachineBehaviour
 		return result;
 	}
 
-	private Quaternion ComputeTargetOrientation(bool isMovingToTheEdge)
+	private Quaternion ComputeTargetOrientation(bool isMovingToTheEdge, Vector3 up)
 	{
-		// TODO implement correctly this method: this only works with gravity along Y
 		Vector3 diff = m_StartTile.transform.position - m_EndTile.transform.position;
-		if (isMovingToTheEdge)
-			return Quaternion.LookRotation(diff);
+		// cancel the diff along the up axis
+		if (up.x != 0f)
+			diff.x = 0f;
+		else if (up.y != 0f)
+			diff.y = 0f;
 		else
-			return Quaternion.LookRotation(-diff);
+			diff.z = 0f;
+		// now compute the action quaternion based on this two vectors
+		if (isMovingToTheEdge)
+			return Quaternion.LookRotation(diff, up);
+		else
+			return Quaternion.LookRotation(-diff, up);
 	}
 }

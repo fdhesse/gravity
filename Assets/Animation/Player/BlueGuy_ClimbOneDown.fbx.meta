@@ -84,7 +84,7 @@ ModelImporter:
       name: Take 001
       takeName: Take 001
       firstFrame: 1
-      lastFrame: 30
+      lastFrame: 14.9
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -104,8 +104,22 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.14171122
+      - time: 0
+        functionName: OnRootRotationMode
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.30890366
         functionName: OnRootTranslationMode
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 1
+        messageOptions: 0
+      - time: 0.61744684
+        functionName: OnRootRotationMode
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
