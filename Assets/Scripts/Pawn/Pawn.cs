@@ -728,12 +728,8 @@ public class Pawn : MonoBehaviour
 		clickedTile = null; // target reached, forget it
 		isJumping = false;
 
-		// set the constraint of the rigibody. Is that useful?
-		SetPawnOrientation(World.Instance.CurrentGravityOrientation);
-		
 		// reenable the collider
 		capsuleCollider.enabled = true;
-		rigidBody.constraints = nextConstraint;
 	}
 
 	private IEnumerator DelayedPawnFall(TileOrientation orientation)
