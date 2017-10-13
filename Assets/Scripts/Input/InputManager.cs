@@ -14,7 +14,11 @@ public class InputManager
 	public static bool isClickDown()
 	{
 		#if (UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBPLAYER)
-		return Input.GetMouseButtonDown(0);
+		// if we just click down, reset the mousePrevious position
+		bool isDown = Input.GetMouseButtonDown(0);
+		if (isDown)
+			mousePreviousPosition = Input.mousePosition;
+		return isDown;
 		#else
 		return ((Input.touchCount == 1) && (Input.touches[0].phase == TouchPhase.Began));
 		#endif

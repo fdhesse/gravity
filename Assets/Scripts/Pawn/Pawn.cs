@@ -89,10 +89,6 @@ public class Pawn : MonoBehaviour
 		get { return (path != null) && (path.Count > 0); }
 	}
 
-	// #MOUSE#
-	private bool isCameraMode = false;
-	private float clickCountdown = 0.0f;
-
 	// #SPHERES#
 	private List<Tile> clickableTilesToChangeGravity = new List<Tile>(6);
 
@@ -1017,118 +1013,70 @@ public class Pawn : MonoBehaviour
 	#endregion
 
 	#region mouse management
-	private IEnumerator SetCameraCursor()
-	{
-		yield return null;
-		// get the camera control of the main camera
-		CameraControl cameraControl = Camera.main.GetComponent<CameraControl>();
-		if (cameraControl != null)
-			cameraControl.SetCameraCursor();
-	}
-
-	private IEnumerator SetNormalCursor()
-	{
-		yield return null;
-		// get the camera control of the main camera
-		CameraControl cameraControl = Camera.main.GetComponent<CameraControl>();
-		if (cameraControl != null)
-			cameraControl.SetNormalCursor();
-	}
-
 	/// <summary>
 	/// Manages the interaction with the mouse.
 	/// </summary>
 	private void ManageMouse()
 	{
-		// for very low framerate, we give at least 3 frames to switch to camera mode,
-		// otherwise for normal framerate, we use a fixed value of 1 quarter of second.
-		float durationToSwitchToCameraMode = Math.Max(0.25f, 3.0f * Time.deltaTime);
+		// get the camera control, to know if the input are not currently used to rotate the camera
+		// which means that the camera has capture the input
+		CameraControl cameraControl = Camera.main.GetComponent<CameraControl>();
+		bool isInputCapturedByCamera = (cameraControl != null) && (cameraControl.HasCameraCapturedInput);
 
-		// reset the click down duration if the button is up
-		if (!InputManager.isClickHeldDown())
-			clickCountdown = 0;
-
-		if( !isCameraMode )
+		// the normal case, the input doesn't control the camera
+		if (!isInputCapturedByCamera)
 		{
-			if (isFalling || isJumping || IsThereAPath)
+			if (isWalking || isFalling || isJumping || (focusedTile == null) || World.Instance.IsThereAnyCubeFalling())
 				return;
 
-	        if (InputManager.isClickHeldDown())
+			// if the focussed tile is highlighted that means it is clickable
+			if (InputManager.isClickUp() && focusedTile.IsHighlighted)
 			{
-				clickCountdown += Time.deltaTime;
+				// get the camera sound to play a 2D UI sound when clicking
+				Camera2DSound sound = Camera.main.GetComponent<Camera2DSound>();
 
-				if(clickCountdown > durationToSwitchToCameraMode)
+				// play the click sound, as the player clicked a tile
+				sound.playSound(Camera2DSound.SoundId.CLICK_TILE);
+							
+				// If the player clicked a tile with different orientation
+				if ( ( focusedTile.orientation != pawnTile.orientation ) || 
+						( isGlued && (focusedTile == pawnTile)) )
 				{
-					isCameraMode = true;
-					StartCoroutine(SetCameraCursor());
-					if (focusedTile != null)
-						focusedTile.unHighlight();
-				}
-	        }
+					// player has changed the gravity, increase the counter
+					HUD.Instance.IncreaseGravityChangeCount();
 
-			if (InputManager.isClickUp())
-			{
-				if (clickCountdown > durationToSwitchToCameraMode)
-				{
-					StartCoroutine(SetNormalCursor());
-					isCameraMode = false;
-					if (focusedTile != null)
-						focusedTile.unHighlight();
+					// play the gravity change sound)
+					sound.playSound(Camera2DSound.SoundId.GRAVITY_CHANGE);
+								
+					// If the pawn is on a glue tile, the change of gravity is managed differently
+					if ( isGlued )
+					{
+						World.Instance.SetGravity( focusedTile.orientation );
+					}
+					else
+					{
+						// asked the clicked tile to play it's attraction VFX
+						focusedTile.playActivationVFX();
+
+						// then triggrer the animation
+						StartRollOrAbseilDueToGravityChange(focusedTile);
+					}
 				}
 				else
 				{
-					if ( isWalking || isFalling || focusedTile == null || World.Instance.IsThereAnyCubeFalling() )
-						return;
-
-					// if the focussed tile is highlighted that means it is clickable
-					if (focusedTile.IsHighlighted)
-					{
-						// get the camera sound to play a 2D UI sound when clicking
-						Camera2DSound sound = Camera.main.GetComponent<Camera2DSound>();
-
-						// play the click sound, as the player clicked a tile
-						sound.playSound(Camera2DSound.SoundId.CLICK_TILE);
-							
-						// If the player clicked a tile with different orientation
-						if ( ( focusedTile.orientation != pawnTile.orientation ) || 
-						     ( isGlued && (focusedTile == pawnTile)) )
-						{
-							// player has changed the gravity, increase the counter
-							HUD.Instance.IncreaseGravityChangeCount();
-
-							// play the gravity change sound)
-							sound.playSound(Camera2DSound.SoundId.GRAVITY_CHANGE);
-								
-							// If the pawn is on a glue tile, the change of gravity is managed differently
-							if ( isGlued )
-							{
-								World.Instance.SetGravity( focusedTile.orientation );
-							}
-							else
-							{
-								// asked the clicked tile to play it's attraction VFX
-								focusedTile.playActivationVFX();
-
-								// then triggrer the animation
-								StartRollOrAbseilDueToGravityChange(focusedTile);
-							}
-						}
-						else
-						{
-							// memorised the clicked tile
-							clickedTile = focusedTile;
-							// ask a new path if we go to a different tile
-							if (pawnTile != clickedTile)
-								StartToWalkToTile(pawnTile, clickedTile);
-						}
-					}
-	            }
+					// memorised the clicked tile
+					clickedTile = focusedTile;
+					// ask a new path if we go to a different tile
+					if (pawnTile != clickedTile)
+						StartToWalkToTile(pawnTile, clickedTile);
+				}
 	        }
 		}
-		else if (InputManager.isClickUp())
+		else
 		{
-			StartCoroutine(SetNormalCursor());
-			isCameraMode = false;
+			// camera has capture input for rotating, so clear the focused tile
+			if (focusedTile != null)
+				focusedTile.unHighlight();
 		}
 	}
 	#endregion

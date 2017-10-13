@@ -58,6 +58,10 @@ public class CameraControl : MonoBehaviour
 	[Tooltip("If you choose the FOV deformation, the new FOV to use while in deformation mode.")]
 	public float deformationFOV = 10f;
 
+	[Tooltip("The time durarion in second of touching the screen without moving, after which we show the camera icon.")]
+	[SerializeField]
+	private float m_HoldDownDurationForShowingCameraCursor = 0.25f;
+
 	//[Tooltip("If you choose the FOV deformation, the distance to use while in deformation mode.")]
 	private float deformationDistance = 800f;
 
@@ -75,9 +79,16 @@ public class CameraControl : MonoBehaviour
 	private float playerAdjustedDistance = 0f;
 
 	private Vector3 lastMousePosition = Vector3.zero;
+	private float mouseDownTimeDuration = 0f;
 	private Camera mCameraComponent = null;
 
-    void Start()
+	private bool m_HasCameraCapturedInput = false;
+	public bool HasCameraCapturedInput
+	{
+		get { return m_HasCameraCapturedInput; }
+	}
+
+	void Start()
     {
 		mCameraComponent = GetComponent<Camera>();
 
@@ -105,31 +116,56 @@ public class CameraControl : MonoBehaviour
         {
 			if (target.angleContraintType != CameraTarget.AngleConstraint.FREEZE)
 			{
-				if ( InputManager.isClickDown() )
+				// use a flag to tell if the input control the camera during this update
+				// (input are captured if you hold touch down without moving for a certain duration, or if you hold and drag the touch)
+				bool hasCameraCapturedInputThisFrame = false;
+
+				if (InputManager.isClickDown())
 				{
 					lastMousePosition = Input.mousePosition;
+					mouseDownTimeDuration = 0f;
 					projectionMatrixVelocity = Matrix4x4.zero;
 				}
-				else if ( InputManager.isClickHeldDown() && InputManager.hasClickDownMoved() )
+				else if (InputManager.isClickHeldDown())
 				{
-					if (deformationAfterSnap != DeformationMode.NONE)
-						unapplyCameraDeformation();
+					// for very low framerate, we give at least 3 frames to switch to camera mode,
+					// otherwise for normal framerate, we use a fixed value of 1 quarter of second.
+					float durationToShowCameraCursor = Mathf.Max(m_HoldDownDurationForShowingCameraCursor, 3.0f * Time.deltaTime);
 
-					// get the drag distance
-					Vector3 delta = Input.mousePosition - lastMousePosition;
+					// increment the down time if we hold the mouse down, and show the cursor if we hold it since enough time
+					mouseDownTimeDuration += Time.deltaTime;
+					hasCameraCapturedInputThisFrame = (mouseDownTimeDuration > durationToShowCameraCursor);
 
-					// scale the drag distance with the value set in the level
-					pan += delta.x * xPivotingRatio;
-					tilt += -delta.y * yPivotingRatio;
+					// now check if we moved
+					if (InputManager.hasClickDownMoved())
+					{
+						// if we start to move, show the cursor immediately without waiting
+						hasCameraCapturedInputThisFrame = true;
+						mouseDownTimeDuration += durationToShowCameraCursor * 2f;
 
-					// ask the target to limit the angle if necessary
-					target.clampAngle(ref tilt, ref pan);
+						// remove the deformation
+						if (deformationAfterSnap != DeformationMode.NONE)
+							unapplyCameraDeformation();
+
+						// get the drag distance
+						Vector3 delta = Input.mousePosition - lastMousePosition;
+
+						// scale the drag distance with the value set in the level
+						pan += delta.x * xPivotingRatio;
+						tilt += -delta.y * yPivotingRatio;
+
+						// ask the target to limit the angle if necessary
+						target.clampAngle(ref tilt, ref pan);
+					}
 				}
 				else if (snapToAxis)
 				{
 					// we do not try to snap when the user move the cam, only when he release the cam
 					snapAngleToAxis(ref tilt, ref pan);
 				}
+
+				// set the correct mouse cursor depending on the capture input status this frame
+				UpdateCameraCursor(hasCameraCapturedInputThisFrame);
 			}
 
 			Quaternion rotation = Quaternion.Euler(tilt, pan, 0f);
@@ -275,18 +311,24 @@ public class CameraControl : MonoBehaviour
 		}
 	}
 
-	public void SetCameraCursor()
+	private void UpdateCameraCursor(bool isInputCaptured)
 	{
-		// Only show the camera cursor if the camera is not frozen
-		if ((target != null) && (target.angleContraintType != CameraTarget.AngleConstraint.FREEZE))
+		// change the state if needed
+		if (isInputCaptured)
 		{
-			Texture2D tex = (Texture2D)Resources.Load("HUD/cameraCursor", typeof(Texture2D));
-			Cursor.SetCursor(tex, Vector2.zero, CursorMode.Auto);
+			if (!m_HasCameraCapturedInput)
+			{
+				Texture2D tex = (Texture2D)Resources.Load("HUD/cameraCursor", typeof(Texture2D));
+				Cursor.SetCursor(tex, Vector2.zero, CursorMode.Auto);
+			}
 		}
-	}
-	
-	public void SetNormalCursor()
-	{
-		Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+		else
+		{
+			if (m_HasCameraCapturedInput)
+				Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+		}
+
+		// save the new state
+		m_HasCameraCapturedInput = isInputCaptured;
 	}
 }
