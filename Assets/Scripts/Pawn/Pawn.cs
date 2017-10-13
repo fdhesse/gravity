@@ -17,7 +17,7 @@ public class Pawn : MonoBehaviour
 	private static readonly int ANIM_WALK_TRIGGER = Animator.StringToHash("Walk");
 	private static readonly int ANIM_FALL_TRIGGER = Animator.StringToHash("Fall");
 	private static readonly int ANIM_LAND_TRIGGER = Animator.StringToHash("Land");
-	private static readonly int ANIM_BORDER_DIRECTION_INT = Animator.StringToHash("Border Direction");
+	public static readonly int ANIM_BORDER_DIRECTION_INT = Animator.StringToHash("Border Direction");
 	private static readonly int ANIM_JUMP_TO_TILE_TRIGGER = Animator.StringToHash("Jump to Tile");
 	private static readonly int ANIM_ROLL_TO_TILE_TRIGGER = Animator.StringToHash("Roll to Tile");
 
@@ -30,7 +30,7 @@ public class Pawn : MonoBehaviour
 	/// For example if the pawn is facing the border he wants to jump to, then the BorderDirection
 	/// should be FACE, and if the border is on his right, it should be right, etc...
 	/// </summary>
-	private enum BorderDirection
+	public enum BorderDirection
 	{
 		FRONT = 0,
 		RIGHT,
@@ -69,9 +69,10 @@ public class Pawn : MonoBehaviour
 
 	// #ANIMATIONS#
 	private IEnumerator lookCoroutine = null;
-	private Animator animator = null;							  // will be init in Awake
+	private Animator m_Animator = null;							  // will be init in Awake
 	private RootMotionController m_RootMotionController = null;   // will be init in Awake
 	private AnimStateJump m_AnimStateJump = null;                 // will be init in OnEnable or Start
+	private AnimStateRollToTile m_AnimStateRollToTile = null;     // will be init in OnEnable or Start
 
 	// #SPAWN#
 	private Vector3 spawnPosition = Vector3.zero;			// position of the spawn GameObject
@@ -122,7 +123,7 @@ public class Pawn : MonoBehaviour
 		tilesLayerMask = LayerMask.GetMask(new string[]{"Tiles"});
 
 		// get my animator and root motion controller
-		animator = GetComponentInChildren<Animator>();
+		m_Animator = GetComponentInChildren<Animator>();
 		m_RootMotionController = GetComponentInChildren<RootMotionController>();
 		m_RootMotionController.ResetAllParameters(false); // disable it by default, the anim state will enable it if they need it
 
@@ -151,7 +152,8 @@ public class Pawn : MonoBehaviour
 	{
 		// according to Unity doc, you can only get the animator state behavior in Start() or OnEnable()
 		// but the state are reinstantiated when the animator get disabled, so I prefer to get them here.
-		m_AnimStateJump = animator.GetBehaviour<AnimStateJump>();
+		m_AnimStateJump = m_Animator.GetBehaviour<AnimStateJump>();
+		m_AnimStateRollToTile = m_Animator.GetBehaviour<AnimStateRollToTile>();
 	}
 
 	void Update()
@@ -184,10 +186,10 @@ public class Pawn : MonoBehaviour
 		clickedTile = null;
 		focusedTile = null;
 
-		animator.ResetTrigger(ANIM_IDLE_TRIGGER);
-		animator.ResetTrigger(ANIM_WALK_TRIGGER);
-		animator.ResetTrigger(ANIM_LAND_TRIGGER);
-		animator.SetTrigger(ANIM_FALL_TRIGGER);
+		m_Animator.ResetTrigger(ANIM_IDLE_TRIGGER);
+		m_Animator.ResetTrigger(ANIM_WALK_TRIGGER);
+		m_Animator.ResetTrigger(ANIM_LAND_TRIGGER);
+		m_Animator.SetTrigger(ANIM_FALL_TRIGGER);
 		isFalling = true;
 		isJumping = false;
 		isWalking = false;
@@ -293,8 +295,8 @@ public class Pawn : MonoBehaviour
 
 		if (isFalling)
 		{
-			animator.ResetTrigger(ANIM_FALL_TRIGGER);
-			animator.SetTrigger(ANIM_LAND_TRIGGER);
+			m_Animator.ResetTrigger(ANIM_FALL_TRIGGER);
+			m_Animator.SetTrigger(ANIM_LAND_TRIGGER);
 			isFalling = false;
 			isJumping = false;
 
@@ -437,7 +439,7 @@ public class Pawn : MonoBehaviour
 			// path can be null because we may have recompute it if we are on a moving platform
 			if (!IsThereAPath)
 			{
-				animator.SetTrigger(ANIM_IDLE_TRIGGER);
+				m_Animator.SetTrigger(ANIM_IDLE_TRIGGER);
 				isWalking = false;
 
 				ResetDynamic();
@@ -507,9 +509,9 @@ public class Pawn : MonoBehaviour
 
 		// if a valid path is returned, trigger the walk anim
 		if (IsThereAPath)
-			animator.SetTrigger(ANIM_WALK_TRIGGER);
+			m_Animator.SetTrigger(ANIM_WALK_TRIGGER);
 		else
-			animator.SetTrigger(ANIM_IDLE_TRIGGER);
+			m_Animator.SetTrigger(ANIM_IDLE_TRIGGER);
 	}
 
 	private void StartToLookAt(Vector3 point)
@@ -629,7 +631,7 @@ public class Pawn : MonoBehaviour
 		int tileRelativeGridHeight = World.Instance.GetTileRelativeGridDistance(pawnTile, targetTile);
 
 		// compute the border direction and set it in any case (both type of animation needs it)
-		animator.SetInteger(ANIM_BORDER_DIRECTION_INT, (int)GetBorderDirectionToGoToThisTile(targetTile));
+		m_Animator.SetInteger(ANIM_BORDER_DIRECTION_INT, (int)GetBorderDirectionToGoToThisTile(targetTile));
 
 		// if the height is just one step, the pawn will jump, otherwise he will use his rope
 		if (tileRelativeGridHeight == 1)
@@ -643,14 +645,14 @@ public class Pawn : MonoBehaviour
 			m_AnimStateJump.SetStartAndEndTile(pawnTile, targetTile);
 
 			// the tile is just under me, we just do a simple jump
-			animator.SetTrigger(ANIM_JUMP_TO_TILE_TRIGGER);
+			m_Animator.SetTrigger(ANIM_JUMP_TO_TILE_TRIGGER);
 		}
 		else
 		{
 			isFalling = true;
 
 			// the tile is too low under me, trigger the jump with rope
-			animator.SetTrigger(ANIM_FALL_TRIGGER);
+			m_Animator.SetTrigger(ANIM_FALL_TRIGGER);
 
 			// the modification in height
 			StartCoroutine(JumpToTile());
@@ -686,7 +688,7 @@ public class Pawn : MonoBehaviour
 		int tileRelativeGridHeight = World.Instance.GetTileRelativeGridDistance(pawnTile, targetTile);
 
 		// compute the border direction and set it in any case (both type of animation needs it)
-		animator.SetInteger(ANIM_BORDER_DIRECTION_INT, (int)GetBorderDirectionToGoToThisTile(targetTile));
+		m_Animator.SetInteger(ANIM_BORDER_DIRECTION_INT, (int)GetBorderDirectionToGoToThisTile(targetTile));
 
 		// check if we click on the tile just next to the pawn, or a bit farer away,
 		// because we don't play the same kind of animations
@@ -700,8 +702,11 @@ public class Pawn : MonoBehaviour
 			ResetDynamic();
 			rigidBody.useGravity = false;
 
+			// set the parameters to the anim state jump
+			m_AnimStateRollToTile.SetStartAndEndTile(pawnTile, targetTile);
+			
 			// trigger the animation
-			animator.SetTrigger(ANIM_ROLL_TO_TILE_TRIGGER);
+			m_Animator.SetTrigger(ANIM_ROLL_TO_TILE_TRIGGER);
 
 			// change the gravity
 			World.Instance.SetGravity(targetTile.orientation);
@@ -780,7 +785,7 @@ public class Pawn : MonoBehaviour
 		transform.rotation = toRot;
 
 		// Fall animation
-		animator.SetTrigger(ANIM_FALL_TRIGGER);
+		m_Animator.SetTrigger(ANIM_FALL_TRIGGER);
 
 		rigidBody.constraints = nextConstraint;
 		rigidBody.useGravity = true;

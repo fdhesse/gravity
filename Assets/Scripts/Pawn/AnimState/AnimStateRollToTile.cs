@@ -18,10 +18,9 @@ public class AnimStateRollToTile : StateMachineBehaviour
 		Debug.Assert(rootMotionController != null, "No root motion controller on the Pawn.");
 		rootMotionController.enabled = true;
 
-		//// set a mach target to the edge of the current tile
-		//Vector3 targetPosition = ComputeTargetPosition();
-		//Quaternion targetOrientation = ComputeTargetOrientation();
-		//rootMotionController.SetTargetPositionAndDirection(targetPosition, targetOrientation, true, animatorStateInfo.shortNameHash);
+		// set a mach target to the edge of the current tile
+		Quaternion targetOrientation = ComputeTargetOrientation(animator);
+		rootMotionController.SetTargetPositionAndDirection(m_EndTile.transform.position, targetOrientation, true, animatorStateInfo.shortNameHash);
 	}
 
 	public override void OnStateExit(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
@@ -37,41 +36,36 @@ public class AnimStateRollToTile : StateMachineBehaviour
 		pawn.OnRollOrAbseilFinished();
 	}
 	
-	private Vector3 ComputeTargetPosition(bool isMovingToTheEdge, Vector3 up)
+	private Quaternion ComputeTargetOrientation(Animator animator)
 	{
-		Vector3 result = Vector3.zero;
+		// up is like the destination tile
+		Vector3 up = -World.GetGravityNormalizedVector(m_EndTile.orientation);
 
-		// the target computation is different depending if I go to the edge or the center of the tile
-		if (isMovingToTheEdge)
+		// forwards depends on the animation chosen
+		Vector3 startTileUp = -World.GetGravityNormalizedVector(m_StartTile.orientation);
+		Vector3 forward = Vector3.forward;
+		Pawn.BorderDirection borderDir = (Pawn.BorderDirection)animator.GetInteger(Pawn.ANIM_BORDER_DIRECTION_INT);
+		switch (borderDir)
 		{
-			result = m_StartTile.transform.position + m_EndTile.transform.position;
-			result *= 0.5f;
-			// move up to half a cube in the direction of the up, and add it to the result
-			up *= GameplayCube.HALF_CUBE_SIZE;
-			result += up;
-		}
-		else
-		{
-			result = m_EndTile.transform.position;
+			case Pawn.BorderDirection.FRONT:
+				forward = startTileUp;
+				break;
+			case Pawn.BorderDirection.BACK:
+				forward = -startTileUp;
+				break;
+			case Pawn.BorderDirection.RIGHT:
+			case Pawn.BorderDirection.LEFT:
+				{
+					// make the cross product betwen the up of the first tile and the distance between the two tiles
+					Vector3 diff = m_EndTile.transform.position - m_StartTile.transform.position;
+					forward = Vector3.Cross(startTileUp, diff);
+					if (borderDir == Pawn.BorderDirection.RIGHT)
+						forward = -forward;
+					break;
+				}
 		}
 
-		return result;
-	}
-
-	private Quaternion ComputeTargetOrientation(bool isMovingToTheEdge, Vector3 up)
-	{
-		Vector3 diff = m_StartTile.transform.position - m_EndTile.transform.position;
-		// cancel the diff along the up axis
-		if (up.x != 0f)
-			diff.x = 0f;
-		else if (up.y != 0f)
-			diff.y = 0f;
-		else
-			diff.z = 0f;
 		// now compute the action quaternion based on this two vectors
-		if (isMovingToTheEdge)
-			return Quaternion.LookRotation(diff, up);
-		else
-			return Quaternion.LookRotation(-diff, up);
+		return Quaternion.LookRotation(forward, up);
 	}
 }

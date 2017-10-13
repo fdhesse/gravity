@@ -21,7 +21,7 @@ public class AnimStateJump : StateMachineBehaviour
 		rootMotionController.enabled = true;
 
 		// compute the up of the animation based on the current gravity
-		Vector3 up = -World.GetGravityNormalizedVector(World.Instance.CurrentGravityOrientation);
+		Vector3 up = -World.GetGravityNormalizedVector(m_EndTile.orientation);
 
 		// set a mach target to the edge of the current tile
 		bool isMovingToTheEdge = (animatorStateInfo.shortNameHash != END_JUMP_ANIM_ID);
