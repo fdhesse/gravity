@@ -8,11 +8,11 @@ using System.Collections;
 public class GameplayCube : MonoBehaviour
 {
 	// static constants
-	public static readonly string MOVING_PLATFORM_TAG = "MovingPlatform";
-	public static readonly string GRAVITY_PLATFORM_TAG = "GravityPlatform";
-	public static readonly string FALLING_CUBE_TAG = "FallingCube";
-	public static readonly float CUBE_SIZE = 10f;
-	public static readonly float HALF_CUBE_SIZE = CUBE_SIZE * 0.5f;
+	public const string MOVING_PLATFORM_TAG = "MovingPlatform";
+	public const string GRAVITY_PLATFORM_TAG = "GravityPlatform";
+	public const string FALLING_CUBE_TAG = "FallingCube";
+	public const float CUBE_SIZE = 10f;
+	public const float HALF_CUBE_SIZE = CUBE_SIZE * 0.5f;
 
 	//[System.Flags]
 	public enum GlueSides

@@ -158,37 +158,52 @@ public class World : MonoBehaviour
 	}
 
 	/// <summary>
-	///  Compute the relative height from the specified tile1 to the specified tile2
-	///  along the specified height direction, and convert it into grid step 
-	///  (currently one tile is 10m in world's coordinates). 
-	///  The value is positive if tile1 is above tile2, negative otherwise.
+	///  Compute the relative distance from the specified tile1 to the specified tile2
+	///  along the orientation of the tile2, and convert it into grid step
+	///  (currently one gameplay cube'edge equals to 10m (aka GameplayCube.CUBE_SIZE) in world's coordinates). 
+	///  - For two tiles with the same orientation, the value is positive if tile1 is above tile2 
+	///    (according to orientation of tile2), negative otherwise.
+	///  - For two tiles whose orientations are perpendicular, if tile2 is a touching wall of tile1 
+	///    then the distance will be null.
 	/// </summary>
 	/// <param name="tile1">The first tile you want to test</param>
 	/// <param name="tile2">The second tile you want to test</param>
-	/// <param name="heightDirection">The direction along which you want to know the height. If this parameter equals <c>TileOrientation.None</c>, the current world's gravity will be used instead.</param>
-	/// <returns>a number of grid step representing the difference of height (along current world's gravity) betweent the two tiles.</returns>
-	public int GetTileRelativeGridHeight(Tile tile1, Tile tile2, TileOrientation heightDirection = TileOrientation.None)
+	/// <returns>a number of grid step representing the difference of distance (along tile2's orientation) between the two tiles.</returns>
+	public int GetTileRelativeGridDistance(Tile tile1, Tile tile2)
 	{
-		// if the height direction is not specified, used the current gravity
-		if (heightDirection == TileOrientation.None)
-			heightDirection = currentGravityOrientation;
-
 		// compute the tile position difference
-		Vector3 distance = tile1.Position - tile2.Position;
+		Vector3 tileDiff = tile1.Position - tile2.Position;
 
 		// get the correct height according to the gravity
-		float height = 0f;
-		switch (heightDirection)
+		float distance = 0f;
+		switch (tile2.orientation)
 		{
-			case TileOrientation.Up:	height = distance.y; break;
-			case TileOrientation.Down:	height = -distance.y; break;
-			case TileOrientation.Left:	height = distance.x; break;
-			case TileOrientation.Right: height = -distance.x; break;
-			case TileOrientation.Back:	height = distance.z; break;
-			case TileOrientation.Front: height = -distance.z; break;
+			case TileOrientation.Up:	distance = tileDiff.y; break;
+			case TileOrientation.Down:	distance = -tileDiff.y; break;
+			case TileOrientation.Left:	distance = tileDiff.x; break;
+			case TileOrientation.Right: distance = -tileDiff.x; break;
+			case TileOrientation.Back:	distance = tileDiff.z; break;
+			case TileOrientation.Front: distance = -tileDiff.z; break;
+		}
+
+		// if the two tiles are aligned on the same axis, nothing need to be adjusted,
+		// but if the two tiles have perpendicular orientation, then we need to adjust the
+		// distance by half a cube size.
+		// Because Up/Down, Left/Right and Back/Front are grouped together in the enum,
+		// we can divide by two to have a common value for each pair, and then test these common value
+		int tile1AxisAlignment = (int)tile1.orientation / 2;
+		int tile2AxisAlignment = (int)tile2.orientation / 2;
+
+		// now adjust the distance if the two tiles are not aligned
+		if (tile1AxisAlignment != tile2AxisAlignment)
+		{
+			if (distance > 0f)
+				distance -= GameplayCube.HALF_CUBE_SIZE;
+			else
+				distance += GameplayCube.HALF_CUBE_SIZE;
 		}
 
 		// convert the distance into grid step
-		return (int)Mathf.Round(height / GameplayCube.CUBE_SIZE);
+		return (int)Mathf.Round(distance / GameplayCube.CUBE_SIZE);
 	}
 }

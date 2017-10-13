@@ -392,11 +392,14 @@ public class RootMotionController : MonoBehaviour
 		Gizmos.DrawRay(targetPos, up);
 
 		// draw the remaining time
-		var animStateInfo = m_Animator.GetCurrentAnimatorStateInfo(0);
-		int completionRatio = 100;
-		if (animStateInfo.normalizedTime < m_MatchTargetNormalisedEndTime)
-			completionRatio = (int)((animStateInfo.normalizedTime * 100f) / m_MatchTargetNormalisedEndTime);
-		UnityEditor.Handles.Label(targetPos, completionRatio.ToString());
+		if (m_Animator != null)
+		{
+			var animStateInfo = m_Animator.GetCurrentAnimatorStateInfo(0);
+			int completionRatio = 100;
+			if (animStateInfo.normalizedTime < m_MatchTargetNormalisedEndTime)
+				completionRatio = (int)((animStateInfo.normalizedTime * 100f) / m_MatchTargetNormalisedEndTime);
+			UnityEditor.Handles.Label(targetPos, completionRatio.ToString());
+		}
 	}
 	#endif
 	#endregion

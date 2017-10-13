@@ -456,48 +456,8 @@ public class Pawn : MonoBehaviour
 				Debug.Assert(GetFeltVerticality() == GetWorldVerticality());
 
 				// check if we didn't start jumping yet
-				if ( !isJumping )
-				{
-					isJumping = true;
-
-					// compute the height (in grid step) between the pawn tile and the clicked tile
-					int tileRelativeGridHeight = World.Instance.GetTileRelativeGridHeight(pawnTile, clickedTile, GetFeltVerticality());
-
-					// compute the border direction and set it in any case (both type of animation needs it)
-					animator.SetInteger(ANIM_BORDER_DIRECTION_INT, (int)GetBorderDirectionToGoToThisTile(clickedTile));
-
-					// if the height is just one step, the pawn will jump, otherwise he will use his rope
-					if (tileRelativeGridHeight == 1)
-					{
-						isFalling = false;
-
-						// disable the collider during this animation
-						capsuleCollider.enabled = false;
-
-						// set the parameters to the anim state jump
-						m_AnimStateJump.SetStartAndEndTile(pawnTile, clickedTile);
-
-						// the tile is just under me, we just do a simple jump
-						animator.SetTrigger(ANIM_JUMP_TO_TILE_TRIGGER);
-					}
-					else
-					{
-						isFalling = true;
-
-						// the tile is too low under me, trigger the jump with rope
-						animator.SetTrigger(ANIM_FALL_TRIGGER);
-
-						// the modification in height
-						StartCoroutine(JumpToTile());
-
-						// the modification in orientation
-						StartToLookAt(clickedTile.transform.position);
-					}
-
-					// reset the pawn tile when starting to jump, because if you jump from
-					// a moving platform, you don't want to jump relative to the plateform
-					OnEnterTile(null, (tileRelativeGridHeight > 1));
-				}
+				if (!isJumping)
+					StartJumpToTile(clickedTile);
 
 				// calculate the vector from the Pawns position to the landing tile position at the same height
 				Vector3 landingPositionAtGroundHeight = GetGroundHeightPosition(clickedTile.transform.position);
@@ -661,6 +621,49 @@ public class Pawn : MonoBehaviour
 		}
 	}
 
+	private void StartJumpToTile(Tile targetTile)
+	{
+		isJumping = true;
+
+		// compute the height (in grid step) between the pawn tile and the clicked tile
+		int tileRelativeGridHeight = World.Instance.GetTileRelativeGridDistance(pawnTile, targetTile);
+
+		// compute the border direction and set it in any case (both type of animation needs it)
+		animator.SetInteger(ANIM_BORDER_DIRECTION_INT, (int)GetBorderDirectionToGoToThisTile(targetTile));
+
+		// if the height is just one step, the pawn will jump, otherwise he will use his rope
+		if (tileRelativeGridHeight == 1)
+		{
+			isFalling = false;
+
+			// disable the collider during this animation
+			capsuleCollider.enabled = false;
+
+			// set the parameters to the anim state jump
+			m_AnimStateJump.SetStartAndEndTile(pawnTile, targetTile);
+
+			// the tile is just under me, we just do a simple jump
+			animator.SetTrigger(ANIM_JUMP_TO_TILE_TRIGGER);
+		}
+		else
+		{
+			isFalling = true;
+
+			// the tile is too low under me, trigger the jump with rope
+			animator.SetTrigger(ANIM_FALL_TRIGGER);
+
+			// the modification in height
+			StartCoroutine(JumpToTile());
+
+			// the modification in orientation
+			StartToLookAt(targetTile.transform.position);
+		}
+
+		// reset the pawn tile when starting to jump, because if you jump from
+		// a moving platform, you don't want to jump relative to the plateform
+		OnEnterTile(null, (tileRelativeGridHeight > 1));
+	}
+
 	/// <summary>
 	/// This callback is called by the animator state machine when all the animations are finished after a jump.
 	/// </summary>
@@ -670,6 +673,62 @@ public class Pawn : MonoBehaviour
 		isJumping = false;
 		// reenable the collider
 		capsuleCollider.enabled = true;
+	}
+
+	/// <summary>
+	/// This function should be called when the player click on one tile to change the gravity.
+	/// This function will trigger the correct animation on the Pawn depending on the situation
+	/// <param name="targetTile"/>The tile whe the player will land (usually the focused or clicked tile)</param>
+	/// </summary>
+	private void StartRollOrAbseilDueToGravityChange(Tile targetTile)
+	{
+		// ask how far was the clicked tile
+		int tileRelativeGridHeight = World.Instance.GetTileRelativeGridDistance(pawnTile, targetTile);
+
+		// compute the border direction and set it in any case (both type of animation needs it)
+		animator.SetInteger(ANIM_BORDER_DIRECTION_INT, (int)GetBorderDirectionToGoToThisTile(targetTile));
+
+		// check if we click on the tile just next to the pawn, or a bit farer away,
+		// because we don't play the same kind of animations
+		if (tileRelativeGridHeight == 0)
+		{
+			// set the jumping flag to disable the mouse input
+			isJumping = true;
+
+			// disable the collider during this animation
+			capsuleCollider.enabled = false;
+			ResetDynamic();
+			rigidBody.useGravity = false;
+
+			// trigger the animation
+			animator.SetTrigger(ANIM_ROLL_TO_TILE_TRIGGER);
+
+			// change the gravity
+			World.Instance.SetGravity(targetTile.orientation);
+		}
+		else
+		{
+			//for punishing gravity take the tile == null here
+			OnEnterTile(null);
+			StartCoroutine(DelayedPawnFall(targetTile.orientation));
+		}
+	}
+
+	/// <summary>
+	/// This callback is called by the animator state machine 
+	/// when all the animations are finished after a roll to tile, or change gravity with rope.
+	/// </summary>
+	public void OnRollOrAbseilFinished()
+	{
+		clickedTile = null; // target reached, forget it
+		isJumping = false;
+
+		// set the constraint of the rigibody. Is that useful?
+		SetPawnOrientation(World.Instance.CurrentGravityOrientation);
+		
+		// reenable the collider
+		capsuleCollider.enabled = true;
+		rigidBody.constraints = nextConstraint;
 	}
 
 	private IEnumerator DelayedPawnFall(TileOrientation orientation)
@@ -1048,9 +1107,9 @@ public class Pawn : MonoBehaviour
 							{
 								// asked the clicked tile to play it's attraction VFX
 								focusedTile.playActivationVFX();
-								//for punishing gravity take the tile == null here
-								OnEnterTile(null);
-								StartCoroutine( DelayedPawnFall ( focusedTile.orientation ));
+
+								// then triggrer the animation
+								StartRollOrAbseilDueToGravityChange(focusedTile);
 							}
 						}
 						else
@@ -1123,15 +1182,19 @@ public class Pawn : MonoBehaviour
 	/// <returns>a relative direction of the border, relative to the current orientation of the pawn</returns>
 	private BorderDirection GetBorderDirectionToGoToThisTile(Tile targetTile)
 	{
+		// for the threshold take 80% of half a cube size. In case you can to detect a tile 
+		// which is just a touching wall of the current pawn tile, the distance will ne normally half a cube size.
+		const float DISTANCE_THRESHOLD = GameplayCube.HALF_CUBE_SIZE * 0.8f;
+
 		// compute the position of the target tile in the pawn local coordinates
 		Vector3 localTargetTilePosition = transform.worldToLocalMatrix.MultiplyPoint(targetTile.Position);
 
 		// now check if the target position if roughly in front, back, right or left
-		if (localTargetTilePosition.z > 5f)
+		if (localTargetTilePosition.z > DISTANCE_THRESHOLD)
 			return BorderDirection.FRONT;
-		else if (localTargetTilePosition.z < -5f)
+		else if (localTargetTilePosition.z < -DISTANCE_THRESHOLD)
 			return BorderDirection.BACK;
-		else if (localTargetTilePosition.x > 5f)
+		else if (localTargetTilePosition.x > DISTANCE_THRESHOLD)
 			return BorderDirection.RIGHT;
 		else
 			return BorderDirection.LEFT;		
