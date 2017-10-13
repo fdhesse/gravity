@@ -383,12 +383,12 @@ public class RootMotionController : MonoBehaviour
         Gizmos.DrawSphere(targetPos, 1f);
 
 		// draw the target direction
+		UnityEditor.Handles.color = (m_RotationMode == RotationMode.ROTATE_TOWARD_ACTION_DIRECTION) ? activeColor : inactiveColor;
+		UnityEditor.Handles.ArrowHandleCap(0, targetPos, ActionOrientation, GameplayCube.HALF_CUBE_SIZE, EventType.Repaint);
+		// draw the target up
 		Gizmos.color = (m_RotationMode == RotationMode.ROTATE_TOWARD_ACTION_DIRECTION) ? activeColor : inactiveColor;
-		Vector3 forward = ActionOrientation * Vector3.forward;
-		forward *= 10f;
 		Vector3 up = ActionOrientation * Vector3.up;
-		up *= 5f;
-		Gizmos.DrawRay(targetPos, forward);
+		up *= GameplayCube.HALF_CUBE_SIZE;
 		Gizmos.DrawRay(targetPos, up);
 
 		// draw the remaining time
@@ -398,6 +398,6 @@ public class RootMotionController : MonoBehaviour
 			completionRatio = (int)((animStateInfo.normalizedTime * 100f) / m_MatchTargetNormalisedEndTime);
 		UnityEditor.Handles.Label(targetPos, completionRatio.ToString());
 	}
-#endif
+	#endif
 	#endregion
 }

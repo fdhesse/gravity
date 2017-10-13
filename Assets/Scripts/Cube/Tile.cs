@@ -507,7 +507,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		switch (this.type)
 		{
 		case TileType.Valid:
-			if (this.gameObject.CompareTag("FallingCube"))
+			if (this.gameObject.CompareTag(GameplayCube.FALLING_CUBE_TAG))
 			{
 				if (isGlueTile)
 					new_mesh_name = "tile_glue_falling_cube";
@@ -600,7 +600,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		}
 		else
 		{
-			Vector3 scale = this.transform.rotation * new Vector3(10f, 10f, 0.1f);
+			Vector3 scale = this.transform.rotation * new Vector3(GameplayCube.CUBE_SIZE, GameplayCube.CUBE_SIZE, 0.1f);
 
 			// if not playing draw some faces, for the invisible meshes
 			switch (this.type)

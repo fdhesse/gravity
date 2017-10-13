@@ -8,8 +8,8 @@ public static class MuObjects
 	static void AddRotatingPlatform ( MenuCommand menuCmd )
 	{
 		GameObject go = new GameObject( "RotatingPlatform" );
-		//go.tag = "GravityPlatform";
-		
+		//go.tag = GameplayCube.GRAVITY_PLATFORM_TAG;
+
 		if ( menuCmd != null )
 			GameObjectUtility.SetParentAndAlign( go, menuCmd.context as GameObject );
 		
@@ -94,7 +94,7 @@ public static class MuObjects
 
 
 		/*
-		go.tag = "FallingCube";
+		go.tag = GameplayCube.FALLING_CUBE_TAG;
 		
 		go.transform.localScale = new Vector3( 10, 10, 10 );
 		

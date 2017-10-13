@@ -7,6 +7,13 @@ using System.Collections;
 [SelectionBase]
 public class GameplayCube : MonoBehaviour
 {
+	// static constants
+	public static readonly string MOVING_PLATFORM_TAG = "MovingPlatform";
+	public static readonly string GRAVITY_PLATFORM_TAG = "GravityPlatform";
+	public static readonly string FALLING_CUBE_TAG = "FallingCube";
+	public static readonly float CUBE_SIZE = 10f;
+	public static readonly float HALF_CUBE_SIZE = CUBE_SIZE * 0.5f;
+
 	//[System.Flags]
 	public enum GlueSides
 	{
@@ -171,9 +178,9 @@ public class GameplayCube : MonoBehaviour
 	private bool shouldTileMeshBeStatic()
 	{
 		// by default the mesh tile are static unless it's a moving platform
-		return (!this.gameObject.CompareTag("MovingPlatform") &&
-				!this.gameObject.CompareTag("GravityPlatform") &&
-				!this.gameObject.CompareTag("FallingCube"));
+		return (!this.gameObject.CompareTag(MOVING_PLATFORM_TAG) &&
+				!this.gameObject.CompareTag(GRAVITY_PLATFORM_TAG) &&
+				!this.gameObject.CompareTag(FALLING_CUBE_TAG));
 	}
 
 	private void setTileTag(GameObject childTile)
@@ -182,8 +189,8 @@ public class GameplayCube : MonoBehaviour
 		// may means that this gameplay cube is part of a moving platform grouping several
 		// gameplay platform, so get that tag from the parent
 		if ((this.transform.parent != null) && !this.gameObject.CompareTag(transform.parent.tag) &&
-		    (transform.parent.CompareTag("MovingPlatform") || transform.parent.CompareTag("GravityPlatform") ||
-			 transform.parent.CompareTag("FallingCube")))
+		    (transform.parent.CompareTag(MOVING_PLATFORM_TAG) || transform.parent.CompareTag(GRAVITY_PLATFORM_TAG) ||
+			 transform.parent.CompareTag(FALLING_CUBE_TAG)))
 			this.gameObject.tag = transform.parent.tag;
 
 		// after fixing the tag to be like my potential parent, fix the tag of my tile children

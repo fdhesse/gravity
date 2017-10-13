@@ -486,7 +486,7 @@ public class MovingPlatform : MonoBehaviour
 
 	public void drawGizmos()
 	{
-		Vector3 dimension = new Vector3(10f, 10f, 10f);
+		Vector3 dimension = new Vector3(GameplayCube.CUBE_SIZE, GameplayCube.CUBE_SIZE, GameplayCube.CUBE_SIZE);
 		Vector3 previousPosition = transform.position;
 		Quaternion previousRotation = transform.rotation;
 		// avoid the update of the path point when the animation is playing

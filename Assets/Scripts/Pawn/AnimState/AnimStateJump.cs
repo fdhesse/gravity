@@ -56,7 +56,7 @@ public class AnimStateJump : StateMachineBehaviour
 			result = m_StartTile.transform.position + m_EndTile.transform.position;
 			result *= 0.5f;
 			// move up to half a cube in the direction of the up, and add it to the result
-			up *= 5f;
+			up *= GameplayCube.HALF_CUBE_SIZE;
 			result += up;
 		}
 		else

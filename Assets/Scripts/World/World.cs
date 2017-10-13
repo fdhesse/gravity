@@ -189,6 +189,6 @@ public class World : MonoBehaviour
 		}
 
 		// convert the distance into grid step
-		return (int)Mathf.Round(height / 10f);
+		return (int)Mathf.Round(height / GameplayCube.CUBE_SIZE);
 	}
 }

@@ -240,7 +240,7 @@ public class Stairway : MonoBehaviour {
 		}
 
 		arrowDirection = transform.right;
-		arrowDirection *= 10f;
+		arrowDirection *= GameplayCube.CUBE_SIZE;
 		arrowPosition = transform.position -arrowDirection * 0.5f;
 	}
 
@@ -249,14 +249,14 @@ public class Stairway : MonoBehaviour {
 		Quaternion arrowRotation = Quaternion.LookRotation(arrowDirection);
 
 		Handles.color = Color.cyan;
-		Handles.ArrowHandleCap(0, arrowPosition, arrowRotation, 10f, EventType.Repaint);
+		Handles.ArrowHandleCap(0, arrowPosition, arrowRotation, GameplayCube.CUBE_SIZE, EventType.Repaint);
 
 		arrowRotation = Quaternion.LookRotation(-arrowDirection);
 		Vector3 arrow2Position = arrowPosition + arrowDirection;
-		Handles.ArrowHandleCap(0, arrow2Position, arrowRotation, 10f, EventType.Repaint);
+		Handles.ArrowHandleCap(0, arrow2Position, arrowRotation, GameplayCube.CUBE_SIZE, EventType.Repaint);
 
 		Gizmos.color = Color.red;
-		Gizmos.DrawWireCube(transform.position, Vector3.one * 10f);
+		Gizmos.DrawWireCube(transform.position, Vector3.one * GameplayCube.CUBE_SIZE);
 	}
 #endif
 }

@@ -23,7 +23,7 @@ public class GameSpace : MonoBehaviour
 
 		// also check that all falling cubes are inside the game space,
 		// because pawn cannot move until all falling cube has finished to fall
-		GameObject[] fallingCubes = GameObject.FindGameObjectsWithTag("FallingCube");
+		GameObject[] fallingCubes = GameObject.FindGameObjectsWithTag(GameplayCube.FALLING_CUBE_TAG);
 		foreach (GameObject cube in fallingCubes)
 		{
 			Debug.Assert(bound.Contains(cube.transform.position), "WARNING: A falling cube is OUTSIDE the GameSpace limit. When the cube falls out of the game, it will not be detected and the player won't be able to move anymore! Please enlarge the GameSpace bounding box.");
@@ -34,7 +34,7 @@ public class GameSpace : MonoBehaviour
 	{
 		if (c.gameObject.tag == "Player")
 	        c.gameObject.GetComponent<Pawn>().OutOfBounds();
-		else if (c.gameObject.tag == "FallingCube")
+		else if (c.gameObject.tag == GameplayCube.FALLING_CUBE_TAG)
 			c.gameObject.GetComponent<FallingCubeBody>().OutOfBounds();
     }
 }

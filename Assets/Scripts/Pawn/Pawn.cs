@@ -15,10 +15,11 @@ public class Pawn : MonoBehaviour
 {
 	public static readonly int ANIM_IDLE_TRIGGER = Animator.StringToHash("Idle");
 	private static readonly int ANIM_WALK_TRIGGER = Animator.StringToHash("Walk");
-	private static readonly int ANIM_JUMP_TO_TILE_TRIGGER = Animator.StringToHash("Jump to Tile");
-	private static readonly int ANIM_BORDER_DIRECTION_INT = Animator.StringToHash("Border Direction");
 	private static readonly int ANIM_FALL_TRIGGER = Animator.StringToHash("Fall");
 	private static readonly int ANIM_LAND_TRIGGER = Animator.StringToHash("Land");
+	private static readonly int ANIM_BORDER_DIRECTION_INT = Animator.StringToHash("Border Direction");
+	private static readonly int ANIM_JUMP_TO_TILE_TRIGGER = Animator.StringToHash("Jump to Tile");
+	private static readonly int ANIM_ROLL_TO_TILE_TRIGGER = Animator.StringToHash("Roll to Tile");
 
 	private static Pawn s_Instance = null;
 	public static Pawn Instance { get { return s_Instance; } }
@@ -346,8 +347,8 @@ public class Pawn : MonoBehaviour
 
 			// attach the pawn to the platform if is a moving platform with the gravity in the right direction
 			// or if the pawn is glued to a moving or gravity platform
-			shouldAttachToTile = ( (tile.tag == "MovingPlatform" && (isGlued || isWorldGravityLikePawnTile)) ||
-			                      (tile.tag == "GravityPlatform" && isGlued) );
+			shouldAttachToTile = ( (tile.tag == GameplayCube.MOVING_PLATFORM_TAG && (isGlued || isWorldGravityLikePawnTile)) ||
+			                      (tile.tag == GameplayCube.GRAVITY_PLATFORM_TAG && isGlued) );
 		}
 		
 		// attach or detach the parent of the pawn
@@ -413,7 +414,7 @@ public class Pawn : MonoBehaviour
 					bool isMovingFound = false;
 					foreach (Tile pathTile in path)
 					{
-						if (pathTile.tag == "MovingPlatform")
+						if (pathTile.tag == GameplayCube.MOVING_PLATFORM_TAG)
 							isMovingFound = true;
 						else
 							isStaticFound = true;
