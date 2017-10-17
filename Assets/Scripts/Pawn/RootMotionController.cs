@@ -50,12 +50,12 @@ public class RootMotionController : MonoBehaviour
 		}
 	}
 
-	private Quaternion m_ActionOrientation = Quaternion.identity;
-	public Quaternion ActionOrientation
+	private Quaternion m_TargetOrientation = Quaternion.identity;
+	public Quaternion TargetOrientation
 	{
 		// use SetTargetPositionAndDirection instead 
-		private set	{ m_ActionOrientation = value; }
-		get { return m_ActionOrientation; }
+		private set	{ m_TargetOrientation = value; }
+		get { return m_TargetOrientation; }
 	}
 
 	/// <summary>
@@ -67,10 +67,10 @@ public class RootMotionController : MonoBehaviour
 	/// <param name="shouldInterruptMatchTarget">if <c>true</c> the current match target will be interrupted WITHOUT teleporting the character to the final position of the current match target.</param>
 	/// <param name="stateOrTagHashForMatchTarget">The anim hash code for which you want to set the target position and direction. If zero, do it for the current anim.</param>
 	/// <param name="isWorldPosition">if <c>true</c> the specified position is a world position, otherwise the position is local to parent of the parent of the this root movement controller.</param>
-	public void SetTargetPositionAndDirection(Vector3 position, Quaternion orientation, bool shouldInterruptMatchTarget = true, int stateOrTagHashForMatchTarget = 0, bool isWorldPosition = true)
+	public void SetTargetPositionAndOrientation(Vector3 position, Quaternion orientation, bool shouldInterruptMatchTarget = true, int stateOrTagHashForMatchTarget = 0, bool isWorldPosition = true)
 	{
 		// set the targets (use the accessors to set the other variables)
-		this.ActionOrientation = orientation;
+		this.TargetOrientation = orientation;
 		if (isWorldPosition)
 			this.TargetPosition = position;
 		else
@@ -89,7 +89,7 @@ public class RootMotionController : MonoBehaviour
 	public enum RotationMode
 	{
 		USE_ANIM_ROTATION,
-		ROTATE_TOWARD_ACTION_DIRECTION,
+		ROTATE_TO_TARGET_ORIENTATION,
 	}
 
 	private RotationMode m_RotationMode = RotationMode.USE_ANIM_ROTATION;
@@ -115,10 +115,6 @@ public class RootMotionController : MonoBehaviour
 		m_TranslationMode = translationMode;
 		m_RotationMode = rotationMode;
 	}
-	#endregion
-
-	#region root reference
-
 	#endregion
 
 	#region internal data members
@@ -155,7 +151,7 @@ public class RootMotionController : MonoBehaviour
 		m_MyGrandParent = null;
 		m_LastGrandParentPosition = Vector3.zero;
 		m_LocalTargetPosition = Vector3.zero;
-		m_ActionOrientation = Quaternion.identity;
+		m_TargetOrientation = Quaternion.identity;
 		m_RotationMode = RotationMode.USE_ANIM_ROTATION;
 		m_TranslationMode = TranslationMode.USE_ANIM_TRANSLATION;
 		m_IsMatchTargetSet = false;
@@ -187,7 +183,7 @@ public class RootMotionController : MonoBehaviour
 	{
 		// check if we need to set a match target (in any of the to mode requires it)
 		bool shouldMatchTranslation = (m_TranslationMode == TranslationMode.MOVE_TO_TARGET_POSITION);
-		bool shouldMatchRotation = (m_RotationMode == RotationMode.ROTATE_TOWARD_ACTION_DIRECTION);
+		bool shouldMatchRotation = (m_RotationMode == RotationMode.ROTATE_TO_TARGET_ORIENTATION);
 		bool shouldSetMatchTarget = shouldMatchTranslation || shouldMatchRotation;
 
 		// toggle the match target set flag if we need to
@@ -235,13 +231,18 @@ public class RootMotionController : MonoBehaviour
 			if (normalizeTime < m_MatchTargetNormalisedEndTime)
 			{
 				m_MatchTargetWeightMask = new MatchTargetWeightMask(new Vector3(translationWeightMask, translationWeightMask, translationWeightMask), rotationWeightMask);
-				// reset the match target every frame because the world TargetPosition may change if the player is on a plateform
-				m_Animator.MatchTarget(TargetPosition, m_ActionOrientation, AvatarTarget.Root, m_MatchTargetWeightMask, normalizeTime, m_MatchTargetNormalisedEndTime);
-				m_IsMatchTargetSet = true;
+				// set the match target
+				SetMatchTarget(normalizeTime);
 				// memorise the position of the grand parent to check if I'm moving
 				m_LastGrandParentPosition = GetGrandParentWorldPosition();
 			}
 		}
+	}
+
+	private void SetMatchTarget(float normalizeTime)
+	{
+		m_Animator.MatchTarget(TargetPosition, m_TargetOrientation, AvatarTarget.Root, m_MatchTargetWeightMask, normalizeTime, m_MatchTargetNormalisedEndTime);
+		m_IsMatchTargetSet = true;
 	}
 
 	private void UpdateMatchTarget()
@@ -272,10 +273,7 @@ public class RootMotionController : MonoBehaviour
 			// set the time a little further because if you set a start time for the MatchTarget which is before the the current time it will directly teleport to the target.
 			float normalizeTime = Mathf.Repeat(animStateInfo.normalizedTime, 1f) + float.Epsilon;
 			if (normalizeTime < m_MatchTargetNormalisedEndTime)
-			{
-				m_Animator.MatchTarget(TargetPosition, m_ActionOrientation, AvatarTarget.Root, m_MatchTargetWeightMask, normalizeTime, m_MatchTargetNormalisedEndTime);
-				m_IsMatchTargetSet = true;
-			}
+				SetMatchTarget(normalizeTime);
 		}
 	}
 
@@ -374,7 +372,7 @@ public class RootMotionController : MonoBehaviour
 		// if we just set a match target rotation value that was not set before,
 		// we need to interrupt the match target for the update to recreate one
 		if ((m_RotationMode == RotationMode.USE_ANIM_ROTATION) &&
-			(mode == (int)RotationMode.ROTATE_TOWARD_ACTION_DIRECTION))
+			(mode == (int)RotationMode.ROTATE_TO_TARGET_ORIENTATION))
 			InterruptMatchTarget();
 
 		// set the new mode
@@ -395,11 +393,11 @@ public class RootMotionController : MonoBehaviour
         Gizmos.DrawSphere(targetPos, 1f);
 
 		// draw the target direction
-		UnityEditor.Handles.color = (m_RotationMode == RotationMode.ROTATE_TOWARD_ACTION_DIRECTION) ? activeColor : inactiveColor;
-		UnityEditor.Handles.ArrowHandleCap(0, targetPos, ActionOrientation, GameplayCube.HALF_CUBE_SIZE, EventType.Repaint);
+		UnityEditor.Handles.color = (m_RotationMode == RotationMode.ROTATE_TO_TARGET_ORIENTATION) ? activeColor : inactiveColor;
+		UnityEditor.Handles.ArrowHandleCap(0, targetPos, TargetOrientation, GameplayCube.HALF_CUBE_SIZE, EventType.Repaint);
 		// draw the target up
-		Gizmos.color = (m_RotationMode == RotationMode.ROTATE_TOWARD_ACTION_DIRECTION) ? activeColor : inactiveColor;
-		Vector3 up = ActionOrientation * Vector3.up;
+		Gizmos.color = (m_RotationMode == RotationMode.ROTATE_TO_TARGET_ORIENTATION) ? activeColor : inactiveColor;
+		Vector3 up = TargetOrientation * Vector3.up;
 		up *= GameplayCube.HALF_CUBE_SIZE;
 		Gizmos.DrawRay(targetPos, up);
 
@@ -412,8 +410,11 @@ public class RootMotionController : MonoBehaviour
 				completionRatio = (int)((animStateInfo.normalizedTime * 100f) / m_MatchTargetNormalisedEndTime);
 			UnityEditor.Handles.Label(targetPos, completionRatio.ToString());
 
-			UnityEditor.Handles.color = Color.blue;
-			UnityEditor.Handles.ArrowHandleCap(1, m_Animator.pivotPosition, m_Animator.bodyRotation, GameplayCube.HALF_CUBE_SIZE, EventType.Repaint);
+			UnityEditor.Handles.color = Color.cyan;
+			UnityEditor.Handles.ArrowHandleCap(1, m_Animator.bodyPosition, m_Animator.bodyRotation, GameplayCube.HALF_CUBE_SIZE, EventType.Repaint);
+
+			UnityEditor.Handles.color = Color.black;
+			UnityEditor.Handles.ArrowHandleCap(1, m_Animator.targetPosition, m_Animator.targetRotation, GameplayCube.HALF_CUBE_SIZE, EventType.Repaint);
 		}
 	}
 	#endif

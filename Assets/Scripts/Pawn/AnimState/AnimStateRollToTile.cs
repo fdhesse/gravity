@@ -20,7 +20,7 @@ public class AnimStateRollToTile : StateMachineBehaviour
 
 		// set a mach target to the edge of the current tile
 		Quaternion targetOrientation = ComputeTargetOrientation(animator);
-		rootMotionController.SetTargetPositionAndDirection(m_EndTile.transform.position, targetOrientation, true, animatorStateInfo.shortNameHash);
+		rootMotionController.SetTargetPositionAndOrientation(m_EndTile.transform.position, targetOrientation, true, animatorStateInfo.shortNameHash);
 	}
 
 	public override void OnStateExit(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
