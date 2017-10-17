@@ -3,10 +3,12 @@
 [RequireComponent(typeof(Animator))]
 public class RootMotionController : MonoBehaviour
 {
-	// init config
-	private Vector3 m_InitialLocalPositionOfCharacterMesh = Vector3.zero;
+	#region target position and rotation
+	// my grand parent info
+	private Transform m_MyGrandParent = null;	
+	private Vector3 m_LastGrandParentPosition = Vector3.zero; // a variable to check if the grand parent position has moved
 
-	private Transform m_MyGrandParent = null;
+	// we store the target position in local space
 	private Vector3 m_LocalTargetPosition = Vector3.zero;
 	public Vector3 LocalTargetPosition
 	{
@@ -56,16 +58,6 @@ public class RootMotionController : MonoBehaviour
 		get { return m_ActionOrientation; }
 	}
 
-	// a flag reset every time you change the target position
-	private bool m_IsMatchTargetSet = false;
-	private int m_LastMatchTargetCancelFrameNumber = 0;
-	private int m_StateOrTagHashForMatchTarget = 0;
-	private float m_MatchTargetNormalisedEndTime = 0f;
-	MatchTargetWeightMask m_MatchTargetWeightMask;
-
-	// a variable to check if the grand parent position has moved
-	private Vector3 m_LastGrandParentPosition = Vector3.zero;
-
 	/// <summary>
 	/// Sets the target position. You can also specified an expected horizontal and vertical distance, and this will
 	/// scale the movement while reaching the target position.
@@ -91,7 +83,9 @@ public class RootMotionController : MonoBehaviour
 		// memorise also the anim for which the target is set
 		m_StateOrTagHashForMatchTarget = stateOrTagHashForMatchTarget;
 	}
+	#endregion
 
+	#region move mode (rotation and translation)
 	public enum RotationMode
 	{
 		USE_ANIM_ROTATION,
@@ -121,8 +115,24 @@ public class RootMotionController : MonoBehaviour
 		m_TranslationMode = translationMode;
 		m_RotationMode = rotationMode;
 	}
+	#endregion
 
+	#region root reference
+
+	#endregion
+
+	#region internal data members
+	// initial config set in awake, and should not be modified later
+	private Vector3 m_InitialLocalPositionOfCharacterMesh = Vector3.zero;
 	private Animator m_Animator = null;
+
+	// internal data for the match target logic
+	private bool m_IsMatchTargetSet = false; // a flag reset every time you change the target position
+	private int m_LastMatchTargetCancelFrameNumber = 0;
+	private int m_StateOrTagHashForMatchTarget = 0;
+	private float m_MatchTargetNormalisedEndTime = 0f;
+	MatchTargetWeightMask m_MatchTargetWeightMask;
+	#endregion
 
 	#region unity methods
 	private void Awake()
@@ -143,14 +153,16 @@ public class RootMotionController : MonoBehaviour
 	{
 		// reset all my data members
 		m_MyGrandParent = null;
+		m_LastGrandParentPosition = Vector3.zero;
 		m_LocalTargetPosition = Vector3.zero;
 		m_ActionOrientation = Quaternion.identity;
-		m_IsMatchTargetSet = false;
-		m_StateOrTagHashForMatchTarget = 0;
-		m_MatchTargetNormalisedEndTime = 0f;
-		m_LastGrandParentPosition = Vector3.zero;
 		m_RotationMode = RotationMode.USE_ANIM_ROTATION;
 		m_TranslationMode = TranslationMode.USE_ANIM_TRANSLATION;
+		m_IsMatchTargetSet = false;
+		m_LastMatchTargetCancelFrameNumber = 0;
+		m_StateOrTagHashForMatchTarget = 0;
+		m_MatchTargetNormalisedEndTime = 0f;
+		m_MatchTargetWeightMask = new MatchTargetWeightMask(Vector3.zero, 0f);
 
 		// enable myself or not
 		this.enabled = startEnabled;
@@ -399,6 +411,9 @@ public class RootMotionController : MonoBehaviour
 			if (animStateInfo.normalizedTime < m_MatchTargetNormalisedEndTime)
 				completionRatio = (int)((animStateInfo.normalizedTime * 100f) / m_MatchTargetNormalisedEndTime);
 			UnityEditor.Handles.Label(targetPos, completionRatio.ToString());
+
+			UnityEditor.Handles.color = Color.blue;
+			UnityEditor.Handles.ArrowHandleCap(1, m_Animator.pivotPosition, m_Animator.bodyRotation, GameplayCube.HALF_CUBE_SIZE, EventType.Repaint);
 		}
 	}
 	#endif
