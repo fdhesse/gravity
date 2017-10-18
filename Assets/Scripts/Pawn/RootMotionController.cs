@@ -85,6 +85,58 @@ public class RootMotionController : MonoBehaviour
 	}
 	#endregion
 
+	#region target bone
+	public enum TargetBone
+	{
+		ROOT = AvatarTarget.Root,
+		BODY = AvatarTarget.Body
+	}
+
+	// The root reference is used during the update to know which motion should be apply to my parent transform
+	private TargetBone m_TargetBone = TargetBone.ROOT;
+
+	/// <summary>
+	/// This method set the target bone that will be used during the match target with the specified value.
+	/// If the wasTargetPositionSetForRoot flag is set, then the TargetPosition will be considered to be 
+	/// set for the root, so if the specified targetBone equals BODY, then the target position will be
+	/// recomputed during the OnAnimationIK using the body position that we get at that time and the TargetOrientation.
+	/// Otherwise the target position will not be changed, and we consider that it was correctly set for the body position.
+	/// </summary>
+	/// <param name="targetBone">The bone that you want the match target to use to align with the TargetPosition and TargetOrientation.</param>
+	/// <param name="wasTargetPositionSetForRoot">If <c>true</c> the RootMotionController will consider that the TargetPosition was set for the root, therefore will adjust it if you chosse to target the BODY bone.</param>
+	public void SetTargetBone(TargetBone targetBone, bool wasTargetPositionSetForRoot = true)
+	{
+		// memorise the flag
+		m_WasTargetPositionSetForRoot = wasTargetPositionSetForRoot;
+
+		// check if we switch from BODY to ROOT or ROOT to BODY, and save one of the two flags accordingly
+		// do not set the flags if nothing has changed.
+		if (targetBone == TargetBone.BODY)
+			m_DoesNeedToSaveTheLocalBodyPosition = (m_TargetBone == TargetBone.ROOT);
+		else
+			m_DoesNeedTodRelocateRootTransformFromBodyTransform = (m_TargetBone == TargetBone.BODY);
+
+		// then save the new target bone
+		m_TargetBone = targetBone;
+	}
+
+	// a flag that tells if we need to recompute the target position for body, in case it was set for root
+	private bool m_WasTargetPositionSetForRoot = true;
+
+	// this flag is used to save the m_LocalBodyPositionWhenTargetBoneWasSwitchToBody in the OnAnimatorIK function
+	private bool m_DoesNeedToSaveTheLocalBodyPosition = false;
+
+	// this flag is used when we had a match target from the Body bone, and we return to match target the root bone
+	private bool m_DoesNeedTodRelocateRootTransformFromBodyTransform = false;
+
+	/// <summary>
+	/// The position of the body in local space of the root, when the TargetBoneValue was switch to
+	/// the BODY mode. This value will then be reused to relocate the root position from the body position
+	/// when the TargetBoneValue will be switched back to ROOT.
+	/// </summary>
+	private Vector3 m_LocalBodyPositionWhenTargetBoneWasSwitchToBody = Vector3.zero;
+	#endregion
+
 	#region move mode (rotation and translation)
 	public enum RotationMode
 	{
@@ -142,6 +194,43 @@ public class RootMotionController : MonoBehaviour
 		UpdateMatchTarget();
 		ApplyRootMovementAndResetLocalTransform();
 	}
+
+	private void OnAnimatorIK(int layerIndex)
+	{
+		// first check if we need to save the local body position during this frame
+		if (m_DoesNeedToSaveTheLocalBodyPosition)
+		{
+			// clear the flag
+			m_DoesNeedToSaveTheLocalBodyPosition = false;
+
+			// the m_Animator.bodyPosition is given in world coordinate, translate it in local
+			m_LocalBodyPositionWhenTargetBoneWasSwitchToBody = m_Animator.bodyPosition - transform.position;
+
+			// check if we need to adjust the target position, after having computed the local body
+			if (m_WasTargetPositionSetForRoot)
+			{
+				// recompute the target position
+				TargetPosition += TargetOrientation * m_LocalBodyPositionWhenTargetBoneWasSwitchToBody;
+
+				// change the flag since now the target position target the body
+				m_WasTargetPositionSetForRoot = false;
+			}
+		}
+
+		// then check if we need to relocate the root during this frame
+		if (m_DoesNeedTodRelocateRootTransformFromBodyTransform)
+		{
+			m_DoesNeedTodRelocateRootTransformFromBodyTransform = false;
+
+			// set my parent position from the body position
+			transform.parent.position = m_Animator.bodyPosition - (m_Animator.bodyRotation * (m_LocalBodyPositionWhenTargetBoneWasSwitchToBody + m_InitialLocalPositionOfCharacterMesh));
+			transform.localPosition = m_InitialLocalPositionOfCharacterMesh;
+
+			// assign the body rotation to my parent, and clear my local rotation
+			transform.parent.rotation = m_Animator.bodyRotation;
+			transform.localRotation = Quaternion.identity;
+		}
+	}
 	#endregion
 
 	#region init/reset
@@ -159,6 +248,11 @@ public class RootMotionController : MonoBehaviour
 		m_StateOrTagHashForMatchTarget = 0;
 		m_MatchTargetNormalisedEndTime = 0f;
 		m_MatchTargetWeightMask = new MatchTargetWeightMask(Vector3.zero, 0f);
+		m_TargetBone = TargetBone.ROOT;
+		m_WasTargetPositionSetForRoot = true;
+		m_DoesNeedToSaveTheLocalBodyPosition = false;
+		m_DoesNeedTodRelocateRootTransformFromBodyTransform = false;
+		m_LocalBodyPositionWhenTargetBoneWasSwitchToBody = Vector3.zero;
 
 		// enable myself or not
 		this.enabled = startEnabled;
@@ -239,9 +333,9 @@ public class RootMotionController : MonoBehaviour
 		}
 	}
 
-	private void SetMatchTarget(float normalizeTime)
+	private void SetMatchTarget(float normalizedTime)
 	{
-		m_Animator.MatchTarget(TargetPosition, m_TargetOrientation, AvatarTarget.Root, m_MatchTargetWeightMask, normalizeTime, m_MatchTargetNormalisedEndTime);
+		m_Animator.MatchTarget(TargetPosition, m_TargetOrientation, (AvatarTarget)m_TargetBone, m_MatchTargetWeightMask, normalizedTime, m_MatchTargetNormalisedEndTime);
 		m_IsMatchTargetSet = true;
 	}
 
@@ -410,8 +504,8 @@ public class RootMotionController : MonoBehaviour
 				completionRatio = (int)((animStateInfo.normalizedTime * 100f) / m_MatchTargetNormalisedEndTime);
 			UnityEditor.Handles.Label(targetPos, completionRatio.ToString());
 
-			UnityEditor.Handles.color = Color.cyan;
-			UnityEditor.Handles.ArrowHandleCap(1, m_Animator.bodyPosition, m_Animator.bodyRotation, GameplayCube.HALF_CUBE_SIZE, EventType.Repaint);
+			//UnityEditor.Handles.color = Color.cyan;
+			//UnityEditor.Handles.ArrowHandleCap(1, m_Animator.bodyPosition, m_Animator.bodyRotation, GameplayCube.HALF_CUBE_SIZE, EventType.Repaint);
 
 			UnityEditor.Handles.color = Color.black;
 			UnityEditor.Handles.ArrowHandleCap(1, m_Animator.targetPosition, m_Animator.targetRotation, GameplayCube.HALF_CUBE_SIZE, EventType.Repaint);
