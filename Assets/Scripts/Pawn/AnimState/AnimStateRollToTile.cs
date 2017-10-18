@@ -3,7 +3,6 @@
 public class AnimStateRollToTile : StateMachineBehaviour
 {
 	private static readonly int ANIM_ROTATE_ROOT_STATE = Animator.StringToHash("RotateRootState");
-	private static readonly int ANIM_EXIT_STATE_TRIGGER = Animator.StringToHash("Exit State");
 
 	// the start and end tile
 	private Tile m_StartTile = null;
@@ -21,7 +20,7 @@ public class AnimStateRollToTile : StateMachineBehaviour
 		{
 			// if we enter in the rotate root state, just exit immediateley, as we just need one frame
 			// for the root motion controller to rotate the root.
-			animator.SetTrigger(ANIM_EXIT_STATE_TRIGGER);
+			animator.SetTrigger(Pawn.ANIM_EXIT_STATE_TRIGGER);
 		}
 		else
 		{

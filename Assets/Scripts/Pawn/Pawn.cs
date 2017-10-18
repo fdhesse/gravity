@@ -13,6 +13,7 @@ using System.Collections.Generic;
 [RequireComponent(typeof(CapsuleCollider))]
 public class Pawn : MonoBehaviour
 {
+	public static readonly int ANIM_EXIT_STATE_TRIGGER = Animator.StringToHash("Exit State");
 	public static readonly int ANIM_IDLE_TRIGGER = Animator.StringToHash("Idle");
 	private static readonly int ANIM_WALK_TRIGGER = Animator.StringToHash("Walk");
 	private static readonly int ANIM_FALL_TRIGGER = Animator.StringToHash("Fall");
@@ -182,9 +183,12 @@ public class Pawn : MonoBehaviour
 		clickedTile = null;
 		focusedTile = null;
 
+		m_Animator.ResetTrigger(ANIM_EXIT_STATE_TRIGGER);
 		m_Animator.ResetTrigger(ANIM_IDLE_TRIGGER);
 		m_Animator.ResetTrigger(ANIM_WALK_TRIGGER);
 		m_Animator.ResetTrigger(ANIM_LAND_TRIGGER);
+		m_Animator.ResetTrigger(ANIM_JUMP_TO_TILE_TRIGGER);
+		m_Animator.ResetTrigger(ANIM_ROLL_TO_TILE_TRIGGER);
 		m_Animator.SetTrigger(ANIM_FALL_TRIGGER);
 		isFalling = true;
 		isJumping = false;
@@ -434,13 +438,8 @@ public class Pawn : MonoBehaviour
 
 			// path can be null because we may have recompute it if we are on a moving platform
 			if (!IsThereAPath)
-			{
 				m_Animator.SetTrigger(ANIM_IDLE_TRIGGER);
-				isWalking = false;
-
-				ResetDynamic();
-			}			
-        }
+		}
         else if (clickedTile != null) // Case where there is no path but a target tile, ie: target tile is not aligned to tile
 		{
 			if ( clickedTile == pawnTile )
@@ -506,8 +505,12 @@ public class Pawn : MonoBehaviour
 		// if a valid path is returned, trigger the walk anim
 		if (IsThereAPath)
 			m_Animator.SetTrigger(ANIM_WALK_TRIGGER);
-		else
-			m_Animator.SetTrigger(ANIM_IDLE_TRIGGER);
+	}
+
+	public void OnWalkToTileFinished()
+	{
+		isWalking = false;
+		ResetDynamic();
 	}
 
 	private void StartToLookAt(Vector3 point)
