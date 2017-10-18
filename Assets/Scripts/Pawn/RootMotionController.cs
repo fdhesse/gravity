@@ -204,7 +204,7 @@ public class RootMotionController : MonoBehaviour
 			m_DoesNeedToSaveTheLocalBodyPosition = false;
 
 			// the m_Animator.bodyPosition is given in world coordinate, translate it in local
-			m_LocalBodyPositionWhenTargetBoneWasSwitchToBody = m_Animator.bodyPosition - transform.position;
+			m_LocalBodyPositionWhenTargetBoneWasSwitchToBody = transform.worldToLocalMatrix * (m_Animator.bodyPosition - transform.position);
 
 			// check if we need to adjust the target position, after having computed the local body
 			if (m_WasTargetPositionSetForRoot)
