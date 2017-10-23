@@ -22,11 +22,12 @@ public abstract class AnimStateJump : StateMachineBehaviour
 		// the target computation is different depending if I go to the edge or the center of the tile
 		if (isMovingToTheEdge)
 		{
-			result = m_StartTile.transform.position + m_EndTile.transform.position;
-			result *= 0.5f;
-			// move up to half a cube in the direction of the up, and add it to the result
-			up *= GameplayCube.HALF_CUBE_SIZE;
-			result += up;
+			Vector3 diff = m_EndTile.transform.position - m_StartTile.transform.position;
+			Vector3 right = Vector3.Cross(up, diff);
+			Vector3 forward = Vector3.Cross(right, up);
+			forward.Normalize();
+			forward *= GameplayCube.HALF_CUBE_SIZE;
+			result = m_StartTile.transform.position + forward;
 		}
 		else
 		{
