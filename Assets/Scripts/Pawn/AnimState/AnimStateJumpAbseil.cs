@@ -32,7 +32,7 @@ public class AnimStateJumpAbseil : AnimStateJump
 			// then warn the pawn that the animation is finished
 			Pawn pawn = animator.GetComponentInParent<Pawn>();
 			Debug.Assert(pawn != null, "The pawn is null in the state exit of the Anim State Abseil Down");
-			pawn.OnRollOrAbseilFinished();
+			pawn.OnJumpFinished();
 		}
 	}
 }

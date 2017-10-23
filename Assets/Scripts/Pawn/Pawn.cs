@@ -19,7 +19,9 @@ public class Pawn : MonoBehaviour
 	private static readonly int ANIM_FALL_TRIGGER = Animator.StringToHash("Fall");
 	private static readonly int ANIM_LAND_TRIGGER = Animator.StringToHash("Land");
 	public static readonly int ANIM_BORDER_DIRECTION_INT = Animator.StringToHash("Border Direction");
+	private static readonly int ANIM_ABSEIL_HEIGHT_INT = Animator.StringToHash("Abseil Height");
 	private static readonly int ANIM_JUMP_TO_TILE_TRIGGER = Animator.StringToHash("Jump to Tile");
+	private static readonly int ANIM_JUMP_AND_ABSEIL_TRIGGER = Animator.StringToHash("Jump and Abseil");
 	private static readonly int ANIM_ROLL_TO_TILE_TRIGGER = Animator.StringToHash("Roll to Tile");
 
 	private static Pawn s_Instance = null;
@@ -45,20 +47,20 @@ public class Pawn : MonoBehaviour
 	public float turnDelay = .5f;				// Time of pawn's rotation
 	public float fallDelay = .5f;				// Time of pawn's fall
 	public float fallInterval = .5f;			// Gap between tile and pawn before fall
-	public float jumpAnimationLength = 0.3f;
 
 	private float height = 1f;					// will be init in Awake from the capsule height
 	private float width = 1f;					// will be init in Awake from the capsule width
 	private bool newTarget = true;
 	private Vector3 desiredRotation = Vector3.zero;
-	private bool isWalking = false;
-	private bool isWalkingInStairs = false;
+	private IEnumerator lookCoroutine = null;
 
 	private int tilesLayer = 0;						// will be init in Awake
 	private LayerMask tilesLayerMask;				// will be init in Awake
 	private CapsuleCollider capsuleCollider = null; // will be init in Awake
 	private Rigidbody rigidBody = null;             // will be init in Awake
 
+	private bool isWalking = false;
+	private bool isWalkingInStairs = false;
 	private bool isGlued = false;
 	private bool isJumping = false;
 	private bool isFalling = true;
@@ -69,10 +71,10 @@ public class Pawn : MonoBehaviour
 	public ParticleSystem fallingVFX = null;
 
 	// #ANIMATIONS#
-	private IEnumerator lookCoroutine = null;
 	private Animator m_Animator = null;							  // will be init in Awake
 	private RootMotionController m_RootMotionController = null;   // will be init in Awake
 	private AnimStateJumpToTile m_AnimStateJumpToTile = null;     // will be init in OnEnable or Start
+	private AnimStateJumpAbseil m_AnimStateJumpAbseil = null;     // will be init in OnEnable or Start
 	private AnimStateRollToTile m_AnimStateRollToTile = null;     // will be init in OnEnable or Start
 
 	// #SPAWN#
@@ -150,6 +152,7 @@ public class Pawn : MonoBehaviour
 		// according to Unity doc, you can only get the animator state behavior in Start() or OnEnable()
 		// but the state are reinstantiated when the animator get disabled, so I prefer to get them here.
 		m_AnimStateJumpToTile = m_Animator.GetBehaviour<AnimStateJumpToTile>();
+		m_AnimStateJumpAbseil = m_Animator.GetBehaviour<AnimStateJumpAbseil>();
 		m_AnimStateRollToTile = m_Animator.GetBehaviour<AnimStateRollToTile>();
 	}
 
@@ -188,6 +191,7 @@ public class Pawn : MonoBehaviour
 		m_Animator.ResetTrigger(ANIM_WALK_TRIGGER);
 		m_Animator.ResetTrigger(ANIM_LAND_TRIGGER);
 		m_Animator.ResetTrigger(ANIM_JUMP_TO_TILE_TRIGGER);
+		m_Animator.ResetTrigger(ANIM_JUMP_AND_ABSEIL_TRIGGER);
 		m_Animator.ResetTrigger(ANIM_ROLL_TO_TILE_TRIGGER);
 		m_Animator.SetTrigger(ANIM_FALL_TRIGGER);
 		isFalling = true;
@@ -454,7 +458,7 @@ public class Pawn : MonoBehaviour
 
 				// check if we didn't start jumping yet
 				if (!isJumping)
-					StartJumpToTile(clickedTile);
+					StartToJump(clickedTile);
 
 				// calculate the vector from the Pawns position to the landing tile position at the same height
 				Vector3 landingPositionAtGroundHeight = GetGroundHeightPosition(clickedTile.transform.position);
@@ -605,41 +609,24 @@ public class Pawn : MonoBehaviour
 	#endregion
 
 	#region jump and fall
-	private IEnumerator JumpToTile()
-	{
-		float elapsedTime = 0;
-		Vector3 up = new Vector3(0f, 0.25f, 0f);
-
-		while (elapsedTime < jumpAnimationLength)
-		{
-			float t = elapsedTime / jumpAnimationLength;
-
-			transform.Translate(up * Mathf.Cos(t), Space.Self);
-
-			elapsedTime += Time.deltaTime;
-
-			yield return null;
-		}
-	}
-
-	private void StartJumpToTile(Tile targetTile)
+	private void StartToJump(Tile targetTile)
 	{
 		isJumping = true;
+		isFalling = false;
+
+		// disable the collider during this type of animations
+		capsuleCollider.enabled = false;
 
 		// compute the height (in grid step) between the pawn tile and the clicked tile
 		int tileRelativeGridHeight = World.Instance.GetTileRelativeGridDistance(pawnTile, targetTile);
 
 		// compute the border direction and set it in any case (both type of animation needs it)
 		m_Animator.SetInteger(ANIM_BORDER_DIRECTION_INT, (int)GetBorderDirectionToGoToThisTile(targetTile));
+		m_Animator.SetInteger(ANIM_ABSEIL_HEIGHT_INT, tileRelativeGridHeight);
 
 		// if the height is just one step, the pawn will jump, otherwise he will use his rope
 		if (tileRelativeGridHeight == 1)
 		{
-			isFalling = false;
-
-			// disable the collider during this animation
-			capsuleCollider.enabled = false;
-
 			// set the parameters to the anim state jump
 			m_AnimStateJumpToTile.SetStartAndEndTile(pawnTile, targetTile);
 
@@ -648,21 +635,16 @@ public class Pawn : MonoBehaviour
 		}
 		else
 		{
-			isFalling = true;
+			// set the parameters to the anim state jump
+			m_AnimStateJumpAbseil.SetStartAndEndTile(pawnTile, targetTile);
 
 			// the tile is too low under me, trigger the jump with rope
-			m_Animator.SetTrigger(ANIM_FALL_TRIGGER);
-
-			// the modification in height
-			StartCoroutine(JumpToTile());
-
-			// the modification in orientation
-			StartToLookAt(targetTile.transform.position);
+			m_Animator.SetTrigger(ANIM_JUMP_AND_ABSEIL_TRIGGER);
 		}
 
 		// reset the pawn tile when starting to jump, because if you jump from
 		// a moving platform, you don't want to jump relative to the plateform
-		OnEnterTile(null, (tileRelativeGridHeight > 1));
+		OnEnterTile(null, false);
 	}
 
 	/// <summary>
