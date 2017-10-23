@@ -41,34 +41,34 @@ public class Pawn : MonoBehaviour
 		LEFT,
 	}
 
-	// #PAWN#
-	public float speed = 30.0f;					// Speed of the pawn
-	public float maxTranslation = 2.5f;			// Max translation of the pawn
-	public float turnDelay = .5f;				// Time of pawn's rotation
+	// Serialized parameters
+	[SerializeField]
+	[Tooltip("The speed of the pawn when he's walking.")]
+	private float speed = 30.0f;
+
+	[SerializeField]
+	[Tooltip("The Max translation of the pawn when he's walking.")]
+	private float maxTranslation = 2.5f;
+
+	[SerializeField]
+	[Tooltip("Time of pawn's rotation.")]
+	private float turnDelay = .5f;				// Time of pawn's rotation
+
+	// these two parameters (and other variables) will soon disapear when the anim state will be implemented
 	public float fallDelay = .5f;				// Time of pawn's fall
-	public float fallInterval = .5f;			// Gap between tile and pawn before fall
-
-	private float height = 1f;					// will be init in Awake from the capsule height
-	private float width = 1f;					// will be init in Awake from the capsule width
-	private bool newTarget = true;
+	public float fallInterval = .5f;            // Gap between tile and pawn before fall
 	private Vector3 desiredRotation = Vector3.zero;
-	private IEnumerator lookCoroutine = null;
-
-	private int tilesLayer = 0;						// will be init in Awake
-	private LayerMask tilesLayerMask;				// will be init in Awake
-	private CapsuleCollider capsuleCollider = null; // will be init in Awake
-	private Rigidbody rigidBody = null;             // will be init in Awake
-
-	private bool isWalking = false;
-	private bool isWalkingInStairs = false;
-	private bool isGlued = false;
-	private bool isJumping = false;
-	private bool isFalling = true;
+	// be carefull with the nextConstraint, the falling cube are kind of using it (but it will be always the same)
 	[HideInInspector] public RigidbodyConstraints nextConstraint = RigidbodyConstraints.None;
 	private RigidbodyConstraints transformConstraints = RigidbodyConstraints.None;
 
-	// #VFX#
-	public ParticleSystem fallingVFX = null;
+	// #COLLISION#
+	private int m_TilesLayer = 0;						// will be init in Awake
+	private LayerMask m_TilesLayerMask;				// will be init in Awake
+	private CapsuleCollider m_CapsuleCollider = null; // will be init in Awake
+	private Rigidbody m_RigidBody = null;             // will be init in Awake
+	private float m_Height = 1f;                      // will be init in Awake from the capsule height
+	private float m_Width = 1f;                 // will be init in Awake from the capsule width
 
 	// #ANIMATIONS#
 	private Animator m_Animator = null;							  // will be init in Awake
@@ -78,22 +78,31 @@ public class Pawn : MonoBehaviour
 	private AnimStateRollToTile m_AnimStateRollToTile = null;     // will be init in OnEnable or Start
 
 	// #SPAWN#
-	private Vector3 spawnPosition = Vector3.zero;			// position of the spawn GameObject
-	private Quaternion spawnRotation = Quaternion.identity;	// rotation of the spawn GameObject
-	
+	private Vector3 m_SpawnPosition = Vector3.zero;			// position of the spawn GameObject
+	private Quaternion m_SpawnRotation = Quaternion.identity;   // rotation of the spawn GameObject
+
 	// #TILES#
-	private List<Tile> path = new List<Tile> (); // List of tiles in the current path
-	private Tile pawnTile = null; // Tile beneath the Pawn
-	private Tile clickedTile = null; // Tile the player clicked
-	private Tile focusedTile = null; // Tile the cursor focus
+	private Tile m_PawnTile = null; // Tile beneath the Pawn
+	private Tile m_ClickedTile = null; // Tile the player clicked
+	private Tile m_FocusedTile = null; // Tile the cursor focus
+	private List<Tile> m_ClickableTilesToChangeGravity = new List<Tile>(6);
+
+	// #STATE FLAGS#
+	private bool m_IsWalking = false;
+	private bool m_IsWalkingInStairs = false;
+	private bool m_IsGlued = false;
+	private bool m_IsJumping = false;
+	private bool m_IsFalling = true;
+
+	// #WALK#
+	private bool m_HasANewTargetDuringWalk = true;
+	private IEnumerator m_LookAtCoroutine = null;
+	private List<Tile> m_CurrentPath = new List<Tile>(); // List of tiles in the current path
 
 	private bool IsThereAPath
 	{
-		get { return (path != null) && (path.Count > 0); }
+		get { return (m_CurrentPath != null) && (m_CurrentPath.Count > 0); }
 	}
-
-	// #SPHERES#
-	private List<Tile> clickableTilesToChangeGravity = new List<Tile>(6);
 
 	private Vector3 position
 	{
@@ -118,8 +127,8 @@ public class Pawn : MonoBehaviour
 		s_Instance = this;
 
 		// init the tile layers
-		tilesLayer = LayerMask.NameToLayer ("Tiles");
-		tilesLayerMask = LayerMask.GetMask(new string[]{"Tiles"});
+		m_TilesLayer = LayerMask.NameToLayer ("Tiles");
+		m_TilesLayerMask = LayerMask.GetMask(new string[]{"Tiles"});
 
 		// get my animator and root motion controller
 		m_Animator = GetComponentInChildren<Animator>();
@@ -127,12 +136,12 @@ public class Pawn : MonoBehaviour
 		m_RootMotionController.ResetAllParameters(false); // disable it by default, the anim state will enable it if they need it
 
 		// get my rigid body
-		rigidBody = GetComponent<Rigidbody>();
+		m_RigidBody = GetComponent<Rigidbody>();
 
 		// get my collider
-		capsuleCollider = GetComponent<CapsuleCollider>();
-		height = capsuleCollider.height * capsuleCollider.transform.localScale.y;
-		width = capsuleCollider.radius * capsuleCollider.transform.localScale.x;
+		m_CapsuleCollider = GetComponent<CapsuleCollider>();
+		m_Height = m_CapsuleCollider.height * m_CapsuleCollider.transform.localScale.y;
+		m_Width = m_CapsuleCollider.radius * m_CapsuleCollider.transform.localScale.x;
 
 		// Game cursor
 		Assets.SetMouseCursor();
@@ -176,15 +185,15 @@ public class Pawn : MonoBehaviour
 	private void InitSpawn()
 	{
 		GameObject spawn = GameObject.FindGameObjectWithTag("Spawn");
-		spawnPosition = (spawn == null) ? transform.position : spawn.transform.position;
-		spawnRotation = (spawn == null) ? transform.rotation : spawn.transform.rotation;
+		m_SpawnPosition = (spawn == null) ? transform.position : spawn.transform.position;
+		m_SpawnRotation = (spawn == null) ? transform.rotation : spawn.transform.rotation;
 	}
 	
 	public void Respawn(TileOrientation startingOrientation)
 	{
-		path = null;
-		clickedTile = null;
-		focusedTile = null;
+		m_CurrentPath = null;
+		m_ClickedTile = null;
+		m_FocusedTile = null;
 
 		m_Animator.ResetTrigger(ANIM_EXIT_STATE_TRIGGER);
 		m_Animator.ResetTrigger(ANIM_IDLE_TRIGGER);
@@ -194,13 +203,13 @@ public class Pawn : MonoBehaviour
 		m_Animator.ResetTrigger(ANIM_JUMP_AND_ABSEIL_TRIGGER);
 		m_Animator.ResetTrigger(ANIM_ROLL_TO_TILE_TRIGGER);
 		m_Animator.SetTrigger(ANIM_FALL_TRIGGER);
-		isFalling = true;
-		isJumping = false;
-		isWalking = false;
+		m_IsFalling = true;
+		m_IsJumping = false;
+		m_IsWalking = false;
 
 		// teleport the pawn at the spawn position
-		transform.position = spawnPosition;
-		transform.rotation = spawnRotation;
+		transform.position = m_SpawnPosition;
+		transform.rotation = m_SpawnRotation;
 
 		// reset my root controller
 		m_RootMotionController.ResetAllParameters(false);
@@ -210,8 +219,8 @@ public class Pawn : MonoBehaviour
 
 		ResetDynamic();
 
-		rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
-		capsuleCollider.enabled = true;
+		m_RigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+		m_CapsuleCollider.enabled = true;
 
 		StartCoroutine( DelayedReset ());
 	}
@@ -220,13 +229,13 @@ public class Pawn : MonoBehaviour
 	{
 		yield return new WaitForSeconds(0.1f);
 
-		rigidBody.constraints = RigidbodyConstraints.FreezeRotation & ~RigidbodyConstraints.FreezePositionY;
+		m_RigidBody.constraints = RigidbodyConstraints.FreezeRotation & ~RigidbodyConstraints.FreezePositionY;
 	}
 	
 	private void ResetDynamic()
 	{
-		rigidBody.velocity = Vector3.zero;
-		rigidBody.angularVelocity = Vector3.zero;
+		m_RigidBody.velocity = Vector3.zero;
+		m_RigidBody.angularVelocity = Vector3.zero;
 		
 		//World.SetGravity (GetWorldGravity());
 	}
@@ -294,25 +303,20 @@ public class Pawn : MonoBehaviour
 
 	public void OnCollisionEnter(Collision collision)
 	{
-		if (collision.collider.gameObject.layer != tilesLayer)
+		if (collision.collider.gameObject.layer != m_TilesLayer)
 			return;
 
-		if (isFalling)
+		if (m_IsFalling)
 		{
 			m_Animator.ResetTrigger(ANIM_FALL_TRIGGER);
 			m_Animator.SetTrigger(ANIM_LAND_TRIGGER);
-			isFalling = false;
-			isJumping = false;
-
-			// stop the vfx if any
-			// if there's some falling sfx, start them
-			if (fallingVFX != null)
-				fallingVFX.Stop();			
+			m_IsFalling = false;
+			m_IsJumping = false;
 
 			// Snap to the tile
 			OnEnterTile(collision.collider.gameObject.GetComponent<Tile>());
 
-			MoveTo( pawnTile.transform.position );
+			MoveTo( m_PawnTile.transform.position );
 		}
 
 		ResetDynamic();
@@ -330,18 +334,18 @@ public class Pawn : MonoBehaviour
 	public void OnEnterTile(Tile tile, bool useGravity = true)
 	{
 		// save the new pawntile (can be null)
-		pawnTile = tile;
+		m_PawnTile = tile;
 
 		// and now check stuff related with glue, and set the glue flag
 		if ((tile != null) && tile.IsGlueTile)
 		{
-			isGlued = true;
-			rigidBody.useGravity = false;
+			m_IsGlued = true;
+			m_RigidBody.useGravity = false;
 		}
 		else
 		{
-			isGlued = false;
-			rigidBody.useGravity = useGravity;
+			m_IsGlued = false;
+			m_RigidBody.useGravity = useGravity;
 		}
 
 		// if the tile is not null, check if we need to attach the pawn to the tile
@@ -353,8 +357,8 @@ public class Pawn : MonoBehaviour
 
 			// attach the pawn to the platform if is a moving platform with the gravity in the right direction
 			// or if the pawn is glued to a moving or gravity platform
-			shouldAttachToTile = ( (tile.tag == GameplayCube.MOVING_PLATFORM_TAG && (isGlued || isWorldGravityLikePawnTile)) ||
-			                      (tile.tag == GameplayCube.GRAVITY_PLATFORM_TAG && isGlued) );
+			shouldAttachToTile = ( (tile.tag == GameplayCube.MOVING_PLATFORM_TAG && (m_IsGlued || isWorldGravityLikePawnTile)) ||
+			                      (tile.tag == GameplayCube.GRAVITY_PLATFORM_TAG && m_IsGlued) );
 		}
 		
 		// attach or detach the parent of the pawn
@@ -373,12 +377,12 @@ public class Pawn : MonoBehaviour
 	{
 		if (IsGrounded()) // is the player touching a tile "beneath" him?
 		{
-			if (pawnTile.Type.Equals(TileType.Exit)) //if this tile is an exit tile, make the game end
+			if (m_PawnTile.Type.Equals(TileType.Exit)) //if this tile is an exit tile, make the game end
 				World.Instance.GameOver(true);
 
 			MoveAlongPath(); //otherwise, move along the path to the player selected tile
 		}
-		else if (isWalkingInStairs || isJumping)
+		else if (m_IsWalkingInStairs || m_IsJumping)
 		{
 			MoveAlongPath();
 		}
@@ -394,31 +398,31 @@ public class Pawn : MonoBehaviour
 	{
 		if (IsThereAPath)
 		{
-			Tile nextTile = path[0];
+			Tile nextTile = m_CurrentPath[0];
 
 			// set the walking flag
-			isWalking = true;
+			m_IsWalking = true;
 
 			// look at the new target if any
-			if (newTarget)
+			if (m_HasANewTargetDuringWalk)
 				StartToLookAt(nextTile.transform.position);
 			
             // if there is, move the pawn towards the next point in that path
 			if (MoveTo(nextTile.transform.position))
 			{
-				newTarget = true;
+				m_HasANewTargetDuringWalk = true;
 				position = nextTile.transform.position;
 
-				path.RemoveAt(0); // if we have reached this path point, delete it from the list so we can go to the next one next time
+				m_CurrentPath.RemoveAt(0); // if we have reached this path point, delete it from the list so we can go to the next one next time
 
 				// check if the remaining path involve a move between a moving platform and an non moving platform
 				// because if some tile are moving and other not along the path, the path may become broken,
 				// so recompute the path everytime we move on the next tile
-				if ( path.Count > 0 )
+				if ( m_CurrentPath.Count > 0 )
 				{
 					bool isStaticFound = false;
 					bool isMovingFound = false;
-					foreach (Tile pathTile in path)
+					foreach (Tile pathTile in m_CurrentPath)
 					{
 						if (pathTile.tag == GameplayCube.MOVING_PLATFORM_TAG)
 							isMovingFound = true;
@@ -430,12 +434,12 @@ public class Pawn : MonoBehaviour
 					}
 
 					// if we found a path with a passage between static and moving tile, recompute the path
-					if (isMovingFound && isStaticFound && (clickedTile != null))
+					if (isMovingFound && isStaticFound && (m_ClickedTile != null))
 					{
-						StartToWalkToTile(path[0], clickedTile);
+						StartToWalkToTile(m_CurrentPath[0], m_ClickedTile);
 						// if the path is broken, clear the click tile to avoid the pawn to try to jump on it
-						if (path == null)
-							clickedTile = null;
+						if (m_CurrentPath == null)
+							m_ClickedTile = null;
 					}
 				}
 			}
@@ -444,11 +448,11 @@ public class Pawn : MonoBehaviour
 			if (!IsThereAPath)
 				m_Animator.SetTrigger(ANIM_IDLE_TRIGGER);
 		}
-        else if (clickedTile != null) // Case where there is no path but a target tile, ie: target tile is not aligned to tile
+        else if (m_ClickedTile != null) // Case where there is no path but a target tile, ie: target tile is not aligned to tile
 		{
-			if ( clickedTile == pawnTile )
+			if ( m_ClickedTile == m_PawnTile )
 			{
-				clickedTile = null;
+				m_ClickedTile = null;
 			}
 			else
 			{
@@ -457,12 +461,12 @@ public class Pawn : MonoBehaviour
 				Debug.Assert(GetFeltVerticality() == GetWorldVerticality());
 
 				// check if we didn't start jumping yet
-				if (!isJumping)
-					StartToJump(clickedTile);
+				if (!m_IsJumping)
+					StartToJump(m_ClickedTile);
 
 				// calculate the vector from the Pawns position to the landing tile position at the same height
-				Vector3 landingPositionAtGroundHeight = GetGroundHeightPosition(clickedTile.transform.position);
-				if (isFalling && MoveTo(landingPositionAtGroundHeight)) // move the pawn towards the landing tile
+				Vector3 landingPositionAtGroundHeight = GetGroundHeightPosition(m_ClickedTile.transform.position);
+				if (m_IsFalling && MoveTo(landingPositionAtGroundHeight)) // move the pawn towards the landing tile
 					OnJumpFinished();
 			}
 	    }
@@ -479,7 +483,7 @@ public class Pawn : MonoBehaviour
 		// Convert the world destination into local space
 		Vector3 moveDirection = transform.worldToLocalMatrix.MultiplyPoint(destination);
 		// stay on the ground (in local coord of the pawn)
-		moveDirection.y += height * 0.5f;
+		moveDirection.y += m_Height * 0.5f;
 
 		if ( moveDirection.magnitude > 1 )
 		{
@@ -504,7 +508,7 @@ public class Pawn : MonoBehaviour
 	private void StartToWalkToTile(Tile start, Tile goal)
 	{
 		// ask the path from the A*
-		path = AStarHelper.Calculate(start, goal);
+		m_CurrentPath = AStarHelper.Calculate(start, goal);
 
 		// if a valid path is returned, trigger the walk anim
 		if (IsThereAPath)
@@ -513,26 +517,26 @@ public class Pawn : MonoBehaviour
 
 	public void OnWalkToTileFinished()
 	{
-		isWalking = false;
+		m_IsWalking = false;
 		ResetDynamic();
 	}
 
 	private void StartToLookAt(Vector3 point)
 	{
 		// stop the look coroutine if it is already running
-		if (lookCoroutine != null)
-			StopCoroutine(lookCoroutine);
+		if (m_LookAtCoroutine != null)
+			StopCoroutine(m_LookAtCoroutine);
 
 		// start the new look at coroutine
-		lookCoroutine = LookAt(point);
-		StartCoroutine(lookCoroutine);
+		m_LookAtCoroutine = LookAt(point);
+		StartCoroutine(m_LookAtCoroutine);
 	}
 
 	private IEnumerator LookAt(Vector3 point)
 	{
 		Vector3 down = GetMyVerticality();
 
-		newTarget = false;
+		m_HasANewTargetDuringWalk = false;
 		float elapsedTime = .0f;
 
 		// Absolute gravity
@@ -581,7 +585,7 @@ public class Pawn : MonoBehaviour
     /// </summary>
     private void CheckUnderneath()
 	{
-		if (isJumping || isFalling)
+		if (m_IsJumping || m_IsFalling)
 			return;
 		
 		Vector3 down = GetMyVerticality();
@@ -589,17 +593,17 @@ public class Pawn : MonoBehaviour
 		RaycastHit hit = new RaycastHit();
 
 		// casting a ray down, we need a sphereCast because the capsule has thickness, and we only need tiles layer
-		if (Physics.SphereCast (transform.position, width * 0.4f, down, out hit, height * 0.5f, tilesLayerMask))
+		if (Physics.SphereCast (transform.position, m_Width * 0.4f, down, out hit, m_Height * 0.5f, m_TilesLayerMask))
 		{
 			GameObject hitTileGameObject = hit.collider.gameObject;
 			Tile hitTile = hitTileGameObject.GetComponent<Tile>();
 
 			// if the pawn change the tile, call the notification
-			if (hitTile != pawnTile)
+			if (hitTile != m_PawnTile)
 				OnEnterTile(hitTile);
 
 			// check if we are on the stairs
-			isWalkingInStairs = (hitTileGameObject.tag == "Stairway");
+			m_IsWalkingInStairs = (hitTileGameObject.tag == "Stairway");
 		}
 		else
 		{
@@ -611,14 +615,14 @@ public class Pawn : MonoBehaviour
 	#region jump and fall
 	private void StartToJump(Tile targetTile)
 	{
-		isJumping = true;
-		isFalling = false;
+		m_IsJumping = true;
+		m_IsFalling = false;
 
 		// disable the collider during this type of animations
-		capsuleCollider.enabled = false;
+		m_CapsuleCollider.enabled = false;
 
 		// compute the height (in grid step) between the pawn tile and the clicked tile
-		int tileRelativeGridHeight = World.Instance.GetTileRelativeGridDistance(pawnTile, targetTile);
+		int tileRelativeGridHeight = World.Instance.GetTileRelativeGridDistance(m_PawnTile, targetTile);
 
 		// compute the border direction and set it in any case (both type of animation needs it)
 		m_Animator.SetInteger(ANIM_BORDER_DIRECTION_INT, (int)GetBorderDirectionToGoToThisTile(targetTile));
@@ -628,7 +632,7 @@ public class Pawn : MonoBehaviour
 		if (tileRelativeGridHeight == 1)
 		{
 			// set the parameters to the anim state jump
-			m_AnimStateJumpToTile.SetStartAndEndTile(pawnTile, targetTile);
+			m_AnimStateJumpToTile.SetStartAndEndTile(m_PawnTile, targetTile);
 
 			// the tile is just under me, we just do a simple jump
 			m_Animator.SetTrigger(ANIM_JUMP_TO_TILE_TRIGGER);
@@ -636,7 +640,7 @@ public class Pawn : MonoBehaviour
 		else
 		{
 			// set the parameters to the anim state jump
-			m_AnimStateJumpAbseil.SetStartAndEndTile(pawnTile, targetTile);
+			m_AnimStateJumpAbseil.SetStartAndEndTile(m_PawnTile, targetTile);
 
 			// the tile is too low under me, trigger the jump with rope
 			m_Animator.SetTrigger(ANIM_JUMP_AND_ABSEIL_TRIGGER);
@@ -652,10 +656,10 @@ public class Pawn : MonoBehaviour
 	/// </summary>
 	public void OnJumpFinished()
 	{
-		clickedTile = null; // target reached, forget it
-		isJumping = false;
+		m_ClickedTile = null; // target reached, forget it
+		m_IsJumping = false;
 		// reenable the collider
-		capsuleCollider.enabled = true;
+		m_CapsuleCollider.enabled = true;
 	}
 
 	/// <summary>
@@ -666,7 +670,7 @@ public class Pawn : MonoBehaviour
 	private void StartRollOrAbseilDueToGravityChange(Tile targetTile)
 	{
 		// ask how far was the clicked tile
-		int tileRelativeGridHeight = World.Instance.GetTileRelativeGridDistance(pawnTile, targetTile);
+		int tileRelativeGridHeight = World.Instance.GetTileRelativeGridDistance(m_PawnTile, targetTile);
 
 		// compute the border direction and set it in any case (both type of animation needs it)
 		m_Animator.SetInteger(ANIM_BORDER_DIRECTION_INT, (int)GetBorderDirectionToGoToThisTile(targetTile));
@@ -676,15 +680,15 @@ public class Pawn : MonoBehaviour
 		if (tileRelativeGridHeight == 0)
 		{
 			// set the jumping flag to disable the mouse input
-			isJumping = true;
+			m_IsJumping = true;
 
 			// disable the collider during this animation
-			capsuleCollider.enabled = false;
+			m_CapsuleCollider.enabled = false;
 			ResetDynamic();
-			rigidBody.useGravity = false;
+			m_RigidBody.useGravity = false;
 
 			// set the parameters to the anim state jump
-			m_AnimStateRollToTile.SetStartAndEndTile(pawnTile, targetTile);
+			m_AnimStateRollToTile.SetStartAndEndTile(m_PawnTile, targetTile);
 			
 			// trigger the animation
 			m_Animator.SetTrigger(ANIM_ROLL_TO_TILE_TRIGGER);
@@ -706,30 +710,26 @@ public class Pawn : MonoBehaviour
 	/// </summary>
 	public void OnRollOrAbseilFinished()
 	{
-		clickedTile = null; // target reached, forget it
-		isJumping = false;
+		m_ClickedTile = null; // target reached, forget it
+		m_IsJumping = false;
 
 		// reenable the collider
-		capsuleCollider.enabled = true;
+		m_CapsuleCollider.enabled = true;
 	}
 
 	private IEnumerator DelayedPawnFall(TileOrientation orientation)
 	{
-		Vector3 desiredPosition = new Vector3(0, height * 0.5f * fallInterval, 0);
+		Vector3 desiredPosition = new Vector3(0, m_Height * 0.5f * fallInterval, 0);
 
 		// Block the "manageMouse" loop
-		isFalling = true;
-
-		// if there's some falling sfx, start them
-		if (fallingVFX != null)
-			fallingVFX.Play();
+		m_IsFalling = true;
 
 		//		collider.gameObject.layer = 12;
-		nextConstraint = rigidBody.constraints;
+		nextConstraint = m_RigidBody.constraints;
 
 		ResetDynamic();
-		rigidBody.useGravity = false;
-		rigidBody.constraints = transformConstraints;
+		m_RigidBody.useGravity = false;
+		m_RigidBody.constraints = transformConstraints;
 
 		float timer = .0f;
 		float delay = fallDelay * 0.5f;
@@ -764,8 +764,8 @@ public class Pawn : MonoBehaviour
 		// Fall animation
 		m_Animator.SetTrigger(ANIM_FALL_TRIGGER);
 
-		rigidBody.constraints = nextConstraint;
-		rigidBody.useGravity = true;
+		m_RigidBody.constraints = nextConstraint;
+		m_RigidBody.useGravity = true;
 
 		World.Instance.SetGravity(orientation);
 	}
@@ -806,18 +806,18 @@ public class Pawn : MonoBehaviour
 	private void RemoveDestinationMarks()
 	{
 		// clear the flag on all the tiles
-		foreach (Tile tile in clickableTilesToChangeGravity)
+		foreach (Tile tile in m_ClickableTilesToChangeGravity)
 			tile.IsClickableToChangeGravity = false;
 
 		// and clear the list
-		clickableTilesToChangeGravity.Clear();
+		m_ClickableTilesToChangeGravity.Clear();
 	}
 
 	private bool PutDestinationMarks(Tile tileToCheck)
 	{
 		RemoveDestinationMarks();
 
-		if ( isWalking || isWalkingInStairs || isFalling || isJumping )
+		if ( m_IsWalking || m_IsWalkingInStairs || m_IsFalling || m_IsJumping )
 			return false;
 
 		bool result = false;
@@ -831,7 +831,7 @@ public class Pawn : MonoBehaviour
 			RaycastHit hit = new RaycastHit();
 
 			// Casting a ray towards 'orientation', SphereCast needed because of Pawn's capsule thickness and ignoring Pawn's collider
-			if (Physics.SphereCast(transform.position, width * 0.4f, World.GetGravityNormalizedVector(orientation), out hit, 10000, tilesLayerMask))
+			if (Physics.SphereCast(transform.position, m_Width * 0.4f, World.GetGravityNormalizedVector(orientation), out hit, 10000, m_TilesLayerMask))
 			{
 				Tile tile = hit.collider.gameObject.GetComponent<Tile>();
 				
@@ -844,7 +844,7 @@ public class Pawn : MonoBehaviour
 
 					// make the tile clickable, and add it to the list
 					tile.IsClickableToChangeGravity = true;
-					clickableTilesToChangeGravity.Add(tile);
+					m_ClickableTilesToChangeGravity.Add(tile);
 				}
 			}
 		}
@@ -859,27 +859,27 @@ public class Pawn : MonoBehaviour
 	private void ComputeFocusedAndClickableTiles()
 	{
 		// unhighlight the previous focused tile if not null
-		if (focusedTile != null)
-			focusedTile.unHighlight();
+		if (m_FocusedTile != null)
+			m_FocusedTile.unHighlight();
 
 		// get the tile currently pointed by the player's cursor
 		Tile pointedTile = TileSelection.getTile();
 
 		// the set the focused tile with the pointed one if it is not null and clickable
 		if ((pointedTile != null) && TileSelection.isClickableType(pointedTile.Type))
-			focusedTile = pointedTile;
+			m_FocusedTile = pointedTile;
 		else
-			focusedTile = null;
+			m_FocusedTile = null;
 
 		// Now we will check if the focused tile is clickable or not.
 		bool isFocusedTileClickable = false;
 
 		// For that will we ask a valid AStar for normal walk navigation from the pawntile,
 		// or we will check if the tile is accessible by fall from pawntile.
-		if ((focusedTile != null) && (pawnTile != null))
+		if ((m_FocusedTile != null) && (m_PawnTile != null))
 		{	
 			// first check if there's a path from the pawntile to the focused tile
-			List<Tile> accessibleTiles = AStarHelper.Calculate( pawnTile, focusedTile );
+			List<Tile> accessibleTiles = AStarHelper.Calculate( m_PawnTile, m_FocusedTile );
 
 			// check if the tile is accessible by walk (astar)
 			if ( accessibleTiles != null && accessibleTiles.Count > 0 )
@@ -895,7 +895,7 @@ public class Pawn : MonoBehaviour
 				// Let's assume it is a valid path first:
 				isFocusedTileClickable = true;
 				// and check the special case
-				if (isGlued && (focusedTile.orientation != GetWorldVerticality()))
+				if (m_IsGlued && (m_FocusedTile.orientation != GetWorldVerticality()))
 				{
 					foreach (Tile tile in accessibleTiles)
 						if (!tile.IsGlueTile)
@@ -907,18 +907,18 @@ public class Pawn : MonoBehaviour
 				}
 			}		
 			// Check if the tile is accessible "by fall"
-			else if ( focusedTile.orientation == pawnTile.orientation )
+			else if ( m_FocusedTile.orientation == m_PawnTile.orientation )
 			{
 				// the tile must be below the pawn tile and the gravity must be in the right direction
 				// so if the pawn is glued on the pawntile with a gravity in different direction,
 				// he cannot jump
-				bool isAccessibleByFall = IsTileBelow(focusedTile) && (pawnTile.orientation == GetWorldVerticality());
+				bool isAccessibleByFall = IsTileBelow(m_FocusedTile) && (m_PawnTile.orientation == GetWorldVerticality());
 
 				// iff (if and only if)
-				if ( isAccessibleByFall && ( pawnTile.orientation == TileOrientation.Down || pawnTile.orientation == TileOrientation.Up ) )
+				if ( isAccessibleByFall && ( m_PawnTile.orientation == TileOrientation.Down || m_PawnTile.orientation == TileOrientation.Up ) )
 				{
-					float xDist = Mathf.Abs( pawnTile.transform.position.x - focusedTile.transform.position.x );
-					float zDist = Mathf.Abs( pawnTile.transform.position.z - focusedTile.transform.position.z );
+					float xDist = Mathf.Abs( m_PawnTile.transform.position.x - m_FocusedTile.transform.position.x );
+					float zDist = Mathf.Abs( m_PawnTile.transform.position.z - m_FocusedTile.transform.position.z );
 					bool xTest = xDist > .1f;
 					bool zTest = zDist > .1f;
 
@@ -933,10 +933,10 @@ public class Pawn : MonoBehaviour
 						isAccessibleByFall = false;
 				}
 				
-				if ( isAccessibleByFall && ( pawnTile.orientation == TileOrientation.Left || pawnTile.orientation == TileOrientation.Right ) )
+				if ( isAccessibleByFall && ( m_PawnTile.orientation == TileOrientation.Left || m_PawnTile.orientation == TileOrientation.Right ) )
 				{
-					float yDist = Mathf.Abs( pawnTile.transform.position.y - focusedTile.transform.position.y );
-					float zDist = Mathf.Abs( pawnTile.transform.position.z - focusedTile.transform.position.z );
+					float yDist = Mathf.Abs( m_PawnTile.transform.position.y - m_FocusedTile.transform.position.y );
+					float zDist = Mathf.Abs( m_PawnTile.transform.position.z - m_FocusedTile.transform.position.z );
 					bool yTest = yDist > .1f;
 					bool zTest = zDist > .1f;
 					
@@ -951,10 +951,10 @@ public class Pawn : MonoBehaviour
 						isAccessibleByFall = false;
 				}
 				
-				if ( isAccessibleByFall && ( pawnTile.orientation == TileOrientation.Front || pawnTile.orientation == TileOrientation.Back ) )
+				if ( isAccessibleByFall && ( m_PawnTile.orientation == TileOrientation.Front || m_PawnTile.orientation == TileOrientation.Back ) )
 				{
-					float xDist = Mathf.Abs( pawnTile.transform.position.x - focusedTile.transform.position.x );
-					float yDist = Mathf.Abs( pawnTile.transform.position.y - focusedTile.transform.position.y );
+					float xDist = Mathf.Abs( m_PawnTile.transform.position.x - m_FocusedTile.transform.position.x );
+					float yDist = Mathf.Abs( m_PawnTile.transform.position.y - m_FocusedTile.transform.position.y );
 					bool xTest = xDist > .1f && xDist < 10.1f;
 					bool yTest = yDist > .1f && yDist < 10.1f;
 					
@@ -976,23 +976,23 @@ public class Pawn : MonoBehaviour
 
 		// now compute the destination marks for the gravity change.
 		// This function will also mark some tiles as clickable
-		bool canFocusedTileClhangeGravity = PutDestinationMarks(focusedTile);
+		bool canFocusedTileClhangeGravity = PutDestinationMarks(m_FocusedTile);
 		// update the clickable flag
 		isFocusedTileClickable = isFocusedTileClickable || canFocusedTileClhangeGravity;
 
 		// now check if the focused tile is the same as the pawn tile, we only authorize the click
 		// if the player is glued and the gravity is not under his feet,
 		// in order for the player to put back the gravity under his feet.
-		if ((focusedTile != null) && (focusedTile == pawnTile))
-			isFocusedTileClickable = isGlued && (focusedTile.orientation != TileOrientation.None) && (focusedTile.orientation != GetWorldVerticality());
+		if ((m_FocusedTile != null) && (m_FocusedTile == m_PawnTile))
+			isFocusedTileClickable = m_IsGlued && (m_FocusedTile.orientation != TileOrientation.None) && (m_FocusedTile.orientation != GetWorldVerticality());
 
 		// now highlight the focused tile if it is clickable (may happen with AStar navigation, fall or gravity change)
-		if (focusedTile != null)
+		if (m_FocusedTile != null)
 		{
 			if (isFocusedTileClickable)
-				focusedTile.highlight();
+				m_FocusedTile.highlight();
 			else
-				focusedTile.unHighlight();
+				m_FocusedTile.unHighlight();
 		}
 	}
 	#endregion
@@ -1011,11 +1011,11 @@ public class Pawn : MonoBehaviour
 		// the normal case, the input doesn't control the camera
 		if (!isInputCapturedByCamera)
 		{
-			if (isWalking || isFalling || isJumping || (focusedTile == null) || World.Instance.IsThereAnyCubeFalling())
+			if (m_IsWalking || m_IsFalling || m_IsJumping || (m_FocusedTile == null) || World.Instance.IsThereAnyCubeFalling())
 				return;
 
 			// if the focussed tile is highlighted that means it is clickable
-			if (InputManager.isClickUp() && focusedTile.IsHighlighted)
+			if (InputManager.isClickUp() && m_FocusedTile.IsHighlighted)
 			{
 				// get the camera sound to play a 2D UI sound when clicking
 				Camera2DSound sound = Camera.main.GetComponent<Camera2DSound>();
@@ -1024,8 +1024,8 @@ public class Pawn : MonoBehaviour
 				sound.playSound(Camera2DSound.SoundId.CLICK_TILE);
 							
 				// If the player clicked a tile with different orientation
-				if ( ( focusedTile.orientation != pawnTile.orientation ) || 
-						( isGlued && (focusedTile == pawnTile)) )
+				if ( ( m_FocusedTile.orientation != m_PawnTile.orientation ) || 
+						( m_IsGlued && (m_FocusedTile == m_PawnTile)) )
 				{
 					// player has changed the gravity, increase the counter
 					HUD.Instance.IncreaseGravityChangeCount();
@@ -1034,34 +1034,34 @@ public class Pawn : MonoBehaviour
 					sound.playSound(Camera2DSound.SoundId.GRAVITY_CHANGE);
 								
 					// If the pawn is on a glue tile, the change of gravity is managed differently
-					if ( isGlued )
+					if ( m_IsGlued )
 					{
-						World.Instance.SetGravity( focusedTile.orientation );
+						World.Instance.SetGravity( m_FocusedTile.orientation );
 					}
 					else
 					{
 						// asked the clicked tile to play it's attraction VFX
-						focusedTile.playActivationVFX();
+						m_FocusedTile.playActivationVFX();
 
 						// then triggrer the animation
-						StartRollOrAbseilDueToGravityChange(focusedTile);
+						StartRollOrAbseilDueToGravityChange(m_FocusedTile);
 					}
 				}
 				else
 				{
 					// memorised the clicked tile
-					clickedTile = focusedTile;
+					m_ClickedTile = m_FocusedTile;
 					// ask a new path if we go to a different tile
-					if (pawnTile != clickedTile)
-						StartToWalkToTile(pawnTile, clickedTile);
+					if (m_PawnTile != m_ClickedTile)
+						StartToWalkToTile(m_PawnTile, m_ClickedTile);
 				}
 	        }
 		}
 		else
 		{
 			// camera has capture input for rotating, so clear the focused tile
-			if (focusedTile != null)
-				focusedTile.unHighlight();
+			if (m_FocusedTile != null)
+				m_FocusedTile.unHighlight();
 		}
 	}
 	#endregion
@@ -1102,8 +1102,8 @@ public class Pawn : MonoBehaviour
 	/// <returns>The my verticality for the pawn.</returns>
 	private Vector3 GetMyVerticality()
 	{
-		if (isGlued && (pawnTile != null))
-			return pawnTile.getDownVector();
+		if (m_IsGlued && (m_PawnTile != null))
+			return m_PawnTile.getDownVector();
 		else
 			return Physics.gravity.normalized;
 	}
@@ -1143,10 +1143,10 @@ public class Pawn : MonoBehaviour
 	private bool IsGrounded()
 	{
 		//is there even a tile beneath the Pawn
-		if (pawnTile != null) 
+		if (m_PawnTile != null) 
 		{
 			Vector3 down = GetMyVerticality();
-			return Physics.SphereCast( new Ray( transform.position, down ), width * 0.5f, height * 0.5f, tilesLayerMask );
+			return Physics.SphereCast( new Ray( transform.position, down ), m_Width * 0.5f, m_Height * 0.5f, m_TilesLayerMask );
 		}
 		
 		return false; // if there isn't a tile beneath him, he isn't grounded
@@ -1157,20 +1157,20 @@ public class Pawn : MonoBehaviour
 	/// </summary>
 	private bool IsTileBelow(Tile target)
 	{
-		switch (pawnTile.orientation)
+		switch (m_PawnTile.orientation)
         {
             default:
-				return pawnTile.transform.position.y > target.transform.position.y;
+				return m_PawnTile.transform.position.y > target.transform.position.y;
             case TileOrientation.Down:
-				return pawnTile.transform.position.y < target.transform.position.y;
+				return m_PawnTile.transform.position.y < target.transform.position.y;
 			case TileOrientation.Left:
-				return pawnTile.transform.position.x > target.transform.position.x;
+				return m_PawnTile.transform.position.x > target.transform.position.x;
 			case TileOrientation.Right:
-				return pawnTile.transform.position.x < target.transform.position.x;
+				return m_PawnTile.transform.position.x < target.transform.position.x;
             case TileOrientation.Front:
-				return pawnTile.transform.position.z < target.transform.position.z;
+				return m_PawnTile.transform.position.z < target.transform.position.z;
             case TileOrientation.Back:
-				return pawnTile.transform.position.z > target.transform.position.z;
+				return m_PawnTile.transform.position.z > target.transform.position.z;
         }
 	}
 
@@ -1179,7 +1179,7 @@ public class Pawn : MonoBehaviour
     /// </summary>
     private Vector3 GetGroundPosition()
 	{
-		float halfHeight = height * 0.5f;
+		float halfHeight = m_Height * 0.5f;
 
 		switch (GetFeltVerticality())
 		{
