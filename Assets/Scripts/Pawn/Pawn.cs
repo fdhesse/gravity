@@ -72,7 +72,7 @@ public class Pawn : MonoBehaviour
 	private IEnumerator lookCoroutine = null;
 	private Animator m_Animator = null;							  // will be init in Awake
 	private RootMotionController m_RootMotionController = null;   // will be init in Awake
-	private AnimStateJump m_AnimStateJump = null;                 // will be init in OnEnable or Start
+	private AnimStateJumpToTile m_AnimStateJumpToTile = null;     // will be init in OnEnable or Start
 	private AnimStateRollToTile m_AnimStateRollToTile = null;     // will be init in OnEnable or Start
 
 	// #SPAWN#
@@ -149,7 +149,7 @@ public class Pawn : MonoBehaviour
 	{
 		// according to Unity doc, you can only get the animator state behavior in Start() or OnEnable()
 		// but the state are reinstantiated when the animator get disabled, so I prefer to get them here.
-		m_AnimStateJump = m_Animator.GetBehaviour<AnimStateJump>();
+		m_AnimStateJumpToTile = m_Animator.GetBehaviour<AnimStateJumpToTile>();
 		m_AnimStateRollToTile = m_Animator.GetBehaviour<AnimStateRollToTile>();
 	}
 
@@ -641,7 +641,7 @@ public class Pawn : MonoBehaviour
 			capsuleCollider.enabled = false;
 
 			// set the parameters to the anim state jump
-			m_AnimStateJump.SetStartAndEndTile(pawnTile, targetTile);
+			m_AnimStateJumpToTile.SetStartAndEndTile(pawnTile, targetTile);
 
 			// the tile is just under me, we just do a simple jump
 			m_Animator.SetTrigger(ANIM_JUMP_TO_TILE_TRIGGER);
