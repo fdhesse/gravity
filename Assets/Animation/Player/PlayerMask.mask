@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: PlayerMask
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: BlueGuy
+    m_Weight: 0
+  - m_Path: Root
+    m_Weight: 1
+  - m_Path: Root/Hip
+    m_Weight: 1
+  - m_Path: Root/Hip/Body
+    m_Weight: 1
+  - m_Path: Root/Hip/Body/Chest
+    m_Weight: 1
+  - m_Path: Root/Hip/Body/Chest/Collar_L
+    m_Weight: 1
+  - m_Path: Root/Hip/Body/Chest/Collar_L/Shoulder_L
+    m_Weight: 1
+  - m_Path: Root/Hip/Body/Chest/Collar_L/Shoulder_L/ForeArm_L
+    m_Weight: 1
+  - m_Path: Root/Hip/Body/Chest/Collar_L/Shoulder_L/ForeArm_L/Hand_L
+    m_Weight: 1
+  - m_Path: Root/Hip/Body/Chest/Collar_R
+    m_Weight: 1
+  - m_Path: Root/Hip/Body/Chest/Collar_R/Shoulder_R
+    m_Weight: 1
+  - m_Path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R
+    m_Weight: 1
+  - m_Path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R
+    m_Weight: 1
+  - m_Path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/axe
+    m_Weight: 1
+  - m_Path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_Rope_01
+    m_Weight: 1
+  - m_Path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_Rope_01/joint_Rope_02
+    m_Weight: 1
+  - m_Path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_Rope_01/joint_Rope_02/joint_Rope_03
+    m_Weight: 1
+  - m_Path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_Rope_01/joint_Rope_02/joint_Rope_03/rope_03
+    m_Weight: 1
+  - m_Path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_Rope_01/joint_Rope_02/rope_02
+    m_Weight: 1
+  - m_Path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_Rope_01/rope_01
+    m_Weight: 1
+  - m_Path: Root/Hip/Body/Chest/Neck
+    m_Weight: 1
+  - m_Path: Root/Hip/Body/Chest/Neck/Head
+    m_Weight: 1
+  - m_Path: Root/Hip/Thigh_L
+    m_Weight: 1
+  - m_Path: Root/Hip/Thigh_L/Shin_L
+    m_Weight: 1
+  - m_Path: Root/Hip/Thigh_L/Shin_L/Foot_L
+    m_Weight: 1
+  - m_Path: Root/Hip/Thigh_L/Shin_L/Foot_L/Toe_L
+    m_Weight: 1
+  - m_Path: Root/Hip/Thigh_R
+    m_Weight: 1
+  - m_Path: Root/Hip/Thigh_R/Shin_R
+    m_Weight: 1
+  - m_Path: Root/Hip/Thigh_R/Shin_R/Foot_R
+    m_Weight: 1
+  - m_Path: Root/Hip/Thigh_R/Shin_R/Foot_R/Toe_R
+    m_Weight: 1

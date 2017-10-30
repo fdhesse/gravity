@@ -237,35 +237,19 @@ ModelImporter:
       - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R
         weight: 1
       - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/axe
-        weight: 0
-      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/axe/rope_01
-        weight: 0
-      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/axe/rope_01/rope_02
-        weight: 0
-      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/axe/rope_01/rope_02/rope_03
-        weight: 0
-      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/axe/rope_01/rope_02/rope_03/rope_04
-        weight: 0
-      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/axe/rope_01/rope_02/rope_03/rope_04/rope_05
-        weight: 0
-      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/axe/rope_01/rope_02/rope_03/rope_04/rope_05/rope_06
-        weight: 0
-      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/axe/rope_01/rope_02/rope_03/rope_04/rope_05/rope_06/rope_07
-        weight: 0
-      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/axe/rope_01/rope_02/rope_03/rope_04/rope_05/rope_06/rope_07/rope_08
-        weight: 0
-      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/axe/rope_01/rope_02/rope_03/rope_04/rope_05/rope_06/rope_07/rope_08/rope_09
-        weight: 0
-      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/axe/rope_01/rope_02/rope_03/rope_04/rope_05/rope_06/rope_07/rope_08/rope_09/rope_010
-        weight: 0
-      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/axe/rope_01/rope_02/rope_03/rope_04/rope_05/rope_06/rope_07/rope_08/rope_09/rope_010/rope_011
-        weight: 0
-      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/axe/rope_01/rope_02/rope_03/rope_04/rope_05/rope_06/rope_07/rope_08/rope_09/rope_010/rope_011/rope_012
-        weight: 0
-      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/axe/rope_01/rope_02/rope_03/rope_04/rope_05/rope_06/rope_07/rope_08/rope_09/rope_010/rope_011/rope_012/rope_013
-        weight: 0
-      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/axe/rope_01/rope_02/rope_03/rope_04/rope_05/rope_06/rope_07/rope_08/rope_09/rope_010/rope_011/rope_012/rope_013/rope_014
-        weight: 0
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_Rope_01
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_Rope_01/joint_Rope_02
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_Rope_01/joint_Rope_02/joint_Rope_03
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_Rope_01/joint_Rope_02/joint_Rope_03/rope_03
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_Rope_01/joint_Rope_02/rope_02
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_Rope_01/rope_01
+        weight: 1
       - path: Root/Hip/Body/Chest/Neck
         weight: 1
       - path: Root/Hip/Body/Chest/Neck/Head
@@ -286,8 +270,8 @@ ModelImporter:
         weight: 1
       - path: Root/Hip/Thigh_R/Shin_R/Foot_R/Toe_R
         weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
+      maskType: 1
+      maskSource: {fileID: 31900000, guid: e05c1cf5d262a5a488aae09c00f7739d, type: 2}
       additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
