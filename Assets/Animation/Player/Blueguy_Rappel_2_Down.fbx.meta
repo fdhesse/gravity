@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 572e5fd96aefe124cbca695725d53af7
-timeCreated: 1508739472
-licenseType: Pro
+timeCreated: 1510070357
+licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
@@ -20,30 +20,129 @@ ModelImporter:
     100024: Hand_R
     100026: Head
     100028: Hip
-    100030: Neck
-    100032: Root
-    100034: rope_01
-    100036: rope_010
-    100038: rope_011
-    100040: rope_012
-    100042: rope_013
-    100044: rope_014
-    100046: rope_02
-    100048: rope_03
-    100050: rope_04
-    100052: rope_05
-    100054: rope_06
-    100056: rope_07
-    100058: rope_08
-    100060: rope_09
-    100062: Shin_L
-    100064: Shin_R
-    100066: Shoulder_L
-    100068: Shoulder_R
-    100070: Thigh_L
-    100072: Thigh_R
-    100074: Toe_L
-    100076: Toe_R
+    100030: joint_rope_01
+    100032: joint_rope_02
+    100034: joint_rope_03
+    100036: joint_rope_04
+    100038: joint_rope_05
+    100040: joint_rope_06
+    100042: joint_rope_07
+    100044: joint_rope_08
+    100046: joint_rope_09
+    100048: joint_rope_10
+    100050: joint_rope_11
+    100052: joint_rope_12
+    100054: joint_rope_13
+    100056: joint_rope_14
+    100058: joint_rope_15
+    100060: joint_rope_16
+    100062: joint_rope_17
+    100064: joint_rope_18
+    100066: joint_rope_19
+    100068: joint_rope_20
+    100070: joint_rope_21
+    100072: joint_rope_22
+    100074: joint_rope_23
+    100076: joint_rope_24
+    100078: joint_rope_25
+    100080: joint_rope_26
+    100082: joint_rope_27
+    100084: joint_rope_28
+    100086: joint_rope_29
+    100088: joint_rope_30
+    100090: joint_rope_31
+    100092: joint_rope_32
+    100094: joint_rope_33
+    100096: joint_rope_34
+    100098: joint_rope_35
+    100100: joint_rope_36
+    100102: joint_rope_37
+    100104: joint_rope_38
+    100106: joint_rope_39
+    100108: joint_rope_40
+    100110: joint_rope_41
+    100112: joint_rope_42
+    100114: joint_rope_43
+    100116: joint_rope_44
+    100118: joint_rope_45
+    100120: joint_rope_46
+    100122: joint_rope_47
+    100124: joint_rope_48
+    100126: joint_rope_49
+    100128: joint_rope_50
+    100130: joint_rope_51
+    100132: joint_rope_52
+    100134: joint_rope_53
+    100136: joint_rope_54
+    100138: joint_rope_55
+    100140: joint_rope_56
+    100142: joint_rope_57
+    100144: Neck
+    100146: Root
+    100148: Rope_01
+    100150: Rope_010
+    100152: Rope_011
+    100154: Rope_012
+    100156: Rope_013
+    100158: Rope_014
+    100160: Rope_015
+    100162: Rope_016
+    100164: Rope_017
+    100166: Rope_018
+    100168: Rope_019
+    100170: Rope_02
+    100172: Rope_020
+    100174: Rope_021
+    100176: Rope_022
+    100178: Rope_023
+    100180: Rope_024
+    100182: Rope_025
+    100184: Rope_026
+    100186: Rope_027
+    100188: Rope_028
+    100190: Rope_029
+    100192: Rope_03
+    100194: Rope_030
+    100196: Rope_031
+    100198: Rope_032
+    100200: Rope_033
+    100202: Rope_034
+    100204: Rope_035
+    100206: Rope_036
+    100208: Rope_037
+    100210: Rope_038
+    100212: Rope_039
+    100214: Rope_04
+    100216: Rope_040
+    100218: Rope_041
+    100220: Rope_042
+    100222: Rope_043
+    100224: Rope_044
+    100226: Rope_045
+    100228: Rope_046
+    100230: Rope_047
+    100232: Rope_048
+    100234: Rope_049
+    100236: Rope_05
+    100238: Rope_050
+    100240: Rope_051
+    100242: Rope_052
+    100244: Rope_053
+    100246: Rope_054
+    100248: Rope_055
+    100250: Rope_056
+    100252: Rope_06
+    100254: Rope_07
+    100256: Rope_08
+    100258: Rope_09
+    100260: Shin_L
+    100262: Shin_R
+    100264: Shoulder_L
+    100266: Shoulder_R
+    100268: Thigh_L
+    100270: Thigh_R
+    100272: Toe_L
+    100274: Toe_R
     400000: axe
     400002: BlueGuy
     400004: //RootNode
@@ -59,77 +158,302 @@ ModelImporter:
     400024: Hand_R
     400026: Head
     400028: Hip
-    400030: Neck
-    400032: Root
-    400034: rope_01
-    400036: rope_010
-    400038: rope_011
-    400040: rope_012
-    400042: rope_013
-    400044: rope_014
-    400046: rope_02
-    400048: rope_03
-    400050: rope_04
-    400052: rope_05
-    400054: rope_06
-    400056: rope_07
-    400058: rope_08
-    400060: rope_09
-    400062: Shin_L
-    400064: Shin_R
-    400066: Shoulder_L
-    400068: Shoulder_R
-    400070: Thigh_L
-    400072: Thigh_R
-    400074: Toe_L
-    400076: Toe_R
+    400030: joint_rope_01
+    400032: joint_rope_02
+    400034: joint_rope_03
+    400036: joint_rope_04
+    400038: joint_rope_05
+    400040: joint_rope_06
+    400042: joint_rope_07
+    400044: joint_rope_08
+    400046: joint_rope_09
+    400048: joint_rope_10
+    400050: joint_rope_11
+    400052: joint_rope_12
+    400054: joint_rope_13
+    400056: joint_rope_14
+    400058: joint_rope_15
+    400060: joint_rope_16
+    400062: joint_rope_17
+    400064: joint_rope_18
+    400066: joint_rope_19
+    400068: joint_rope_20
+    400070: joint_rope_21
+    400072: joint_rope_22
+    400074: joint_rope_23
+    400076: joint_rope_24
+    400078: joint_rope_25
+    400080: joint_rope_26
+    400082: joint_rope_27
+    400084: joint_rope_28
+    400086: joint_rope_29
+    400088: joint_rope_30
+    400090: joint_rope_31
+    400092: joint_rope_32
+    400094: joint_rope_33
+    400096: joint_rope_34
+    400098: joint_rope_35
+    400100: joint_rope_36
+    400102: joint_rope_37
+    400104: joint_rope_38
+    400106: joint_rope_39
+    400108: joint_rope_40
+    400110: joint_rope_41
+    400112: joint_rope_42
+    400114: joint_rope_43
+    400116: joint_rope_44
+    400118: joint_rope_45
+    400120: joint_rope_46
+    400122: joint_rope_47
+    400124: joint_rope_48
+    400126: joint_rope_49
+    400128: joint_rope_50
+    400130: joint_rope_51
+    400132: joint_rope_52
+    400134: joint_rope_53
+    400136: joint_rope_54
+    400138: joint_rope_55
+    400140: joint_rope_56
+    400142: joint_rope_57
+    400144: Neck
+    400146: Root
+    400148: Rope_01
+    400150: Rope_010
+    400152: Rope_011
+    400154: Rope_012
+    400156: Rope_013
+    400158: Rope_014
+    400160: Rope_015
+    400162: Rope_016
+    400164: Rope_017
+    400166: Rope_018
+    400168: Rope_019
+    400170: Rope_02
+    400172: Rope_020
+    400174: Rope_021
+    400176: Rope_022
+    400178: Rope_023
+    400180: Rope_024
+    400182: Rope_025
+    400184: Rope_026
+    400186: Rope_027
+    400188: Rope_028
+    400190: Rope_029
+    400192: Rope_03
+    400194: Rope_030
+    400196: Rope_031
+    400198: Rope_032
+    400200: Rope_033
+    400202: Rope_034
+    400204: Rope_035
+    400206: Rope_036
+    400208: Rope_037
+    400210: Rope_038
+    400212: Rope_039
+    400214: Rope_04
+    400216: Rope_040
+    400218: Rope_041
+    400220: Rope_042
+    400222: Rope_043
+    400224: Rope_044
+    400226: Rope_045
+    400228: Rope_046
+    400230: Rope_047
+    400232: Rope_048
+    400234: Rope_049
+    400236: Rope_05
+    400238: Rope_050
+    400240: Rope_051
+    400242: Rope_052
+    400244: Rope_053
+    400246: Rope_054
+    400248: Rope_055
+    400250: Rope_056
+    400252: Rope_06
+    400254: Rope_07
+    400256: Rope_08
+    400258: Rope_09
+    400260: Shin_L
+    400262: Shin_R
+    400264: Shoulder_L
+    400266: Shoulder_R
+    400268: Thigh_L
+    400270: Thigh_R
+    400272: Toe_L
+    400274: Toe_R
     2300000: axe
-    2300002: rope_01
-    2300004: rope_010
-    2300006: rope_011
-    2300008: rope_012
-    2300010: rope_013
-    2300012: rope_014
-    2300014: rope_02
-    2300016: rope_03
-    2300018: rope_04
-    2300020: rope_05
-    2300022: rope_06
-    2300024: rope_07
-    2300026: rope_08
-    2300028: rope_09
+    2300002: Rope_01
+    2300004: Rope_010
+    2300006: Rope_011
+    2300008: Rope_012
+    2300010: Rope_013
+    2300012: Rope_014
+    2300014: Rope_015
+    2300016: Rope_016
+    2300018: Rope_017
+    2300020: Rope_018
+    2300022: Rope_019
+    2300024: Rope_02
+    2300026: Rope_020
+    2300028: Rope_021
+    2300030: Rope_022
+    2300032: Rope_023
+    2300034: Rope_024
+    2300036: Rope_025
+    2300038: Rope_026
+    2300040: Rope_027
+    2300042: Rope_028
+    2300044: Rope_029
+    2300046: Rope_03
+    2300048: Rope_030
+    2300050: Rope_031
+    2300052: Rope_032
+    2300054: Rope_033
+    2300056: Rope_034
+    2300058: Rope_035
+    2300060: Rope_036
+    2300062: Rope_037
+    2300064: Rope_038
+    2300066: Rope_039
+    2300068: Rope_04
+    2300070: Rope_040
+    2300072: Rope_041
+    2300074: Rope_042
+    2300076: Rope_043
+    2300078: Rope_044
+    2300080: Rope_045
+    2300082: Rope_046
+    2300084: Rope_047
+    2300086: Rope_048
+    2300088: Rope_049
+    2300090: Rope_05
+    2300092: Rope_050
+    2300094: Rope_051
+    2300096: Rope_052
+    2300098: Rope_053
+    2300100: Rope_054
+    2300102: Rope_055
+    2300104: Rope_056
+    2300106: Rope_06
+    2300108: Rope_07
+    2300110: Rope_08
+    2300112: Rope_09
     3300000: axe
-    3300002: rope_01
-    3300004: rope_010
-    3300006: rope_011
-    3300008: rope_012
-    3300010: rope_013
-    3300012: rope_014
-    3300014: rope_02
-    3300016: rope_03
-    3300018: rope_04
-    3300020: rope_05
-    3300022: rope_06
-    3300024: rope_07
-    3300026: rope_08
-    3300028: rope_09
-    4300000: axe
-    4300002: rope_01
-    4300004: rope_02
-    4300006: rope_03
-    4300008: rope_04
-    4300010: rope_05
-    4300012: rope_06
-    4300014: rope_07
-    4300016: rope_08
-    4300018: rope_09
-    4300020: rope_010
-    4300022: rope_011
-    4300024: rope_012
-    4300026: rope_013
-    4300028: rope_014
-    4300030: BlueGuy
-    7400000: Rappel2Down
+    3300002: Rope_01
+    3300004: Rope_010
+    3300006: Rope_011
+    3300008: Rope_012
+    3300010: Rope_013
+    3300012: Rope_014
+    3300014: Rope_015
+    3300016: Rope_016
+    3300018: Rope_017
+    3300020: Rope_018
+    3300022: Rope_019
+    3300024: Rope_02
+    3300026: Rope_020
+    3300028: Rope_021
+    3300030: Rope_022
+    3300032: Rope_023
+    3300034: Rope_024
+    3300036: Rope_025
+    3300038: Rope_026
+    3300040: Rope_027
+    3300042: Rope_028
+    3300044: Rope_029
+    3300046: Rope_03
+    3300048: Rope_030
+    3300050: Rope_031
+    3300052: Rope_032
+    3300054: Rope_033
+    3300056: Rope_034
+    3300058: Rope_035
+    3300060: Rope_036
+    3300062: Rope_037
+    3300064: Rope_038
+    3300066: Rope_039
+    3300068: Rope_04
+    3300070: Rope_040
+    3300072: Rope_041
+    3300074: Rope_042
+    3300076: Rope_043
+    3300078: Rope_044
+    3300080: Rope_045
+    3300082: Rope_046
+    3300084: Rope_047
+    3300086: Rope_048
+    3300088: Rope_049
+    3300090: Rope_05
+    3300092: Rope_050
+    3300094: Rope_051
+    3300096: Rope_052
+    3300098: Rope_053
+    3300100: Rope_054
+    3300102: Rope_055
+    3300104: Rope_056
+    3300106: Rope_06
+    3300108: Rope_07
+    3300110: Rope_08
+    3300112: Rope_09
+    4300000: Rope_056
+    4300002: Rope_055
+    4300004: Rope_054
+    4300006: Rope_053
+    4300008: Rope_052
+    4300010: Rope_051
+    4300012: Rope_050
+    4300014: Rope_049
+    4300016: Rope_048
+    4300018: Rope_047
+    4300020: Rope_046
+    4300022: Rope_045
+    4300024: Rope_044
+    4300026: Rope_043
+    4300028: Rope_042
+    4300030: Rope_041
+    4300032: Rope_040
+    4300034: Rope_039
+    4300036: Rope_038
+    4300038: Rope_037
+    4300040: Rope_036
+    4300042: Rope_035
+    4300044: Rope_034
+    4300046: Rope_033
+    4300048: Rope_032
+    4300050: Rope_031
+    4300052: Rope_030
+    4300054: Rope_029
+    4300056: Rope_028
+    4300058: Rope_027
+    4300060: Rope_026
+    4300062: Rope_025
+    4300064: Rope_024
+    4300066: Rope_023
+    4300068: Rope_022
+    4300070: Rope_021
+    4300072: Rope_020
+    4300074: Rope_019
+    4300076: Rope_018
+    4300078: Rope_017
+    4300080: Rope_016
+    4300082: Rope_015
+    4300084: Rope_014
+    4300086: Rope_013
+    4300088: Rope_012
+    4300090: Rope_011
+    4300092: Rope_010
+    4300094: Rope_09
+    4300096: Rope_08
+    4300098: Rope_07
+    4300100: Rope_06
+    4300102: Rope_05
+    4300104: Rope_04
+    4300106: Rope_03
+    4300108: Rope_02
+    4300110: Rope_01
+    4300112: axe
+    4300114: BlueGuy
+    7400000: Take 001
     9500000: //RootNode
     13700000: BlueGuy
   materials:
@@ -145,7 +469,10 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar to
+      improve retargeting quality.\n\t'Hand_R' has translation animation that will
+      be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     animationCompression: 3
@@ -156,7 +483,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: Rappel2Down
+      name: Take 001
       takeName: Take 001
       firstFrame: 1
       lastFrame: 30
@@ -173,40 +500,12 @@ ModelImporter:
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 1
+      keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events:
-      - time: 0
-        functionName: OnRootTranslationMode
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0
-        functionName: OnRootRotationMode
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.8395506
-        functionName: OnRootTranslationMode
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 1
-        messageOptions: 0
-      - time: 0.9304728
-        functionName: OnRootRotationMode
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 1
-        messageOptions: 0
+      events: []
       transformMask:
       - path: 
         weight: 1
@@ -484,8 +783,8 @@ ModelImporter:
         weight: 1
       - path: Root/Hip/Thigh_R/Shin_R/Foot_R/Toe_R
         weight: 1
-      maskType: 1
-      maskSource: {fileID: 31900000, guid: e05c1cf5d262a5a488aae09c00f7739d, type: 2}
+      maskType: 3
+      maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
