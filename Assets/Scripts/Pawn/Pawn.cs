@@ -70,10 +70,6 @@ public class Pawn : MonoBehaviour
 	private float m_Height = 1f;						// will be init in Awake from the capsule height
 	private float m_Width = 1f;				            // will be init in Awake from the capsule width
 
-	// #PICKAXE#
-	private Transform m_PickaxeTransform = null;		// will be init in Awake
-	public Transform PickaxeTransform { get { return m_PickaxeTransform; } }
-
 	// #ANIMATIONS#
 	private Animator m_Animator = null;							  // will be init in Awake
 	private RootMotionController m_RootMotionController = null;   // will be init in Awake
@@ -134,24 +130,10 @@ public class Pawn : MonoBehaviour
 		m_TilesLayer = LayerMask.NameToLayer ("Tiles");
 		m_TilesLayerMask = LayerMask.GetMask(new string[]{"Tiles"});
 
-		// get all the animators to find mind and the one of the pickaxe
-		var allPawnAnimators = GetComponentsInChildren<Animator>();
-		foreach (Animator animator in allPawnAnimators)
-		{
-			if (animator.runtimeAnimatorController.name.Equals("PlayerAnimator"))
-			{
-				// get my animator and root motion controller
-				m_Animator = animator;
-				m_RootMotionController = animator.GetComponent<RootMotionController>();
-				m_RootMotionController.ResetAllParameters(false); // disable it by default, the anim state will enable it if they need it
-			}
-			else
-			{
-				Debug.Assert(animator.runtimeAnimatorController.name.Equals("PickaxeAnimator"), "We found an animator in the player which is not the PlayerAnimator, neither the PickaxeAnimator. What's that?");
-				// find my pickaxe
-				m_PickaxeTransform = animator.transform;
-			}
-		}
+		// get my animator and root motion controller
+		m_Animator = GetComponentInChildren<Animator>();
+		m_RootMotionController = GetComponentInChildren<RootMotionController>();
+		m_RootMotionController.ResetAllParameters(false); // disable it by default, the anim state will enable it if they need it
 
 		// get my rigid body
 		m_RigidBody = GetComponent<Rigidbody>();
