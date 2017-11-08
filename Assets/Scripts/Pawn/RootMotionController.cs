@@ -484,7 +484,7 @@ public class RootMotionController : MonoBehaviour
 
 		// draw the target position
 		Gizmos.color = (m_TranslationMode == TranslationMode.MOVE_TO_TARGET_POSITION) ? activeColor : inactiveColor;
-        Gizmos.DrawSphere(targetPos, 1f);
+        Gizmos.DrawSphere(targetPos, GameplayCube.CUBE_SIZE * 0.1f);
 
 		// draw the target direction
 		UnityEditor.Handles.color = (m_RotationMode == RotationMode.ROTATE_TO_TARGET_ORIENTATION) ? activeColor : inactiveColor;

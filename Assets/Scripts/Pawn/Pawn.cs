@@ -879,10 +879,10 @@ public class Pawn : MonoBehaviour
 		if ((m_FocusedTile != null) && (m_PawnTile != null))
 		{	
 			// first check if there's a path from the pawntile to the focused tile
-			List<Tile> accessibleTiles = AStarHelper.Calculate( m_PawnTile, m_FocusedTile );
+			List<Tile> accessibleTiles = AStarHelper.Calculate(m_PawnTile, m_FocusedTile);
 
 			// check if the tile is accessible by walk (astar)
-			if ( accessibleTiles != null && accessibleTiles.Count > 0 )
+			if ((accessibleTiles != null) && (accessibleTiles.Count > 0))
 			{
 				// we may have found a path from the pawntile to the focused tile,
 				// which means normally we should be able to click on that focused tile.
@@ -907,65 +907,69 @@ public class Pawn : MonoBehaviour
 				}
 			}		
 			// Check if the tile is accessible "by fall"
-			else if ( m_FocusedTile.orientation == m_PawnTile.orientation )
+			else if (m_FocusedTile.orientation == m_PawnTile.orientation)
 			{
 				// the tile must be below the pawn tile and the gravity must be in the right direction
 				// so if the pawn is glued on the pawntile with a gravity in different direction,
 				// he cannot jump
 				bool isAccessibleByFall = IsTileBelow(m_FocusedTile) && (m_PawnTile.orientation == GetWorldVerticality());
 
+				// get a threshold value for testing a distance greater than a cube distance
+				const float minDistThreshold = GameplayCube.CUBE_SIZE * 0.05f; // this equals to 10cm for now with the cube at 2m
+				const float moreThanCubeDistance = GameplayCube.CUBE_SIZE + minDistThreshold;
+
 				// iff (if and only if)
-				if ( isAccessibleByFall && ( m_PawnTile.orientation == TileOrientation.Down || m_PawnTile.orientation == TileOrientation.Up ) )
+				if ( isAccessibleByFall && (m_PawnTile.orientation == TileOrientation.Down || m_PawnTile.orientation == TileOrientation.Up))
 				{
-					float xDist = Mathf.Abs( m_PawnTile.transform.position.x - m_FocusedTile.transform.position.x );
-					float zDist = Mathf.Abs( m_PawnTile.transform.position.z - m_FocusedTile.transform.position.z );
-					bool xTest = xDist > .1f;
-					bool zTest = zDist > .1f;
+					float xDist = Mathf.Abs(m_PawnTile.transform.position.x - m_FocusedTile.transform.position.x);
+					float zDist = Mathf.Abs(m_PawnTile.transform.position.z - m_FocusedTile.transform.position.z);
+					bool xTest = xDist > minDistThreshold;
+					bool zTest = zDist > minDistThreshold;
 
-					if ( xTest && zTest )
+					if (xTest && zTest)
 						isAccessibleByFall = false;
-					else if ( !xTest && !zTest )
+					else if (!xTest && !zTest)
 						isAccessibleByFall = false;
 
-					if ( xDist > 10.1f )
+					if (xDist > moreThanCubeDistance)
 						isAccessibleByFall = false;
-					if ( zDist > 10.1f )
+					if (zDist > moreThanCubeDistance)
 						isAccessibleByFall = false;
 				}
 				
-				if ( isAccessibleByFall && ( m_PawnTile.orientation == TileOrientation.Left || m_PawnTile.orientation == TileOrientation.Right ) )
+				if (isAccessibleByFall && (m_PawnTile.orientation == TileOrientation.Left || m_PawnTile.orientation == TileOrientation.Right))
 				{
-					float yDist = Mathf.Abs( m_PawnTile.transform.position.y - m_FocusedTile.transform.position.y );
-					float zDist = Mathf.Abs( m_PawnTile.transform.position.z - m_FocusedTile.transform.position.z );
-					bool yTest = yDist > .1f;
-					bool zTest = zDist > .1f;
+					float yDist = Mathf.Abs(m_PawnTile.transform.position.y - m_FocusedTile.transform.position.y);
+					float zDist = Mathf.Abs(m_PawnTile.transform.position.z - m_FocusedTile.transform.position.z);
+					bool yTest = yDist > minDistThreshold;
+					bool zTest = zDist > minDistThreshold;
 					
-					if ( yTest && zTest )
+					if (yTest && zTest)
 						isAccessibleByFall = false;
-					else if ( !yTest && !zTest )
+					else if (!yTest && !zTest)
 						isAccessibleByFall = false;
 
-					if ( yDist > 10.1f )
+					if (yDist > moreThanCubeDistance)
 						isAccessibleByFall = false;
-					if ( zDist > 10.1f )
+					if (zDist > moreThanCubeDistance)
 						isAccessibleByFall = false;
 				}
 				
-				if ( isAccessibleByFall && ( m_PawnTile.orientation == TileOrientation.Front || m_PawnTile.orientation == TileOrientation.Back ) )
+				if (isAccessibleByFall && (m_PawnTile.orientation == TileOrientation.Front || m_PawnTile.orientation == TileOrientation.Back))
 				{
-					float xDist = Mathf.Abs( m_PawnTile.transform.position.x - m_FocusedTile.transform.position.x );
-					float yDist = Mathf.Abs( m_PawnTile.transform.position.y - m_FocusedTile.transform.position.y );
-					bool xTest = xDist > .1f && xDist < 10.1f;
-					bool yTest = yDist > .1f && yDist < 10.1f;
+					float xDist = Mathf.Abs(m_PawnTile.transform.position.x - m_FocusedTile.transform.position.x);
+					float yDist = Mathf.Abs(m_PawnTile.transform.position.y - m_FocusedTile.transform.position.y);
+					bool xTest = (xDist > minDistThreshold) && (xDist < moreThanCubeDistance);
+					bool yTest = (yDist > minDistThreshold) && (yDist < moreThanCubeDistance);
 					
-					if ( xTest && yTest )
+					if (xTest && yTest)
 						isAccessibleByFall = false;
-					else if ( !xTest && !yTest )
+					else if (!xTest && !yTest)
 						isAccessibleByFall = false;
 					
-					if ( xDist > 10.1f )
+					if (xDist > moreThanCubeDistance)
 						isAccessibleByFall = false;
-					if ( yDist > 10.1f )
+					if (yDist > moreThanCubeDistance)
 						isAccessibleByFall = false;
 				}
 

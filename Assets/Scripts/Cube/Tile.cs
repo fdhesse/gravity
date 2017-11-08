@@ -224,7 +224,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 			siblingConnection = null;
 		}
 
-		Collider[] hits = Physics.OverlapSphere(transform.position, 5.5f);
+		Collider[] hits = Physics.OverlapSphere(transform.position, GameplayCube.HALF_CUBE_SIZE * 1.1f);
 		Stack<Collider> hitList = new Stack<Collider>(hits);
 		
 		while ( hitList.Count > 0 )

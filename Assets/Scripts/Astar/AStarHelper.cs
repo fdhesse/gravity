@@ -101,7 +101,6 @@ public static class AStarHelper
         }
 
         return null;
-
     }
 
     // Once the goal has been found we now reconstruct the steps taken to get to the path
