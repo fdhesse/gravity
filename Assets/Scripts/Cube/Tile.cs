@@ -325,7 +325,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 
 		Assets.mouseCursor.transform.Rotate( new Vector3( -90, 0, 0 ) );
 		
-		Assets.mouseCursor.transform.Translate (new Vector3 (0, 0.5f, 0));
+		Assets.mouseCursor.transform.Translate (new Vector3(0, GameplayCube.CUBE_SIZE * 0.05f, 0));
 		Assets.mouseCursor.transform.parent = transform;
 	}
 
