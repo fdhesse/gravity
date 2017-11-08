@@ -11,7 +11,7 @@ public class GameplayCube : MonoBehaviour
 	public const string MOVING_PLATFORM_TAG = "MovingPlatform";
 	public const string GRAVITY_PLATFORM_TAG = "GravityPlatform";
 	public const string FALLING_CUBE_TAG = "FallingCube";
-	public const float CUBE_SIZE = 10f;
+	public const float CUBE_SIZE = 2f;
 	public const float HALF_CUBE_SIZE = CUBE_SIZE * 0.5f;
 
 	//[System.Flags]
