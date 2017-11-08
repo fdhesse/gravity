@@ -317,13 +317,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 28716160}
-  - {fileID: 854537613}
-  - {fileID: 1253236625}
-  - {fileID: 88175234}
   - {fileID: 1626692125}
-  - {fileID: 1657446686}
-  - {fileID: 1590664150}
+  - {fileID: 28716160}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &14218195
@@ -515,13 +510,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1115216760}
-  - {fileID: 118375467}
-  - {fileID: 1579536854}
   - {fileID: 1530411939}
   - {fileID: 37439654}
-  - {fileID: 1057332316}
-  - {fileID: 817521986}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &27937867
@@ -586,10 +576,6 @@ MonoBehaviour:
   connections:
   - {fileID: 854537613}
   - {fileID: 14218194}
-  - {fileID: 1253236625}
-  - {fileID: 88175234}
-  - {fileID: 1626692125}
-  - {fileID: 1657446686}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &28716161
@@ -620,6 +606,75 @@ Transform:
   m_Father: {fileID: 571946662}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &30117574
+GameObject:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 30117575}
+  - component: {fileID: 30117577}
+  - component: {fileID: 30117576}
+  m_Layer: 0
+  m_Name: tile_base
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &30117575
+Transform:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 30117574}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0}
+  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_Children: []
+  m_Father: {fileID: 1143666031}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &30117576
+MeshRenderer:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 30117574}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: df6ea0f17bdad4e0c8c371950ea28bfc, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &30117577
+MeshFilter:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 30117574}
+  m_Mesh: {fileID: 4300000, guid: b2d916743bdbd46ebb1646d5ea52a20f, type: 3}
 --- !u!1 &31439882
 GameObject:
   m_ObjectHideFlags: 8
@@ -731,12 +786,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1579536854}
-  - {fileID: 1530411939}
   - {fileID: 27937866}
   - {fileID: 1057332316}
-  - {fileID: 817521986}
-  - {fileID: 1048932239}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &37439655
@@ -799,28 +850,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1527609657}
-  - {fileID: 1235465497}
-  - {fileID: 1059273314}
   - {fileID: 1309053084}
-  - {fileID: 2071044861}
-  - {fileID: 296445836}
-  - {fileID: 1457350183}
-  - {fileID: 792573256}
   - {fileID: 1365989981}
-  - {fileID: 1469147169}
-  - {fileID: 261444688}
-  - {fileID: 1273517596}
-  - {fileID: 235723786}
-  - {fileID: 639633476}
-  - {fileID: 884649571}
-  - {fileID: 1176669393}
-  - {fileID: 646313225}
-  - {fileID: 1667380685}
-  - {fileID: 2113420320}
-  - {fileID: 237365674}
-  - {fileID: 457757768}
-  - {fileID: 279570954}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &41499036
@@ -930,6 +961,75 @@ Transform:
   m_Father: {fileID: 28716162}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &45655520
+GameObject:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 45655521}
+  - component: {fileID: 45655523}
+  - component: {fileID: 45655522}
+  m_Layer: 0
+  m_Name: tile_base
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &45655521
+Transform:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 45655520}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0}
+  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_Children: []
+  m_Father: {fileID: 275532433}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &45655522
+MeshRenderer:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 45655520}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: df6ea0f17bdad4e0c8c371950ea28bfc, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &45655523
+MeshFilter:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 45655520}
+  m_Mesh: {fileID: 4300000, guid: b2d916743bdbd46ebb1646d5ea52a20f, type: 3}
 --- !u!1 &47168541
 GameObject:
   m_ObjectHideFlags: 8
@@ -1129,13 +1229,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1984959101}
   - {fileID: 261810223}
-  - {fileID: 1595446651}
-  - {fileID: 138509719}
   - {fileID: 1388860389}
-  - {fileID: 669587836}
-  - {fileID: 1404903707}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &64978462
@@ -1508,13 +1603,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 28716160}
-  - {fileID: 854537613}
-  - {fileID: 14218194}
-  - {fileID: 1253236625}
   - {fileID: 2070045737}
-  - {fileID: 1306506232}
-  - {fileID: 770099240}
+  - {fileID: 1253236625}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &88175235
@@ -1545,6 +1635,75 @@ Transform:
   m_Father: {fileID: 1153789377}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &90331846
+GameObject:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 90331847}
+  - component: {fileID: 90331849}
+  - component: {fileID: 90331848}
+  m_Layer: 0
+  m_Name: tile_base
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &90331847
+Transform:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 90331846}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0}
+  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_Children: []
+  m_Father: {fileID: 1678478239}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &90331848
+MeshRenderer:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 90331846}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: df6ea0f17bdad4e0c8c371950ea28bfc, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &90331849
+MeshFilter:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 90331846}
+  m_Mesh: {fileID: 4300000, guid: b2d916743bdbd46ebb1646d5ea52a20f, type: 3}
 --- !u!1 &92976474
 GameObject:
   m_ObjectHideFlags: 8
@@ -1802,10 +1961,6 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 158356114}
-  - {fileID: 561898642}
-  - {fileID: 772746094}
-  - {fileID: 2133827736}
   - {fileID: 1497097205}
   - {fileID: 1838225132}
   rescanPath: 0
@@ -2123,12 +2278,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1408361939}
-  - {fileID: 2087522697}
   - {fileID: 1115216760}
   - {fileID: 1579536854}
-  - {fileID: 1530411939}
-  - {fileID: 27937866}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &118375468
@@ -2683,11 +2834,6 @@ MonoBehaviour:
   connections:
   - {fileID: 1984959101}
   - {fileID: 1075127768}
-  - {fileID: 261810223}
-  - {fileID: 1595446651}
-  - {fileID: 1918371671}
-  - {fileID: 253372754}
-  - {fileID: 64978461}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &138509720
@@ -2750,12 +2896,7 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1011856506}
-  - {fileID: 860345256}
-  - {fileID: 1048932239}
-  - {fileID: 182314018}
   - {fileID: 1223665322}
-  - {fileID: 2039116146}
   - {fileID: 408972889}
   rescanPath: 0
   isQuad: 1
@@ -3062,13 +3203,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 542013651}
-  - {fileID: 1318140330}
   - {fileID: 1460955716}
   - {fileID: 2133827736}
-  - {fileID: 1497097205}
-  - {fileID: 1838225132}
-  - {fileID: 108875442}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &158356115
@@ -3278,13 +3414,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1057332316}
-  - {fileID: 817521986}
   - {fileID: 1048932239}
-  - {fileID: 1223665322}
-  - {fileID: 141159974}
   - {fileID: 2039116146}
-  - {fileID: 408972889}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &182314019
@@ -3315,6 +3446,93 @@ Transform:
   m_Father: {fileID: 1404049240}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &182456400
+GameObject:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 182456401}
+  - component: {fileID: 182456404}
+  - component: {fileID: 182456403}
+  - component: {fileID: 182456402}
+  m_Layer: 0
+  m_Name: tile_magnet
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &182456401
+Transform:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 182456400}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5, y: 0.5, z: 5}
+  m_LocalScale: {x: 7, y: 0.3, z: 7}
+  m_Children: []
+  m_Father: {fileID: 1678478239}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &182456402
+MonoBehaviour:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 182456400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abcefb57a76b34a4a8b66ce5a999c3f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeMaterial: {fileID: 2100000, guid: 41e5a3e0fae8f4785a5999259a591695, type: 2}
+  inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
+  changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
+    type: 2}
+  activationVFX: {fileID: 0}
+  activeVFX: {fileID: 0}
+--- !u!23 &182456403
+MeshRenderer:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 182456400}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 644054800}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &182456404
+MeshFilter:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 182456400}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &184310609
 GameObject:
   m_ObjectHideFlags: 0
@@ -4148,28 +4366,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1309053084}
-  - {fileID: 41499035}
-  - {fileID: 1365989981}
-  - {fileID: 1469147169}
-  - {fileID: 261444688}
-  - {fileID: 368171431}
-  - {fileID: 1990389205}
-  - {fileID: 440754801}
-  - {fileID: 1975482927}
   - {fileID: 1273517596}
-  - {fileID: 639633476}
-  - {fileID: 884649571}
-  - {fileID: 1176669393}
-  - {fileID: 646313225}
-  - {fileID: 1007705336}
-  - {fileID: 925793962}
-  - {fileID: 1667380685}
-  - {fileID: 2113420320}
-  - {fileID: 237365674}
-  - {fileID: 457757768}
   - {fileID: 279570954}
-  - {fileID: 1316504006}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &235723787
@@ -4232,28 +4430,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1235465497}
-  - {fileID: 1059273314}
-  - {fileID: 1309053084}
-  - {fileID: 2071044861}
-  - {fileID: 41499035}
-  - {fileID: 296445836}
-  - {fileID: 1457350183}
-  - {fileID: 792573256}
   - {fileID: 1365989981}
-  - {fileID: 1469147169}
-  - {fileID: 261444688}
-  - {fileID: 1273517596}
-  - {fileID: 235723786}
-  - {fileID: 639633476}
-  - {fileID: 884649571}
-  - {fileID: 1176669393}
-  - {fileID: 646313225}
-  - {fileID: 1667380685}
-  - {fileID: 2113420320}
   - {fileID: 457757768}
-  - {fileID: 279570954}
-  - {fileID: 1316504006}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &237365675
@@ -4365,12 +4543,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1611544156}
-  - {fileID: 513801782}
-  - {fileID: 1331173105}
   - {fileID: 2032811416}
-  - {fileID: 1011856506}
-  - {fileID: 860345256}
+  - {fileID: 1331173105}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &247612825
@@ -4401,6 +4575,55 @@ Transform:
   m_Father: {fileID: 1169962989}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &249101082
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 169572, guid: 676bb5ff0638a48ce9df72fd5662d301, type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 249101083}
+  - component: {fileID: 249101084}
+  m_Layer: 0
+  m_Name: gameplay_Cube (123)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &249101083
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 424118, guid: 676bb5ff0638a48ce9df72fd5662d301, type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 249101082}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4, y: -37, z: -12}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_Children:
+  - {fileID: 919718981}
+  m_Father: {fileID: 746082204}
+  m_RootOrder: 123
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &249101084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11459128, guid: 676bb5ff0638a48ce9df72fd5662d301,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 249101082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f74963cb13b82f40a68d2daa2ffd3da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_left: 4
+  m_right: 4
+  m_up: 1
+  m_down: 4
+  m_front: 4
+  m_back: 4
+  GluedSides: 0
 --- !u!1 &250729520
 GameObject:
   m_ObjectHideFlags: 8
@@ -4433,18 +4656,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 637479793}
-  - {fileID: 1703017802}
-  - {fileID: 792573256}
   - {fileID: 1797224690}
-  - {fileID: 1007705336}
-  - {fileID: 925793962}
   - {fileID: 1760847201}
-  - {fileID: 1551782782}
-  - {fileID: 1667380685}
-  - {fileID: 2113420320}
-  - {fileID: 279570954}
-  - {fileID: 1316504006}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &250729522
@@ -4537,12 +4750,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1075127768}
-  - {fileID: 1511758874}
   - {fileID: 1918371671}
-  - {fileID: 1408361939}
-  - {fileID: 138509719}
-  - {fileID: 578983943}
+  - {fileID: 1511758874}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &253372755
@@ -4809,29 +5018,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 778875891}
-  - {fileID: 1611259841}
-  - {fileID: 407678872}
-  - {fileID: 1594854833}
-  - {fileID: 440213196}
-  - {fileID: 1527609657}
-  - {fileID: 1235465497}
-  - {fileID: 1059273314}
-  - {fileID: 1309053084}
-  - {fileID: 41499035}
   - {fileID: 1469147169}
-  - {fileID: 368171431}
-  - {fileID: 1990389205}
   - {fileID: 1975482927}
-  - {fileID: 1273517596}
-  - {fileID: 235723786}
-  - {fileID: 639633476}
-  - {fileID: 884649571}
-  - {fileID: 1176669393}
-  - {fileID: 646313225}
-  - {fileID: 237365674}
-  - {fileID: 457757768}
-  - {fileID: 279570954}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &261444689
@@ -4894,13 +5082,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1984959101}
-  - {fileID: 1075127768}
   - {fileID: 1595446651}
-  - {fileID: 138509719}
   - {fileID: 64978461}
-  - {fileID: 1388860389}
-  - {fileID: 669587836}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &261810224
@@ -4929,6 +5112,36 @@ Transform:
   m_Children:
   - {fileID: 654165196}
   m_Father: {fileID: 121421221}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &275532432
+GameObject:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 275532433}
+  m_Layer: 0
+  m_Name: tile_walk
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &275532433
+Transform:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 275532432}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0.5, y: -0.5, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.09999998, z: 0.09999998}
+  m_Children:
+  - {fileID: 45655521}
+  - {fileID: 1035900050}
+  m_Father: {fileID: 1420060140}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &279570953
@@ -4963,28 +5176,7 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 41499035}
-  - {fileID: 792573256}
-  - {fileID: 1365989981}
-  - {fileID: 261444688}
-  - {fileID: 1990389205}
-  - {fileID: 440754801}
-  - {fileID: 1975482927}
-  - {fileID: 1273517596}
   - {fileID: 235723786}
-  - {fileID: 639633476}
-  - {fileID: 884649571}
-  - {fileID: 1176669393}
-  - {fileID: 646313225}
-  - {fileID: 250729521}
-  - {fileID: 1007705336}
-  - {fileID: 925793962}
-  - {fileID: 1760847201}
-  - {fileID: 1551782782}
-  - {fileID: 1667380685}
-  - {fileID: 2113420320}
-  - {fileID: 237365674}
-  - {fileID: 457757768}
   - {fileID: 1316504006}
   rescanPath: 0
   isQuad: 1
@@ -5048,13 +5240,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1388860389}
-  - {fileID: 669587836}
   - {fileID: 1404903707}
   - {fileID: 1589482989}
-  - {fileID: 351484451}
-  - {fileID: 1825679992}
-  - {fileID: 1611544156}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &280528753
@@ -5408,29 +5595,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1260575540}
-  - {fileID: 1807187124}
-  - {fileID: 1527609657}
-  - {fileID: 1235465497}
-  - {fileID: 1059273314}
-  - {fileID: 1309053084}
   - {fileID: 2071044861}
-  - {fileID: 41499035}
-  - {fileID: 784142819}
-  - {fileID: 2079335208}
-  - {fileID: 1729105488}
-  - {fileID: 637479793}
-  - {fileID: 1703017802}
   - {fileID: 1457350183}
-  - {fileID: 792573256}
-  - {fileID: 1365989981}
-  - {fileID: 639633476}
-  - {fileID: 1176669393}
-  - {fileID: 646313225}
-  - {fileID: 1667380685}
-  - {fileID: 2113420320}
-  - {fileID: 237365674}
-  - {fileID: 457757768}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &296445837
@@ -5980,6 +6146,55 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 313965318}
   m_Mesh: {fileID: 4300000, guid: b2d916743bdbd46ebb1646d5ea52a20f, type: 3}
+--- !u!1 &314152706
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 169572, guid: 676bb5ff0638a48ce9df72fd5662d301, type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 314152707}
+  - component: {fileID: 314152708}
+  m_Layer: 0
+  m_Name: gameplay_Cube (122)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &314152707
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 424118, guid: 676bb5ff0638a48ce9df72fd5662d301, type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 314152706}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2, y: -35, z: -12}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_Children:
+  - {fileID: 970923027}
+  m_Father: {fileID: 746082204}
+  m_RootOrder: 122
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &314152708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11459128, guid: 676bb5ff0638a48ce9df72fd5662d301,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 314152706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f74963cb13b82f40a68d2daa2ffd3da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_left: 4
+  m_right: 4
+  m_up: 1
+  m_down: 4
+  m_front: 4
+  m_back: 4
+  GluedSides: 0
 --- !u!1 &315367283
 GameObject:
   m_ObjectHideFlags: 8
@@ -6639,13 +6854,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1404903707}
-  - {fileID: 280528752}
-  - {fileID: 1589482989}
   - {fileID: 1825679992}
-  - {fileID: 1611544156}
-  - {fileID: 513801782}
-  - {fileID: 1331173105}
+  - {fileID: 1589482989}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &351484452
@@ -6676,6 +6886,68 @@ Transform:
   m_Father: {fileID: 427534029}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &361509727
+GameObject:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 361509728}
+  - component: {fileID: 361509730}
+  - component: {fileID: 361509729}
+  m_Layer: 14
+  m_Name: up
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &361509728
+Transform:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 361509727}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0.50000006, z: 0.000000059604645}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1678478239}
+  m_Father: {fileID: 535089967}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &361509729
+MonoBehaviour:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 361509727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85425dd97933edf40aa443619ffcc35c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  isGlueTile: 0
+  orientation: 1
+  connections: []
+  rescanPath: 0
+  isQuad: 1
+--- !u!64 &361509730
+MeshCollider:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 361509727}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &363602961
 GameObject:
   m_ObjectHideFlags: 0
@@ -6757,17 +7029,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 778875891}
-  - {fileID: 1611259841}
-  - {fileID: 1594854833}
   - {fileID: 440213196}
-  - {fileID: 261444688}
   - {fileID: 1990389205}
-  - {fileID: 440754801}
-  - {fileID: 1975482927}
-  - {fileID: 1273517596}
-  - {fileID: 235723786}
-  - {fileID: 1007705336}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &368171432
@@ -7187,17 +7450,7 @@ MonoBehaviour:
   orientation: 1
   connections:
   - {fileID: 2054434074}
-  - {fileID: 778875891}
-  - {fileID: 1819138264}
-  - {fileID: 1611259841}
   - {fileID: 1594854833}
-  - {fileID: 1448304940}
-  - {fileID: 1260575540}
-  - {fileID: 1527609657}
-  - {fileID: 1235465497}
-  - {fileID: 1059273314}
-  - {fileID: 1469147169}
-  - {fileID: 261444688}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &407678873
@@ -7260,10 +7513,6 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 860345256}
-  - {fileID: 1048932239}
-  - {fileID: 182314018}
-  - {fileID: 1223665322}
   - {fileID: 141159974}
   - {fileID: 2039116146}
   rescanPath: 0
@@ -8113,14 +8362,7 @@ MonoBehaviour:
   orientation: 1
   connections:
   - {fileID: 778875891}
-  - {fileID: 1611259841}
-  - {fileID: 1594854833}
-  - {fileID: 261444688}
   - {fileID: 368171431}
-  - {fileID: 1990389205}
-  - {fileID: 440754801}
-  - {fileID: 1975482927}
-  - {fileID: 1273517596}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &440213197
@@ -8183,19 +8425,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 778875891}
-  - {fileID: 440213196}
-  - {fileID: 368171431}
   - {fileID: 1990389205}
-  - {fileID: 1975482927}
-  - {fileID: 1273517596}
-  - {fileID: 235723786}
   - {fileID: 1007705336}
-  - {fileID: 925793962}
-  - {fileID: 1760847201}
-  - {fileID: 1551782782}
-  - {fileID: 279570954}
-  - {fileID: 1316504006}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &440754802
@@ -8539,27 +8770,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1309053084}
-  - {fileID: 2071044861}
-  - {fileID: 41499035}
-  - {fileID: 296445836}
-  - {fileID: 1457350183}
-  - {fileID: 792573256}
-  - {fileID: 1365989981}
-  - {fileID: 1469147169}
-  - {fileID: 261444688}
-  - {fileID: 1975482927}
-  - {fileID: 1273517596}
-  - {fileID: 235723786}
-  - {fileID: 639633476}
-  - {fileID: 884649571}
   - {fileID: 1176669393}
-  - {fileID: 646313225}
-  - {fileID: 1667380685}
-  - {fileID: 2113420320}
   - {fileID: 237365674}
-  - {fileID: 279570954}
-  - {fileID: 1316504006}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &457757769
@@ -12627,6 +12839,55 @@ MonoBehaviour:
   m_front: 4
   m_back: 4
   GluedSides: 0
+--- !u!1 &502757874
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 169572, guid: 676bb5ff0638a48ce9df72fd5662d301, type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 502757875}
+  - component: {fileID: 502757876}
+  m_Layer: 0
+  m_Name: gameplay_Cube (121)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &502757875
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 424118, guid: 676bb5ff0638a48ce9df72fd5662d301, type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 502757874}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -33, z: -12}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_Children:
+  - {fileID: 1420060140}
+  m_Father: {fileID: 746082204}
+  m_RootOrder: 121
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &502757876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11459128, guid: 676bb5ff0638a48ce9df72fd5662d301,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 502757874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f74963cb13b82f40a68d2daa2ffd3da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_left: 4
+  m_right: 4
+  m_up: 1
+  m_down: 4
+  m_front: 4
+  m_back: 4
+  GluedSides: 0
 --- !u!1 &502848485
 GameObject:
   m_ObjectHideFlags: 0
@@ -12795,13 +13056,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1589482989}
-  - {fileID: 351484451}
-  - {fileID: 1825679992}
   - {fileID: 1611544156}
   - {fileID: 1331173105}
-  - {fileID: 247612824}
-  - {fileID: 2032811416}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &513801783
@@ -16174,6 +16430,55 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
+--- !u!1 &535089966
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 169572, guid: 676bb5ff0638a48ce9df72fd5662d301, type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 535089967}
+  - component: {fileID: 535089968}
+  m_Layer: 0
+  m_Name: gameplay_Cube (124)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &535089967
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 424118, guid: 676bb5ff0638a48ce9df72fd5662d301, type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 535089966}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 6, y: -39, z: -12}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_Children:
+  - {fileID: 361509728}
+  m_Father: {fileID: 746082204}
+  m_RootOrder: 124
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &535089968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11459128, guid: 676bb5ff0638a48ce9df72fd5662d301,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 535089966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f74963cb13b82f40a68d2daa2ffd3da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_left: 4
+  m_right: 4
+  m_up: 1
+  m_down: 4
+  m_front: 4
+  m_back: 4
+  GluedSides: 0
 --- !u!1 &540018787
 GameObject:
   m_ObjectHideFlags: 8
@@ -16293,13 +16598,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1306506232}
-  - {fileID: 844907342}
-  - {fileID: 2039039780}
   - {fileID: 1545166209}
   - {fileID: 1318140330}
-  - {fileID: 1460955716}
-  - {fileID: 158356114}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &542013652
@@ -16548,13 +16848,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 909479987}
-  - {fileID: 1032311862}
   - {fileID: 1792476113}
   - {fileID: 772746094}
-  - {fileID: 1497097205}
-  - {fileID: 1838225132}
-  - {fileID: 108875442}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &561898643
@@ -16895,12 +17190,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1511758874}
-  - {fileID: 1918371671}
   - {fileID: 1408361939}
-  - {fileID: 253372754}
-  - {fileID: 2087522697}
-  - {fileID: 1115216760}
+  - {fileID: 1511758874}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &578983944
@@ -18167,17 +18458,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1807187124}
-  - {fileID: 784142819}
-  - {fileID: 2079335208}
   - {fileID: 1729105488}
   - {fileID: 1703017802}
-  - {fileID: 296445836}
-  - {fileID: 1457350183}
-  - {fileID: 792573256}
-  - {fileID: 1797224690}
-  - {fileID: 250729521}
-  - {fileID: 1667380685}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &637479794
@@ -18240,28 +18522,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1527609657}
-  - {fileID: 1235465497}
-  - {fileID: 1059273314}
   - {fileID: 1309053084}
-  - {fileID: 2071044861}
-  - {fileID: 41499035}
-  - {fileID: 296445836}
-  - {fileID: 792573256}
-  - {fileID: 1365989981}
-  - {fileID: 1469147169}
-  - {fileID: 261444688}
-  - {fileID: 1975482927}
-  - {fileID: 1273517596}
-  - {fileID: 235723786}
   - {fileID: 884649571}
-  - {fileID: 1176669393}
-  - {fileID: 646313225}
-  - {fileID: 1667380685}
-  - {fileID: 2113420320}
-  - {fileID: 237365674}
-  - {fileID: 457757768}
-  - {fileID: 279570954}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &639633477
@@ -18423,27 +18685,7 @@ MonoBehaviour:
   type: 1
   isGlueTile: 0
   orientation: 1
-  connections:
-  - {fileID: 1235465497}
-  - {fileID: 1059273314}
-  - {fileID: 1309053084}
-  - {fileID: 2071044861}
-  - {fileID: 41499035}
-  - {fileID: 296445836}
-  - {fileID: 792573256}
-  - {fileID: 1365989981}
-  - {fileID: 1469147169}
-  - {fileID: 261444688}
-  - {fileID: 1273517596}
-  - {fileID: 235723786}
-  - {fileID: 639633476}
-  - {fileID: 884649571}
-  - {fileID: 1176669393}
-  - {fileID: 1667380685}
-  - {fileID: 2113420320}
-  - {fileID: 237365674}
-  - {fileID: 457757768}
-  - {fileID: 279570954}
+  connections: []
   rescanPath: 0
   isQuad: 1
 --- !u!64 &646313226
@@ -18943,12 +19185,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 261810223}
-  - {fileID: 64978461}
   - {fileID: 1388860389}
   - {fileID: 1404903707}
-  - {fileID: 280528752}
-  - {fileID: 1589482989}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &669587837
@@ -20676,6 +20914,10 @@ Transform:
   - {fileID: 1169962989}
   - {fileID: 119511787}
   - {fileID: 2130613155}
+  - {fileID: 502757875}
+  - {fileID: 314152707}
+  - {fileID: 249101083}
+  - {fileID: 535089967}
   m_Father: {fileID: 475141016}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -20838,13 +21080,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1253236625}
-  - {fileID: 88175234}
   - {fileID: 2070045737}
   - {fileID: 1306506232}
-  - {fileID: 844907342}
-  - {fileID: 2039039780}
-  - {fileID: 1545166209}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &770099241
@@ -20907,13 +21144,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1032311862}
-  - {fileID: 1792476113}
   - {fileID: 561898642}
-  - {fileID: 2133827736}
-  - {fileID: 1497097205}
   - {fileID: 1838225132}
-  - {fileID: 108875442}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &772746095
@@ -24209,16 +24441,7 @@ MonoBehaviour:
   orientation: 1
   connections:
   - {fileID: 1611259841}
-  - {fileID: 407678872}
-  - {fileID: 1594854833}
   - {fileID: 440213196}
-  - {fileID: 1469147169}
-  - {fileID: 261444688}
-  - {fileID: 368171431}
-  - {fileID: 1990389205}
-  - {fileID: 440754801}
-  - {fileID: 1975482927}
-  - {fileID: 1273517596}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &778875892
@@ -24380,18 +24603,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1448304940}
-  - {fileID: 1260575540}
   - {fileID: 1807187124}
-  - {fileID: 1235465497}
-  - {fileID: 2071044861}
   - {fileID: 2079335208}
-  - {fileID: 1729105488}
-  - {fileID: 637479793}
-  - {fileID: 1703017802}
-  - {fileID: 296445836}
-  - {fileID: 1457350183}
-  - {fileID: 792573256}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &784142820
@@ -24683,29 +24896,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1235465497}
-  - {fileID: 1309053084}
-  - {fileID: 2071044861}
-  - {fileID: 41499035}
-  - {fileID: 784142819}
-  - {fileID: 2079335208}
-  - {fileID: 1729105488}
-  - {fileID: 637479793}
-  - {fileID: 1703017802}
-  - {fileID: 296445836}
   - {fileID: 1457350183}
-  - {fileID: 1365989981}
-  - {fileID: 639633476}
-  - {fileID: 1176669393}
-  - {fileID: 646313225}
-  - {fileID: 1797224690}
-  - {fileID: 250729521}
   - {fileID: 1667380685}
-  - {fileID: 2113420320}
-  - {fileID: 237365674}
-  - {fileID: 457757768}
-  - {fileID: 279570954}
-  - {fileID: 1316504006}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &792573257
@@ -25011,12 +25203,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 27937866}
-  - {fileID: 37439654}
   - {fileID: 1057332316}
   - {fileID: 1048932239}
-  - {fileID: 182314018}
-  - {fileID: 2039116146}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &817521987
@@ -25370,13 +25558,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 2070045737}
   - {fileID: 1306506232}
-  - {fileID: 770099240}
   - {fileID: 2039039780}
-  - {fileID: 1545166209}
-  - {fileID: 542013651}
-  - {fileID: 1318140330}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &844907343
@@ -25489,12 +25672,7 @@ MonoBehaviour:
   orientation: 1
   connections:
   - {fileID: 28716160}
-  - {fileID: 14218194}
   - {fileID: 1253236625}
-  - {fileID: 88175234}
-  - {fileID: 2070045737}
-  - {fileID: 1626692125}
-  - {fileID: 1657446686}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &854537614
@@ -25644,13 +25822,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 247612824}
-  - {fileID: 2032811416}
   - {fileID: 1011856506}
   - {fileID: 1223665322}
-  - {fileID: 141159974}
-  - {fileID: 2039116146}
-  - {fileID: 408972889}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &860345257
@@ -26110,27 +26283,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1527609657}
-  - {fileID: 1235465497}
-  - {fileID: 1059273314}
-  - {fileID: 1309053084}
-  - {fileID: 2071044861}
-  - {fileID: 41499035}
-  - {fileID: 1365989981}
-  - {fileID: 1469147169}
-  - {fileID: 261444688}
-  - {fileID: 1975482927}
-  - {fileID: 1273517596}
-  - {fileID: 235723786}
   - {fileID: 639633476}
   - {fileID: 1176669393}
-  - {fileID: 646313225}
-  - {fileID: 1667380685}
-  - {fileID: 2113420320}
-  - {fileID: 237365674}
-  - {fileID: 457757768}
-  - {fileID: 279570954}
-  - {fileID: 1316504006}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &884649572
@@ -29406,13 +29560,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1239907688}
-  - {fileID: 1934865401}
-  - {fileID: 1624811086}
-  - {fileID: 1346887754}
   - {fileID: 1032311862}
-  - {fileID: 1792476113}
-  - {fileID: 561898642}
+  - {fileID: 1346887754}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &909479988
@@ -29492,6 +29641,68 @@ MonoBehaviour:
   m_front: 4
   m_back: 4
   GluedSides: 0
+--- !u!1 &919718980
+GameObject:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 919718981}
+  - component: {fileID: 919718983}
+  - component: {fileID: 919718982}
+  m_Layer: 14
+  m_Name: up
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &919718981
+Transform:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 919718980}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0.50000006, z: 0.000000059604645}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1143666031}
+  m_Father: {fileID: 249101083}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &919718982
+MonoBehaviour:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 919718980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85425dd97933edf40aa443619ffcc35c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  isGlueTile: 0
+  orientation: 1
+  connections: []
+  rescanPath: 0
+  isQuad: 1
+--- !u!64 &919718983
+MeshCollider:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 919718980}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &925793961
 GameObject:
   m_ObjectHideFlags: 8
@@ -29524,17 +29735,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1990389205}
-  - {fileID: 440754801}
-  - {fileID: 235723786}
-  - {fileID: 1797224690}
-  - {fileID: 250729521}
   - {fileID: 1007705336}
-  - {fileID: 1760847201}
   - {fileID: 1551782782}
-  - {fileID: 2113420320}
-  - {fileID: 279570954}
-  - {fileID: 1316504006}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &925793963
@@ -33284,6 +33486,68 @@ MonoBehaviour:
   m_front: 4
   m_back: 4
   GluedSides: 0
+--- !u!1 &970923024
+GameObject:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 970923027}
+  - component: {fileID: 970923026}
+  - component: {fileID: 970923025}
+  m_Layer: 14
+  m_Name: up
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!114 &970923025
+MonoBehaviour:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 970923024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85425dd97933edf40aa443619ffcc35c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  isGlueTile: 0
+  orientation: 1
+  connections: []
+  rescanPath: 0
+  isQuad: 1
+--- !u!64 &970923026
+MeshCollider:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 970923024}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &970923027
+Transform:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 970923024}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0.50000006, z: 0.000000059604645}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1336299875}
+  m_Father: {fileID: 314152707}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &972682669
 GameObject:
   m_ObjectHideFlags: 8
@@ -34052,18 +34316,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 368171431}
-  - {fileID: 1990389205}
   - {fileID: 440754801}
-  - {fileID: 1273517596}
-  - {fileID: 235723786}
-  - {fileID: 250729521}
   - {fileID: 925793962}
-  - {fileID: 1760847201}
-  - {fileID: 1551782782}
-  - {fileID: 2113420320}
-  - {fileID: 279570954}
-  - {fileID: 1316504006}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1007705337
@@ -34195,12 +34449,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1331173105}
-  - {fileID: 247612824}
   - {fileID: 2032811416}
   - {fileID: 860345256}
-  - {fileID: 1223665322}
-  - {fileID: 141159974}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1011856507
@@ -34600,13 +34850,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1934865401}
-  - {fileID: 1624811086}
-  - {fileID: 1346887754}
-  - {fileID: 909479987}
   - {fileID: 1792476113}
-  - {fileID: 561898642}
-  - {fileID: 772746094}
+  - {fileID: 909479987}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1032311863
@@ -34637,6 +34882,93 @@ Transform:
   m_Father: {fileID: 740747611}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1035900049
+GameObject:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1035900050}
+  - component: {fileID: 1035900053}
+  - component: {fileID: 1035900052}
+  - component: {fileID: 1035900051}
+  m_Layer: 0
+  m_Name: tile_magnet
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &1035900050
+Transform:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1035900049}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5, y: 0.5, z: 5}
+  m_LocalScale: {x: 7, y: 0.3, z: 7}
+  m_Children: []
+  m_Father: {fileID: 275532433}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1035900051
+MonoBehaviour:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1035900049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abcefb57a76b34a4a8b66ce5a999c3f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeMaterial: {fileID: 2100000, guid: 41e5a3e0fae8f4785a5999259a591695, type: 2}
+  inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
+  changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
+    type: 2}
+  activationVFX: {fileID: 0}
+  activeVFX: {fileID: 0}
+--- !u!23 &1035900052
+MeshRenderer:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1035900049}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 644054800}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &1035900053
+MeshFilter:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1035900049}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1038567893
 GameObject:
   m_ObjectHideFlags: 8
@@ -34940,13 +35272,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 37439654}
-  - {fileID: 1057332316}
-  - {fileID: 817521986}
   - {fileID: 182314018}
-  - {fileID: 141159974}
-  - {fileID: 2039116146}
-  - {fileID: 408972889}
+  - {fileID: 817521986}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1048932240
@@ -35103,12 +35430,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1530411939}
-  - {fileID: 27937866}
   - {fileID: 37439654}
   - {fileID: 817521986}
-  - {fileID: 1048932239}
-  - {fileID: 182314018}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1057332317
@@ -35258,29 +35581,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 2054434074}
-  - {fileID: 1819138264}
-  - {fileID: 1611259841}
-  - {fileID: 407678872}
-  - {fileID: 1594854833}
-  - {fileID: 1448304940}
-  - {fileID: 1260575540}
   - {fileID: 1527609657}
-  - {fileID: 1235465497}
-  - {fileID: 1309053084}
-  - {fileID: 2071044861}
-  - {fileID: 41499035}
-  - {fileID: 296445836}
-  - {fileID: 1365989981}
   - {fileID: 1469147169}
-  - {fileID: 261444688}
-  - {fileID: 1975482927}
-  - {fileID: 1273517596}
-  - {fileID: 639633476}
-  - {fileID: 884649571}
-  - {fileID: 1176669393}
-  - {fileID: 646313225}
-  - {fileID: 237365674}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1059273315
@@ -35509,12 +35811,7 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1984959101}
-  - {fileID: 261810223}
-  - {fileID: 1511758874}
-  - {fileID: 1595446651}
   - {fileID: 1918371671}
-  - {fileID: 253372754}
   - {fileID: 138509719}
   rescanPath: 0
   isQuad: 1
@@ -36241,13 +36538,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1408361939}
-  - {fileID: 578983943}
   - {fileID: 2087522697}
   - {fileID: 118375467}
-  - {fileID: 1579536854}
-  - {fileID: 1530411939}
-  - {fileID: 27937866}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1115216761
@@ -36729,13 +37021,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1626692125}
-  - {fileID: 1657446686}
   - {fileID: 1590664150}
   - {fileID: 1239907688}
-  - {fileID: 1934865401}
-  - {fileID: 1624811086}
-  - {fileID: 1346887754}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1142720483
@@ -36764,6 +37051,36 @@ Transform:
   m_Children:
   - {fileID: 1079706153}
   m_Father: {fileID: 596538036}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1143666030
+GameObject:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1143666031}
+  m_Layer: 0
+  m_Name: tile_walk
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &1143666031
+Transform:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1143666030}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0.5, y: -0.5, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.09999998, z: 0.09999998}
+  m_Children:
+  - {fileID: 30117575}
+  - {fileID: 1400606538}
+  m_Father: {fileID: 919718981}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1144243634
@@ -37317,28 +37634,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1235465497}
-  - {fileID: 1059273314}
-  - {fileID: 1309053084}
-  - {fileID: 2071044861}
-  - {fileID: 41499035}
-  - {fileID: 296445836}
-  - {fileID: 792573256}
-  - {fileID: 1365989981}
-  - {fileID: 1469147169}
-  - {fileID: 261444688}
-  - {fileID: 1975482927}
-  - {fileID: 1273517596}
-  - {fileID: 235723786}
-  - {fileID: 639633476}
-  - {fileID: 884649571}
-  - {fileID: 646313225}
-  - {fileID: 1667380685}
-  - {fileID: 2113420320}
-  - {fileID: 237365674}
   - {fileID: 457757768}
-  - {fileID: 279570954}
-  - {fileID: 1316504006}
+  - {fileID: 884649571}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1176669394
@@ -38219,13 +38516,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 2032811416}
-  - {fileID: 1011856506}
-  - {fileID: 860345256}
-  - {fileID: 182314018}
   - {fileID: 141159974}
-  - {fileID: 2039116146}
-  - {fileID: 408972889}
+  - {fileID: 860345256}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1223665323
@@ -38386,29 +38678,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 2054434074}
-  - {fileID: 1819138264}
-  - {fileID: 407678872}
-  - {fileID: 1448304940}
-  - {fileID: 1260575540}
-  - {fileID: 1807187124}
   - {fileID: 1527609657}
-  - {fileID: 1059273314}
-  - {fileID: 1309053084}
   - {fileID: 2071044861}
-  - {fileID: 41499035}
-  - {fileID: 784142819}
-  - {fileID: 296445836}
-  - {fileID: 1457350183}
-  - {fileID: 792573256}
-  - {fileID: 1365989981}
-  - {fileID: 1469147169}
-  - {fileID: 261444688}
-  - {fileID: 639633476}
-  - {fileID: 884649571}
-  - {fileID: 1176669393}
-  - {fileID: 646313225}
-  - {fileID: 237365674}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1235465498
@@ -38540,13 +38811,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1657446686}
-  - {fileID: 1590664150}
-  - {fileID: 1142720482}
   - {fileID: 1934865401}
-  - {fileID: 1624811086}
-  - {fileID: 1346887754}
-  - {fileID: 909479987}
+  - {fileID: 1142720482}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1239907689
@@ -38847,13 +39113,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 28716160}
-  - {fileID: 854537613}
-  - {fileID: 14218194}
   - {fileID: 88175234}
-  - {fileID: 2070045737}
-  - {fileID: 770099240}
-  - {fileID: 1626692125}
+  - {fileID: 854537613}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1253236626
@@ -39094,18 +39355,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 2054434074}
-  - {fileID: 1819138264}
-  - {fileID: 407678872}
-  - {fileID: 1448304940}
   - {fileID: 1807187124}
-  - {fileID: 1527609657}
-  - {fileID: 1235465497}
-  - {fileID: 1059273314}
-  - {fileID: 2071044861}
-  - {fileID: 784142819}
-  - {fileID: 2079335208}
-  - {fileID: 296445836}
+  - {fileID: 1448304940}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1260575541
@@ -42890,29 +43141,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 778875891}
-  - {fileID: 1611259841}
-  - {fileID: 440213196}
-  - {fileID: 1059273314}
-  - {fileID: 1309053084}
-  - {fileID: 41499035}
-  - {fileID: 1469147169}
-  - {fileID: 261444688}
-  - {fileID: 368171431}
-  - {fileID: 1990389205}
-  - {fileID: 440754801}
   - {fileID: 1975482927}
   - {fileID: 235723786}
-  - {fileID: 639633476}
-  - {fileID: 884649571}
-  - {fileID: 1176669393}
-  - {fileID: 646313225}
-  - {fileID: 1007705336}
-  - {fileID: 2113420320}
-  - {fileID: 237365674}
-  - {fileID: 457757768}
-  - {fileID: 279570954}
-  - {fileID: 1316504006}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1273517597
@@ -43533,13 +43763,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 88175234}
-  - {fileID: 2070045737}
   - {fileID: 770099240}
   - {fileID: 844907342}
-  - {fileID: 2039039780}
-  - {fileID: 1545166209}
-  - {fileID: 542013651}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1306506233
@@ -43602,27 +43827,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1527609657}
-  - {fileID: 1235465497}
-  - {fileID: 1059273314}
-  - {fileID: 2071044861}
   - {fileID: 41499035}
-  - {fileID: 296445836}
-  - {fileID: 1457350183}
-  - {fileID: 792573256}
-  - {fileID: 1365989981}
-  - {fileID: 1469147169}
-  - {fileID: 261444688}
-  - {fileID: 1975482927}
-  - {fileID: 1273517596}
-  - {fileID: 235723786}
   - {fileID: 639633476}
-  - {fileID: 884649571}
-  - {fileID: 1176669393}
-  - {fileID: 646313225}
-  - {fileID: 1667380685}
-  - {fileID: 237365674}
-  - {fileID: 457757768}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1309053085
@@ -43841,23 +44047,7 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 792573256}
-  - {fileID: 1365989981}
-  - {fileID: 440754801}
-  - {fileID: 1273517596}
-  - {fileID: 235723786}
-  - {fileID: 884649571}
-  - {fileID: 1176669393}
-  - {fileID: 1797224690}
-  - {fileID: 250729521}
-  - {fileID: 1007705336}
-  - {fileID: 925793962}
-  - {fileID: 1760847201}
-  - {fileID: 1551782782}
-  - {fileID: 1667380685}
   - {fileID: 2113420320}
-  - {fileID: 237365674}
-  - {fileID: 457757768}
   - {fileID: 279570954}
   rescanPath: 0
   isQuad: 1
@@ -43921,13 +44111,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 844907342}
-  - {fileID: 2039039780}
-  - {fileID: 1545166209}
   - {fileID: 542013651}
   - {fileID: 1460955716}
-  - {fileID: 158356114}
-  - {fileID: 2133827736}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1318140331
@@ -43990,13 +44175,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 351484451}
-  - {fileID: 1825679992}
-  - {fileID: 1611544156}
-  - {fileID: 513801782}
   - {fileID: 247612824}
-  - {fileID: 2032811416}
-  - {fileID: 1011856506}
+  - {fileID: 513801782}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1331173106
@@ -44126,6 +44306,36 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1334095195}
   m_Mesh: {fileID: 4300000, guid: b2d916743bdbd46ebb1646d5ea52a20f, type: 3}
+--- !u!1 &1336299874
+GameObject:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1336299875}
+  m_Layer: 0
+  m_Name: tile_walk
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &1336299875
+Transform:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1336299874}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0.5, y: -0.5, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.09999998, z: 0.09999998}
+  m_Children:
+  - {fileID: 1999437872}
+  - {fileID: 1690241108}
+  m_Father: {fileID: 970923027}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1338649241
 GameObject:
   m_ObjectHideFlags: 8
@@ -44314,13 +44524,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1142720482}
-  - {fileID: 1239907688}
-  - {fileID: 1934865401}
   - {fileID: 1624811086}
   - {fileID: 909479987}
-  - {fileID: 1032311862}
-  - {fileID: 1792476113}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1346887755
@@ -44475,27 +44680,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1527609657}
-  - {fileID: 1235465497}
-  - {fileID: 1059273314}
-  - {fileID: 1309053084}
-  - {fileID: 2071044861}
   - {fileID: 41499035}
-  - {fileID: 296445836}
-  - {fileID: 1457350183}
-  - {fileID: 792573256}
-  - {fileID: 1469147169}
-  - {fileID: 235723786}
-  - {fileID: 639633476}
-  - {fileID: 884649571}
-  - {fileID: 1176669393}
-  - {fileID: 646313225}
-  - {fileID: 1667380685}
-  - {fileID: 2113420320}
   - {fileID: 237365674}
-  - {fileID: 457757768}
-  - {fileID: 279570954}
-  - {fileID: 1316504006}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1365989982
@@ -44899,12 +45085,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 261810223}
-  - {fileID: 1595446651}
   - {fileID: 64978461}
   - {fileID: 669587836}
-  - {fileID: 1404903707}
-  - {fileID: 280528752}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1388860390
@@ -45021,6 +45203,93 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1400595240}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1400606537
+GameObject:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1400606538}
+  - component: {fileID: 1400606541}
+  - component: {fileID: 1400606540}
+  - component: {fileID: 1400606539}
+  m_Layer: 0
+  m_Name: tile_magnet
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &1400606538
+Transform:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1400606537}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5, y: 0.5, z: 5}
+  m_LocalScale: {x: 7, y: 0.3, z: 7}
+  m_Children: []
+  m_Father: {fileID: 1143666031}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1400606539
+MonoBehaviour:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1400606537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abcefb57a76b34a4a8b66ce5a999c3f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeMaterial: {fileID: 2100000, guid: 41e5a3e0fae8f4785a5999259a591695, type: 2}
+  inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
+  changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
+    type: 2}
+  activationVFX: {fileID: 0}
+  activeVFX: {fileID: 0}
+--- !u!23 &1400606540
+MeshRenderer:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1400606537}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 644054800}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &1400606541
+MeshFilter:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1400606537}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1401000257
 GameObject:
@@ -45252,12 +45521,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 64978461}
-  - {fileID: 1388860389}
-  - {fileID: 669587836}
   - {fileID: 280528752}
-  - {fileID: 1589482989}
-  - {fileID: 351484451}
+  - {fileID: 669587836}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1404903708
@@ -45369,13 +45634,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1511758874}
-  - {fileID: 253372754}
   - {fileID: 578983943}
   - {fileID: 2087522697}
-  - {fileID: 1115216760}
-  - {fileID: 118375467}
-  - {fileID: 1579536854}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1408361940
@@ -45505,6 +45765,68 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1419731388}
   m_Mesh: {fileID: 4300000, guid: b2d916743bdbd46ebb1646d5ea52a20f, type: 3}
+--- !u!1 &1420060139
+GameObject:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1420060140}
+  - component: {fileID: 1420060142}
+  - component: {fileID: 1420060141}
+  m_Layer: 14
+  m_Name: up
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &1420060140
+Transform:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1420060139}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0.50000006, z: 0.000000059604645}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 275532433}
+  m_Father: {fileID: 502757875}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1420060141
+MonoBehaviour:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1420060139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85425dd97933edf40aa443619ffcc35c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  isGlueTile: 0
+  orientation: 1
+  connections: []
+  rescanPath: 0
+  isQuad: 1
+--- !u!64 &1420060142
+MeshCollider:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1420060139}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1001 &1421839651
 Prefab:
   m_ObjectHideFlags: 0
@@ -46018,17 +46340,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 2054434074}
   - {fileID: 1819138264}
-  - {fileID: 407678872}
-  - {fileID: 1594854833}
   - {fileID: 1260575540}
-  - {fileID: 1807187124}
-  - {fileID: 1527609657}
-  - {fileID: 1235465497}
-  - {fileID: 1059273314}
-  - {fileID: 2071044861}
-  - {fileID: 784142819}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1448304941
@@ -46178,24 +46491,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1807187124}
-  - {fileID: 1235465497}
-  - {fileID: 1309053084}
-  - {fileID: 2071044861}
-  - {fileID: 41499035}
-  - {fileID: 784142819}
-  - {fileID: 2079335208}
-  - {fileID: 1729105488}
-  - {fileID: 637479793}
-  - {fileID: 1703017802}
   - {fileID: 296445836}
   - {fileID: 792573256}
-  - {fileID: 1365989981}
-  - {fileID: 1797224690}
-  - {fileID: 1667380685}
-  - {fileID: 2113420320}
-  - {fileID: 237365674}
-  - {fileID: 457757768}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1457350184
@@ -46357,12 +46654,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1545166209}
-  - {fileID: 542013651}
-  - {fileID: 1318140330}
   - {fileID: 158356114}
-  - {fileID: 2133827736}
-  - {fileID: 1497097205}
+  - {fileID: 1318140330}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1460955717
@@ -46455,28 +46748,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 2054434074}
-  - {fileID: 778875891}
-  - {fileID: 1611259841}
-  - {fileID: 407678872}
-  - {fileID: 1594854833}
-  - {fileID: 1527609657}
-  - {fileID: 1235465497}
-  - {fileID: 1059273314}
-  - {fileID: 1309053084}
-  - {fileID: 2071044861}
-  - {fileID: 41499035}
-  - {fileID: 1365989981}
   - {fileID: 261444688}
-  - {fileID: 1975482927}
-  - {fileID: 1273517596}
-  - {fileID: 235723786}
-  - {fileID: 639633476}
-  - {fileID: 884649571}
-  - {fileID: 1176669393}
-  - {fileID: 646313225}
-  - {fileID: 237365674}
-  - {fileID: 457757768}
+  - {fileID: 1059273314}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1469147170
@@ -47016,12 +47289,7 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1460955716}
-  - {fileID: 158356114}
-  - {fileID: 561898642}
-  - {fileID: 772746094}
   - {fileID: 2133827736}
-  - {fileID: 1838225132}
   - {fileID: 108875442}
   rescanPath: 0
   isQuad: 1
@@ -47328,12 +47596,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1075127768}
-  - {fileID: 1918371671}
-  - {fileID: 1408361939}
   - {fileID: 253372754}
   - {fileID: 578983943}
-  - {fileID: 2087522697}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1511758875
@@ -50715,24 +50979,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 2054434074}
-  - {fileID: 1819138264}
-  - {fileID: 407678872}
-  - {fileID: 1594854833}
-  - {fileID: 1448304940}
-  - {fileID: 1260575540}
-  - {fileID: 1807187124}
-  - {fileID: 1235465497}
   - {fileID: 1059273314}
-  - {fileID: 1309053084}
-  - {fileID: 2071044861}
-  - {fileID: 41499035}
-  - {fileID: 296445836}
-  - {fileID: 1365989981}
-  - {fileID: 1469147169}
-  - {fileID: 261444688}
-  - {fileID: 639633476}
-  - {fileID: 884649571}
+  - {fileID: 1235465497}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1527609658
@@ -50882,13 +51130,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 2087522697}
-  - {fileID: 1115216760}
-  - {fileID: 118375467}
   - {fileID: 1579536854}
   - {fileID: 27937866}
-  - {fileID: 37439654}
-  - {fileID: 1057332316}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1530411940
@@ -51463,13 +51706,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1306506232}
-  - {fileID: 770099240}
-  - {fileID: 844907342}
   - {fileID: 2039039780}
   - {fileID: 542013651}
-  - {fileID: 1318140330}
-  - {fileID: 1460955716}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1545166210
@@ -51622,15 +51860,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 440754801}
-  - {fileID: 1797224690}
-  - {fileID: 250729521}
-  - {fileID: 1007705336}
-  - {fileID: 925793962}
   - {fileID: 1760847201}
-  - {fileID: 2113420320}
-  - {fileID: 279570954}
-  - {fileID: 1316504006}
+  - {fileID: 925793962}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1551782783
@@ -52201,13 +52432,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1408361939}
-  - {fileID: 2087522697}
-  - {fileID: 1115216760}
   - {fileID: 118375467}
   - {fileID: 1530411939}
-  - {fileID: 27937866}
-  - {fileID: 37439654}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1579536855
@@ -52407,13 +52633,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 669587836}
-  - {fileID: 1404903707}
   - {fileID: 280528752}
   - {fileID: 351484451}
-  - {fileID: 1825679992}
-  - {fileID: 1611544156}
-  - {fileID: 513801782}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1589482990
@@ -52476,12 +52697,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 14218194}
-  - {fileID: 1626692125}
   - {fileID: 1657446686}
   - {fileID: 1142720482}
-  - {fileID: 1239907688}
-  - {fileID: 1934865401}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1590664151
@@ -52544,19 +52761,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 2054434074}
-  - {fileID: 778875891}
-  - {fileID: 1819138264}
-  - {fileID: 1611259841}
   - {fileID: 407678872}
-  - {fileID: 440213196}
-  - {fileID: 1448304940}
-  - {fileID: 1527609657}
-  - {fileID: 1059273314}
-  - {fileID: 1469147169}
-  - {fileID: 261444688}
-  - {fileID: 368171431}
-  - {fileID: 1975482927}
+  - {fileID: 1611259841}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1594854834
@@ -52620,12 +52826,7 @@ MonoBehaviour:
   orientation: 1
   connections:
   - {fileID: 1984959101}
-  - {fileID: 1075127768}
   - {fileID: 261810223}
-  - {fileID: 1918371671}
-  - {fileID: 138509719}
-  - {fileID: 64978461}
-  - {fileID: 1388860389}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1595446652
@@ -52987,18 +53188,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 2054434074}
   - {fileID: 778875891}
-  - {fileID: 407678872}
   - {fileID: 1594854833}
-  - {fileID: 440213196}
-  - {fileID: 1059273314}
-  - {fileID: 1469147169}
-  - {fileID: 261444688}
-  - {fileID: 368171431}
-  - {fileID: 1990389205}
-  - {fileID: 1975482927}
-  - {fileID: 1273517596}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1611259842
@@ -53075,13 +53266,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 280528752}
-  - {fileID: 1589482989}
-  - {fileID: 351484451}
   - {fileID: 1825679992}
   - {fileID: 513801782}
-  - {fileID: 1331173105}
-  - {fileID: 247612824}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1611544157
@@ -53364,12 +53550,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1142720482}
-  - {fileID: 1239907688}
   - {fileID: 1934865401}
   - {fileID: 1346887754}
-  - {fileID: 909479987}
-  - {fileID: 1032311862}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1624811087
@@ -53432,13 +53614,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 28716160}
-  - {fileID: 854537613}
-  - {fileID: 14218194}
-  - {fileID: 1253236625}
   - {fileID: 1657446686}
-  - {fileID: 1590664150}
-  - {fileID: 1142720482}
+  - {fileID: 14218194}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1626692126
@@ -53952,11 +54129,6 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 14218194}
-  - {fileID: 28716160}
-  - {fileID: 854537613}
-  - {fileID: 1142720482}
-  - {fileID: 1239907688}
   - {fileID: 1590664150}
   - {fileID: 1626692125}
   rescanPath: 0
@@ -54070,28 +54242,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1309053084}
-  - {fileID: 2071044861}
-  - {fileID: 41499035}
-  - {fileID: 637479793}
-  - {fileID: 1703017802}
-  - {fileID: 296445836}
-  - {fileID: 1457350183}
   - {fileID: 792573256}
-  - {fileID: 1365989981}
-  - {fileID: 235723786}
-  - {fileID: 639633476}
-  - {fileID: 884649571}
-  - {fileID: 1176669393}
-  - {fileID: 646313225}
-  - {fileID: 1797224690}
-  - {fileID: 250729521}
-  - {fileID: 1760847201}
   - {fileID: 2113420320}
-  - {fileID: 237365674}
-  - {fileID: 457757768}
-  - {fileID: 279570954}
-  - {fileID: 1316504006}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1667380686
@@ -54331,6 +54483,36 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
+--- !u!1 &1678478238
+GameObject:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1678478239}
+  m_Layer: 0
+  m_Name: tile_walk
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &1678478239
+Transform:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1678478238}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0.5, y: -0.5, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.09999998, z: 0.09999998}
+  m_Children:
+  - {fileID: 90331847}
+  - {fileID: 182456401}
+  m_Father: {fileID: 361509728}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1683176126
 GameObject:
   m_ObjectHideFlags: 8
@@ -54487,6 +54669,93 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1685620736}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1690241107
+GameObject:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1690241108}
+  - component: {fileID: 1690241111}
+  - component: {fileID: 1690241110}
+  - component: {fileID: 1690241109}
+  m_Layer: 0
+  m_Name: tile_magnet
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &1690241108
+Transform:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1690241107}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5, y: 0.5, z: 5}
+  m_LocalScale: {x: 7, y: 0.3, z: 7}
+  m_Children: []
+  m_Father: {fileID: 1336299875}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1690241109
+MonoBehaviour:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1690241107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abcefb57a76b34a4a8b66ce5a999c3f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeMaterial: {fileID: 2100000, guid: 41e5a3e0fae8f4785a5999259a591695, type: 2}
+  inactiveMaterial: {fileID: 2100000, guid: 381f4afcc9fbd2443a8b2569deaa773e, type: 2}
+  changeGravityMaterial: {fileID: 2100000, guid: acc815b4905dc4f43a35a4c5cfe77360,
+    type: 2}
+  activationVFX: {fileID: 0}
+  activeVFX: {fileID: 0}
+--- !u!23 &1690241110
+MeshRenderer:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1690241107}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 644054800}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &1690241111
+MeshFilter:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1690241107}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1692720897
 GameObject:
   m_ObjectHideFlags: 8
@@ -54636,18 +54905,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 784142819}
-  - {fileID: 2079335208}
-  - {fileID: 1729105488}
-  - {fileID: 637479793}
-  - {fileID: 296445836}
-  - {fileID: 1457350183}
-  - {fileID: 792573256}
   - {fileID: 1797224690}
-  - {fileID: 250729521}
-  - {fileID: 1760847201}
-  - {fileID: 1667380685}
-  - {fileID: 2113420320}
+  - {fileID: 637479793}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1703017803
@@ -55178,15 +55437,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1807187124}
-  - {fileID: 784142819}
   - {fileID: 2079335208}
   - {fileID: 637479793}
-  - {fileID: 1703017802}
-  - {fileID: 296445836}
-  - {fileID: 1457350183}
-  - {fileID: 792573256}
-  - {fileID: 1797224690}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1729105489
@@ -55869,17 +56121,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1703017802}
-  - {fileID: 440754801}
-  - {fileID: 1797224690}
   - {fileID: 250729521}
-  - {fileID: 1007705336}
-  - {fileID: 925793962}
   - {fileID: 1551782782}
-  - {fileID: 1667380685}
-  - {fileID: 2113420320}
-  - {fileID: 279570954}
-  - {fileID: 1316504006}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1760847202
@@ -56227,12 +56470,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1346887754}
-  - {fileID: 909479987}
-  - {fileID: 1032311862}
   - {fileID: 561898642}
-  - {fileID: 772746094}
-  - {fileID: 1838225132}
+  - {fileID: 1032311862}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1792476114
@@ -56344,19 +56583,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 2079335208}
-  - {fileID: 1729105488}
-  - {fileID: 637479793}
-  - {fileID: 1703017802}
-  - {fileID: 1457350183}
-  - {fileID: 792573256}
   - {fileID: 250729521}
-  - {fileID: 925793962}
-  - {fileID: 1760847201}
-  - {fileID: 1551782782}
-  - {fileID: 1667380685}
-  - {fileID: 2113420320}
-  - {fileID: 1316504006}
+  - {fileID: 1703017802}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1797224691
@@ -56498,19 +56726,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 2054434074}
-  - {fileID: 1819138264}
-  - {fileID: 1448304940}
-  - {fileID: 1260575540}
-  - {fileID: 1527609657}
-  - {fileID: 1235465497}
-  - {fileID: 2071044861}
   - {fileID: 784142819}
-  - {fileID: 2079335208}
-  - {fileID: 1729105488}
-  - {fileID: 637479793}
-  - {fileID: 296445836}
-  - {fileID: 1457350183}
+  - {fileID: 1260575540}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1807187125
@@ -56779,14 +56996,7 @@ MonoBehaviour:
   orientation: 1
   connections:
   - {fileID: 2054434074}
-  - {fileID: 407678872}
-  - {fileID: 1594854833}
   - {fileID: 1448304940}
-  - {fileID: 1260575540}
-  - {fileID: 1807187124}
-  - {fileID: 1527609657}
-  - {fileID: 1235465497}
-  - {fileID: 1059273314}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1819138265
@@ -60293,11 +60503,7 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 280528752}
   - {fileID: 351484451}
-  - {fileID: 513801782}
-  - {fileID: 1331173105}
-  - {fileID: 1589482989}
   - {fileID: 1611544156}
   rescanPath: 0
   isQuad: 1
@@ -60614,13 +60820,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 158356114}
-  - {fileID: 1792476113}
-  - {fileID: 561898642}
-  - {fileID: 772746094}
-  - {fileID: 2133827736}
-  - {fileID: 1497097205}
   - {fileID: 108875442}
+  - {fileID: 772746094}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1838225133
@@ -62057,13 +62258,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1984959101}
-  - {fileID: 1075127768}
-  - {fileID: 1511758874}
-  - {fileID: 1595446651}
   - {fileID: 253372754}
-  - {fileID: 138509719}
-  - {fileID: 578983943}
+  - {fileID: 1075127768}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1918371672
@@ -62396,12 +62592,7 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 909479987}
-  - {fileID: 1032311862}
-  - {fileID: 1142720482}
   - {fileID: 1239907688}
-  - {fileID: 1346887754}
-  - {fileID: 1590664150}
   - {fileID: 1624811086}
   rescanPath: 0
   isQuad: 1
@@ -63287,24 +63478,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 778875891}
-  - {fileID: 1611259841}
-  - {fileID: 1594854833}
-  - {fileID: 440213196}
-  - {fileID: 1059273314}
-  - {fileID: 1309053084}
-  - {fileID: 1469147169}
   - {fileID: 261444688}
-  - {fileID: 368171431}
-  - {fileID: 1990389205}
-  - {fileID: 440754801}
   - {fileID: 1273517596}
-  - {fileID: 235723786}
-  - {fileID: 639633476}
-  - {fileID: 884649571}
-  - {fileID: 1176669393}
-  - {fileID: 457757768}
-  - {fileID: 279570954}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1975482928
@@ -63621,12 +63796,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 64978461}
   - {fileID: 138509719}
-  - {fileID: 261810223}
-  - {fileID: 1075127768}
   - {fileID: 1595446651}
-  - {fileID: 1918371671}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1984959102
@@ -63719,18 +63890,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 235723786}
-  - {fileID: 261444688}
-  - {fileID: 279570954}
   - {fileID: 368171431}
-  - {fileID: 440213196}
   - {fileID: 440754801}
-  - {fileID: 778875891}
-  - {fileID: 925793962}
-  - {fileID: 1007705336}
-  - {fileID: 1273517596}
-  - {fileID: 1611259841}
-  - {fileID: 1975482927}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &1990389206
@@ -63848,6 +64009,75 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1997164006}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1999437871
+GameObject:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1999437872}
+  - component: {fileID: 1999437874}
+  - component: {fileID: 1999437873}
+  m_Layer: 0
+  m_Name: tile_base
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &1999437872
+Transform:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1999437871}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0}
+  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_Children: []
+  m_Father: {fileID: 1336299875}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &1999437873
+MeshRenderer:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1999437871}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: df6ea0f17bdad4e0c8c371950ea28bfc, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &1999437874
+MeshFilter:
+  m_ObjectHideFlags: 8
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1999437871}
+  m_Mesh: {fileID: 4300000, guid: b2d916743bdbd46ebb1646d5ea52a20f, type: 3}
 --- !u!1 &1999915032
 GameObject:
   m_ObjectHideFlags: 8
@@ -64251,11 +64481,7 @@ MonoBehaviour:
   orientation: 1
   connections:
   - {fileID: 247612824}
-  - {fileID: 513801782}
-  - {fileID: 860345256}
   - {fileID: 1011856506}
-  - {fileID: 1223665322}
-  - {fileID: 1331173105}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &2032811417
@@ -64518,11 +64744,7 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 542013651}
-  - {fileID: 770099240}
   - {fileID: 844907342}
-  - {fileID: 1306506232}
-  - {fileID: 1318140330}
   - {fileID: 1545166209}
   rescanPath: 0
   isQuad: 1
@@ -64586,13 +64808,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 141159974}
   - {fileID: 182314018}
   - {fileID: 408972889}
-  - {fileID: 817521986}
-  - {fileID: 860345256}
-  - {fileID: 1048932239}
-  - {fileID: 1223665322}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &2039116147
@@ -64834,15 +65051,6 @@ MonoBehaviour:
   orientation: 1
   connections:
   - {fileID: 407678872}
-  - {fileID: 1059273314}
-  - {fileID: 1235465497}
-  - {fileID: 1260575540}
-  - {fileID: 1448304940}
-  - {fileID: 1469147169}
-  - {fileID: 1527609657}
-  - {fileID: 1594854833}
-  - {fileID: 1611259841}
-  - {fileID: 1807187124}
   - {fileID: 1819138264}
   rescanPath: 0
   isQuad: 1
@@ -65085,10 +65293,6 @@ MonoBehaviour:
   connections:
   - {fileID: 88175234}
   - {fileID: 770099240}
-  - {fileID: 844907342}
-  - {fileID: 854537613}
-  - {fileID: 1253236625}
-  - {fileID: 1306506232}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &2070045738
@@ -65151,28 +65355,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 1448304940}
-  - {fileID: 1260575540}
-  - {fileID: 1807187124}
-  - {fileID: 1527609657}
-  - {fileID: 1235465497}
-  - {fileID: 1059273314}
-  - {fileID: 1309053084}
-  - {fileID: 41499035}
-  - {fileID: 784142819}
-  - {fileID: 2079335208}
   - {fileID: 296445836}
-  - {fileID: 1457350183}
-  - {fileID: 792573256}
-  - {fileID: 1365989981}
-  - {fileID: 1469147169}
-  - {fileID: 639633476}
-  - {fileID: 884649571}
-  - {fileID: 1176669393}
-  - {fileID: 646313225}
-  - {fileID: 1667380685}
-  - {fileID: 237365674}
-  - {fileID: 457757768}
+  - {fileID: 1235465497}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &2071044862
@@ -65348,17 +65532,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 296445836}
-  - {fileID: 637479793}
   - {fileID: 784142819}
-  - {fileID: 792573256}
-  - {fileID: 1260575540}
-  - {fileID: 1457350183}
-  - {fileID: 1703017802}
   - {fileID: 1729105488}
-  - {fileID: 1797224690}
-  - {fileID: 1807187124}
-  - {fileID: 2071044861}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &2079335209
@@ -65524,13 +65699,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 118375467}
-  - {fileID: 578983943}
   - {fileID: 1115216760}
   - {fileID: 1408361939}
-  - {fileID: 1511758874}
-  - {fileID: 1530411939}
-  - {fileID: 1579536854}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &2087522698
@@ -65917,29 +66087,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 41499035}
-  - {fileID: 235723786}
-  - {fileID: 237365674}
-  - {fileID: 250729521}
-  - {fileID: 279570954}
-  - {fileID: 296445836}
-  - {fileID: 457757768}
-  - {fileID: 639633476}
-  - {fileID: 646313225}
-  - {fileID: 792573256}
-  - {fileID: 884649571}
-  - {fileID: 925793962}
-  - {fileID: 1007705336}
-  - {fileID: 1176669393}
-  - {fileID: 1273517596}
   - {fileID: 1316504006}
-  - {fileID: 1365989981}
-  - {fileID: 1457350183}
-  - {fileID: 1551782782}
   - {fileID: 1667380685}
-  - {fileID: 1703017802}
-  - {fileID: 1760847201}
-  - {fileID: 1797224690}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &2113420321
@@ -66494,13 +66643,8 @@ MonoBehaviour:
   isGlueTile: 0
   orientation: 1
   connections:
-  - {fileID: 108875442}
   - {fileID: 158356114}
-  - {fileID: 772746094}
-  - {fileID: 1318140330}
-  - {fileID: 1460955716}
   - {fileID: 1497097205}
-  - {fileID: 1838225132}
   rescanPath: 0
   isQuad: 1
 --- !u!64 &2133827737

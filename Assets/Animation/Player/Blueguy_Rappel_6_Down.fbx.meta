@@ -453,7 +453,7 @@ ModelImporter:
     4300110: Rope_01
     4300112: axe
     4300114: BlueGuy
-    7400000: Take 001
+    7400000: Rappel6Down
     9500000: //RootNode
     13700000: BlueGuy
   materials:
@@ -480,7 +480,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: Take 001
+      name: Rappel6Down
       takeName: Take 001
       firstFrame: 1
       lastFrame: 30
@@ -502,7 +502,35 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0
+        functionName: OnRootTranslationMode
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.8354701
+        functionName: OnRootTranslationMode
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 1
+        messageOptions: 0
+      - time: 0
+        functionName: OnRootRotationMode
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.9209402
+        functionName: OnRootRotationMode
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 1
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1
