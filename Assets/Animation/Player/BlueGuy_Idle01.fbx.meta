@@ -456,6 +456,7 @@ ModelImporter:
     4300112: Rope_01
     4300114: axe
     7400000: Take 001
+    7400002: Idle01
     9500000: //RootNode
     13700000: BlueGuy
   materials:
@@ -482,7 +483,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: Take 001
+      name: Idle01
       takeName: Take 001
       firstFrame: 1
       lastFrame: 30
@@ -492,7 +493,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1

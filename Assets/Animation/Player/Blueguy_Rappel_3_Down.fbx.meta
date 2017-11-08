@@ -453,7 +453,7 @@ ModelImporter:
     4300110: Rope_01
     4300112: axe
     4300114: BlueGuy
-    7400000: Take 001
+    7400000: Rappel3Down
     9500000: //RootNode
     13700000: BlueGuy
   materials:
@@ -480,7 +480,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: Take 001
+      name: Rappel3Down
       takeName: Take 001
       firstFrame: 1
       lastFrame: 30
@@ -780,8 +780,8 @@ ModelImporter:
         weight: 1
       - path: Root/Hip/Thigh_R/Shin_R/Foot_R/Toe_R
         weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
+      maskType: 1
+      maskSource: {fileID: 31900000, guid: e05c1cf5d262a5a488aae09c00f7739d, type: 2}
       additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
