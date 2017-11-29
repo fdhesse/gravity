@@ -104,8 +104,6 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
     private bool isFlashing = false;//wheter this platform is flashing
     private Ticker flash;//timer for platform flashing
 
-	[HideInInspector] public bool isQuad;
-
 	public bool IsHighlighted
 	{
 		get { return isHighlighted; }
@@ -121,13 +119,7 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 
 		connections = new List<Tile>();
 		rescanPath = true;
-		isQuad = false;
-		
-		MeshCollider mCollider = GetComponent<MeshCollider> ();
-		
-		if ( mCollider != null && mCollider.sharedMesh.name == "Quad" )
-			isQuad = true;
-
+	
         defineOrientation();
 
 		// Temp code, destroy the old "graphics" child object

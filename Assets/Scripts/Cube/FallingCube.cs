@@ -1,41 +1,43 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(GameplayCube))]
+[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(AudioSource))]
 public class FallingCube : MonoBehaviour
 {
-	public bool isInit;
-	public bool isFalling;
-	
-	private Tile[] tiles;
-	private Dictionary<Tile, TileType> obstructedTiles;
+	private bool m_IsFalling;
+	public bool IsFalling
+	{
+		get { return m_IsFalling; }
+	}
 
-	private FallingCubeBody body;
+	private bool m_IsOutOfBounds = false;
+	private Vector3 m_SpawnPosition = Vector3.zero; // position of the Cube GameObject initial position
+	private Vector3 m_LastPosition = Vector3.zero; // position of the game object at the previous frame	
+	private Rigidbody m_RigidBody;
+
+	private Tile[] m_Tiles;
+	private Dictionary<Tile, TileType> m_ObstructedTiles;
 
 	void Awake()
 	{
-		GameObject bodyGo = new GameObject ("rigidbody (falling cube)");
-		bodyGo.tag = gameObject.tag;
-		bodyGo.layer = gameObject.layer;
-		bodyGo.transform.position = transform.position;
-		bodyGo.transform.rotation = transform.rotation;
-		bodyGo.transform.localScale = transform.lossyScale;
+		m_ObstructedTiles = new Dictionary<Tile, TileType>();
 
-		bodyGo.AddComponent<BoxCollider> ();
-		bodyGo.AddComponent<Rigidbody> ();
-		body = bodyGo.AddComponent<FallingCubeBody> ();
-		body.LegacyParent = this;
+		// configure the rigid body
+		m_RigidBody = GetComponent<Rigidbody>();
+//		m_RigidBody.transform.localScale *= 1.001f; // why?
+		m_RigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+		m_RigidBody.interpolation = RigidbodyInterpolation.Interpolate;
 
-		isInit = true;
+		// memorize the spawn position
+		m_SpawnPosition = transform.position;
 	}
-	
-	// Use this for initialization
-	void Start ()
-	{
-		obstructedTiles = new Dictionary<Tile, TileType> ();
 
+	// Use this for initialization
+	void Start()
+	{
 		GameplayCube cube = GetComponent<GameplayCube>();
 
 		// make sure we have a face on all the six faces of the cube,
@@ -58,45 +60,52 @@ public class FallingCube : MonoBehaviour
 		if (cube.Back == TileType.None)
 			cube.Back = TileType.Invalid;
 		
-		// Change the Colliders in order to make boxColliders;
-		GameObject[] faces = new GameObject[6];
-		tiles = new Tile[6];
-		
-		faces[0] = transform.Find ("left").gameObject;
-		faces[1] = transform.Find ("right").gameObject;
-		faces[2] = transform.Find ("up").gameObject;
-		faces[3] = transform.Find ("down").gameObject;
-		faces[4] = transform.Find ("back").gameObject;
-		faces[5] = transform.Find ("front").gameObject;
-		
-		for ( int i = 0, l = faces.Length; i < l; i++ )
+		// reset the rescan path
+		m_Tiles = GetComponentsInChildren<Tile>();
+		foreach (Tile tile in m_Tiles)
+			tile.rescanPath = true;
+	}
+
+	public void Reset(TileOrientation startingOrientation)
+	{
+		// reinit the position to the spawn position
+		transform.position = m_SpawnPosition;
+
+		// reset the dynamics of the rigid body
+		m_RigidBody.velocity = Vector3.zero;
+		m_RigidBody.angularVelocity = Vector3.zero;
+		m_RigidBody.constraints = RigidbodyConstraints.FreezeAll;
+
+		// reset the internal flags
+		m_IsOutOfBounds = false;
+	}
+
+	void Update()
+	{
+		// if the cube is still falling, game can't continue
+		m_IsFalling = (Vector3.Magnitude(transform.position - m_LastPosition) > 0.001f && !m_IsOutOfBounds);
+
+		// memorise the last position for testing at the next frame
+		m_LastPosition = transform.position;
+
+		if (Pawn.Instance.GetComponent<Rigidbody>().useGravity)
+			m_RigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+		else
+			m_RigidBody.constraints = RigidbodyConstraints.FreezeAll;
+	}
+
+	public void OutOfBounds()
+	{
+		m_IsOutOfBounds = true;
+	}
+
+	void OnCollisionEnter(Collision collision)
+	{
+		if (collision.gameObject.tag == "Player")
 		{
-			tiles[i] = faces[i].GetComponent<Tile>();
-			tiles[i].rescanPath = true;
-
-			if ( !tiles[i].isQuad )
-			{
-				Object.DestroyImmediate( faces[i].GetComponent<MeshCollider> () );
-				
-				BoxCollider box = faces[i].AddComponent<BoxCollider> ();
-				box.isTrigger = true;
-			}
+			collision.gameObject.GetComponent<Pawn>().CubeContact(transform.position);
+			return;
 		}
-	}
-
-	public void Reset (TileOrientation startingOrientation)
-	{
-		if (!isInit)
-			Awake ();
-
-		body.Reset ();
-		//isDestroyed = false;
-	}
-
-	void OnRigidbodyCollisionEnter(Collision collision)
-	{
-		// ADD A Control to avoid player change physic too soon
-		// in order to avoir "gluing effect"
 
 		if (collision.relativeVelocity.magnitude > 2)
 			GetComponent<AudioSource>().Play();
@@ -112,17 +121,17 @@ public class FallingCube : MonoBehaviour
 				{
 					Tile tile = hitInfo.collider.GetComponent<Tile>();
 					
-					if ( obstructedTiles.ContainsKey( tile ) )
+					if ( m_ObstructedTiles.ContainsKey( tile ) )
 						continue;
 					
-					obstructedTiles.Add( tile, tile.Type );
+					m_ObstructedTiles.Add( tile, tile.Type );
 					tile.Type = TileType.Invalid;
 					tile.rescanPath = true;
 				}
 			}
 		}
 		
-		foreach (Tile tile in tiles)
+		foreach (Tile tile in m_Tiles)
 		{
 			tile.rescanPath = true;
 			
@@ -130,19 +139,19 @@ public class FallingCube : MonoBehaviour
 				t.rescanPath = true;
 		}
 	}
-	
-	void OnRigidbodyCollisionExit( Collision collision )
+
+	void OnCollisionExit(Collision collision)
 	{
 		if (collision.gameObject.tag == "Player")
 			return;
 		
-		foreach ( KeyValuePair<Tile, TileType > entry in obstructedTiles )
+		foreach ( KeyValuePair<Tile, TileType > entry in m_ObstructedTiles )
 		{
 			Tile tile = entry.Key;
 			tile.Type = entry.Value;
 			tile.rescanPath = true;
 		}
 		
-		obstructedTiles.Clear ();
+		m_ObstructedTiles.Clear();
 	}
 }

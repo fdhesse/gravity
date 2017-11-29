@@ -92,7 +92,7 @@ public class World : MonoBehaviour
 	public bool IsThereAnyCubeFalling()
 	{
 		foreach (FallingCube cube in fallingCubes)
-			if (cube.isFalling)
+			if (cube.IsFalling)
 				return true;
 		return false;
 	}
