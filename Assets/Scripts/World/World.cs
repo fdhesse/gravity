@@ -190,9 +190,9 @@ public class World : MonoBehaviour
 		// but if the two tiles have perpendicular orientation, then we need to adjust the
 		// distance by half a cube size.
 		// Because Up/Down, Left/Right and Back/Front are grouped together in the enum,
-		// we can divide by two to have a common value for each pair, and then test these common value
-		int tile1AxisAlignment = (int)tile1.orientation / 2;
-		int tile2AxisAlignment = (int)tile2.orientation / 2;
+		// we can substract 1 to even values to have a common value for each pair, and then test these common value
+		int tile1AxisAlignment = ((int)tile1.orientation % 2) == 0 ? (int)tile1.orientation - 1 : (int)tile1.orientation;
+		int tile2AxisAlignment = ((int)tile2.orientation % 2) == 0 ? (int)tile2.orientation - 1 : (int)tile2.orientation;
 
 		// now adjust the distance if the two tiles are not aligned
 		if (tile1AxisAlignment != tile2AxisAlignment)
