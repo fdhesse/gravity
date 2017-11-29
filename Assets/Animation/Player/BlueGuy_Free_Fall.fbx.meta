@@ -1,0 +1,1695 @@
+fileFormatVersion: 2
+guid: ce4ce5bab07bfb54b96f1c67f9eb631c
+timeCreated: 1511943279
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: axe
+    100002: BlueGuy
+    100004: //RootNode
+    100006: Body
+    100008: Chest
+    100010: Collar_L
+    100012: Collar_R
+    100014: Foot_L
+    100016: Foot_R
+    100018: ForeArm_L
+    100020: ForeArm_R
+    100022: Hand_L
+    100024: Hand_R
+    100026: Head
+    100028: Hip
+    100030: joint_axe
+    100032: joint_rope_01
+    100034: joint_rope_02
+    100036: joint_rope_03
+    100038: joint_rope_04
+    100040: joint_rope_05
+    100042: joint_rope_06
+    100044: joint_rope_07
+    100046: joint_rope_08
+    100048: joint_rope_09
+    100050: joint_rope_10
+    100052: joint_rope_11
+    100054: joint_rope_12
+    100056: joint_rope_13
+    100058: joint_rope_14
+    100060: joint_rope_15
+    100062: joint_rope_16
+    100064: joint_rope_17
+    100066: joint_rope_18
+    100068: joint_rope_19
+    100070: joint_rope_20
+    100072: joint_rope_21
+    100074: joint_rope_22
+    100076: joint_rope_23
+    100078: joint_rope_24
+    100080: joint_rope_25
+    100082: joint_rope_26
+    100084: joint_rope_27
+    100086: joint_rope_28
+    100088: joint_rope_29
+    100090: joint_rope_30
+    100092: joint_rope_31
+    100094: joint_rope_32
+    100096: joint_rope_33
+    100098: joint_rope_34
+    100100: joint_rope_35
+    100102: joint_rope_36
+    100104: joint_rope_37
+    100106: joint_rope_38
+    100108: joint_rope_39
+    100110: joint_rope_40
+    100112: joint_rope_41
+    100114: joint_rope_42
+    100116: joint_rope_43
+    100118: joint_rope_44
+    100120: joint_rope_45
+    100122: joint_rope_46
+    100124: joint_rope_47
+    100126: joint_rope_48
+    100128: joint_rope_49
+    100130: joint_rope_50
+    100132: joint_rope_51
+    100134: joint_rope_52
+    100136: joint_rope_53
+    100138: joint_rope_54
+    100140: joint_rope_55
+    100142: joint_rope_56
+    100144: joint_rope_57
+    100146: Neck
+    100148: Root
+    100150: Rope_01
+    100152: Rope_010
+    100154: Rope_011
+    100156: Rope_012
+    100158: Rope_013
+    100160: Rope_014
+    100162: Rope_015
+    100164: Rope_016
+    100166: Rope_017
+    100168: Rope_018
+    100170: Rope_019
+    100172: Rope_02
+    100174: Rope_020
+    100176: Rope_021
+    100178: Rope_022
+    100180: Rope_023
+    100182: Rope_024
+    100184: Rope_025
+    100186: Rope_026
+    100188: Rope_027
+    100190: Rope_028
+    100192: Rope_029
+    100194: Rope_03
+    100196: Rope_030
+    100198: Rope_031
+    100200: Rope_032
+    100202: Rope_033
+    100204: Rope_034
+    100206: Rope_035
+    100208: Rope_036
+    100210: Rope_037
+    100212: Rope_038
+    100214: Rope_039
+    100216: Rope_04
+    100218: Rope_040
+    100220: Rope_041
+    100222: Rope_042
+    100224: Rope_043
+    100226: Rope_044
+    100228: Rope_045
+    100230: Rope_046
+    100232: Rope_047
+    100234: Rope_048
+    100236: Rope_049
+    100238: Rope_05
+    100240: Rope_050
+    100242: Rope_051
+    100244: Rope_052
+    100246: Rope_053
+    100248: Rope_054
+    100250: Rope_055
+    100252: Rope_056
+    100254: Rope_06
+    100256: Rope_07
+    100258: Rope_08
+    100260: Rope_09
+    100262: Shin_L
+    100264: Shin_R
+    100266: Shoulder_L
+    100268: Shoulder_R
+    100270: Thigh_L
+    100272: Thigh_R
+    100274: Toe_L
+    100276: Toe_R
+    400000: axe
+    400002: BlueGuy
+    400004: //RootNode
+    400006: Body
+    400008: Chest
+    400010: Collar_L
+    400012: Collar_R
+    400014: Foot_L
+    400016: Foot_R
+    400018: ForeArm_L
+    400020: ForeArm_R
+    400022: Hand_L
+    400024: Hand_R
+    400026: Head
+    400028: Hip
+    400030: joint_axe
+    400032: joint_rope_01
+    400034: joint_rope_02
+    400036: joint_rope_03
+    400038: joint_rope_04
+    400040: joint_rope_05
+    400042: joint_rope_06
+    400044: joint_rope_07
+    400046: joint_rope_08
+    400048: joint_rope_09
+    400050: joint_rope_10
+    400052: joint_rope_11
+    400054: joint_rope_12
+    400056: joint_rope_13
+    400058: joint_rope_14
+    400060: joint_rope_15
+    400062: joint_rope_16
+    400064: joint_rope_17
+    400066: joint_rope_18
+    400068: joint_rope_19
+    400070: joint_rope_20
+    400072: joint_rope_21
+    400074: joint_rope_22
+    400076: joint_rope_23
+    400078: joint_rope_24
+    400080: joint_rope_25
+    400082: joint_rope_26
+    400084: joint_rope_27
+    400086: joint_rope_28
+    400088: joint_rope_29
+    400090: joint_rope_30
+    400092: joint_rope_31
+    400094: joint_rope_32
+    400096: joint_rope_33
+    400098: joint_rope_34
+    400100: joint_rope_35
+    400102: joint_rope_36
+    400104: joint_rope_37
+    400106: joint_rope_38
+    400108: joint_rope_39
+    400110: joint_rope_40
+    400112: joint_rope_41
+    400114: joint_rope_42
+    400116: joint_rope_43
+    400118: joint_rope_44
+    400120: joint_rope_45
+    400122: joint_rope_46
+    400124: joint_rope_47
+    400126: joint_rope_48
+    400128: joint_rope_49
+    400130: joint_rope_50
+    400132: joint_rope_51
+    400134: joint_rope_52
+    400136: joint_rope_53
+    400138: joint_rope_54
+    400140: joint_rope_55
+    400142: joint_rope_56
+    400144: joint_rope_57
+    400146: Neck
+    400148: Root
+    400150: Rope_01
+    400152: Rope_010
+    400154: Rope_011
+    400156: Rope_012
+    400158: Rope_013
+    400160: Rope_014
+    400162: Rope_015
+    400164: Rope_016
+    400166: Rope_017
+    400168: Rope_018
+    400170: Rope_019
+    400172: Rope_02
+    400174: Rope_020
+    400176: Rope_021
+    400178: Rope_022
+    400180: Rope_023
+    400182: Rope_024
+    400184: Rope_025
+    400186: Rope_026
+    400188: Rope_027
+    400190: Rope_028
+    400192: Rope_029
+    400194: Rope_03
+    400196: Rope_030
+    400198: Rope_031
+    400200: Rope_032
+    400202: Rope_033
+    400204: Rope_034
+    400206: Rope_035
+    400208: Rope_036
+    400210: Rope_037
+    400212: Rope_038
+    400214: Rope_039
+    400216: Rope_04
+    400218: Rope_040
+    400220: Rope_041
+    400222: Rope_042
+    400224: Rope_043
+    400226: Rope_044
+    400228: Rope_045
+    400230: Rope_046
+    400232: Rope_047
+    400234: Rope_048
+    400236: Rope_049
+    400238: Rope_05
+    400240: Rope_050
+    400242: Rope_051
+    400244: Rope_052
+    400246: Rope_053
+    400248: Rope_054
+    400250: Rope_055
+    400252: Rope_056
+    400254: Rope_06
+    400256: Rope_07
+    400258: Rope_08
+    400260: Rope_09
+    400262: Shin_L
+    400264: Shin_R
+    400266: Shoulder_L
+    400268: Shoulder_R
+    400270: Thigh_L
+    400272: Thigh_R
+    400274: Toe_L
+    400276: Toe_R
+    2300000: axe
+    2300002: Rope_01
+    2300004: Rope_010
+    2300006: Rope_011
+    2300008: Rope_012
+    2300010: Rope_013
+    2300012: Rope_014
+    2300014: Rope_015
+    2300016: Rope_016
+    2300018: Rope_017
+    2300020: Rope_018
+    2300022: Rope_019
+    2300024: Rope_02
+    2300026: Rope_020
+    2300028: Rope_021
+    2300030: Rope_022
+    2300032: Rope_023
+    2300034: Rope_024
+    2300036: Rope_025
+    2300038: Rope_026
+    2300040: Rope_027
+    2300042: Rope_028
+    2300044: Rope_029
+    2300046: Rope_03
+    2300048: Rope_030
+    2300050: Rope_031
+    2300052: Rope_032
+    2300054: Rope_033
+    2300056: Rope_034
+    2300058: Rope_035
+    2300060: Rope_036
+    2300062: Rope_037
+    2300064: Rope_038
+    2300066: Rope_039
+    2300068: Rope_04
+    2300070: Rope_040
+    2300072: Rope_041
+    2300074: Rope_042
+    2300076: Rope_043
+    2300078: Rope_044
+    2300080: Rope_045
+    2300082: Rope_046
+    2300084: Rope_047
+    2300086: Rope_048
+    2300088: Rope_049
+    2300090: Rope_05
+    2300092: Rope_050
+    2300094: Rope_051
+    2300096: Rope_052
+    2300098: Rope_053
+    2300100: Rope_054
+    2300102: Rope_055
+    2300104: Rope_056
+    2300106: Rope_06
+    2300108: Rope_07
+    2300110: Rope_08
+    2300112: Rope_09
+    3300000: axe
+    3300002: Rope_01
+    3300004: Rope_010
+    3300006: Rope_011
+    3300008: Rope_012
+    3300010: Rope_013
+    3300012: Rope_014
+    3300014: Rope_015
+    3300016: Rope_016
+    3300018: Rope_017
+    3300020: Rope_018
+    3300022: Rope_019
+    3300024: Rope_02
+    3300026: Rope_020
+    3300028: Rope_021
+    3300030: Rope_022
+    3300032: Rope_023
+    3300034: Rope_024
+    3300036: Rope_025
+    3300038: Rope_026
+    3300040: Rope_027
+    3300042: Rope_028
+    3300044: Rope_029
+    3300046: Rope_03
+    3300048: Rope_030
+    3300050: Rope_031
+    3300052: Rope_032
+    3300054: Rope_033
+    3300056: Rope_034
+    3300058: Rope_035
+    3300060: Rope_036
+    3300062: Rope_037
+    3300064: Rope_038
+    3300066: Rope_039
+    3300068: Rope_04
+    3300070: Rope_040
+    3300072: Rope_041
+    3300074: Rope_042
+    3300076: Rope_043
+    3300078: Rope_044
+    3300080: Rope_045
+    3300082: Rope_046
+    3300084: Rope_047
+    3300086: Rope_048
+    3300088: Rope_049
+    3300090: Rope_05
+    3300092: Rope_050
+    3300094: Rope_051
+    3300096: Rope_052
+    3300098: Rope_053
+    3300100: Rope_054
+    3300102: Rope_055
+    3300104: Rope_056
+    3300106: Rope_06
+    3300108: Rope_07
+    3300110: Rope_08
+    3300112: Rope_09
+    4300000: Rope_056
+    4300002: Rope_055
+    4300004: Rope_054
+    4300006: Rope_053
+    4300008: Rope_052
+    4300010: Rope_051
+    4300012: Rope_050
+    4300014: Rope_049
+    4300016: Rope_048
+    4300018: Rope_047
+    4300020: Rope_046
+    4300022: Rope_045
+    4300024: Rope_044
+    4300026: Rope_043
+    4300028: Rope_042
+    4300030: Rope_041
+    4300032: Rope_040
+    4300034: Rope_039
+    4300036: Rope_038
+    4300038: Rope_037
+    4300040: Rope_036
+    4300042: Rope_035
+    4300044: Rope_034
+    4300046: Rope_033
+    4300048: Rope_032
+    4300050: Rope_031
+    4300052: Rope_030
+    4300054: Rope_029
+    4300056: Rope_028
+    4300058: Rope_027
+    4300060: Rope_026
+    4300062: Rope_025
+    4300064: Rope_024
+    4300066: Rope_023
+    4300068: Rope_022
+    4300070: Rope_021
+    4300072: Rope_020
+    4300074: Rope_019
+    4300076: Rope_018
+    4300078: Rope_017
+    4300080: Rope_016
+    4300082: Rope_015
+    4300084: Rope_014
+    4300086: Rope_013
+    4300088: Rope_012
+    4300090: Rope_011
+    4300092: Rope_010
+    4300094: Rope_09
+    4300096: Rope_08
+    4300098: Rope_07
+    4300100: Rope_06
+    4300102: Rope_05
+    4300104: Rope_04
+    4300106: Rope_03
+    4300108: Rope_02
+    4300110: Rope_01
+    4300112: axe
+    4300114: BlueGuy
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: BlueGuy
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 15
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: BlueGuy
+        weight: 0
+      - path: Root
+        weight: 1
+      - path: Root/Hip
+        weight: 1
+      - path: Root/Hip/Body
+        weight: 1
+      - path: Root/Hip/Body/Chest
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_L
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_L/Shoulder_L
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_L/Shoulder_L/ForeArm_L
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_L/Shoulder_L/ForeArm_L/Hand_L
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_axe
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_axe/axe
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46/joint_rope_47
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46/joint_rope_47/joint_rope_48
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46/joint_rope_47/joint_rope_48/joint_rope_49
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46/joint_rope_47/joint_rope_48/joint_rope_49/joint_rope_50
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46/joint_rope_47/joint_rope_48/joint_rope_49/joint_rope_50/joint_rope_51
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46/joint_rope_47/joint_rope_48/joint_rope_49/joint_rope_50/joint_rope_51/joint_rope_52
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46/joint_rope_47/joint_rope_48/joint_rope_49/joint_rope_50/joint_rope_51/joint_rope_52/joint_rope_53
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46/joint_rope_47/joint_rope_48/joint_rope_49/joint_rope_50/joint_rope_51/joint_rope_52/joint_rope_53/joint_rope_54
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46/joint_rope_47/joint_rope_48/joint_rope_49/joint_rope_50/joint_rope_51/joint_rope_52/joint_rope_53/joint_rope_54/joint_rope_55
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46/joint_rope_47/joint_rope_48/joint_rope_49/joint_rope_50/joint_rope_51/joint_rope_52/joint_rope_53/joint_rope_54/joint_rope_55/joint_rope_56
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46/joint_rope_47/joint_rope_48/joint_rope_49/joint_rope_50/joint_rope_51/joint_rope_52/joint_rope_53/joint_rope_54/joint_rope_55/joint_rope_56/joint_rope_57
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46/joint_rope_47/joint_rope_48/joint_rope_49/joint_rope_50/joint_rope_51/joint_rope_52/joint_rope_53/joint_rope_54/joint_rope_55/joint_rope_56/Rope_056
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46/joint_rope_47/joint_rope_48/joint_rope_49/joint_rope_50/joint_rope_51/joint_rope_52/joint_rope_53/joint_rope_54/joint_rope_55/Rope_055
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46/joint_rope_47/joint_rope_48/joint_rope_49/joint_rope_50/joint_rope_51/joint_rope_52/joint_rope_53/joint_rope_54/Rope_054
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46/joint_rope_47/joint_rope_48/joint_rope_49/joint_rope_50/joint_rope_51/joint_rope_52/joint_rope_53/Rope_053
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46/joint_rope_47/joint_rope_48/joint_rope_49/joint_rope_50/joint_rope_51/joint_rope_52/Rope_052
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46/joint_rope_47/joint_rope_48/joint_rope_49/joint_rope_50/joint_rope_51/Rope_051
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46/joint_rope_47/joint_rope_48/joint_rope_49/joint_rope_50/Rope_050
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46/joint_rope_47/joint_rope_48/joint_rope_49/Rope_049
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46/joint_rope_47/joint_rope_48/Rope_048
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46/joint_rope_47/Rope_047
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/joint_rope_46/Rope_046
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/joint_rope_45/Rope_045
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/joint_rope_44/Rope_044
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/joint_rope_43/Rope_043
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/joint_rope_42/Rope_042
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/joint_rope_41/Rope_041
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/joint_rope_40/Rope_040
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/joint_rope_39/Rope_039
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/joint_rope_38/Rope_038
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/joint_rope_37/Rope_037
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/joint_rope_36/Rope_036
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/joint_rope_35/Rope_035
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/joint_rope_34/Rope_034
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/joint_rope_33/Rope_033
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/joint_rope_32/Rope_032
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/joint_rope_31/Rope_031
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/joint_rope_30/Rope_030
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/joint_rope_29/Rope_029
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/joint_rope_28/Rope_028
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/joint_rope_27/Rope_027
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/joint_rope_26/Rope_026
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/joint_rope_25/Rope_025
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/joint_rope_24/Rope_024
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/joint_rope_23/Rope_023
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/joint_rope_22/Rope_022
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/joint_rope_21/Rope_021
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/joint_rope_20/Rope_020
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/joint_rope_19/Rope_019
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/joint_rope_18/Rope_018
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/joint_rope_17/Rope_017
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/joint_rope_16/Rope_016
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/joint_rope_15/Rope_015
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/joint_rope_14/Rope_014
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/joint_rope_13/Rope_013
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/joint_rope_12/Rope_012
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/joint_rope_11/Rope_011
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/joint_rope_10/Rope_010
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/joint_rope_09/Rope_09
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/joint_rope_08/Rope_08
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/joint_rope_07/Rope_07
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/joint_rope_06/Rope_06
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/joint_rope_05/Rope_05
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/joint_rope_04/Rope_04
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/joint_rope_03/Rope_03
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02/Rope_02
+        weight: 1
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/Rope_01
+        weight: 1
+      - path: Root/Hip/Body/Chest/Neck
+        weight: 1
+      - path: Root/Hip/Body/Chest/Neck/Head
+        weight: 1
+      - path: Root/Hip/Thigh_L
+        weight: 1
+      - path: Root/Hip/Thigh_L/Shin_L
+        weight: 1
+      - path: Root/Hip/Thigh_L/Shin_L/Foot_L
+        weight: 1
+      - path: Root/Hip/Thigh_L/Shin_L/Foot_L/Toe_L
+        weight: 1
+      - path: Root/Hip/Thigh_R
+        weight: 1
+      - path: Root/Hip/Thigh_R/Shin_R
+        weight: 1
+      - path: Root/Hip/Thigh_R/Shin_R/Foot_R
+        weight: 1
+      - path: Root/Hip/Thigh_R/Shin_R/Foot_R/Toe_R
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 1
+  humanDescription:
+    serializedVersion: 2
+    human:
+    - boneName: Hip
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Thigh_L
+      humanName: LeftUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Thigh_R
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shin_L
+      humanName: LeftLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shin_R
+      humanName: RightLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Foot_L
+      humanName: LeftFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Foot_R
+      humanName: RightFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Body
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Chest
+      humanName: Chest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Neck
+      humanName: Neck
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Collar_L
+      humanName: LeftShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Collar_R
+      humanName: RightShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shoulder_L
+      humanName: LeftUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Shoulder_R
+      humanName: RightUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: ForeArm_L
+      humanName: LeftLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: ForeArm_R
+      humanName: RightLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Hand_R
+      humanName: RightHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Hand_L
+      humanName: LeftHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Toe_L
+      humanName: LeftToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Toe_R
+      humanName: RightToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Head
+      humanName: Head
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: BlueGuy_T_Pose(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: BlueGuy
+      parentName: BlueGuy_T_Pose(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Root
+      parentName: BlueGuy_T_Pose(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Hip
+      parentName: Root
+      position: {x: -0, y: 0.875, z: 0}
+      rotation: {x: -0.7071068, y: -0.00000021354029, z: -0.00000021354032, w: 0.7071067}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Body
+      parentName: Hip
+      position: {x: 1.2116903e-29, y: -3.3881317e-23, z: 0.17999999}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Chest
+      parentName: Body
+      position: {x: -2.8272775e-29, y: 3.3881317e-23, z: 0.17}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Collar_L
+      parentName: Chest
+      position: {x: -0.028999997, y: -0.07, z: 0.236}
+      rotation: {x: 0.5, y: -0.5, z: -0.5, w: 0.5}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Shoulder_L
+      parentName: Collar_L
+      position: {x: -0.07, y: -0.028999997, z: 0.171}
+      rotation: {x: 0.64278764, y: 0.0000003177708, z: -0.00000030813572, w: 0.76604444}
+      scale: {x: 1, y: 1, z: 1}
+    - name: ForeArm_L
+      parentName: Shoulder_L
+      position: {x: -0.00000005674096, y: 0.28124067, z: 0.05134373}
+      rotation: {x: 0, y: 0.087155744, z: -0, w: 0.9961947}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Hand_L
+      parentName: ForeArm_L
+      position: {x: -0, y: 0.31557566, z: 0.061528455}
+      rotation: {x: -5.4703457e-24, y: 0, z: -1.6725303e-24, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Collar_R
+      parentName: Chest
+      position: {x: 0.028999997, y: -0.07, z: 0.236}
+      rotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Shoulder_R
+      parentName: Collar_R
+      position: {x: 0.07, y: -0.028999997, z: 0.171}
+      rotation: {x: 0.64278764, y: 0.00000012250267, z: -0.00000006129761, w: 0.76604444}
+      scale: {x: 1, y: 1, z: 1}
+    - name: ForeArm_R
+      parentName: Shoulder_R
+      position: {x: -2.6645354e-17, y: 0.281, z: 0.051}
+      rotation: {x: 0, y: -0.087155744, z: -0, w: 0.9961947}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Hand_R
+      parentName: ForeArm_R
+      position: {x: -3.5527136e-17, y: 0.31599998, z: 0.061999995}
+      rotation: {x: -0.6040355, y: -0.22240692, z: 0.7216208, w: 0.2548328}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_01
+      parentName: Hand_R
+      position: {x: 0.014395783, y: -0.010493345, z: -0.010983765}
+      rotation: {x: -0.35366863, y: -0.6068374, z: -0.3584162, w: 0.6149835}
+      scale: {x: 1, y: 1, z: 1}
+    - name: axe
+      parentName: joint_rope_01
+      position: {x: 0.000102491824, y: 0.000017797522, z: 0.0000031382174}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_02
+      parentName: joint_rope_01
+      position: {x: -0.25, y: -7.105427e-17, z: 2.4424906e-17}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_03
+      parentName: joint_rope_02
+      position: {x: -0.25, y: -7.105427e-17, z: 5.939693e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_04
+      parentName: joint_rope_03
+      position: {x: -0.25, y: -4.4408918e-17, z: 5.9285906e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_05
+      parentName: joint_rope_04
+      position: {x: -0.25, y: -8.8817837e-17, z: 5.9174886e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_06
+      parentName: joint_rope_05
+      position: {x: -0.25, y: -4.4408918e-17, z: 5.9618975e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_07
+      parentName: joint_rope_06
+      position: {x: -0.25, y: -4.4408918e-17, z: 5.9618975e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_08
+      parentName: joint_rope_07
+      position: {x: -0.25, y: -4.4408918e-17, z: 5.9618975e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_09
+      parentName: joint_rope_08
+      position: {x: -0.25, y: -4.4408918e-17, z: 5.9618975e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_10
+      parentName: joint_rope_09
+      position: {x: -0.25, y: -1.1546319e-16, z: 5.839773e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_11
+      parentName: joint_rope_10
+      position: {x: -0.25, y: -1.1546319e-16, z: 5.828671e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_12
+      parentName: joint_rope_11
+      position: {x: -0.25, y: -2.6645352e-17, z: 5.9952044e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_13
+      parentName: joint_rope_12
+      position: {x: -0.25, y: -9.7699626e-17, z: 5.8619773e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_14
+      parentName: joint_rope_13
+      position: {x: -0.25, y: -2.6645352e-17, z: 5.9952044e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_15
+      parentName: joint_rope_14
+      position: {x: -0.25, y: 7.105427e-17, z: 6.17284e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_16
+      parentName: joint_rope_15
+      position: {x: -0.25, y: -2.6645352e-17, z: 5.984102e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_17
+      parentName: joint_rope_16
+      position: {x: -0.25, y: -2.5757173e-16, z: 5.5733196e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_18
+      parentName: joint_rope_17
+      position: {x: -0.25, y: 7.105427e-17, z: 6.17284e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_19
+      parentName: joint_rope_18
+      position: {x: -0.25, y: -1.687539e-16, z: 5.750955e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_20
+      parentName: joint_rope_19
+      position: {x: -0.25, y: 1.5987211e-16, z: 6.3060666e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_21
+      parentName: joint_rope_20
+      position: {x: -0.25, y: -2.0428103e-16, z: 5.684342e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_22
+      parentName: joint_rope_21
+      position: {x: -0.25, y: -7.105427e-17, z: 5.9285906e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_23
+      parentName: joint_rope_22
+      position: {x: -0.25, y: 2.6645352e-17, z: 6.0507153e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_24
+      parentName: joint_rope_23
+      position: {x: -0.25, y: -2.0428103e-16, z: 5.695444e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_25
+      parentName: joint_rope_24
+      position: {x: -0.25, y: -7.105427e-17, z: 5.9285906e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_26
+      parentName: joint_rope_25
+      position: {x: -0.25, y: -1.0658141e-16, z: 5.8064664e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_27
+      parentName: joint_rope_26
+      position: {x: -0.25, y: 1.2434498e-16, z: 6.283862e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_28
+      parentName: joint_rope_27
+      position: {x: -0.25, y: 7.105427e-17, z: 6.17284e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_29
+      parentName: joint_rope_28
+      position: {x: -0.25, y: -2.0428103e-16, z: 5.6732393e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_30
+      parentName: joint_rope_29
+      position: {x: -0.25, y: 7.105427e-17, z: 6.17284e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_31
+      parentName: joint_rope_30
+      position: {x: -0.25, y: -2.0428103e-16, z: 5.6732393e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_32
+      parentName: joint_rope_31
+      position: {x: -0.25, y: -7.105427e-17, z: 5.9174886e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_33
+      parentName: joint_rope_32
+      position: {x: -0.25, y: -2.5757173e-16, z: 5.5733196e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_34
+      parentName: joint_rope_33
+      position: {x: -0.25, y: 1.2434498e-16, z: 6.2616577e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_35
+      parentName: joint_rope_34
+      position: {x: -0.25, y: -7.105427e-17, z: 5.9285906e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_36
+      parentName: joint_rope_35
+      position: {x: -0.25, y: -3.375078e-16, z: 5.4178885e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_37
+      parentName: joint_rope_36
+      position: {x: -0.25, y: 1.7763568e-17, z: 6.084022e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_38
+      parentName: joint_rope_37
+      position: {x: -0.25, y: 1.2434498e-16, z: 6.250555e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_39
+      parentName: joint_rope_38
+      position: {x: -0.25, y: -2.5757173e-16, z: 5.5844215e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_40
+      parentName: joint_rope_39
+      position: {x: -0.25, y: 2.0428103e-16, z: 6.417089e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_41
+      parentName: joint_rope_40
+      position: {x: -0.25, y: 5.3290704e-17, z: 6.095124e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_42
+      parentName: joint_rope_41
+      position: {x: -0.25, y: -3.4638957e-16, z: 5.4622974e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_43
+      parentName: joint_rope_42
+      position: {x: -0.25, y: -3.7303492e-16, z: 5.373479e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_44
+      parentName: joint_rope_43
+      position: {x: -0.25, y: 9.592326e-16, z: 7.71605e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_45
+      parentName: joint_rope_44
+      position: {x: -0.25, y: -9.237055e-16, z: 4.4186877e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_46
+      parentName: joint_rope_45
+      position: {x: -0.25, y: 1.7763568e-17, z: 6.0729197e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_47
+      parentName: joint_rope_46
+      position: {x: -0.25, y: 3.0198067e-16, z: 6.561418e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_48
+      parentName: joint_rope_47
+      position: {x: -0.25, y: -5.32907e-16, z: 5.0959233e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_49
+      parentName: joint_rope_48
+      position: {x: -0.25, y: 1.7763568e-17, z: 6.084022e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_50
+      parentName: joint_rope_49
+      position: {x: -0.25, y: 1.7763568e-17, z: 6.061818e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_51
+      parentName: joint_rope_50
+      position: {x: -0.25, y: 1.7763568e-17, z: 6.0729197e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_52
+      parentName: joint_rope_51
+      position: {x: -0.25, y: 1.7763568e-17, z: 6.0729197e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_53
+      parentName: joint_rope_52
+      position: {x: -0.25, y: 1.2434498e-16, z: 6.2616577e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_54
+      parentName: joint_rope_53
+      position: {x: -0.25, y: -2.5757173e-16, z: 5.5733196e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_55
+      parentName: joint_rope_54
+      position: {x: -0.25, y: -8.8817837e-17, z: 5.87308e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_56
+      parentName: joint_rope_55
+      position: {x: -0.25, y: 1.2434498e-16, z: 6.27276e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: joint_rope_57
+      parentName: joint_rope_56
+      position: {x: -0.25, y: 1.8651746e-16, z: 6.361578e-16}
+      rotation: {x: -0.056022532, y: 0.7631294, z: -0.64034164, w: 0.06676531}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_056
+      parentName: joint_rope_56
+      position: {x: -4.5474734e-15, y: -1.5059847e-16, z: -3.1502578e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_055
+      parentName: joint_rope_55
+      position: {x: -4.5474734e-15, y: 3.381253e-17, z: 2.4980017e-18}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_054
+      parentName: joint_rope_54
+      position: {x: -4.5474734e-15, y: 5.0607216e-18, z: -3.469447e-18}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_053
+      parentName: joint_rope_53
+      position: {x: -4.5474734e-15, y: -1.9244499e-16, z: -3.9412916e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_052
+      parentName: joint_rope_52
+      position: {x: -0, y: -8.033973e-18, z: -6.5225603e-18}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_051
+      parentName: joint_rope_51
+      position: {x: -0, y: 6.979563e-17, z: 7.494005e-18}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_050
+      parentName: joint_rope_50
+      position: {x: -0, y: 1.4762523e-16, z: 2.151057e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_049
+      parentName: joint_rope_49
+      position: {x: -0, y: 2.254548e-16, z: 3.4416914e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_048
+      parentName: joint_rope_48
+      position: {x: -0, y: 3.0328443e-16, z: 4.95437e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_047
+      parentName: joint_rope_47
+      position: {x: -0, y: -1.6955658e-16, z: -3.413936e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_046
+      parentName: joint_rope_46
+      position: {x: -0, y: 1.9249012e-16, z: 2.872702e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_045
+      parentName: joint_rope_45
+      position: {x: -0, y: 2.703197e-16, z: 4.2743585e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_044
+      parentName: joint_rope_44
+      position: {x: -2.2737367e-15, y: -5.933198e-16, z: -1.0866308e-16}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_043
+      parentName: joint_rope_43
+      position: {x: -0, y: 4.2597893e-16, z: 6.9666495e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_042
+      parentName: joint_rope_42
+      position: {x: -2.2737367e-15, y: 1.1301001e-16, z: 1.3739009e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_041
+      parentName: joint_rope_41
+      position: {x: -1.1368684e-15, y: -1.7331353e-16, z: -3.330669e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_040
+      parentName: joint_rope_40
+      position: {x: 1.1368684e-15, y: -5.995679e-17, z: -1.706968e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_039
+      parentName: joint_rope_39
+      position: {x: 1.1368684e-15, y: 2.0439028e-16, z: 3.13638e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_038
+      parentName: joint_rope_38
+      position: {x: -0, y: 6.884573e-18, z: -3.469447e-18}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_037
+      parentName: joint_rope_37
+      position: {x: 1.1368684e-15, y: 1.9129558e-16, z: 2.8310687e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_036
+      parentName: joint_rope_36
+      position: {x: 1.1368684e-15, y: 2.6912518e-16, z: 4.3437474e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_035
+      parentName: joint_rope_35
+      position: {x: 1.1368684e-15, y: -8.316577e-18, z: -8.049117e-18}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_034
+      parentName: joint_rope_34
+      position: {x: 1.1368684e-15, y: -1.9304816e-17, z: -8.465451e-18}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_033
+      parentName: joint_rope_33
+      position: {x: 2.2737367e-15, y: 1.651062e-16, z: 2.4424906e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_032
+      parentName: joint_rope_32
+      position: {x: 1.1368684e-15, y: -3.239951e-17, z: -1.1518564e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_030
+      parentName: joint_rope_31
+      position: {x: 0.25, y: 1.6678282e-17, z: -6.0632053e-16}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_031
+      parentName: joint_rope_30
+      position: {x: -0.25, y: -2.4766878e-16, z: 5.542788e-16}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_029
+      parentName: joint_rope_29
+      position: {x: -1.1368684e-15, y: -5.648244e-17, z: -1.498801e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_028
+      parentName: joint_rope_28
+      position: {x: -1.1368684e-15, y: -2.0069744e-16, z: -4.0939475e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_027
+      parentName: joint_rope_27
+      position: {x: -1.1368684e-15, y: -6.957714e-17, z: -1.6930902e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_026
+      parentName: joint_rope_26
+      position: {x: 1.1368684e-15, y: 1.1483387e-16, z: 1.8179901e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_025
+      parentName: joint_rope_25
+      position: {x: -0, y: 6.8318495e-17, z: 5.5511148e-18}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_024
+      parentName: joint_rope_24
+      position: {x: -0, y: 5.7330254e-17, z: 5.1347816e-18}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_023
+      parentName: joint_rope_23
+      position: {x: -0, y: -8.688474e-17, z: -1.8596234e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_022
+      parentName: joint_rope_22
+      position: {x: -1.1368684e-15, y: -1.7335927e-19, z: -6.8001157e-18}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_021
+      parentName: joint_rope_21
+      position: {x: -5.684342e-16, y: -1.1161599e-17, z: -7.216449e-18}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_020
+      parentName: joint_rope_20
+      position: {x: -0, y: -1.553766e-16, z: -3.205769e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_019
+      parentName: joint_rope_19
+      position: {x: -5.684342e-16, y: 6.4561546e-17, z: 5.2735593e-18}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_018
+      parentName: joint_rope_18
+      position: {x: -0, y: -4.4126317e-17, z: -1.2906343e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_017
+      parentName: joint_rope_17
+      position: {x: 5.684342e-16, y: 8.699399e-17, z: 1.11022296e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_016
+      parentName: joint_rope_16
+      position: {x: -1.1368684e-15, y: -1.1051172e-16, z: -2.484124e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_015
+      parentName: joint_rope_15
+      position: {x: -1.1368684e-15, y: -7.7091036e-17, z: -1.9706458e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_014
+      parentName: joint_rope_14
+      position: {x: -5.684342e-16, y: 5.402927e-17, z: 4.3021143e-18}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_013
+      parentName: joint_rope_13
+      position: {x: -0, y: 8.744995e-17, z: 1.0547119e-17}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_012
+      parentName: joint_rope_12
+      position: {x: -0, y: 4.981636e-17, z: 3.469447e-18}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_011
+      parentName: joint_rope_11
+      position: {x: -0, y: 8.3237034e-17, z: 9.714451e-18}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_010
+      parentName: joint_rope_10
+      position: {x: -0, y: 2.7839882e-17, z: -6.9388935e-19}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_09
+      parentName: joint_rope_09
+      position: {x: 2.842171e-16, y: -2.7557279e-17, z: -9.992007e-18}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_08
+      parentName: joint_rope_08
+      position: {x: -2.842171e-16, y: -1.1900164e-17, z: -7.077672e-18}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_07
+      parentName: joint_rope_07
+      position: {x: -0, y: 3.7569476e-18, z: -4.163336e-18}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_06
+      parentName: joint_rope_06
+      position: {x: -0, y: 1.941406e-17, z: -1.2490008e-18}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_05
+      parentName: joint_rope_05
+      position: {x: 1.4210854e-16, y: 3.5071174e-17, z: 1.6653345e-18}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_04
+      parentName: joint_rope_04
+      position: {x: -0, y: 6.319366e-18, z: 1.3877787e-19}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_03
+      parentName: joint_rope_03
+      position: {x: 7.105427e-17, y: 2.1976478e-17, z: -2.7755575e-19}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_02
+      parentName: joint_rope_02
+      position: {x: 3.5527136e-17, y: 1.0988239e-17, z: 4.1633362e-19}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Rope_01
+      parentName: joint_rope_01
+      position: {x: 2.4424906e-17, y: 1.8520856e-29, z: -5.684342e-16}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Neck
+      parentName: Chest
+      position: {x: -7.523164e-39, y: 1.6940659e-23, z: 0.29}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Head
+      parentName: Neck
+      position: {x: 2.378225e-25, y: -0.022, z: 0.105}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Thigh_L
+      parentName: Hip
+      position: {x: -0.093, y: -3.3881317e-23, z: 0.040999997}
+      rotation: {x: 0.9992533, y: -0.00011359357, z: -0.000004312931, w: 0.038638763}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Shin_L
+      parentName: Thigh_L
+      position: {x: -1.7763568e-17, y: -1.1281757e-10, z: 0.42100006}
+      rotation: {x: 0.07705575, y: -0, z: -0, w: 0.9970268}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Foot_L
+      parentName: Shin_L
+      position: {x: -0.0000000012649221, y: 0.000000033262523, z: 0.42249984}
+      rotation: {x: -0.73213094, y: 0.00007334208, z: -0.000084278225, w: 0.6811639}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Toe_L
+      parentName: Foot_L
+      position: {x: -0.00000002226016, y: -0.07249995, z: 0.13599998}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Thigh_R
+      parentName: Hip
+      position: {x: 0.093, y: -1.6940659e-23, z: 0.040999997}
+      rotation: {x: 0.9992533, y: 0.00029234853, z: 0.000011383838, w: 0.038638573}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Shin_R
+      parentName: Thigh_R
+      position: {x: 1.7763568e-17, y: 0.0000000022975473, z: 0.421}
+      rotation: {x: 0.07705563, y: -0, z: -0, w: 0.9970268}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Foot_R
+      parentName: Shin_R
+      position: {x: 0.0000000045899666, y: -0.000000011707045, z: 0.42249984}
+      rotation: {x: -0.73213094, y: -0.00019274831, z: 0.00021243065, w: 0.6811639}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Toe_R
+      parentName: Foot_R
+      position: {x: 0.00000003271489, y: -0.07249997, z: 0.13599999}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 90d24f67470b0504d9b6449ce0297f24,
+    type: 3}
+  animationType: 3
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
