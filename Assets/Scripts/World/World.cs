@@ -160,11 +160,14 @@ public class World : MonoBehaviour
 	/// <summary>
 	///  Compute the relative distance from the specified tile1 to the specified tile2
 	///  along the orientation of the tile2, and convert it into grid step
-	///  (currently one gameplay cube'edge equals to 10m (aka GameplayCube.CUBE_SIZE) in world's coordinates). 
+	///  (currently one gameplay cube'edge equals to 2m (aka GameplayCube.CUBE_SIZE in world's coordinates). 
 	///  - For two tiles with the same orientation, the value is positive if tile1 is above tile2 
 	///    (according to orientation of tile2), negative otherwise.
 	///  - For two tiles whose orientations are perpendicular, if tile2 is a touching wall of tile1 
 	///    then the distance will be null.
+	/// If the tile2 is a Falling Cube, this function assume that it will fall along its own orientation,
+	/// therefore will compute the distance for when it will reach a ground. And if there's no ground
+	/// under the falling cube, then int.MaxValue is returned.
 	/// </summary>
 	/// <param name="tile1">The first tile you want to test</param>
 	/// <param name="tile2">The second tile you want to test</param>
@@ -204,6 +207,27 @@ public class World : MonoBehaviour
 		}
 
 		// convert the distance into grid step
-		return (int)Mathf.Round(distance / GameplayCube.CUBE_SIZE);
+		int result = (int)Mathf.Round(distance / GameplayCube.CUBE_SIZE);
+
+		// now check if the tile2 is a falling cube. If it's the case, we need to check where it will fall
+		if (tile2.CompareTag(GameplayCube.FALLING_CUBE_TAG))
+		{
+			Vector3 direction = GetGravityNormalizedVector(tile2.orientation);
+			Vector3 origin = tile2.transform.parent.position + (direction * GameplayCube.HALF_CUBE_SIZE * 0.95f);
+			RaycastHit hitInfo;
+			if (Physics.Raycast(origin, direction, out hitInfo))
+			{
+				// if we hit something, add the grid height of the hit distance, to what we have computed so far
+				result += (int)Mathf.Round(hitInfo.distance / GameplayCube.CUBE_SIZE);
+			}
+			else
+			{
+				// if we didn't find any collider under the falling cube, just return the infinite value
+				result = int.MaxValue;
+			}
+		}
+
+		// return the result
+		return result;
 	}
 }

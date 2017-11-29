@@ -688,9 +688,22 @@ public class Pawn : MonoBehaviour
 
 			// set the parameters to the anim state jump
 			m_AnimStateRollToTile.SetStartAndEndTile(m_PawnTile, targetTile);
-			
+
 			// trigger the animation
 			m_Animator.SetTrigger(ANIM_ROLL_TO_TILE_TRIGGER);
+		}
+		else if (tileRelativeGridHeight == int.MaxValue)
+		{
+			// if the height is infinite (max value) that means we will do a free fall
+
+			// Block the mouse input
+			m_IsFalling = true;
+
+			// set the target tile as null, but also reset the gravity for the pawn
+			OnEnterTile(null, true);
+
+			// Fall animation
+			m_Animator.SetTrigger(ANIM_FALL_TRIGGER);
 		}
 		else
 		{
@@ -703,7 +716,7 @@ public class Pawn : MonoBehaviour
 			// set the parameters to the anim state fall and abseil
 			m_AnimStateFallAbseilAbove.SetEndTile(targetTile);
 
-			// Fall animation
+			// Fall and abseil animation
 			m_Animator.SetTrigger(ANIM_FALL_AND_ABSEIL_TRIGGER);
 		}
 
