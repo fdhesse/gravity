@@ -455,7 +455,7 @@ ModelImporter:
     4300110: Rope_01
     4300112: axe
     4300114: BlueGuy
-    7400000: Take 001
+    7400000: FreeFall
     9500000: //RootNode
     13700000: BlueGuy
   materials:
@@ -482,7 +482,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: Take 001
+      name: FreeFall
       takeName: Take 001
       firstFrame: 1
       lastFrame: 15
@@ -492,19 +492,33 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
+      keepOriginalPositionXZ: 1
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0
+        functionName: OnRootTranslationMode
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0
+        functionName: OnRootRotationMode
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1
@@ -536,9 +550,7 @@ ModelImporter:
         weight: 1
       - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01
         weight: 1
-      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_axe
-        weight: 1
-      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_axe/axe
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/axe
         weight: 1
       - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02
         weight: 1
@@ -784,8 +796,8 @@ ModelImporter:
         weight: 1
       - path: Root/Hip/Thigh_R/Shin_R/Foot_R/Toe_R
         weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
+      maskType: 1
+      maskSource: {fileID: 31900000, guid: e05c1cf5d262a5a488aae09c00f7739d, type: 2}
       additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:

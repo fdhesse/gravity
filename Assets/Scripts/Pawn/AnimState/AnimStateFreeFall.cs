@@ -18,7 +18,7 @@ public class AnimStateFreeFall : StateMachineBehaviour
 		m_StartRotationTime = Time.time;
 
 		// compute the target orientation
-
+		m_TargetOrientation = ComputeTargetOrientation(animator);
 	}
 
 	public override void OnStateUpdate(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
@@ -31,7 +31,27 @@ public class AnimStateFreeFall : StateMachineBehaviour
 			animator.transform.parent.rotation = m_TargetOrientation;
 	}
 
-	//public override void OnStateExit(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
-	//{
-	//}
+	private Quaternion ComputeTargetOrientation(Animator animator)
+	{
+		// up is like the destination tile
+		Vector3 up = -World.GetGravityNormalizedVector(World.Instance.CurrentGravityOrientation);
+
+		// get the forward of the pawn, and snap it to the world axis
+		Vector3 forward = animator.transform.forward;
+		forward = new Vector3(Mathf.Round(forward.x), Mathf.Round(forward.y), Mathf.Round(forward.z));
+
+		// if the forward is collinear with the gravity, take something else
+		float dot = Vector3.Dot(up, forward);
+		if ((dot > 0.9f) || (dot < -0.9f))
+		{
+			Vector3 animatorUp = animator.transform.up;
+			if (dot > 0f)
+				forward = new Vector3(Mathf.Round(-animatorUp.x), Mathf.Round(-animatorUp.y), Mathf.Round(-animatorUp.z));
+			else
+				forward = new Vector3(Mathf.Round(animatorUp.x), Mathf.Round(animatorUp.y), Mathf.Round(animatorUp.z));
+		}
+
+		// now compute the action quaternion based on this two vectors
+		return Quaternion.LookRotation(forward, up);
+	}
 }
