@@ -17,6 +17,7 @@ public class Pawn : MonoBehaviour
 	public static readonly int ANIM_IDLE_TRIGGER = Animator.StringToHash("Idle");
 	private static readonly int ANIM_WALK_TRIGGER = Animator.StringToHash("Walk");
 	private static readonly int ANIM_FALL_TRIGGER = Animator.StringToHash("Fall");
+	private static readonly int ANIM_FALL_AND_ABSEIL_TRIGGER = Animator.StringToHash("Fall and Abseil");
 	private static readonly int ANIM_LAND_TRIGGER = Animator.StringToHash("Land");
 	public static readonly int ANIM_BORDER_DIRECTION_INT = Animator.StringToHash("Border Direction");
 	public static readonly int ANIM_ABSEIL_HEIGHT_INT = Animator.StringToHash("Abseil Height");
@@ -54,14 +55,6 @@ public class Pawn : MonoBehaviour
 	[Tooltip("Time of pawn's rotation.")]
 	private float turnDelay = .5f;				// Time of pawn's rotation
 
-	// these two parameters (and other variables) will soon disapear when the anim state will be implemented
-	public float fallDelay = .5f;				// Time of pawn's fall
-	public float fallInterval = .5f;            // Gap between tile and pawn before fall
-	private Vector3 desiredRotation = Vector3.zero;
-	// be carefull with the nextConstraint, the falling cube are kind of using it (but it will be always the same)
-	[HideInInspector] public RigidbodyConstraints nextConstraint = RigidbodyConstraints.None;
-	private RigidbodyConstraints transformConstraints = RigidbodyConstraints.None;
-
 	// #COLLISION#
 	private int m_TilesLayer = 0;						// will be init in Awake
 	private LayerMask m_TilesLayerMask;					// will be init in Awake
@@ -76,6 +69,7 @@ public class Pawn : MonoBehaviour
 	private AnimStateJumpToTile m_AnimStateJumpToTile = null;     // will be init in OnEnable or Start
 	private AnimStateJumpAbseil m_AnimStateJumpAbseil = null;     // will be init in OnEnable or Start
 	private AnimStateRollToTile m_AnimStateRollToTile = null;     // will be init in OnEnable or Start
+	private AnimStateFallAbseilAbove m_AnimStateFallAbseilAbove = null; // will be init in OnEnable or Start
 
 	// #SPAWN#
 	private Vector3 m_SpawnPosition = Vector3.zero;			// position of the spawn GameObject
@@ -163,6 +157,7 @@ public class Pawn : MonoBehaviour
 		m_AnimStateJumpToTile = m_Animator.GetBehaviour<AnimStateJumpToTile>();
 		m_AnimStateJumpAbseil = m_Animator.GetBehaviour<AnimStateJumpAbseil>();
 		m_AnimStateRollToTile = m_Animator.GetBehaviour<AnimStateRollToTile>();
+		m_AnimStateFallAbseilAbove = m_Animator.GetBehaviour<AnimStateFallAbseilAbove>();
 	}
 
 	void Update()
@@ -202,6 +197,7 @@ public class Pawn : MonoBehaviour
 		m_Animator.ResetTrigger(ANIM_JUMP_TO_TILE_TRIGGER);
 		m_Animator.ResetTrigger(ANIM_JUMP_AND_ABSEIL_TRIGGER);
 		m_Animator.ResetTrigger(ANIM_ROLL_TO_TILE_TRIGGER);
+		m_Animator.ResetTrigger(ANIM_FALL_AND_ABSEIL_TRIGGER);
 		m_Animator.SetTrigger(ANIM_FALL_TRIGGER);
 		m_IsFalling = true;
 		m_IsJumping = false;
@@ -612,7 +608,7 @@ public class Pawn : MonoBehaviour
 	}
 	#endregion
 
-	#region jump and fall
+	#region jump and fall/roll
 	private void StartToJump(Tile targetTile)
 	{
 		m_IsJumping = true;
@@ -664,16 +660,24 @@ public class Pawn : MonoBehaviour
 
 	/// <summary>
 	/// This function should be called when the player click on one tile to change the gravity.
-	/// This function will trigger the correct animation on the Pawn depending on the situation
+	/// This function will trigger the correct animation on the Pawn depending on the situation.
+	/// It can be a roll-over if the player click on the immediate wall, 
+	/// or a fall+abseil if the player change the gravity at a much farer distance.
 	/// <param name="targetTile"/>The tile whe the player will land (usually the focused or clicked tile)</param>
 	/// </summary>
-	private void StartRollOrAbseilDueToGravityChange(Tile targetTile)
+	private void StartToRollOrFallAbseilDueToGravityChange(Tile targetTile)
 	{
 		// ask how far was the clicked tile
 		int tileRelativeGridHeight = World.Instance.GetTileRelativeGridDistance(m_PawnTile, targetTile);
 
 		// compute the border direction and set it in any case (both type of animation needs it)
 		m_Animator.SetInteger(ANIM_BORDER_DIRECTION_INT, (int)GetBorderDirectionToGoToThisTile(targetTile));
+		m_Animator.SetInteger(ANIM_ABSEIL_HEIGHT_INT, tileRelativeGridHeight);
+
+		// disable the collider during this animation
+		m_CapsuleCollider.enabled = false;
+		ResetDynamic();
+		m_RigidBody.useGravity = false;
 
 		// check if we click on the tile just next to the pawn, or a bit farer away,
 		// because we don't play the same kind of animations
@@ -682,123 +686,44 @@ public class Pawn : MonoBehaviour
 			// set the jumping flag to disable the mouse input
 			m_IsJumping = true;
 
-			// disable the collider during this animation
-			m_CapsuleCollider.enabled = false;
-			ResetDynamic();
-			m_RigidBody.useGravity = false;
-
 			// set the parameters to the anim state jump
 			m_AnimStateRollToTile.SetStartAndEndTile(m_PawnTile, targetTile);
 			
 			// trigger the animation
 			m_Animator.SetTrigger(ANIM_ROLL_TO_TILE_TRIGGER);
-
-			// change the gravity
-			World.Instance.SetGravity(targetTile.orientation);
 		}
 		else
 		{
+			// Block the mouse input
+			m_IsFalling = true;
+
 			//for punishing gravity take the tile == null here
-			OnEnterTile(null);
-			StartCoroutine(DelayedPawnFall(targetTile.orientation));
+			OnEnterTile(null, false);
+
+			// set the parameters to the anim state fall and abseil
+			m_AnimStateFallAbseilAbove.SetEndTile(targetTile);
+
+			// Fall animation
+			m_Animator.SetTrigger(ANIM_FALL_AND_ABSEIL_TRIGGER);
 		}
+
+		// change the gravity
+		World.Instance.SetGravity(targetTile.orientation);
 	}
 
 	/// <summary>
 	/// This callback is called by the animator state machine 
 	/// when all the animations are finished after a roll to tile, or change gravity with rope.
 	/// </summary>
-	public void OnRollOrAbseilFinished()
+	public void OnRollOrFallAbseilFinished()
 	{
 		m_ClickedTile = null; // target reached, forget it
 		m_IsJumping = false;
+		m_IsFalling = false;
 
 		// reenable the collider
 		m_CapsuleCollider.enabled = true;
-	}
-
-	private IEnumerator DelayedPawnFall(TileOrientation orientation)
-	{
-		Vector3 desiredPosition = new Vector3(0, m_Height * 0.5f * fallInterval, 0);
-
-		// Block the "manageMouse" loop
-		m_IsFalling = true;
-
-		//		collider.gameObject.layer = 12;
-		nextConstraint = m_RigidBody.constraints;
-
-		ResetDynamic();
-		m_RigidBody.useGravity = false;
-		m_RigidBody.constraints = transformConstraints;
-
-		float timer = .0f;
-		float delay = fallDelay * 0.5f;
-
-		// Make the pawn float in the airs a little
-		while (timer < delay)
-		{
-			timer += Time.deltaTime;
-			Vector3 toPos = desiredPosition * timer / delay;
-			desiredPosition = desiredPosition - toPos;
-			transform.Translate(toPos, Space.Self);
-			yield return null;
-		}
-
-		SetPawnOrientation(orientation);
-
-		Quaternion fromRot = transform.rotation;
-		Quaternion toRot = Quaternion.Euler(desiredRotation);
-
-		timer = .0f;
-
-		// Rotate the pawn in order to face the correct direction
-		while (timer < delay)
-		{
-			timer += Time.deltaTime;
-			transform.rotation = Quaternion.Lerp(fromRot, toRot, timer / delay);
-			yield return null;
-		}
-
-		transform.rotation = toRot;
-
-		// Fall animation
-		m_Animator.SetTrigger(ANIM_FALL_TRIGGER);
-
-		m_RigidBody.constraints = nextConstraint;
 		m_RigidBody.useGravity = true;
-
-		World.Instance.SetGravity(orientation);
-	}
-
-	private void SetPawnOrientation(TileOrientation orientation)
-	{
-		switch (orientation)
-		{
-			case TileOrientation.Front:
-				desiredRotation = new Vector3(270, 0, 0);
-				transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationX;
-				break;
-			case TileOrientation.Back:
-				desiredRotation = new Vector3(90, 0, 0);
-				transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationX;
-				break;
-			case TileOrientation.Right:
-				desiredRotation = new Vector3(0, 0, 90);
-				transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationZ;
-				break;
-			case TileOrientation.Left:
-				desiredRotation = new Vector3(0, 0, 270);
-				transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationZ;
-				break;
-			case TileOrientation.Up:
-				desiredRotation = new Vector3(0, 0, 0);
-				transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationY;
-				break;
-			case TileOrientation.Down:
-				desiredRotation = new Vector3(180, 0, 0);
-				transformConstraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezeRotationY;
-				break;
-		}
 	}
 	#endregion
 
@@ -1048,7 +973,7 @@ public class Pawn : MonoBehaviour
 						m_FocusedTile.playActivationVFX();
 
 						// then triggrer the animation
-						StartRollOrAbseilDueToGravityChange(m_FocusedTile);
+						StartToRollOrFallAbseilDueToGravityChange(m_FocusedTile);
 					}
 				}
 				else

@@ -13,7 +13,7 @@ class ParticleScaler extends EditorWindow {
 
     static function ShowWindow() {
         var win = EditorWindow.GetWindow(ParticleScaler);
-        win.title = "PS Scaler";
+        win.titleContent = new GUIContent("PS Scaler");
         win.minSize = new Vector2(300, 165);
         win.maxSize = new Vector2(300, 165);
     }
@@ -192,9 +192,10 @@ class ParticleScaler extends EditorWindow {
         if (__parent != __particles.gameObject) {
             __particles.transform.localPosition *= _scaleMultiplier;
         }
-        __particles.startSize *= _scaleMultiplier;
-        __particles.gravityModifier *= _scaleMultiplier;
-        __particles.startSpeed *= _scaleMultiplier;
+		mainPS = __particles.main;
+        mainPS.startSizeMultiplier = _scaleMultiplier;
+        mainPS.gravityModifierMultiplier = _scaleMultiplier;
+        mainPS.startSpeedMultiplier = _scaleMultiplier;
         var sObj: SerializedObject = new SerializedObject(__particles);
         sObj.FindProperty("ShapeModule.boxX").floatValue *= _scaleMultiplier;
         sObj.FindProperty("ShapeModule.boxY").floatValue *= _scaleMultiplier;
