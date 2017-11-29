@@ -701,6 +701,8 @@ public class Pawn : MonoBehaviour
 
 			// set the target tile as null, but also reset the gravity for the pawn
 			OnEnterTile(null, true);
+			// re-enable the collider oftherwise we won't get the event telling that the player has left the game space
+			m_CapsuleCollider.enabled = true;
 
 			// Fall animation
 			m_Animator.SetTrigger(ANIM_FALL_TRIGGER);
