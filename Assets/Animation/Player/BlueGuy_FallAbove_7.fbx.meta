@@ -455,7 +455,7 @@ ModelImporter:
     4300110: Rope_01
     4300112: axe
     4300114: BlueGuy
-    7400000: Take 001
+    7400000: FallAbove7
     9500000: //RootNode
     13700000: BlueGuy
   materials:
@@ -482,7 +482,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: Take 001
+      name: FallAbove7
       takeName: Take 001
       firstFrame: 1
       lastFrame: 30
@@ -499,7 +499,7 @@ ModelImporter:
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
+      keepOriginalPositionXZ: 1
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
@@ -536,9 +536,7 @@ ModelImporter:
         weight: 1
       - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01
         weight: 1
-      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_axe
-        weight: 1
-      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_axe/axe
+      - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/axe
         weight: 1
       - path: Root/Hip/Body/Chest/Collar_R/Shoulder_R/ForeArm_R/Hand_R/joint_rope_01/joint_rope_02
         weight: 1
@@ -784,8 +782,8 @@ ModelImporter:
         weight: 1
       - path: Root/Hip/Thigh_R/Shin_R/Foot_R/Toe_R
         weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
+      maskType: 1
+      maskSource: {fileID: 31900000, guid: e05c1cf5d262a5a488aae09c00f7739d, type: 2}
       additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
