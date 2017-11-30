@@ -192,13 +192,7 @@ public class World : MonoBehaviour
 		// if the two tiles are aligned on the same axis, nothing need to be adjusted,
 		// but if the two tiles have perpendicular orientation, then we need to adjust the
 		// distance by half a cube size.
-		// Because Up/Down, Left/Right and Back/Front are grouped together in the enum,
-		// we can substract 1 to even values to have a common value for each pair, and then test these common value
-		int tile1AxisAlignment = ((int)tile1.orientation % 2) == 0 ? (int)tile1.orientation - 1 : (int)tile1.orientation;
-		int tile2AxisAlignment = ((int)tile2.orientation % 2) == 0 ? (int)tile2.orientation - 1 : (int)tile2.orientation;
-
-		// now adjust the distance if the two tiles are not aligned
-		if (tile1AxisAlignment != tile2AxisAlignment)
+		if (!AreTileOrientedOnTheSameAxis(tile1, tile2))
 		{
 			if (distance > 0f)
 				distance -= GameplayCube.HALF_CUBE_SIZE;
@@ -229,5 +223,25 @@ public class World : MonoBehaviour
 
 		// return the result
 		return result;
+	}
+
+	/// <summary>
+	/// This function tells you if the two specified tiles are oriented on the same axis, for example up and down are on the same axis.
+	/// If the two specified tiles have equals orientation, for example both are left, of course it also return true.
+	/// The couples that return true are (up/down), (left/right) and (front/back).
+	/// The function will also return true if both orientation equals "none", but will return false if only one equals "none".
+	/// </summary>
+	/// <param name="tile1">the first tile to test</param>
+	/// <param name="tile2">the second tile to test</param>
+	/// <returns><c>true</c> if both specified tile's orientation are on the same axis.</returns>
+	public bool AreTileOrientedOnTheSameAxis(Tile tile1, Tile tile2)
+	{
+		// Because Up/Down, Left/Right and Back/Front are grouped together in the enum,
+		// we can substract 1 to even values to have a common value for each pair, and then test these common value
+		int tile1AxisAlignment = ((int)tile1.orientation % 2) == 0 ? (int)tile1.orientation - 1 : (int)tile1.orientation;
+		int tile2AxisAlignment = ((int)tile2.orientation % 2) == 0 ? (int)tile2.orientation - 1 : (int)tile2.orientation;
+
+		// return true if the two values are equal
+		return (tile1AxisAlignment == tile2AxisAlignment);
 	}
 }

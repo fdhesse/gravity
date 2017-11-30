@@ -17,7 +17,8 @@ public class Pawn : MonoBehaviour
 	public static readonly int ANIM_IDLE_TRIGGER = Animator.StringToHash("Idle");
 	private static readonly int ANIM_WALK_TRIGGER = Animator.StringToHash("Walk");
 	private static readonly int ANIM_FALL_TRIGGER = Animator.StringToHash("Fall");
-	private static readonly int ANIM_FALL_AND_ABSEIL_TRIGGER = Animator.StringToHash("Fall and Abseil");
+	private static readonly int ANIM_FALL_AND_ABSEIL_ABOVE_TRIGGER = Animator.StringToHash("Fall and Abseil Above");
+	private static readonly int ANIM_FALL_AND_ABSEIL_SIDEWAY_TRIGGER = Animator.StringToHash("Fall and Abseil Sideway");
 	private static readonly int ANIM_LAND_TRIGGER = Animator.StringToHash("Land");
 	public static readonly int ANIM_BORDER_DIRECTION_INT = Animator.StringToHash("Border Direction");
 	public static readonly int ANIM_ABSEIL_HEIGHT_INT = Animator.StringToHash("Abseil Height");
@@ -197,7 +198,8 @@ public class Pawn : MonoBehaviour
 		m_Animator.ResetTrigger(ANIM_JUMP_TO_TILE_TRIGGER);
 		m_Animator.ResetTrigger(ANIM_JUMP_AND_ABSEIL_TRIGGER);
 		m_Animator.ResetTrigger(ANIM_ROLL_TO_TILE_TRIGGER);
-		m_Animator.ResetTrigger(ANIM_FALL_AND_ABSEIL_TRIGGER);
+		m_Animator.ResetTrigger(ANIM_FALL_AND_ABSEIL_ABOVE_TRIGGER);
+		m_Animator.ResetTrigger(ANIM_FALL_AND_ABSEIL_SIDEWAY_TRIGGER);		
 		m_Animator.SetTrigger(ANIM_FALL_TRIGGER);
 		m_IsFalling = true;
 		m_IsJumping = false;
@@ -712,14 +714,22 @@ public class Pawn : MonoBehaviour
 			// Block the mouse input
 			m_IsFalling = true;
 
+			// if the two tiles are align on same axis, that means the player has click on a tile above,
+			// otherwise he clicked on a tile on the side
+			if (World.Instance.AreTileOrientedOnTheSameAxis(m_PawnTile, targetTile))
+			{
+				// set the parameters to the anim state fall and abseil and trigger the anim
+				m_AnimStateFallAbseilAbove.SetEndTile(targetTile);
+				m_Animator.SetTrigger(ANIM_FALL_AND_ABSEIL_ABOVE_TRIGGER);
+			}
+			else
+			{
+				// set the parameters to the anim state fall and abseil and trigger the anim
+				m_Animator.SetTrigger(ANIM_FALL_AND_ABSEIL_SIDEWAY_TRIGGER);
+			}
+
 			//for punishing gravity take the tile == null here
 			OnEnterTile(null, false);
-
-			// set the parameters to the anim state fall and abseil
-			m_AnimStateFallAbseilAbove.SetEndTile(targetTile);
-
-			// Fall and abseil animation
-			m_Animator.SetTrigger(ANIM_FALL_AND_ABSEIL_TRIGGER);
 		}
 
 		// change the gravity
