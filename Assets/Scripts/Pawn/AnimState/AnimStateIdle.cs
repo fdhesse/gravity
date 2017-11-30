@@ -27,11 +27,19 @@ public class AnimStateIdle : StateMachineBehaviour
 	// the time when the wait anim will be played
 	private float m_WaitAnimStartTime = 0;
 
-	public override void OnStateEnter(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
+	public override void OnStateMachineEnter(Animator animator, int stateMachinePathHash)
 	{
+		// WARNING !!! THERE'S A UNITY BUG: if you set the Idle SubState Machine as the default one
+		// from the top level of your state machine, this function won't be called. To be more precise,
+		// the bug is: if you link the green "Entry" box to a sub-state machine, the OnStateMachineEnter
+		// won't be called.
+
 		// set the wait anim time, some time randomly in the future
 		ChooseNextWaitAnimStartTime();
+	}
 
+	public override void OnStateEnter(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
+	{
 		// compute the next anim choose time if we are playing a standard idle anim
 		ChooseNextIdleAnim(animator, animatorStateInfo);
 	}
