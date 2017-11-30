@@ -71,6 +71,7 @@ public class Pawn : MonoBehaviour
 	private AnimStateJumpAbseil m_AnimStateJumpAbseil = null;     // will be init in OnEnable or Start
 	private AnimStateRollToTile m_AnimStateRollToTile = null;     // will be init in OnEnable or Start
 	private AnimStateFallAbseilAbove m_AnimStateFallAbseilAbove = null; // will be init in OnEnable or Start
+	private AnimStateFallAbseilSide m_AnimStateFallAbseilSide = null; // will be init in OnEnable or Start
 
 	// #SPAWN#
 	private Vector3 m_SpawnPosition = Vector3.zero;			// position of the spawn GameObject
@@ -159,6 +160,7 @@ public class Pawn : MonoBehaviour
 		m_AnimStateJumpAbseil = m_Animator.GetBehaviour<AnimStateJumpAbseil>();
 		m_AnimStateRollToTile = m_Animator.GetBehaviour<AnimStateRollToTile>();
 		m_AnimStateFallAbseilAbove = m_Animator.GetBehaviour<AnimStateFallAbseilAbove>();
+		m_AnimStateFallAbseilSide = m_Animator.GetBehaviour<AnimStateFallAbseilSide>();
 	}
 
 	void Update()
@@ -725,6 +727,7 @@ public class Pawn : MonoBehaviour
 			else
 			{
 				// set the parameters to the anim state fall and abseil and trigger the anim
+				m_AnimStateFallAbseilSide.SetStartAndEndTile(m_PawnTile, targetTile);
 				m_Animator.SetTrigger(ANIM_FALL_AND_ABSEIL_SIDEWAY_TRIGGER);
 			}
 
