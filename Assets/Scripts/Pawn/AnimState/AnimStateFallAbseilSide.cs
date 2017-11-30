@@ -23,9 +23,8 @@ public class AnimStateFallAbseilSide : AnimStateJumpFallBase
 			Vector3 up = -World.GetGravityNormalizedVector(m_EndTile.orientation);
 
 			// set a mach target to the center of the start or end tile, depending in which type of anim we are
-			Vector3 targetPosition = m_StartTile.transform.position;
-			if (animatorStateInfo.tagHash == ABSEIL_DOWN_TAG)
-				targetPosition = m_EndTile.transform.position;
+			bool isSecondAnim = (animatorStateInfo.tagHash == ABSEIL_DOWN_TAG);
+			Vector3 targetPosition = isSecondAnim ? m_EndTile.transform.position : m_StartTile.transform.position;
 			Quaternion targetOrientation = ComputeTargetOrientation(true, up);
 			rootMotionController.SetTargetPositionAndOrientation(targetPosition, targetOrientation, true, animatorStateInfo.shortNameHash);
 			rootMotionController.SetTargetBone(RootMotionController.TargetBone.BODY);

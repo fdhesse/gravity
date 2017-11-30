@@ -205,17 +205,17 @@ public class RootMotionController : MonoBehaviour
 
 			// the m_Animator.bodyPosition is given in world coordinate, translate it in local
 			m_LocalBodyPositionWhenTargetBoneWasSwitchToBody = transform.worldToLocalMatrix * (m_Animator.bodyPosition - transform.position);
-
-			// check if we need to adjust the target position, after having computed the local body
-			if (m_WasTargetPositionSetForRoot)
-			{
-				// recompute the target position
-				TargetPosition += TargetOrientation * m_LocalBodyPositionWhenTargetBoneWasSwitchToBody;
-
-				// change the flag since now the target position target the body
-				m_WasTargetPositionSetForRoot = false;
-			}
 		}
+
+		// check if we need to adjust the target position, after having computed the local body
+		if (m_WasTargetPositionSetForRoot)
+		{
+			// recompute the target position
+			TargetPosition += TargetOrientation * m_LocalBodyPositionWhenTargetBoneWasSwitchToBody;
+
+			// change the flag since now the target position target the body
+			m_WasTargetPositionSetForRoot = false;
+		}		
 
 		// then check if we need to relocate the root during this frame
 		if (m_DoesNeedTodRelocateRootTransformFromBodyTransform)
