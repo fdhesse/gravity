@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class AnimStateJumpAbseil : AnimStateJump
+public class AnimStateJumpAbseil : AnimStateJumpFallBase
 {
 	private static readonly int ABSEIL_DOWN_TAG = Animator.StringToHash("AbseilDown");
 

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class AnimStateFallAbseilSide : AnimStateJump
+public class AnimStateFallAbseilSide : AnimStateJumpFallBase
 {
 	private static readonly int ABSEIL_DOWN_TAG = Animator.StringToHash("AbseilDown");
 	private static readonly int ANIM_ROTATE_ROOT_STATE = Animator.StringToHash("RotateRootState");

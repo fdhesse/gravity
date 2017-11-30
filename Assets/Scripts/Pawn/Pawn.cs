@@ -721,7 +721,7 @@ public class Pawn : MonoBehaviour
 			if (World.Instance.AreTileOrientedOnTheSameAxis(m_PawnTile, targetTile))
 			{
 				// set the parameters to the anim state fall and abseil and trigger the anim
-				m_AnimStateFallAbseilAbove.SetEndTile(targetTile);
+				m_AnimStateFallAbseilAbove.SetStartAndEndTile(m_PawnTile, targetTile);
 				m_Animator.SetTrigger(ANIM_FALL_AND_ABSEIL_ABOVE_TRIGGER);
 			}
 			else

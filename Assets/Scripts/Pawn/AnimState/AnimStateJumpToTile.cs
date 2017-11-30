@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class AnimStateJumpToTile : AnimStateJump
+public class AnimStateJumpToTile : AnimStateJumpFallBase
 {
 	private static readonly int END_JUMP_ANIM_ID = Animator.StringToHash("JumpAndLand");
 

@@ -1,15 +1,8 @@
 ﻿using UnityEngine;
 
-public class AnimStateFallAbseilAbove : StateMachineBehaviour
+public class AnimStateFallAbseilAbove : AnimStateJumpFallBase
 {
 	private static readonly int ANIM_ROTATE_ROOT_STATE = Animator.StringToHash("RotateRootState");
-
-	// the end tile
-	private Tile m_EndTile = null;
-	public void SetEndTile(Tile end)
-	{
-		m_EndTile = end;
-	}
 
 	public override void OnStateEnter(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
 	{

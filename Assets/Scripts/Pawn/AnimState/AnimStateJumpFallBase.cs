@@ -3,7 +3,7 @@
 /// <summary>
 /// This class is a base class for the two jump state classes, aka AnimStateJumpToTile and AnimStateJumpAbseil
 /// </summary>
-public abstract class AnimStateJump : StateMachineBehaviour
+public abstract class AnimStateJumpFallBase : StateMachineBehaviour
 {
 	// the start and end tile
 	protected Tile m_StartTile = null;
