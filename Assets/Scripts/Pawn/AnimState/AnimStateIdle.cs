@@ -3,6 +3,7 @@
 public class AnimStateIdle : StateMachineBehaviour
 {
 	private static readonly int IDLE_ANIM_ID = Animator.StringToHash("Idle Id");
+	private static readonly int IDLE_TAG = Animator.StringToHash("Idle");
 
 	// list all the Ids used in the animator with the IDLE_ANIM_ID variable
 	private enum IdleId
@@ -27,19 +28,14 @@ public class AnimStateIdle : StateMachineBehaviour
 	// the time when the wait anim will be played
 	private float m_WaitAnimStartTime = 0;
 
-	public override void OnStateMachineEnter(Animator animator, int stateMachinePathHash)
-	{
-		// WARNING !!! THERE'S A UNITY BUG: if you set the Idle SubState Machine as the default one
-		// from the top level of your state machine, this function won't be called. To be more precise,
-		// the bug is: if you link the green "Entry" box to a sub-state machine, the OnStateMachineEnter
-		// won't be called.
-
-		// set the wait anim time, some time randomly in the future
-		ChooseNextWaitAnimStartTime();
-	}
-
 	public override void OnStateEnter(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
 	{
+		// set the wait anim time, some time randomly in the future if not set.
+		// It would have been easier to place this into the OnStateMachineEnter() function, but there's a
+		// unity bug preventing this function to be called when the "entry" green box is linked to the sub state machine
+		if (m_WaitAnimStartTime == 0)
+			ChooseNextWaitAnimStartTime();
+
 		// compute the next anim choose time if we are playing a standard idle anim
 		ChooseNextIdleAnim(animator, animatorStateInfo);
 	}
@@ -68,6 +64,11 @@ public class AnimStateIdle : StateMachineBehaviour
 		// reset the idle anim id, if I leave the wait state
 		if (animator.GetInteger(IDLE_ANIM_ID) == (int)IdleId.WAIT)
 			animator.SetInteger(IDLE_ANIM_ID, (int)IdleId.IDLE);
+
+		// reset the wait timer, if we exit toward a non idle tagged anim,
+		// this will reset the timer, next time we re-enter the idle state
+		if (animator.GetCurrentAnimatorStateInfo(layerIndex).tagHash != IDLE_TAG)
+			m_WaitAnimStartTime = 0;
 	}
 
 	private void ChooseNextWaitAnimStartTime()
