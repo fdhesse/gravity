@@ -24,7 +24,7 @@ public class AnimStateFallAbseilSide : AnimStateJumpFallBase
 
 			// set a mach target to the center of the start or end tile, depending in which type of anim we are
 			bool isSecondAnim = (animatorStateInfo.tagHash == ABSEIL_DOWN_TAG);
-			Vector3 targetPosition = isSecondAnim ? m_EndTile.transform.position : m_StartTile.transform.position;
+			Vector3 targetPosition = ComputeTargetPosition(isSecondAnim, up);
 			Quaternion targetOrientation = ComputeTargetOrientation(true, up);
 			rootMotionController.SetTargetPositionAndOrientation(targetPosition, targetOrientation, true, animatorStateInfo.shortNameHash);
 			rootMotionController.SetTargetBone(RootMotionController.TargetBone.BODY);
@@ -55,5 +55,35 @@ public class AnimStateFallAbseilSide : AnimStateJumpFallBase
 			// but anyway, disable the match target
 			rootMotionController.SetMoveModes(RootMotionController.TranslationMode.USE_ANIM_TRANSLATION, RootMotionController.RotationMode.USE_ANIM_ROTATION);
 		}
+	}
+
+	protected new Vector3 ComputeTargetPosition(bool isSecondAnim, Vector3 up)
+	{
+		// by default take the position of the start tile
+		Vector3 result = m_StartTile.transform.position;
+
+		// for the second anim we take the position of the end tile, but if the end tile is moving
+		// we need to compute its ending position
+		if (isSecondAnim)
+		{
+			// by default take the position of the end tile
+			result = m_EndTile.transform.position;
+
+			// check if the end tile is a falling cube.
+			if (m_EndTile.CompareTag(GameplayCube.FALLING_CUBE_TAG))
+			{
+				Vector3 direction = -up;
+				Vector3 origin = m_EndTile.transform.parent.position + (direction * GameplayCube.HALF_CUBE_SIZE * 0.95f);
+				RaycastHit hitInfo;
+				if (Physics.Raycast(origin, direction, out hitInfo))
+				{
+					// if we hit something, add a cube size to the hit position (the point above the falling cube)
+					result = hitInfo.point + (up * GameplayCube.CUBE_SIZE);
+				}
+			}
+			// TODO: Note that you should also check if it is a gravity platform to do the same kind of thing
+		}
+
+		return result;
 	}
 }
