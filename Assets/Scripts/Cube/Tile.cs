@@ -449,11 +449,6 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		get { return this.type.Equals(TileType.Invalid); }
     }
 
-    public Vector3 getTargetPoint()
-    {
-        return transform.position;
-    }
-
 	public Vector3 getDownVector()	
 	{
 		return transform.forward;

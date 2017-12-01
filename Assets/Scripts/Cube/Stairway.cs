@@ -2,8 +2,6 @@
 using UnityEditor;
 #endif
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 [RequireComponent(typeof(Tile))]
 [RequireComponent(typeof(MeshCollider))]
@@ -11,8 +9,8 @@ using System.Collections.Generic;
 [InitializeOnLoad]
 [ExecuteInEditMode]
 #endif
-public class Stairway : MonoBehaviour {
-	
+public class Stairway : MonoBehaviour
+{
 	public enum StairwayAxis
 	{
 		None,X,Y,Z
@@ -40,7 +38,7 @@ public class Stairway : MonoBehaviour {
 		Tile stairTile = GetComponent<Tile>();
 		stairTile.orientation = previousTile.orientation;
 
-		Collider[] hits = Physics.OverlapSphere(transform.position, 8.5f);
+		Collider[] hits = Physics.OverlapSphere(transform.position, GameplayCube.CUBE_SIZE * 0.85f);
 
 		foreach( Collider hit in hits )
 		{

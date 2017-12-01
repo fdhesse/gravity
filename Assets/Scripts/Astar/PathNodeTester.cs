@@ -30,7 +30,7 @@ public class PathNodeTester : MonoBehaviour
 
         if (gridCreated)
             return;
-        sources = PathNode.CreateGrid(Vector3.zero, Vector3.one * 10.0f, new int[] { 6, 1, 6 }, 0.0f, gameObject);
+        sources = PathNode.CreateGrid(Vector3.zero, Vector3.one * GameplayCube.CUBE_SIZE, new int[] { 6, 1, 6 }, 0.0f, gameObject);
         gridCreated = true;
 
     }
