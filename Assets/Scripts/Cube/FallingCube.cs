@@ -7,13 +7,11 @@ using System.Collections.Generic;
 [RequireComponent(typeof(AudioSource))]
 public class FallingCube : MonoBehaviour
 {
-	private bool m_IsFalling;
 	public bool IsFalling
 	{
-		get { return m_IsFalling; }
+		get { return !m_RigidBody.IsSleeping(); }
 	}
 
-	private bool m_IsOutOfBounds = false;
 	private Vector3 m_SpawnPosition = Vector3.zero; // position of the Cube GameObject initial position
 	private Vector3 m_LastPosition = Vector3.zero; // position of the game object at the previous frame	
 	private Rigidbody m_RigidBody;
@@ -74,29 +72,24 @@ public class FallingCube : MonoBehaviour
 		// reset the dynamics of the rigid body
 		m_RigidBody.velocity = Vector3.zero;
 		m_RigidBody.angularVelocity = Vector3.zero;
-		m_RigidBody.constraints = RigidbodyConstraints.FreezeAll;
-
-		// reset the internal flags
-		m_IsOutOfBounds = false;
+		m_RigidBody.useGravity = true;
+		m_RigidBody.WakeUp();
 	}
 
-	void Update()
+	public void ChangeGravity(TileOrientation gravityOrientation)
 	{
-		// if the cube is still falling, game can't continue
-		m_IsFalling = (Vector3.Magnitude(transform.position - m_LastPosition) > 0.001f && !m_IsOutOfBounds);
-
-		// memorise the last position for testing at the next frame
-		m_LastPosition = transform.position;
-
-		if (Pawn.Instance.GetComponent<Rigidbody>().useGravity)
-			m_RigidBody.constraints = RigidbodyConstraints.FreezeRotation;
-		else
-			m_RigidBody.constraints = RigidbodyConstraints.FreezeAll;
+		// when the gravity just got changed, wake the rigid body
+		m_RigidBody.WakeUp();
 	}
 
 	public void OutOfBounds()
 	{
-		m_IsOutOfBounds = true;
+		// reset the dynamic and stop making me sensible to the gravity (to stop falling)
+		m_RigidBody.velocity = Vector3.zero;
+		m_RigidBody.angularVelocity = Vector3.zero;
+		m_RigidBody.useGravity = false;
+		// then go to sleep so that the IsFalling flag becomes false
+		m_RigidBody.Sleep();
 	}
 
 	void OnCollisionEnter(Collision collision)

@@ -152,6 +152,10 @@ public class World : MonoBehaviour
 		foreach (var tile in goldTiles)
 			tile.ChangeGravity(orientation);
 
+		// inform all the falling cube of the change of gravity
+		foreach (var cube in fallingCubes)
+			cube.ChangeGravity(orientation);
+
 		// inform the waterfalls of the gravity change
 		foreach (var waterfall in waterfalls)
 			waterfall.ChangeGravity(orientation);
