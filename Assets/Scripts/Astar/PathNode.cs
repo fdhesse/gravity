@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class PathNode : MonoBehaviour, IPathNode<PathNode>
@@ -54,7 +53,7 @@ public class PathNode : MonoBehaviour, IPathNode<PathNode>
         GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
         obj.name = "pn_" + pnIndex;
         obj.transform.position = inPosition;
-        obj.transform.localScale = Vector3.one * 10.0f;
+        obj.transform.localScale = Vector3.one * GameplayCube.CUBE_SIZE;
         obj.GetComponent<Renderer>().enabled = false;
         pnIndex++;
 
@@ -146,6 +145,5 @@ public class PathNode : MonoBehaviour, IPathNode<PathNode>
         }
 
         return result;
-
     }
 }
