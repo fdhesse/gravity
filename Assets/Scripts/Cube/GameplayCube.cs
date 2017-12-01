@@ -202,24 +202,26 @@ public class GameplayCube : MonoBehaviour
 	{
 		bool isStatic = shouldTileMeshBeStatic();
 
+		// get all my tiles
+		Tile[] childTiles = GetComponentsInChildren<Tile>();
+
 		// set the glue and static flags for all tiles
-		for (int i = 0; i < this.transform.childCount; ++i)
+		foreach (Tile tile in childTiles)
 		{
-			Tile childTile = this.transform.GetChild(i).GetComponent<Tile>();
-			if (childTile != null)
-			{
-				// reset the tag of the tile like the tag of this gameobject,
-				// so that if the level designer change this gameplay cube to a moving platform,
-				// the tag is correctly propagated to to the children tiles, without the need to
-				// recreate the faces
-				setTileTag(childTile.gameObject);
+			// reset the tag of the tile like the tag of this gameobject,
+			// so that if the level designer change this gameplay cube to a moving platform,
+			// the tag is correctly propagated to to the children tiles, without the need to
+			// recreate the faces
+			setTileTag(tile.gameObject);
 
-				// set the glue state of the tile
-				childTile.IsGlueTile = IsFaceGlued(childTile.name);
+			// set the glue state of the tile
+			tile.IsGlueTile = IsFaceGlued(tile.name);
 
-				// set the static state of the tile
-				childTile.setStaticFlag(isStatic);
-			}
+			// set the static state of the tile
+			tile.setStaticFlag(isStatic);
+
+			// check the material (to avoid missing material when user press the "Revert" button)
+			tile.updateMeshTileEditorMaterial();
 		}
 	}
 		

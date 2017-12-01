@@ -556,8 +556,14 @@ public class Tile : MonoBehaviour, IPathNode<Tile>
 		mesh.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
 		mesh.transform.localPosition = new Vector3( 0.5f, -0.5f, 0 );
 
-		// after setting the new mesh, update the orientation of the mesh tile, giving any kind
-		// of orientation, it doesn't matter, cause we are in edit mode, it's just to set the editor material
+		// after setting the new mesh, update the the editor material of the tile
+		updateMeshTileEditorMaterial();
+	}
+
+	public void updateMeshTileEditorMaterial()
+	{
+		// update the orientation of the mesh tile, giving any kind of orientation, 
+		// it doesn't matter, cause we are in edit mode, it's just to set the editor material
 		updateMeshTileOrientation(TileOrientation.Up);
 	}
 
