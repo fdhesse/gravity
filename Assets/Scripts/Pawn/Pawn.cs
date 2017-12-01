@@ -485,7 +485,7 @@ public class Pawn : MonoBehaviour
 		// stay on the ground (in local coord of the pawn)
 		moveDirection.y += m_Height * 0.5f;
 
-		if ( moveDirection.magnitude > 1 )
+		if ( moveDirection.magnitude > 0.1f )
 		{
 			Vector3 translate = Vector3.ClampMagnitude ( ( moveDirection.normalized * Time.deltaTime * speed ), maxTranslation );
 			transform.Translate( translate, Space.Self );
