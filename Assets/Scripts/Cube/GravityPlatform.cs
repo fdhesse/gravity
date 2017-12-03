@@ -58,7 +58,7 @@ public class GravityPlatform : MonoBehaviour {
 	public enum ConstraintAxis { X, Y, Z };
 
 	public float from = 0;
-	public float to = 10;
+	public float to = 2;
 
 	public ConstraintAxis constrainedAxis;
 
