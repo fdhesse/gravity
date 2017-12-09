@@ -9,8 +9,27 @@ using UnityEditor.SceneManagement;
 /// Test tools editor window, providing bunch of function to tweak game's behaviours
 /// </summary>
 [InitializeOnLoad]
-public class EditorSettings : EditorWindow
+public class EditorSettings : EditorWindow, UnityEditor.Build.IPreprocessBuild, UnityEditor.Build.IPostprocessBuild
 {
+	#region function implementation
+	private static bool s_IsEditorBuilding = false;
+
+	public int callbackOrder
+	{
+		get { return 0; }
+	}
+
+	public void OnPreprocessBuild(BuildTarget target, string path)
+	{
+		s_IsEditorBuilding = true;
+	}
+
+	public void OnPostprocessBuild(BuildTarget target, string path)
+	{
+		s_IsEditorBuilding = false;
+	}
+	#endregion
+
 	#region main functions
 	static EditorSettings()
 	{
@@ -82,7 +101,7 @@ public class EditorSettings : EditorWindow
 	{
 		// if the checkbox is not check, do not change the value of the HUD
 		if (m_IsHUDHidden)
-			EnableDisableHUD(EditorApplication.isPlaying || EditorApplication.isPlayingOrWillChangePlaymode);
+			EnableDisableHUD(EditorApplication.isPlaying || EditorApplication.isPlayingOrWillChangePlaymode || s_IsEditorBuilding);
 	}
 
 	private static void OnPlayModeChanged()
