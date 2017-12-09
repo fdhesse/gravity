@@ -26,7 +26,7 @@ public class GravityPlatformBody : MonoBehaviour
 		
 		body = GetComponent<Rigidbody> ();
 		body.transform.parent = bodyDummyParent.transform;
-		body.transform.localScale *= 1.99f;
+		body.transform.localScale *= GameplayCube.CUBE_SIZE * 0.99f;
 		//GetComponent<BoxCollider>().size *= 10.001f;
 
 		body.interpolation = RigidbodyInterpolation.Interpolate;
