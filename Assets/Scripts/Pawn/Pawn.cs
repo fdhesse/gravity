@@ -484,8 +484,12 @@ public class Pawn : MonoBehaviour
 		Vector3 moveDirection = transform.worldToLocalMatrix.MultiplyPoint(destination);
 		// stay on the ground (in local coord of the pawn)
 		moveDirection.y += m_Height * 0.5f;
+
+		// check if we are moving on a glue tile
+		bool isNotMovingOnAGlueTile = (m_PawnTile != null) && !m_PawnTile.IsGlueTile;
+
 		// if we are moving upward in the stair, help the pawn to move upward and not slide down the stair by deactivating the gravity
-		m_RigidBody.useGravity = (moveDirection.y < 0.05f);
+		m_RigidBody.useGravity = (moveDirection.y < 0.05f) && isNotMovingOnAGlueTile;
 
 		if ( moveDirection.magnitude > 0.1f )
 		{
@@ -496,7 +500,7 @@ public class Pawn : MonoBehaviour
         else
 		{
 			transform.Translate( moveDirection * Time.deltaTime * speed, Space.Self );
-			m_RigidBody.useGravity = true;
+			m_RigidBody.useGravity = isNotMovingOnAGlueTile;
 			return true;
         }
 	}
